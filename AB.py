@@ -360,8 +360,9 @@ for i in range(numRespsWanted):
 print('timingBlips',file=dataFile)
 #end of header
 
-def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes,cuesPos,lettersDrawObjects,
-                                       noise,proportnNoise,allFieldCoords,numNoiseDots ): 
+def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
+                                        numStreams,ltrsDrawObjectsStream1,ltrsDrawObjectsStream2,
+                                        noise,proportnNoise,allFieldCoords,numNoiseDots ): 
 #defining a function to draw each frame of stim. So can call second time for tracking task response phase
   SOAframes = letterDurFrames+ISIframes
   cueFrames = cuesPos*SOAframes  #cuesPos is global variable
@@ -372,15 +373,20 @@ def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes
   thisLetterIdx = letterSeqStream1[letterN] #which letter, from A to Z (1 to 26), should be shown?
   #so that any timing problems occur just as often for every frame, always draw the letter and the cue, but simply draw it in the bgColor when it's not meant to be on
   cue.setLineColor( bgColor )
-  for cueFrame in cueFrames: #cheTck whether it's time for any cue
+  for cueFrame in cueFrames: #check whether it's time for any cue
       if n>=cueFrame and n<cueFrame+cueDurFrames:
          cue.setLineColor( cueColor )
 
   if showLetter:
-     lettersDrawObjects[thisLetterIdx].setColor( letterColor )
-  else: lettersDrawObjects[thisLetterIdx].setColor( bgColor )
+     ltrsDrawObjectsStream1[thisLetterIdx].setColor( letterColor )
+  else: ltrsDrawObjectsStream1[thisLetterIdx].setColor( bgColor )
+  ltrsDrawObjectsStream1[thisLetterIdx].draw()
+  if numStreams==2:
+      if showLetter:
+         ltrsDrawObjectsStream2[thisLetterIdx].setColor( letterColor )
+      else: ltrsDrawObjectsStream2[thisLetterIdx].setColor( bgColor )
+      ltrsDrawObjectsStream2[thisLetterIdx].draw()
   
-  lettersDrawObjects[thisLetterIdx].draw()
   cue.draw()
   refreshNoise = False #Not recommended because takes longer than a frame, even to shuffle apparently. Or may be setXYs step
   if proportnNoise>0 and refreshNoise: 
@@ -408,15 +414,16 @@ cue = visual.Circle(myWin,
 
 #predraw all 26 letters 
 ltrHeight = 2.5 #Martini letters were 2.5deg high
-lettersDrawObjects = list()
+ltrsDrawObjectsStream1 = list()
+ltrsDrawObjectsStream2 = list()
 for i in range(0,26):
        letterDraw = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
        letterDraw.setHeight( ltrHeight )
        letter = numberToLetter(i)
        letterDraw.setText(letter,log=False)
        letterDraw.setColor(bgColor)
-       lettersDrawObjects.append(letterDraw)
-
+       ltrsDrawObjectsStream1.append(letterDraw)
+       ltrsDrawObjectsStream2.append(letterDraw)
 
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *1.0
@@ -465,7 +472,7 @@ numTrialsEachApproxCorrect= np.zeros( numRespsWanted )
 nTrialsCorrectT2eachLag = np.zeros(len(possibleCue2lags)); nTrialsEachLag = np.zeros(len(possibleCue2lags))
 nTrialsApproxCorrectT2eachLag = np.zeros(len(possibleCue2lags));
 
-def do_RSVP_stim(cue1pos, cue2lag, proportnNoise,trialN):
+def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     #relies on global variables:
     #   logging, bgColor
     #
@@ -504,7 +511,8 @@ def do_RSVP_stim(cue1pos, cue2lag, proportnNoise,trialN):
     t0 = trialClock.getTime()
 
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
-        worked = oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes,cuesPos,lettersDrawObjects,
+        worked = oneFrameOfStim( n,cue,letterSeqStream1,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
+                                                     numStreams,ltrsDrawObjectsStream1, ltrsDrawObjectsStream2,
                                                      noise,proportnNoise,allFieldCoords,numNoiseDots) #draw letter and possibly cue and noise on top
         if exportImages:
             myWin.getMovieFrame(buffer='back') #for later saving
@@ -702,6 +710,7 @@ else: #not staircase
     
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
     nDoneMain =0
+    trials= trialsAB
     while nDoneMain < trials.nTotal and expStop==False:
         if nDoneMain==0:
             msg='Starting main (non-staircase) part of experiment'
