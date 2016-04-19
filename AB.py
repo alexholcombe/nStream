@@ -260,6 +260,7 @@ if fullscr and not demo and not exportImages:
             ## 'time' will use experimentRuntime.epoch as the value for the seed, different value each time the script is run
             ##'set:time' --> seed value is set to experimentRuntime.epoch, and initialized: random.seed(info['randomSeed'])
             ##'set:42' --> set & initialize to str('42'), and will give the same sequence of random.random() for all runs of the script
+
         )
     logging.info(runInfo)
 logging.flush()
@@ -291,17 +292,26 @@ requireAcceptance = False
 nextText = visual.TextStim(myWin,pos=(0, .1),colorSpace='rgb',color = (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 NextRemindCountText = visual.TextStim(myWin,pos=(0,.2),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 screenshot= False; screenshotDone = False
-stimList = []
 
 #SETTING THE CONDITIONS
+#For the attentional blink
+stimListAB = []
 possibleCue1positions =  np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E2, group 2
 possibleCue2lags = np.array([1,2,5,8,10]) 
 for cue1pos in possibleCue1positions:
    for cue2lag in possibleCue2lags:
-        stimList.append( {'cue1pos':cue1pos, 'cue2lag':cue2lag } )
+        stimListAB.append( {'numStream':1, 'cue1pos':cue1pos, 'cue2lag':cue2lag } )
 #Martini E2 and also AB experiments used 400 trials total, with breaks between every 100 trials
 
-trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
+#For the dual-stream simultaneous target
+stimListDualStream=[]
+possibleCuePositions =  np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E2, group 2
+for cuePos in possibleCuePositions:
+        stimListDualStream.append( {'numStreams':2, 'cue1pos':cue1pos, 'cue2lag':0 } )  #cue2lag = 0, meaning simultaneous targets
+
+trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
+trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerCondition) #constant stimuli method
+
 trialsForPossibleStaircase = data.TrialHandler(stimList,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
 numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
 numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
@@ -359,7 +369,7 @@ def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes
   frameOfThisLetter = n % SOAframes #every SOAframes, new letter
   showLetter = frameOfThisLetter < letterDurFrames #if true, it's not time for the blank ISI.  it's still time to draw the letter
   #print 'n=',n,' SOAframes=',SOAframes, ' letterDurFrames=', letterDurFrames, ' (n % SOAframes) =', (n % SOAframes)  #DEBUGOFF
-  thisLetterIdx = letterSequence[letterN] #which letter, from A to Z (1 to 26), should be shown?
+  thisLetterIdx = letterSeqStream1[letterN] #which letter, from A to Z (1 to 26), should be shown?
   #so that any timing problems occur just as often for every frame, always draw the letter and the cue, but simply draw it in the bgColor when it's not meant to be on
   cue.setLineColor( bgColor )
   for cueFrame in cueFrames: #cheTck whether it's time for any cue
@@ -400,12 +410,13 @@ cue = visual.Circle(myWin,
 ltrHeight = 2.5 #Martini letters were 2.5deg high
 lettersDrawObjects = list()
 for i in range(0,26):
-   letterDraw = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-   letterDraw.setHeight( ltrHeight )
-   letter = numberToLetter(i)
-   letterDraw.setText(letter,log=False)
-   letterDraw.setColor(bgColor)
-   lettersDrawObjects.append(letterDraw)
+       letterDraw = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+       letterDraw.setHeight( ltrHeight )
+       letter = numberToLetter(i)
+       letterDraw.setText(letter,log=False)
+       letterDraw.setColor(bgColor)
+       lettersDrawObjects.append(letterDraw)
+
 
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *1.0
@@ -463,9 +474,9 @@ def do_RSVP_stim(cue1pos, cue2lag, proportnNoise,trialN):
     if task=='T1T2':
         cuesPos.append(cue1pos+cue2lag)
     cuesPos = np.array(cuesPos)
-    letterSequence = np.arange(0,26)
-    np.random.shuffle(letterSequence)
-    correctAnswers = np.array( letterSequence[cuesPos] )
+    letterSeqStream1 = np.arange(0,26)
+    np.random.shuffle(letterSeqStream1)
+    correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
     noise = None; allFieldCoords=None; numNoiseDots=0
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
         (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)
@@ -509,7 +520,7 @@ def do_RSVP_stim(cue1pos, cue2lag, proportnNoise,trialN):
         respPromptStim.setText('Which two letters were circled?',log=False)
     else: respPromptStim.setText('Error: unexpected task',log=False)
     postCueNumBlobsAway=-999 #doesn't apply to non-tracking and click tracking task
-    return letterSequence,cuesPos,correctAnswers, ts  
+    return letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2, ts  
     
 def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,letterSequence,cuesPos,correctAnswers):
     #Handle response, calculate whether correct, ########################################
@@ -624,7 +635,7 @@ if doStaircase:
                 print('stopping because staircase.next() returned a StopIteration, which it does when it is finished')
                 break #break out of the trials loop
         #print('staircaseTrialN=',staircaseTrialN)
-        letterSequence,cuesPos,correctAnswers, ts  = do_RSVP_stim(cue1pos, cue2lag, noisePercent/100.,staircaseTrialN)
+        letterSeqStream1,letterSeqStream2, cuesPos,correctAnsStream1,correctAnsStream2, ts  = do_RSVP_stim(cue1pos, cue2lag, noisePercent/100.,staircaseTrialN)
         numCasesInterframeLong = timingCheckAndLog(ts,staircaseTrialN)
         
         expStop,passThisTrial,responses,responsesAutopilot = \
