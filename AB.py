@@ -300,7 +300,7 @@ possibleCue1positions =  np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E
 possibleCue2lags = np.array([1,2,5,8,10]) 
 for cue1pos in possibleCue1positions:
    for cue2lag in possibleCue2lags:
-        stimListAB.append( {'numStream':1, 'cue1pos':cue1pos, 'cue2lag':cue2lag } )
+        stimListAB.append( {'numStreams':1, 'cue1pos':cue1pos, 'cue2lag':cue2lag } )
 #Martini E2 and also AB experiments used 400 trials total, with breaks between every 100 trials
 
 #For the dual-stream simultaneous target
@@ -312,11 +312,11 @@ for cuePos in possibleCuePositions:
 trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerCondition) #constant stimuli method
 
-trialsForPossibleStaircase = data.TrialHandler(stimList,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
+trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
 numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
 numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
 
-logging.info( 'numtrials=' + str(trials.nTotal) + ' and each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
+logging.info( 'numtrials=' + str(trialsAB.nTotal) + 'AB, ' + str(trialsDualStream.nTotal) + ' dual stream and each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' + '  task=' + task)
 
 def numberToLetter(number): #0 = A, 25 = Z
@@ -360,7 +360,7 @@ for i in range(numRespsWanted):
 print('timingBlips',file=dataFile)
 #end of header
 
-def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
+def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                         numStreams,ltrsDrawObjectsStream1,ltrsDrawObjectsStream2,
                                         noise,proportnNoise,allFieldCoords,numNoiseDots ): 
 #defining a function to draw each frame of stim. So can call second time for tracking task response phase
@@ -371,6 +371,7 @@ def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes
   showLetter = frameOfThisLetter < letterDurFrames #if true, it's not time for the blank ISI.  it's still time to draw the letter
   #print 'n=',n,' SOAframes=',SOAframes, ' letterDurFrames=', letterDurFrames, ' (n % SOAframes) =', (n % SOAframes)  #DEBUGOFF
   thisLetterIdx = letterSeqStream1[letterN] #which letter, from A to Z (1 to 26), should be shown?
+  thisLetterIdx2 = letterSeqStream2[letterN] #which letter, from A to Z (1 to 26), should be shown?
   #so that any timing problems occur just as often for every frame, always draw the letter and the cue, but simply draw it in the bgColor when it's not meant to be on
   cue.setLineColor( bgColor )
   for cueFrame in cueFrames: #check whether it's time for any cue
@@ -383,8 +384,8 @@ def  oneFrameOfStim( n,cue,letterSequence,cueDurFrames,letterDurFrames,ISIframes
   ltrsDrawObjectsStream1[thisLetterIdx].draw()
   if numStreams==2:
       if showLetter:
-         ltrsDrawObjectsStream2[thisLetterIdx].setColor( letterColor )
-      else: ltrsDrawObjectsStream2[thisLetterIdx].setColor( bgColor )
+         ltrsDrawObjectsStream2[thisLetterIdx2].setColor( letterColor )
+      else: ltrsDrawObjectsStream2[thisLetterIdx2].setColor( bgColor )
       ltrsDrawObjectsStream2[thisLetterIdx].draw()
   
   cue.draw()
@@ -482,8 +483,11 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
         cuesPos.append(cue1pos+cue2lag)
     cuesPos = np.array(cuesPos)
     letterSeqStream1 = np.arange(0,26)
+    letterSeqStream2 = np.arange(0,26)
     np.random.shuffle(letterSeqStream1)
+    np.random.shuffle(letterSeqStream2)
     correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
+    correctAnsStream2 = np.array( letterSeqStream2[cuesPos] )
     noise = None; allFieldCoords=None; numNoiseDots=0
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
         (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)
@@ -511,7 +515,7 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     t0 = trialClock.getTime()
 
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
-        worked = oneFrameOfStim( n,cue,letterSeqStream1,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
+        worked = oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                                      numStreams,ltrsDrawObjectsStream1, ltrsDrawObjectsStream2,
                                                      noise,proportnNoise,allFieldCoords,numNoiseDots) #draw letter and possibly cue and noise on top
         if exportImages:
@@ -530,7 +534,7 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     postCueNumBlobsAway=-999 #doesn't apply to non-tracking and click tracking task
     return letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2, ts  
     
-def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,letterSequence,cuesPos,correctAnswers):
+def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numStreams,letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2):
     #Handle response, calculate whether correct, ########################################
     if autopilot or passThisTrial:
         responses = responsesAutopilot
@@ -539,10 +543,14 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,lette
     eachApproxCorrect = np.zeros( len(correctAnswers) )
     posOfResponse = np.zeros( len(cuesPos) )
     responsePosRelative = np.zeros( len(cuesPos) )
+    thisLetterSeq = letterSeqStream1
     for i in range(len(cuesPos)): #score response to each cue
+        if numStreams>1:
+            if i>0:
+                thisLetterSeq = letterSeqStream2
         if correctAnswers[i] == letterToNumber( responses[i] ):
             eachCorrect[i] = 1
-        posThisResponse= np.where( letterToNumber(responses[i])==letterSequence )
+        posThisResponse= np.where( letterToNumber(responses[i])==thisLetterSeq )
         #print 'responses=',responses,'posThisResponse raw=',posThisResponse, ' letterSequence=',letterSequence #debugOFF
         posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the reponse was found in the letter sequence
         if len(posThisResponse) > 1:
@@ -559,7 +567,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,lette
     for i in range(len(cuesPos)): #print response stuff to dataFile
         #header was answerPos0, answer0, response0, correct0, responsePosRelative0
         print(cuesPos[i],'\t', end='', file=dataFile)
-        answerCharacter = numberToLetter( letterSequence [cuesPos[i] ] )
+        answerCharacter = numberToLetter( thisLetterSeq[cuesPos[i] ] )
         print(answerCharacter, '\t', end='', file=dataFile) #answer0
         print(responses[i], '\t', end='', file=dataFile) #response0
         print(eachCorrect[i] , '\t', end='',file=dataFile)   #correct0
@@ -705,13 +713,13 @@ if doStaircase:
     pylab.show() #must call this to actually show plot
 else: #not staircase
     noisePercent = defaultNoiseLevel
-    phasesMsg = 'Experiment will have '+str(trials.nTotal)+' trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
+    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal)+ 'AB ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
     print(phasesMsg); logging.info(phasesMsg)
     
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
     nDoneMain =0
     trials= trialsAB
-    while nDoneMain < trials.nTotal and expStop==False:
+    while nDoneMain < trialsAB.nTotal and trialsDualStream.nTotal and expStop==False:
         if nDoneMain==0:
             msg='Starting main (non-staircase) part of experiment'
             logging.info(msg); print(msg)
@@ -720,7 +728,8 @@ else: #not staircase
         cue2lag = None
         if task=="T1T2":
             cue2lag = thisTrial['cue2lag']
-        letterSequence,cuesPos,correctAnswers,ts  = do_RSVP_stim(cue1pos, cue2lag, noisePercent/100.,nDoneMain)
+        numStreams = thisTrial['numStreams']
+        letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2,ts  = do_RSVP_stim(numStreams,cue1pos, cue2lag, noisePercent/100.,nDoneMain)
         numCasesInterframeLong = timingCheckAndLog(ts,nDoneMain)
         
         responseDebug=False; responses = list(); responsesAutopilot = list();
@@ -734,7 +743,7 @@ else: #not staircase
             print(nDoneMain,'\t', end='', file=dataFile)
             print(subject,'\t',task,'\t', round(noisePercent,3),'\t', end='', file=dataFile)
             correct,eachCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = (
-                    handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,letterSequence,cuesPos,correctAnswers) )
+                    handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numStreams,letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2) )
             print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
         
             numTrialsCorrect += correct #so count -1 as 0
