@@ -539,8 +539,11 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
     if autopilot or passThisTrial:
         responses = responsesAutopilot
     
-    eachCorrect = np.zeros( len(correctAnswers) )
-    eachApproxCorrect = np.zeros( len(correctAnswers) )
+    correctAnswers = correctAnsStream1
+    if numStreams>1:
+        correctAnswers = np.concatenate((correctAnsStream1, correctAnsStream2))
+    eachCorrect = np.zeros( len(correctAnsStream1) + (numStreams-1)*len(correctAnsStream2) )
+    eachApproxCorrect = np.zeros( len(correctAnsStream1) + (numStreams-1)*len(correctAnsStream2) )
     posOfResponse = np.zeros( len(cuesPos) )
     responsePosRelative = np.zeros( len(cuesPos) )
     thisLetterSeq = letterSeqStream1
