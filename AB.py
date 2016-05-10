@@ -36,7 +36,7 @@ else:
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
-feedback=False
+feedback=True
 autoLogging=False
 if demo:
     refreshRate = 60.;  #100
@@ -162,7 +162,7 @@ else: #checkRefreshEtc
 myWin.close() #have to close window to show dialog box
 
 defaultNoiseLevel = 0.0 #to use if no staircase, can be set by user
-trialsPerCondition = 4 #default value
+trialsPerCondition = 1 #4 #default value
 dlgLabelsOrdered = list()
 if doStaircase:
     myDlg = gui.Dlg(title="Staircase to find appropriate noisePercent", pos=(200,400))
@@ -296,8 +296,8 @@ screenshot= False; screenshotDone = False
 #SETTING THE CONDITIONS
 #For the attentional blink
 stimListAB = []
-possibleCue1positions =  np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E2, group 2
-possibleCue2lags = np.array([1,2,5,8,10])
+possibleCue1positions =  np.array([6]) # np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E2, group 2
+possibleCue2lags = np.array([1,2]) # np.array([1,2,5,8,10])
 for cue1pos in possibleCue1positions:
    for cue2lag in possibleCue2lags:
         stimListAB.append( {'numStreams':1, 'cue1pos':cue1pos, 'cue2lag':cue2lag } )
@@ -310,7 +310,7 @@ for cuePos in possibleCuePositions:
         stimListDualStream.append( {'numStreams':2, 'cue1pos':cue1pos, 'cue2lag':0 } )  #cue2lag = 0, meaning simultaneous targets
 
 trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
-trialsPerConditionDualStream = trialsAB.nTotal / len(stimListDualStream)
+trialsPerConditionDualStream = max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
@@ -374,7 +374,6 @@ def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letter
   #print 'n=',n,' SOAframes=',SOAframes, ' letterDurFrames=', letterDurFrames, ' (n % SOAframes) =', (n % SOAframes)  #DEBUGOFF
   thisLetterIdx = letterSeqStream1[letterN] #which letter, from A to Z (1 to 26), should be shown?
   thisLetterIdx2 = letterSeqStream2[letterN] #which letter, from A to Z (1 to 26), should be shown?
-  print("thisLetterIdx=",thisLetterIdx, " thisLetterIdx2=",thisLetterIdx2)
   #so that any timing problems occur just as often for every frame, always draw the letter and the cue, but simply draw it in the bgColor when it's not meant to be on
   cue.setLineColor( bgColor )
   for cueFrame in cueFrames: #check whether it's time for any cue
@@ -384,11 +383,12 @@ def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letter
   if showLetter:
      ltrsDrawObjectsStream1[thisLetterIdx].setColor( letterColor )
   else: ltrsDrawObjectsStream1[thisLetterIdx].setColor( bgColor )
+  if numStreams==1:
+    ltrsDrawObjectsStream1[thisLetterIdx].pos = (0,0)
+  else: ltrsDrawObjectsStream1[thisLetterIdx].pos = (-2,0)
   ltrsDrawObjectsStream1[thisLetterIdx].draw()
   if numStreams==2:
       if showLetter:
-         print("trying to draw second stream")
-         #ltrsDrawObjectsStream2[thisLetterIdx2].setColor( letterColor )
          ltrsDrawObjectsStream2[thisLetterIdx2].setColor( letterColor )
       else: ltrsDrawObjectsStream2[thisLetterIdx2].setColor( bgColor )
 
@@ -424,7 +424,7 @@ ltrHeight = 2.5 #Martini letters were 2.5deg high
 ltrsDrawObjectsStream1 = list()
 ltrsDrawObjectsStream2 = list()
 for i in range(0,26):
-       letterStream1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+       letterStream1 = visual.TextStim(myWin,pos=(-2,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
        letterStream2 = visual.TextStim(myWin,pos=(2,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
        letterStream1.setHeight( ltrHeight ); letterStream2.setHeight( ltrHeight )
        letter = numberToLetter(i)
@@ -494,11 +494,14 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     letterSeqStream2 = np.arange(0,26)
     np.random.shuffle(letterSeqStream1)
     np.random.shuffle(letterSeqStream2)
-    print("letterSeqStream1=",letterSeqStream1)
-    print("letterSeqStream2=",letterSeqStream2)
-    #letterSeqStream2 = letterSeqStream1 #temp
-    correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
-    correctAnsStream2 = np.array( letterSeqStream2[cuesPos] )
+    if numStreams ==1:
+        correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
+        correctAnsStream2 = np.array([]) #because there is no stream 2
+    if numStreams ==2:
+        correctAnsStream1 = np.array( letterSeqStream1[cuesPos[0]] )
+        correctAnsStream2 = np.array( letterSeqStream2[cuesPos[1]] )
+    #print("corrrectAnsStream1=",correctAnsStream1, " or ", numberToLetter(correctAnsStream1), " correctAnsStream2=",correctAnsStream2, " or ", numberToLetter(correctAnsStream2) ) #debugOFF
+
     noise = None; allFieldCoords=None; numNoiseDots=0
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
         (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)
@@ -526,6 +529,8 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     t0 = trialClock.getTime()
 
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
+        if numStreams==2:
+            fixationPoint.draw()
         worked = oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                                      numStreams,ltrsDrawObjectsStream1, ltrsDrawObjectsStream2,
                                                      noise,proportnNoise,allFieldCoords,numNoiseDots) #draw letter and possibly cue and noise on top
@@ -549,24 +554,27 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
     #Handle response, calculate whether correct, ########################################
     if autopilot or passThisTrial:
         responses = responsesAutopilot
-    
+    #print("corrrectAnsStream1=",correctAnsStream1, " or ", numberToLetter(correctAnsStream1), " correctAnsStream2=",correctAnsStream2, " or ", numberToLetter(correctAnsStream2) ) #debugOFF
     correctAnswers = correctAnsStream1
     if numStreams>1:
-        correctAnswers = np.concatenate((correctAnsStream1, correctAnsStream2))
-    eachCorrect = np.zeros( len(correctAnsStream1) + (numStreams-1)*len(correctAnsStream2) )
-    eachApproxCorrect = np.zeros( len(correctAnsStream1) + (numStreams-1)*len(correctAnsStream2) )
+        if correctAnsStream1.size == 1: #you are not allowed to concatenate arrays of length 1
+            correctAnswers = np.array([correctAnsStream1, correctAnsStream2])
+        else:
+            correctAnswers = np.concatenate((correctAnsStream1, correctAnsStream2))
+    eachCorrect = np.zeros( len(np.atleast_1d(correctAnsStream1)) + (numStreams-1)*len(np.atleast_1d(correctAnsStream2)) )
+    eachApproxCorrect = np.zeros( len(np.atleast_1d(correctAnsStream1)) + (numStreams-1)*len(np.atleast_1d(correctAnsStream2)) )
     posOfResponse = np.zeros( len(cuesPos) )
     responsePosRelative = np.zeros( len(cuesPos) )
     thisLetterSeq = letterSeqStream1
-    for i in range(len(cuesPos)): #score response to each cue
+    for cueI in range(len(cuesPos)): #score response to each cue
         if numStreams>1:
-            if i>0:
+            if cueI>0:
                 thisLetterSeq = letterSeqStream2
-        if correctAnswers[i] == letterToNumber( responses[i] ):
-            eachCorrect[i] = 1
-        posThisResponse= np.where( letterToNumber(responses[i])==thisLetterSeq )
-        #print 'responses=',responses,'posThisResponse raw=',posThisResponse, ' letterSequence=',letterSequence #debugOFF
-        posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the reponse was found in the letter sequence
+        if correctAnswers[cueI] == letterToNumber( responses[cueI] ):
+            eachCorrect[cueI] = 1
+        posThisResponse= np.where( letterToNumber(responses[cueI])==thisLetterSeq )
+        #print('responses=',responses,'posThisResponse raw=',posThisResponse, ' letterSeqStream1=',letterSeqStream1,' letterSeqStream2=',letterSeqStream2) #debugOFF
+        posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the response was found in the letter sequence
         if len(posThisResponse) > 1:
             logging.error('Expected response to have occurred in only one position in stream')
         if np.alen(posThisResponse)==0: #response not found in letter sequence
@@ -574,18 +582,19 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
             logging.warn('Response was not present in the stimulus stream')
         else: 
             posThisResponse = posThisResponse[0]
-        posOfResponse[i]= posThisResponse
-        responsePosRelative[i] = posOfResponse[i] - cuesPos[i]
-        eachApproxCorrect[i] +=   abs(responsePosRelative[i]) <= 3 #Vul efficacy measure of getting it right to within plus/minus 
+        posOfResponse[cueI]= posThisResponse
+        responsePosRelative[cueI] = posOfResponse[cueI] - cuesPos[cueI]
+        eachApproxCorrect[cueI] +=   abs(responsePosRelative[cueI]) <= 3 #Vul efficacy measure of getting it right to within plus/minus 
 
-    for i in range(len(cuesPos)): #print response stuff to dataFile
+    #print("eachCorrect=",eachCorrect) #debugOFF
+    for cueI in range(len(cuesPos)): #print response stuff to dataFile
         #header was answerPos0, answer0, response0, correct0, responsePosRelative0
-        print(cuesPos[i],'\t', end='', file=dataFile)
-        answerCharacter = numberToLetter( thisLetterSeq[cuesPos[i] ] )
+        print(cuesPos[cueI],'\t', end='', file=dataFile)
+        answerCharacter = numberToLetter( thisLetterSeq[cuesPos[cueI] ] )
         print(answerCharacter, '\t', end='', file=dataFile) #answer0
-        print(responses[i], '\t', end='', file=dataFile) #response0
-        print(eachCorrect[i] , '\t', end='',file=dataFile)   #correct0
-        print(responsePosRelative[i], '\t', end='',file=dataFile) #responsePosRelative0
+        print(responses[cueI], '\t', end='', file=dataFile) #response0
+        print(eachCorrect[cueI] , '\t', end='',file=dataFile)   #correct0
+        print(responsePosRelative[cueI], '\t', end='',file=dataFile) #responsePosRelative0
 
         correct = eachCorrect.all() 
         T1approxCorrect = eachApproxCorrect[0]
@@ -733,26 +742,30 @@ else: #not staircase
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
     ABfirst = False
     nDone =0
-    while nDone < (trialsAB.nTotal + trialsDualStream.nTotal) and expStop==False:
+    while nDone < (trialsAB.nTotal + trialsDualStream.nTotal-1) and expStop==False:
         print("nDone = ", nDone)
-        if nDone==0 and ABfirst:
-            msg='Starting AB part of experiment'
-            trials = trialsAB
-            logging.info(msg); print(msg)
-        else:
-            msg = "Starting dual stream part of experiment"
-            trials = trialsDualStream
-            logging.info(msg); print(msg)
+        #Control which block we are in, AB or dualStream
+        if nDone==0:
+            if ABfirst:
+                msg='Starting AB part of experiment'
+                trials = trialsAB
+                logging.info(msg); print(msg)
+            else:
+                msg = "Starting dual stream part of experiment"
+                trials = trialsDualStream
+                logging.info(msg); print(msg)
         if trials == trialsAB:  #check if resached end of the AB part
-            if nDone == trialsAB.nTotal-1:
+            if nDone == trialsAB.nTotal:
                 trials = trialsDualStream
                 msg = "Starting dual stream part of experiment"
                 logging.info(msg); print(msg)
         if trials == trialsDualStream:
-            if nDone == trialsDualStream.nTotal-1:
+            if nDone == trialsDualStream.nTotal:
                 trials = trialsAB
                 msg='Starting AB part of experiment'
                 logging.info(msg); print(msg)
+        #end control of which block we are in 
+        
         thisTrial = trials.next() #get a proper (non-staircase) trial
         cue1pos = thisTrial['cue1pos']
         cue2lag = None
@@ -781,10 +794,11 @@ else: #not staircase
             numTrialsEachCorrect += eachCorrect
             numTrialsEachApproxCorrect += eachApproxCorrect
             if task=="T1T2":
-                cue2lagIdx = list(possibleCue2lags).index(cue2lag)
-                nTrialsCorrectT2eachLag[cue2lagIdx] += eachCorrect[1]
-                nTrialsApproxCorrectT2eachLag[cue2lagIdx] += eachApproxCorrect[1]
-                nTrialsEachLag[cue2lagIdx] += 1
+                if numStreams==1:
+                    cue2lagIdx = list(possibleCue2lags).index(cue2lag)
+                    nTrialsCorrectT2eachLag[cue2lagIdx] += eachCorrect[1]
+                    nTrialsApproxCorrectT2eachLag[cue2lagIdx] += eachApproxCorrect[1]
+                    nTrialsEachLag[cue2lagIdx] += 1
                 
             if exportImages:  #catches one frame of response
                  myWin.getMovieFrame() #I cant explain why another getMovieFrame, and core.wait is needed
