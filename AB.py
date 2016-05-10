@@ -162,7 +162,7 @@ else: #checkRefreshEtc
 myWin.close() #have to close window to show dialog box
 
 defaultNoiseLevel = 0.0 #to use if no staircase, can be set by user
-trialsPerCondition = 8 #default value
+trialsPerCondition = 4 #default value
 dlgLabelsOrdered = list()
 if doStaircase:
     myDlg = gui.Dlg(title="Staircase to find appropriate noisePercent", pos=(200,400))
@@ -297,7 +297,7 @@ screenshot= False; screenshotDone = False
 #For the attentional blink
 stimListAB = []
 possibleCue1positions =  np.array([6,7,8,9,10]) # [4,10,16,22] used in Martini E2, group 2
-possibleCue2lags = np.array([1,2,5,8,10]) 
+possibleCue2lags = np.array([1,2,5,8,10])
 for cue1pos in possibleCue1positions:
    for cue2lag in possibleCue2lags:
         stimListAB.append( {'numStreams':1, 'cue1pos':cue1pos, 'cue2lag':cue2lag } )
@@ -310,7 +310,8 @@ for cuePos in possibleCuePositions:
         stimListDualStream.append( {'numStreams':2, 'cue1pos':cue1pos, 'cue2lag':0 } )  #cue2lag = 0, meaning simultaneous targets
 
 trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
-trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerCondition) #constant stimuli method
+trialsPerConditionDualStream = trialsAB.nTotal / len(stimListDualStream)
+trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
 numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
@@ -363,7 +364,8 @@ print('timingBlips',file=dataFile)
 def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                         numStreams,ltrsDrawObjectsStream1,ltrsDrawObjectsStream2,
                                         noise,proportnNoise,allFieldCoords,numNoiseDots ): 
-#defining a function to draw each frame of stim. So can call second time for tracking task response phase
+#defining a function to draw each frame of stim. 
+
   SOAframes = letterDurFrames+ISIframes
   cueFrames = cuesPos*SOAframes  #cuesPos is global variable
   letterN = int( np.floor(n/SOAframes) )
@@ -372,6 +374,7 @@ def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letter
   #print 'n=',n,' SOAframes=',SOAframes, ' letterDurFrames=', letterDurFrames, ' (n % SOAframes) =', (n % SOAframes)  #DEBUGOFF
   thisLetterIdx = letterSeqStream1[letterN] #which letter, from A to Z (1 to 26), should be shown?
   thisLetterIdx2 = letterSeqStream2[letterN] #which letter, from A to Z (1 to 26), should be shown?
+  print("thisLetterIdx=",thisLetterIdx, " thisLetterIdx2=",thisLetterIdx2)
   #so that any timing problems occur just as often for every frame, always draw the letter and the cue, but simply draw it in the bgColor when it's not meant to be on
   cue.setLineColor( bgColor )
   for cueFrame in cueFrames: #check whether it's time for any cue
@@ -384,9 +387,12 @@ def  oneFrameOfStim( n,cue,letterSeqStream1,letterSeqStream2,cueDurFrames,letter
   ltrsDrawObjectsStream1[thisLetterIdx].draw()
   if numStreams==2:
       if showLetter:
+         print("trying to draw second stream")
+         #ltrsDrawObjectsStream2[thisLetterIdx2].setColor( letterColor )
          ltrsDrawObjectsStream2[thisLetterIdx2].setColor( letterColor )
       else: ltrsDrawObjectsStream2[thisLetterIdx2].setColor( bgColor )
-      ltrsDrawObjectsStream2[thisLetterIdx].draw()
+
+      ltrsDrawObjectsStream2[thisLetterIdx2].draw()
   
   cue.draw()
   refreshNoise = False #Not recommended because takes longer than a frame, even to shuffle apparently. Or may be setXYs step
@@ -418,14 +424,15 @@ ltrHeight = 2.5 #Martini letters were 2.5deg high
 ltrsDrawObjectsStream1 = list()
 ltrsDrawObjectsStream2 = list()
 for i in range(0,26):
-       letterDraw = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-       letterDraw.setHeight( ltrHeight )
+       letterStream1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+       letterStream2 = visual.TextStim(myWin,pos=(2,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+       letterStream1.setHeight( ltrHeight ); letterStream2.setHeight( ltrHeight )
        letter = numberToLetter(i)
-       letterDraw.setText(letter,log=False)
-       letterDraw.setColor(bgColor)
-       ltrsDrawObjectsStream1.append(letterDraw)
-       ltrsDrawObjectsStream2.append(letterDraw)
-
+       letterStream1.setText(letter,log=False); letterStream2.setText(letter,log=False)
+       letterStream1.setColor(bgColor); letterStream2.setColor(bgColor)
+       ltrsDrawObjectsStream1.append(letterStream1)
+       ltrsDrawObjectsStream2.append(letterStream2)
+       
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *1.0
 noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
@@ -477,6 +484,7 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     #relies on global variables:
     #   logging, bgColor
     #
+    print("numStreams = ",numStreams)
     cuesPos = [] #will contain the positions of all the cues (targets)
     cuesPos.append(cue1pos)
     if task=='T1T2':
@@ -486,6 +494,9 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     letterSeqStream2 = np.arange(0,26)
     np.random.shuffle(letterSeqStream1)
     np.random.shuffle(letterSeqStream2)
+    print("letterSeqStream1=",letterSeqStream1)
+    print("letterSeqStream2=",letterSeqStream2)
+    #letterSeqStream2 = letterSeqStream1 #temp
     correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
     correctAnsStream2 = np.array( letterSeqStream2[cuesPos] )
     noise = None; allFieldCoords=None; numNoiseDots=0
@@ -596,7 +607,7 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
         low.play()
 
 expStop=False; framesSaved=0
-nDoneMain = -1 #change to zero once start main part of experiment
+nDone = -1 #change to zero once start main part of experiment
 if doStaircase:
     #create the staircase handler
     useQuest = True
@@ -716,24 +727,40 @@ if doStaircase:
     pylab.show() #must call this to actually show plot
 else: #not staircase
     noisePercent = defaultNoiseLevel
-    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal)+ 'AB ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
+    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal)+ ' AB and ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
     print(phasesMsg); logging.info(phasesMsg)
     
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
-    nDoneMain =0
-    trials= trialsAB
-    while nDoneMain < trialsAB.nTotal and trialsDualStream.nTotal and expStop==False:
-        if nDoneMain==0:
-            msg='Starting main (non-staircase) part of experiment'
+    ABfirst = False
+    nDone =0
+    while nDone < (trialsAB.nTotal + trialsDualStream.nTotal) and expStop==False:
+        print("nDone = ", nDone)
+        if nDone==0 and ABfirst:
+            msg='Starting AB part of experiment'
+            trials = trialsAB
             logging.info(msg); print(msg)
+        else:
+            msg = "Starting dual stream part of experiment"
+            trials = trialsDualStream
+            logging.info(msg); print(msg)
+        if trials == trialsAB:  #check if resached end of the AB part
+            if nDone == trialsAB.nTotal-1:
+                trials = trialsDualStream
+                msg = "Starting dual stream part of experiment"
+                logging.info(msg); print(msg)
+        if trials == trialsDualStream:
+            if nDone == trialsDualStream.nTotal-1:
+                trials = trialsAB
+                msg='Starting AB part of experiment'
+                logging.info(msg); print(msg)
         thisTrial = trials.next() #get a proper (non-staircase) trial
         cue1pos = thisTrial['cue1pos']
         cue2lag = None
         if task=="T1T2":
             cue2lag = thisTrial['cue2lag']
         numStreams = thisTrial['numStreams']
-        letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2,ts  = do_RSVP_stim(numStreams,cue1pos, cue2lag, noisePercent/100.,nDoneMain)
-        numCasesInterframeLong = timingCheckAndLog(ts,nDoneMain)
+        letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2,ts  = do_RSVP_stim(numStreams,cue1pos, cue2lag, noisePercent/100.,nDone)
+        numCasesInterframeLong = timingCheckAndLog(ts,nDone)
         
         responseDebug=False; responses = list(); responsesAutopilot = list();
         expStop,passThisTrial,responses,responsesAutopilot = \
@@ -743,7 +770,7 @@ else: #not staircase
         print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
         if not expStop:
             print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
-            print(nDoneMain,'\t', end='', file=dataFile)
+            print(nDone,'\t', end='', file=dataFile)
             print(subject,'\t',task,'\t', round(noisePercent,3),'\t', end='', file=dataFile)
             correct,eachCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = (
                     handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numStreams,letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2) )
@@ -766,15 +793,15 @@ else: #not staircase
                  expStop=True
             core.wait(.1)
             if feedback: play_high_tone_correct_low_incorrect(correct, passThisTrial=False)
-            nDoneMain+=1
+            nDone+=1
             
             dataFile.flush(); logging.flush()
-            print('nDoneMain=', nDoneMain,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
-            if (trials.nTotal > 6 and nDoneMain > 2 and nDoneMain %
+            print('nDone=', nDone,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
+            if (trials.nTotal > 6 and nDone > 2 and nDone %
                  ( trials.nTotal*pctCompletedBreak/100. ) ==1):  #dont modulus 0 because then will do it for last trial
                     nextText.setText('Press "SPACE" to continue!')
                     nextText.draw()
-                    progressMsg = 'Completed ' + str(nDoneMain) + ' of ' + str(trials.nTotal) + ' trials'
+                    progressMsg = 'Completed ' + str(nDone) + ' of ' + str(trials.nTotal) + ' trials'
                     NextRemindCountText.setText(progressMsg)
                     NextRemindCountText.draw()
                     myWin.flip() # myWin.flip(clearBuffer=True) 
@@ -794,18 +821,18 @@ timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
 msg = 'Finishing at '+timeAndDateStr
 print(msg); logging.info(msg)
 if expStop:
-    msg = 'user aborted experiment on keypress with trials done=' + str(nDoneMain) + ' of ' + str(trials.nTotal+1)
+    msg = 'user aborted experiment on keypress with trials done=' + str(nDone) + ' of ' + str(trials.nTotal+1)
     print(msg); logging.error(msg)
 
-if not doStaircase and (nDoneMain >0):
-    print('Of ',nDoneMain,' trials, on ',numTrialsCorrect*1.0/nDoneMain*100., '% of all trials all targets reported exactly correct',sep='')
-    print('All targets approximately correct in ',round(numTrialsApproxCorrect*1.0/nDoneMain*100,1),'% of trials',sep='')
-    print('T1: ',round(numTrialsEachCorrect[0]*1.0/nDoneMain*100.,2), '% correct',sep='')
+if (nDone >0):
+    print('Of ',nDone,' trials, on ',numTrialsCorrect*1.0/nDone*100., '% of all trials all targets reported exactly correct',sep='')
+    print('All targets approximately correct in ',round(numTrialsApproxCorrect*1.0/nDone*100,1),'% of trials',sep='')
+    print('T1: ',round(numTrialsEachCorrect[0]*1.0/nDone*100.,2), '% correct',sep='')
     if len(numTrialsEachCorrect) >1:
-        print('T2: ',round(numTrialsEachCorrect[1]*1.0/nDoneMain*100,2),'% correct',sep='')
-    print('T1: ',round(numTrialsEachApproxCorrect[0]*1.0/nDoneMain*100,2),'% approximately correct',sep='')
+        print('T2: ',round(numTrialsEachCorrect[1]*1.0/nDone*100,2),'% correct',sep='')
+    print('T1: ',round(numTrialsEachApproxCorrect[0]*1.0/nDone*100,2),'% approximately correct',sep='')
     if len(numTrialsEachCorrect) >1:
-        print('T2: ',round(numTrialsEachApproxCorrect[1]*1.0/nDoneMain*100,2),'% approximately correct',sep='')
+        print('T2: ',round(numTrialsEachApproxCorrect[1]*1.0/nDone*100,2),'% approximately correct',sep='')
         print('T2 for each of the lags,',np.around(possibleCue2lags,0),': ', np.around(100*nTrialsCorrectT2eachLag / nTrialsEachLag,3), '%correct, and ',
                  np.around(100*nTrialsApproxCorrectT2eachLag/nTrialsEachLag,3),'%approximately correct')
    #print numRightWrongEachSpeedOrder[:,1] / ( numRightWrongEachSpeedOrder[:,0] + numRightWrongEachSpeedOrder[:,1])   
