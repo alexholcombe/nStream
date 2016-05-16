@@ -745,26 +745,27 @@ else: #not staircase
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
     ABfirst = False
     nDone =0
+    if ABfirst:
+        msg='Starting AB part of experiment'
+        trials = trialsAB
+        logging.info(msg); print(msg)
+    else:
+        msg = "Starting dual stream part of experiment"
+        trials = trialsDualStream
+        logging.info(msg); print(msg)
+                
     totalTrials = trialsAB.nTotal + trialsDualStream.nTotal
+    
     while nDone < totalTrials and expStop==False:
-        print("nDone = ", nDone, " out of ", totalTrials)
+        print("nDone = ", nDone, " out of ", totalTrials, " trials.nRemaining = ", trials.nRemaining)
+
         #Control which block we are in, AB or dualStream
-        if nDone==0:
-            if ABfirst:
-                msg='Starting AB part of experiment'
-                trials = trialsAB
-                logging.info(msg); print(msg)
-            else:
-                msg = "Starting dual stream part of experiment"
-                trials = trialsDualStream
-                logging.info(msg); print(msg)
-        if trials == trialsAB:  #check if reached end of the AB part
-            if trials.nRemaining == 0:  # trialsAB.nTotal:
+        if trials.nRemaining == 0:  # trialsAB.nTotal:
+            if trials == trialsAB:  #check if reached end of the AB part
                 trials = trialsDualStream
                 msg = "Starting dual stream part of experiment"
                 logging.info(msg); print(msg)
-        if trials == trialsDualStream:
-            if nDone == trialsDualStream.nTotal:
+            elif trials == trialsDualStream: #check if reached end of dual stream part
                 trials = trialsAB
                 msg='Starting AB part of experiment'
                 logging.info(msg); print(msg)
