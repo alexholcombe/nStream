@@ -494,6 +494,9 @@ def do_RSVP_stim(numStreams, cue1pos, cue2lag, proportnNoise,trialN):
     letterSeqStream2 = np.arange(0,26)
     np.random.shuffle(letterSeqStream1)
     np.random.shuffle(letterSeqStream2)
+    while (letterSeqStream1==letterSeqStream2).any():
+        np.random.shuffle(letterSeqStream2)
+    
     if numStreams ==1:
         correctAnsStream1 = np.array( letterSeqStream1[cuesPos] )
         correctAnsStream2 = np.array([]) #because there is no stream 2
@@ -742,8 +745,9 @@ else: #not staircase
     #myWin= openMyStimWindow();    myWin.flip(); myWin.flip();myWin.flip();myWin.flip()
     ABfirst = False
     nDone =0
-    while nDone < (trialsAB.nTotal + trialsDualStream.nTotal-1) and expStop==False:
-        print("nDone = ", nDone)
+    totalTrials = trialsAB.nTotal + trialsDualStream.nTotal
+    while nDone < totalTrials and expStop==False:
+        print("nDone = ", nDone, " out of ", totalTrials)
         #Control which block we are in, AB or dualStream
         if nDone==0:
             if ABfirst:
@@ -754,8 +758,8 @@ else: #not staircase
                 msg = "Starting dual stream part of experiment"
                 trials = trialsDualStream
                 logging.info(msg); print(msg)
-        if trials == trialsAB:  #check if resached end of the AB part
-            if nDone == trialsAB.nTotal:
+        if trials == trialsAB:  #check if reached end of the AB part
+            if trials.nRemaining == 0:  # trialsAB.nTotal:
                 trials = trialsDualStream
                 msg = "Starting dual stream part of experiment"
                 logging.info(msg); print(msg)
