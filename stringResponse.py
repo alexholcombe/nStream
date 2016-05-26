@@ -31,9 +31,6 @@ def collectStringResponse(numCharsWanted,respPromptStim,respStim,acceptTextStim,
     while not expStop and (numResponses < numCharsWanted or not accepted):
     # (numResponses < numCharsWanted and not expStop) or not accepted:
     #while (numResponses < numCharsWanted and not expStop) or not accepted:
-        print 'numResponses=', numResponses #debugOFF
-        print 'expStop=',expStop
-        print 'accepted=',accepted
         noResponseYet = True
         thisResponse=''
         while noResponseYet: #loop until a valid key is hit
