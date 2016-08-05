@@ -90,7 +90,66 @@ def printStaircase(s, descendingPsycho=False, briefTrialUpdate=False, printInter
         if alsoLog:     logging.info(msg)
         # staircase.calculateNextIntensity() sounds like something useful to get a preview of the next trial. Instead, seems to be 
         #the internal function used to advance to the next trial.
+
+def cartesian(arrays, out=None):    #http://stackoverflow.com/questions/28684492/numpy-equivalent-of-itertools-product
+    """
+    Generate a cartesian product of input arrays.
+
+    Parameters
+    ----------
+    arrays : list of array-like
+        1-D arrays to form the cartesian product of.
+    out : ndarray
+        Array to place the cartesian product in.
+
+    Returns
+    -------
+    out : ndarray
+        2-D array of shape (M, len(arrays)) containing cartesian products
+        formed of input arrays.
+
+    Examples
+    --------
+    >>> cartesian(([1, 2, 3], [4, 5], [6, 7]))
+    array([[1, 4, 6],
+           [1, 4, 7],
+           [1, 5, 6],
+           [1, 5, 7],
+           [2, 4, 6],
+           [2, 4, 7],
+           [2, 5, 6],
+           [2, 5, 7],
+           [3, 4, 6],
+           [3, 4, 7],
+           [3, 5, 6],
+           [3, 5, 7]])
+
+    """
+
+    arrays = [np.asarray(x) for x in arrays]
+    dtype = arrays[0].dtype
+
+    n = np.prod([x.size for x in arrays])
+    if out is None:
+        out = np.zeros([n, len(arrays)], dtype=dtype)
+
+    m = n / arrays[0].size
+    out[:,0] = np.repeat(arrays[0], m)
+    if arrays[1:]:
+        cartesian(arrays[1:], out=out[0:m,1:])
+        for j in xrange(1, arrays[0].size):
+            out[j*m:(j+1)*m,1:] = out[0:m,1:]
+    return out
     
+def expandGridNumpy(arrays):
+    product = cartesian(arrays)
+    print(product)
+    return (product)
+    
+def expandgrid(*itrs):
+       product = list(itertools.product(*itrs))
+       return product
+       
 def createNoise(proportnNoise,win,fieldWidthPix,noiseColor): 
     #noiseColor, assumes that colorSpace='rgb', triple between -1 and 1
     numDots = int(proportnNoise*fieldWidthPix*fieldWidthPix)
@@ -101,10 +160,9 @@ def createNoise(proportnNoise,win,fieldWidthPix,noiseColor):
     possibleXcoords = -fieldWidthPix/2 + np.arange(fieldWidthPix) 
     possibleXcoords += fieldWidthPix/30 #adding one-tenth because for some mysterious reason not centered, I guess letters aren't drawn centered
     possibleYcoords = deepcopy(possibleXcoords)
-    def expandgrid(*itrs):
-       product = list(itertools.product(*itrs))
-       return product
-    allFieldCoords = expandgrid(possibleXcoords,possibleYcoords)
+
+    #allFieldCoords = expandgrid(possibleXcoords,possibleYcoords)
+    allFieldCoords = expandGridNumpy( np.array([ possibleXcoords, possibleYcoords] )  )  #numpy array version so that can add a constat to all the x coordinates. Can't access all the x-coordinates if it is a list of tuples, like returned by expandgrid
     #shuffle it
     np.random.shuffle(allFieldCoords)
     dotCoords = allFieldCoords[0:numDots]
@@ -256,4 +314,17 @@ if __name__ == "__main__":
         print("Fit failed.")
     plotDataAndPsychometricCurve(staircase,fit,descendingPsycho,threshVal=0.75)
     pylab.show() #must call this to actually show plot
+    
+    testNoise = True
+    if testNoise: #Test noise
+        myWin = visual.Window()
+        proportnNoise = 0.9
+        noiseFieldWidthPix = 200
+        bgColor = [-.7,-.7,-.7] 
+    
+        (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)
+        print("allFieldCoords[0:3]=",allFieldCoords[0:3])
+        expandGridNumpy( np.array([ np.array([1,2,3]), np.array([7,8,9]) ]) )  #Noise coords has to be a numpy array, to allow changing one coordinate wholesale
+
+
 

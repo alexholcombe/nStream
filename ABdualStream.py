@@ -160,12 +160,12 @@ else: #checkRefreshEtc
     myWin.allowGUI =True
 myWin.close() #have to close window to show dialog box
 
-defaultNoiseLevel = 0.0 #to use if no staircase, can be set by user
+defaultNoiseLevel = 90.0 #to use if no staircase, can be set by user
 trialsPerCondition = 10 #4 #default value
 dlgLabelsOrdered = list()
 if doStaircase:
     myDlg = gui.Dlg(title="Staircase to find appropriate noisePercent", pos=(200,400))
-else: 
+else:
     myDlg = gui.Dlg(title="RSVP experiment", pos=(200,400))
 if not autopilot:
     myDlg.addField('Subject name (default="Hubert"):', 'Hubert', tip='or subject code')
@@ -353,6 +353,7 @@ if task=='T1':
     numRespsWanted = 1
 elif task=='T1T2':
     numRespsWanted = 2
+print('targetLeftRightIfOne\t',end='',file=dataFile)
 for i in range(numRespsWanted):
    dataFile.write('answerPos'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
    dataFile.write('answer'+str(i)+'\t')
@@ -364,7 +365,7 @@ print('timingBlips',file=dataFile)
 
 def  oneFrameOfStim( n,cues,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                         numStreams,ltrsDrawObjectsStream1,ltrsDrawObjectsStream2,
-                                        noise,proportnNoise,allFieldCoords,numNoiseDots ): 
+                                        noise,noise2,proportnNoise,allFieldCoords,allFieldCoords2,numNoiseDots ): 
 #defining a function to draw each frame of stim. 
 
   SOAframes = letterDurFrames+ISIframes
@@ -394,7 +395,7 @@ def  oneFrameOfStim( n,cues,letterSeqStream1,letterSeqStream2,cueDurFrames,lette
   else: ltrsDrawObjectsStream1[thisLetterIdx].setColor( bgColor )
   if numStreams==1:
     ltrsDrawObjectsStream1[thisLetterIdx].pos = (0,0)
-  else: ltrsDrawObjectsStream1[thisLetterIdx].pos = (-6,0)
+  else: ltrsDrawObjectsStream1[thisLetterIdx].pos = (-cueOffset,0)
   ltrsDrawObjectsStream1[thisLetterIdx].draw()
   if numStreams==2:
       if showLetter:
@@ -402,15 +403,20 @@ def  oneFrameOfStim( n,cues,letterSeqStream1,letterSeqStream2,cueDurFrames,lette
       else: ltrsDrawObjectsStream2[thisLetterIdx2].setColor( bgColor )
 
       ltrsDrawObjectsStream2[thisLetterIdx2].draw()
-  
+
   refreshNoise = False #Not recommended because takes longer than a frame, even to shuffle apparently. Or may be setXYs step
   if proportnNoise>0 and refreshNoise: 
     if frameOfThisLetter ==0: 
-        np.random.shuffle(allFieldCoords) 
-        dotCoords = allFieldCoords[0:numNoiseDots]
+        np.random.shuffle(allFieldCoords) #refresh the noise by shuffling the possible locations of noise dots
+        dotCoords = allFieldCoords[0:numNoiseDots] #Take the first numNoiseDots random locations to plot the dots
+        cueOffsetInPix = noiseOffsetKludge*cueOffset*pixelperdegree #Because the noise coords were drawn in pixels but the cue position is specified in deg, I muyst convert pix to deg
+        dotCoords[:,0] += cueOffsetInPix #Displace the noise to present it over the letter stream
+        print("dotCoords[0] = ",dotCoords[0])
         noise.setXYs(dotCoords)
   if proportnNoise>0:
     noise.draw()
+    if numStreams==2:
+        noise2.draw()
   return True 
 # #######End of function definition that displays the stimuli!!!! #####################################
 #############################################################################################################################
@@ -433,6 +439,7 @@ for cueN in xrange(2):
 #predraw all 26 letters 
 ltrHeight = 3 #Martini letters were 2.5deg high
 cueOffset = 6
+noiseOffsetKludge = 0.9
 ltrsDrawObjectsStream1 = list()
 ltrsDrawObjectsStream2 = list()
 for i in range(0,26):
@@ -446,7 +453,7 @@ for i in range(0,26):
        ltrsDrawObjectsStream2.append(letterStream2)
        
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
-noiseFieldWidthDeg=ltrHeight *1.0
+noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
 noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
 
 def timingCheckAndLog(ts,trialN):
@@ -547,8 +554,21 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1pos, cue2lag, propo
 
     noise = None; allFieldCoords=None; numNoiseDots=0
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
-        (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)
-
+        (noise,allFieldCoords,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor)  #for the left stream, or the only stream
+        (noise2,allFieldCoords2,numNoiseDots) = createNoise(proportnNoise,myWin,noiseFieldWidthPix, bgColor) #for the right stream
+        
+    
+    #Work out how to displace the noise so it will be on top of the streams, and then displace it
+    cueOffsetInPix =  int(round(noiseOffsetKludge*cueOffset*pixelperdegree)) #Because the noise coords were drawn in pixels but the cue position is specified in deg, I muyst convert pix to deg
+    #print('allFieldCoords[1:3][0]=', allFieldCoords[1:3][0])
+    allFieldCoords[:,0] += cueOffsetInPix  #Displace the noise to present it over the letter stream
+    allFieldCoords2[:,0] -= cueOffsetInPix  #Displace the noise to present it over the letter stream
+   # print('cueOffsetInPix=',cueOffsetInPix, 'allFieldCoords[1:3][0]=', allFieldCoords[1:3][0])
+    dotCoords = allFieldCoords[0:numNoiseDots] #Take the first numNoiseDots random locations to plot the dots
+    dotCoords2 = allFieldCoords2[0:numNoiseDots] #Take the first numNoiseDots random locations to plot the dots
+    noise.setXYs(dotCoords)
+    noise2.setXYs(dotCoords2)
+    
     preDrawStimToGreasePipeline = list() #I don't know why this works, but without drawing it I have consistent timing blip first time that draw ringInnerR for phantom contours
     for cue in cues:
         cue.setLineColor(bgColor)
@@ -571,13 +591,14 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1pos, cue2lag, propo
         myWin.flip()  #end fixation interval
     #myWin.setRecordFrameIntervals(True);  #can't get it to stop detecting superlong frames
     t0 = trialClock.getTime()
-
+    
+   
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
         if numStreams==2:
             fixationPoint.draw()
         worked = oneFrameOfStim( n,cues,letterSeqStream1,letterSeqStream2,cueDurFrames,letterDurFrames,ISIframes,cuesPos,
                                                      numStreams,ltrsDrawObjectsStream1, ltrsDrawObjectsStream2,
-                                                     noise,proportnNoise,allFieldCoords,numNoiseDots) #draw letter and possibly cue and noise on top
+                                                     noise,noise2,proportnNoise,allFieldCoords,allFieldCoords2,numNoiseDots) #draw letter and possibly cue and noise on top
         if exportImages:
             myWin.getMovieFrame(buffer='back') #for later saving
             framesSaved +=1              
@@ -842,7 +863,6 @@ else: #not staircase
             cue2lag = thisTrial['cue2lag']
         numStreams = thisTrial['numStreams']
         letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2,ts  = do_RSVP_stim(numStreams,thisTrial['task'],thisTrial['targetLeftRightIfOne'],cue1pos, cue2lag, noisePercent/100.,nDone)
-        print(" thisTrial['targetLeftRightIfOne'] = ",thisTrial['targetLeftRightIfOne'])
         numCasesInterframeLong = timingCheckAndLog(ts,nDone)
         if thisTrial['task']=='T1':
             numRespsWanted = 1
@@ -856,7 +876,8 @@ else: #not staircase
         if not expStop:
             print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
             print(nDone,'\t', end='', file=dataFile)
-            print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,3),'\t', end='', file=dataFile)
+            print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,3),'\t', thisTrial['targetLeftRightIfOne'],'\t', end='', file=dataFile)
+            
             correct,eachCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = (
                     handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,thisTrial['task'],thisTrial['targetLeftRightIfOne'],numStreams,letterSeqStream1,letterSeqStream2,cuesPos,correctAnsStream1,correctAnsStream2) )
             print('Scored response.   correct=', correct) #debug
