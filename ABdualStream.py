@@ -411,7 +411,6 @@ def  oneFrameOfStim( n,cues,letterSeqStream1,letterSeqStream2,cueDurFrames,lette
         dotCoords = allFieldCoords[0:numNoiseDots] #Take the first numNoiseDots random locations to plot the dots
         cueOffsetInPix = noiseOffsetKludge*cueOffset*pixelperdegree #Because the noise coords were drawn in pixels but the cue position is specified in deg, I muyst convert pix to deg
         dotCoords[:,0] += cueOffsetInPix #Displace the noise to present it over the letter stream
-        print("dotCoords[0] = ",dotCoords[0])
         noise.setXYs(dotCoords)
   if proportnNoise>0:
     noise.draw()

@@ -143,7 +143,6 @@ def cartesian(arrays, out=None):    #http://stackoverflow.com/questions/28684492
     
 def expandGridNumpy(arrays):
     product = cartesian(arrays)
-    print(product)
     return (product)
     
 def expandgrid(*itrs):
