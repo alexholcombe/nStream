@@ -3,24 +3,30 @@ from psychopy import event, sound, logging
 import numpy as np
 import string
 
-def drawArray(myWin,possibleResps,x,lightness,drawBoundingBox):
-    '''Draw possibleResps in position x with RGB lightness    '''
-    #Draw it vertically, from top to bottom
+def calcRespYandBoundingBox(possibleResps, i):
     spacingCtrToCtr = 2.0 / len(possibleResps)
     charHeight = spacingCtrToCtr
     yStart = 1-charHeight/2
+    y = yStart - i*spacingCtrToCtr
+    boxWidth = 0.1
+    boxHeight = spacingCtrToCtr
+    return y, boxWidth, boxHeight
+    
+def drawArray(myWin,possibleResps,x,lightness,drawBoundingBox):
+    '''Draw possibleResps in position x with RGB lightness    '''
+    #Draw it vertically, from top to bottom
+
     boundingBoxes = list()
     for i in xrange(len(possibleResps)):
+        y, w, h = calcRespYandBoundingBox( possibleResps, i )
         possibleRespStim = visual.TextStim(myWin,colorSpace='rgb',color=(lightness,lightness,lightness),alignHoriz='center', alignVert='center',
-                                                                    height=charHeight,units='norm',autoLog=autoLogging)
+                                                                    height=h,units='norm',autoLog=autoLogging)
         possibleRespStim.setText(possibleResps[i])
-        y = yStart - i*spacingCtrToCtr
         possibleRespStim.pos = (x, y)
-        boundingBox = visual.Rect(myWin,width=.1,height=spacingCtrToCtr, pos=(x,y))
-        boundingBox.draw()
-        boundingBoxes.append( possibleRespStim.boundingBox )
+        if drawBoundingBox:
+            boundingBox = visual.Rect(myWin,width=w,height=h, pos=(x,y))
+            boundingBox.draw()
         possibleRespStim.draw()
-    return (boundingBoxes)
     
 def drawResponseArrays(myWin,possibleResps,bothSides,leftRight):
     '''If bothSides, draw array on both sides, with one side dimmed
@@ -38,6 +44,7 @@ def drawResponseArrays(myWin,possibleResps,bothSides,leftRight):
     else: #only draw one side
         x = x if leftRight else -1*x
         drawArray(myWin,possibleResps, x, lightnessLR[leftRight],drawBoundingBox)
+    
 
 def collectLineupResponses(myWin,myMouse,clickSound,badClickSound,requireAcceptance,autopilot):
     expStop = False
@@ -57,7 +64,7 @@ def collectLineupResponses(myWin,myMouse,clickSound,badClickSound,requireAccepta
         pressed, times = myMouse.getPressed(getTime=True) #If getTime=True (False by default) then getPressed will return all buttons that have been pressed since the last call to mouse.clickReset as well as their time stamps:
         if any(pressed):
             #check if click is near response
-            #optionally draw the response regions
+            y, boxWidth, boxHeight = calcRespYandBoundingBox(possibleResps)
             print("pressed =", pressed," times=", times)
             waitingForClick = False
             
