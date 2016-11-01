@@ -26,7 +26,7 @@ def drawRespOption(myWin,x,color,drawBoundingBox,possibleResps,i):
         
 def drawArray(myWin,possibleResps,x,lightness,drawBoundingBox):
     '''Draw possibleResps in position x with RGB lightness    '''
-    print("lightness in drawArray=",lightness," x=",x)
+    #print("lightness in drawArray=",lightness," x=",x)
     #Draw it vertically, from top to bottom
     for i in xrange(len(possibleResps)):
         drawRespOption(myWin,x,(lightness,lightness,lightness),drawBoundingBox,possibleResps,i)
@@ -40,7 +40,7 @@ def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
     print("leftRight=",leftRight, "xOffset=",xOffset)
     numResps = len(possibleResps)
     dimRGB = 0.3
-    drawBoundingBox = True
+    drawBoundingBox = False #to debug to visualise response regions, make True 
     if bothSides:
         lightnessLR = (dimRGB,1) if leftRight else (1,dimRGB) #lightness on left and right sides
         drawArray(myWin,possibleResps, xOffset*-1, lightnessLR[0],drawBoundingBox)
@@ -113,8 +113,9 @@ def collectOneLineupResponse(myWin,myMouse,leftRight,OKtextStim,possibleResps,xO
                 if key in ['ESCAPE']:
                     expStop = True
                     #noResponseYet = False
-   print('Returning with whichResp=',whichResp,' expStop=',expStop)
-   return whichResp, expStop
+   response = possibleResps[whichResp]
+   print('Returning with response=',response,' expStop=',expStop)
+   return response, expStop
             
 def doLineup(myWin,myMouse,OKtextStim,xOffset,clickSound,badClickSound,requireAcceptance,leftRightFirst,autopilot):
     expStop = False
