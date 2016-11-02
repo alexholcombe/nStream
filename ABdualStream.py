@@ -17,6 +17,7 @@ try:
 except ImportError:
     print('Could not import strongResponse.py (you need that file to be in the same directory)')
 descendingPsycho = True
+#Whether AB task is run, dual stream, or both, is determined by setup of conditions. Search for trialHandler
 tasks=['T1','T1T2']; task = tasks[1]
 #THINGS THAT COULD PREVENT SUCCESS ON A STRANGE MACHINE
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
@@ -72,7 +73,7 @@ print('pixelperdegree=',pixelperdegree)
 # create a dialog from dictionary 
 infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': False, 'Screen refresh rate': 60 }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
-    title='AB experiment OR staircase to find thresh noise level for T1 performance criterion', 
+    title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
     tip={'Check refresh etc': 'To confirm refresh rate and that can keep up, at least when drawing a grating'},
     #fixed=['Check refresh etc'])#this attribute can't be changed by the user
@@ -161,7 +162,6 @@ else: #checkRefreshEtc
 myWin.close() #have to close window to show dialog box
 
 defaultNoiseLevel = 90.0 #to use if no staircase, can be set by user
-trialsPerCondition = 10 #4 #default value
 dlgLabelsOrdered = list()
 if doStaircase:
     myDlg = gui.Dlg(title="Staircase to find appropriate noisePercent", pos=(200,400))
@@ -180,8 +180,8 @@ if doStaircase:
 else:
     myDlg.addField('\tPercent noise dots=',  defaultNoiseLevel, tip=str(defaultNoiseLevel))
     dlgLabelsOrdered.append('defaultNoiseLevel')
-    myDlg.addField('Trials per condition (default=' + str(trialsPerCondition) + '):', trialsPerCondition, tip=str(trialsPerCondition))
-    dlgLabelsOrdered.append('trialsPerCondition')
+    #myDlg.addField('Trials per condition (default=' + str(trialsPerCondition) + '):', trialsPerCondition, tip=str(trialsPerCondition))
+    #dlgLabelsOrdered.append('trialsPerCondition')
     pctCompletedBreak = 50
     
 myDlg.addText(refreshMsg1, color='Black')
@@ -216,8 +216,7 @@ if myDlg.OK: #unpack information from dialogue box
            logging.info('prefaceStaircaseTrialsN entered by user=',prefaceStaircaseTrialsN)
    else: #not doing staircase
        trialsPerCondition = int( thisInfo[ dlgLabelsOrdered.index('trialsPerCondition') ] ) #convert string to integer
-       print('trialsPerCondition=',trialsPerCondition)
-       logging.info('trialsPerCondition =',trialsPerCondition)
+       #print('trialsPerCondition=',trialsPerCondition)
        defaultNoiseLevel = int (thisInfo[ dlgLabelsOrdered.index('defaultNoiseLevel') ])
 else: 
    print('User cancelled from dialog box.')
@@ -293,14 +292,15 @@ NextRemindCountText = visual.TextStim(myWin,pos=(0,.2),colorSpace='rgb',color= (
 screenshot= False; screenshotDone = False
 
 #SETTING THE CONDITIONS
-#For the attentional blink
-stimListAB = []
-possibleCue1positions =  np.array([6,7,8,9,10])  #used in Martini E2, group 2 lizzy double check this
-possibleCue2lags = np.array([1,2,3,4,6,10]) # np.array([1,2,5,8,10]) for VGP: 1,2,3,4,6,10
-for cue1pos in possibleCue1positions:
-   for cue2lag in possibleCue2lags:
-        stimListAB.append( {'targetLeftRightIfOne':'left','numStreams':1, 'task':'T1T2', 'cue1pos':cue1pos, 'cue2lag':cue2lag } ) #Charlie (28/6): same changes as other version of code. First two keys in the dict are new
-#Martini E2 and also AB experiments used 400 trials total, with breaks between every 100 trials
+#For the optional attentional blink
+#stimListAB = []
+#trialsPerConditionAB  = 10 #4 #default value
+#possibleCue1positions =  np.array([6,7,8,9,10])  #used in Martini E2, group 2 lizzy double check this
+#possibleCue2lags = np.array([1,2,3,4,6,10]) # np.array([1,2,5,8,10]) for VGP: 1,2,3,4,6,10
+#for cue1pos in possibleCue1positions:
+#   for cue2lag in possibleCue2lags:
+#        stimListAB.append( {'targetLeftRightIfOne':'left','numStreams':1, 'task':'T1T2', 'cue1pos':cue1pos, 'cue2lag':cue2lag } ) #Charlie (28/6): same changes as other version of code. First two keys in the dict are new
+#trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
 
 #For the dual-stream simultaneous target
 stimListDualStream=[]
@@ -310,7 +310,6 @@ for cuesPos in possibleCuePositions:
         for targetLeftRightIfOne in  ['left','right']:
             stimListDualStream.append( {'numStreams':2, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 'cue1pos':cuesPos, 'cue2lag':0 } )  #cue2lag = 0, meaning simultaneous targets
 
-trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
 trialsPerConditionDualStream = 10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
@@ -318,7 +317,7 @@ trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #i
 numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
 numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
 
-logging.info( 'numtrials=' + str(trialsAB.nTotal) + 'AB, ' + str(trialsDualStream.nTotal) + ' dual stream and each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
+logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
 
 def numberToLetter(number): #0 = A, 25 = Z
@@ -829,16 +828,17 @@ else: #not staircase
     
     ABfirst = False
     nDone =0
-    if ABfirst:
+    totalTrials = 0
+    if ABfirst and trialsAB != None:
         msg='Starting AB part of experiment'
         trials = trialsAB
+        totalTrials += trialsAB.nTotal
         logging.info(msg); print(msg)
     else:
         msg = "Starting dual stream part of experiment"
         trials = trialsDualStream
         logging.info(msg); print(msg)
-                
-    totalTrials = trialsAB.nTotal + trialsDualStream.nTotal
+        totalTrials += trialsDualStream.nTotal
     
     while nDone < totalTrials and expStop==False:
         print("nDone = ", nDone, " out of ", totalTrials, " trials.nRemaining = ", trials.nRemaining)

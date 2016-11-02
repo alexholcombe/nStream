@@ -8,4 +8,10 @@ This was created for Eva's honours thesis, so that she could run her first exper
 
 The version initially used did not report in the single-target condition which side the single target was presented on. That was fixed for Eva's second experiment (in which noise was added, and only dual-stream task was used).
 
-Noe that this experiment has people just type the two letters in, to make it similar to the AB task, meaning that they always respond to the left stream first.
+For Eva's experiments, people just typed the two letters in, to make it similar to the AB task, meaning that they always respond to the left stream first.
+
+The addition of letterLineupResponse.py means that, for the dual-stream (simultaneous targets) task, we can elicit each response first, in half of trials.
+
+** NOTES **
+
+What proportion of trials should be single-trial?
