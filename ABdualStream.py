@@ -23,7 +23,7 @@ tasks=['T1','T1T2']; task = tasks[1]
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
 #widthPix, heightPix
 quitFinder = False #if checkRefreshEtc, quitFinder becomes True
-autopilot=False
+autopilot=True
 demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
@@ -281,8 +281,8 @@ fixation= visual.PatchStim(myWin, tex=fixatnNoiseTexture, size=(fixSizePix,fixSi
 fixationBlank= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
 fixationPoint= visual.PatchStim(myWin,tex='none',colorSpace='rgb',color=(1,1,1),size=10,units='pix',autoLog=autoLogging)
 
-respPromptStim = visual.TextStim(myWin,pos=(0, -.9),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
-acceptTextStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
+respPromptStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
+acceptTextStim = visual.TextStim(myWin,pos=(0, -.7),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 acceptTextStim.setText('Hit ENTER to accept. Backspace to edit')
 respStim = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=(1,1,0),alignHoriz='center', alignVert='center',height=.16,units='norm',autoLog=autoLogging)
 clickSound, badKeySound = stringResponse.setupSoundsForResponse()
@@ -621,6 +621,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targe
     #Handle response, calculate whether correct, ########################################
     if autopilot or passThisTrial:
         responses = responsesAutopilot
+        if autopilot: print("autopilot and fake responses are:",responses)
     correctAnswers = correctAnsStream1
     if numStreams>1:
         print('correctAnsStream1=',correctAnsStream1,'correctAnsStream2=',correctAnsStream2,'task=',task,'targetLeftRightIfOne=',targetLeftRightIfOne)
@@ -791,8 +792,8 @@ if doStaircase:
             if mainStaircaseGoing: 
                 staircase.addResponse(T1approxCorrect, intensity = 100-noisePercent) #Add a 1 or 0 to signify a correct/detected or incorrect/missed trial
                 #print('Have added an intensity of','{:.3f}'.format(100-noisePercent), 'T1approxCorrect =', T1approxCorrect, ' to staircase') #debugON
-    #ENDING STAIRCASE PHASE
-
+    #ENDING STAIRCASE PHASE #################################################################
+    ##  ##  ##  #########################################################
     if staircaseTrialN+1 < len(prefaceStaircaseNoise) and (staircaseTrialN>=0): #exp stopped before got through staircase preface trials, so haven't imported yet
         print('Importing ',corrEachTrial,' and intensities ',prefaceStaircaseNoise[0:staircaseTrialN+1])
         staircase.importData(100-prefaceStaircaseNoise[0:staircaseTrialN], np.array(corrEachTrial)) 
@@ -871,6 +872,7 @@ else: #not staircase
         elif thisTrial['task']=='T1T2':
             numRespsWanted = 2
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
+        print("autopilot=",autopilot)
         expStop,passThisTrial,responses,responsesAutopilot = \
                 stringResponse.collectStringResponse(numRespsWanted,respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
                                                                                 requireAcceptance,autopilot,responseDebug=True)

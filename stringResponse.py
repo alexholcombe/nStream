@@ -33,6 +33,7 @@ def collectStringResponse(numCharsWanted,respPromptStim,respStim,acceptTextStim,
     #while (numResponses < numCharsWanted and not expStop) or not accepted:
         noResponseYet = True
         thisResponse=''
+        i=0
         while noResponseYet: #loop until a valid key is hit
            respPromptStim.draw()
            drawResponses(responses,respStim,numCharsWanted,drawBlanks)
@@ -41,6 +42,8 @@ def collectStringResponse(numCharsWanted,respPromptStim,respStim,acceptTextStim,
            keysPressed = event.getKeys();            #print 'keysPressed = ', keysPressed
            if autopilot:
                noResponseYet = False
+               numResponses = numCharsWanted
+               print('autopilot=',autopilot,' noResponseYet=',noResponseYet,' i=',i)
                if 'ESCAPE' in keysPressed:
                    expStop = True
            elif len(keysPressed) > 0:
@@ -65,6 +68,8 @@ def collectStringResponse(numCharsWanted,respPromptStim,respStim,acceptTextStim,
                         numResponses -= 1
                 else: #invalid key pressed
                     badKeySound.play()
+           print("noResponseYet=",noResponseYet, ' i=',i)
+           i+=1
 
         if click and (click is not None):
             clickSound.play()
@@ -73,6 +78,9 @@ def collectStringResponse(numCharsWanted,respPromptStim,respStim,acceptTextStim,
         
         if (numResponses == numCharsWanted) and requireAcceptance:  #ask participant to HIT ENTER TO ACCEPT
             waitingForAccept = True
+            if autopilot:
+                waitingForAccept = False
+                accepted = True
             while waitingForAccept and not expStop:
                 acceptTextStim.draw()
                 respStim.draw()
@@ -125,7 +133,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     msg.draw()
     window.flip()
     autoLogging=False
-    autopilot = False
+    autopilot = True
     #create click sound for keyboard
 
     clickSound, badKeySound = setupSoundsForResponse()
