@@ -215,7 +215,7 @@ if myDlg.OK: #unpack information from dialogue box
            print('prefaceStaircaseTrialsN entered by user=',thisInfo[dlgLabelsOrdered.index('easyTrials')])
            logging.info('prefaceStaircaseTrialsN entered by user=',prefaceStaircaseTrialsN)
    else: #not doing staircase
-       trialsPerCondition = int( thisInfo[ dlgLabelsOrdered.index('trialsPerCondition') ] ) #convert string to integer
+       #trialsPerCondition = int( thisInfo[ dlgLabelsOrdered.index('trialsPerCondition') ] ) #convert string to integer
        #print('trialsPerCondition=',trialsPerCondition)
        defaultNoiseLevel = int (thisInfo[ dlgLabelsOrdered.index('defaultNoiseLevel') ])
 else: 
@@ -293,15 +293,18 @@ screenshot= False; screenshotDone = False
 
 #SETTING THE CONDITIONS
 #For the optional attentional blink
-#stimListAB = []
-#trialsPerConditionAB  = 10 #4 #default value
-#possibleCue1positions =  np.array([6,7,8,9,10])  #used in Martini E2, group 2 lizzy double check this
-#possibleCue2lags = np.array([1,2,3,4,6,10]) # np.array([1,2,5,8,10]) for VGP: 1,2,3,4,6,10
-#for cue1pos in possibleCue1positions:
-#   for cue2lag in possibleCue2lags:
-#        stimListAB.append( {'targetLeftRightIfOne':'left','numStreams':1, 'task':'T1T2', 'cue1pos':cue1pos, 'cue2lag':cue2lag } ) #Charlie (28/6): same changes as other version of code. First two keys in the dict are new
-#trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
-
+doAB= False
+if doAB:
+    stimListAB = []
+    trialsPerConditionAB  = 10 #4 #default value
+    possibleCue1positions =  np.array([6,7,8,9,10])  #used in Martini E2, group 2 lizzy double check this
+    possibleCue2lags = np.array([1,2,3,4,6,10]) # np.array([1,2,5,8,10]) for VGP: 1,2,3,4,6,10
+    for cue1pos in possibleCue1positions:
+       for cue2lag in possibleCue2lags:
+            stimListAB.append( {'targetLeftRightIfOne':'left','numStreams':1, 'task':'T1T2', 'cue1pos':cue1pos, 'cue2lag':cue2lag } ) #Charlie (28/6): same changes as other version of code. First two keys in the dict are new
+    trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
+    trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
+    
 #For the dual-stream simultaneous target
 stimListDualStream=[]
 possibleCuePositions =  np.array([6,7,8,9,10]) 
@@ -313,9 +316,6 @@ for cuesPos in possibleCuePositions:
 trialsPerConditionDualStream = 10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
-trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
-numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
-numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -494,9 +494,12 @@ numTrialsCorrect = 0;
 numTrialsApproxCorrect = 0;
 numTrialsEachCorrect= np.zeros( numRespsWanted )
 numTrialsEachApproxCorrect= np.zeros( numRespsWanted )
-nTrialsCorrectT2eachLag = np.zeros(len(possibleCue2lags)); nTrialsEachLag = np.zeros(len(possibleCue2lags))
-nTrialsApproxCorrectT2eachLag = np.zeros(len(possibleCue2lags));
-
+if doAB:
+    nTrialsCorrectT2eachLag = np.zeros(len(possibleCue2lags)); nTrialsEachLag = np.zeros(len(possibleCue2lags))
+    nTrialsApproxCorrectT2eachLag = np.zeros(len(possibleCue2lags));
+    numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
+    numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
+    
 def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1pos, cue2lag, proportnNoise,trialN):
     #relies on global variables:
     #   logging, bgColor
@@ -823,7 +826,7 @@ if doStaircase:
     pylab.show() #must call this to actually show plot
 else: #not staircase
     noisePercent = defaultNoiseLevel
-    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal)+ ' AB and ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
+    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal if doAB else 0)+ ' AB and ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
     print(phasesMsg); logging.info(phasesMsg)
     
     ABfirst = False
