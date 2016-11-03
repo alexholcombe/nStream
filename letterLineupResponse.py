@@ -1,7 +1,6 @@
 from __future__ import print_function
 from psychopy import event, sound, logging
-from psychopy import visual, event, sound
-
+from psychopy import visual, event, sound, tools
 import numpy as np
 import string
 from math import floor
@@ -57,6 +56,24 @@ def checkForOKclick(mousePos,respZone):
             OK = True
     return OK
 
+def convertXYtoNormUnits(XY,currUnits,win):
+    if currUnits == 'norm':
+        return XY
+    else:
+        widthPix = win.size[0]
+        heightPix = win.size[1]
+        if currUnits == 'pix':
+            xNorm = XY[0]/ (widthPix/2)
+            yNorm = XY[1]/ (heightPix/2)
+        elif currUnits== 'deg':
+            xPix = tools.monitorunittools.deg2pix(XY[0], win.monitor, correctFlat=False)
+            yPix = tools.monitorunittools.deg2pix(XY[1], win.monitor, correctFlat=False)
+            xNorm = xPix / (widthPix/2)
+            yNorm = yPix / (heightPix/2)
+            print("Converted ",XY," from ",currUnits," units first to pixels: ",xPix,yPix," then to norm: ",xNorm,yNorm)
+    return xNorm, yNorm
+
+
 def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
    xOffsetThis = xOffset if leftRight else -1*xOffset
    myMouse.clickReset()
@@ -93,6 +110,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
         while not any(pressed): #wait until pressed
             pressed = myMouse.getPressed() 
         mousePos = myMouse.getPos()
+        mousePos = convertXYtoNormUnits(mousePos,myWin.units,myWin)
         #Check what was clicked, if anything
         OK = False
         if any(pressed):
@@ -130,6 +148,13 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
    return response, expStop
             
 def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightFirst,autopilot):
+    if type(leftRightFirst) is str: #convert to 0/1
+        if leftRightFirst == 'right':
+            leftRightFirst = 1
+        elif leftRightFirst == 'left':
+            leftRightFirst = 0
+        else:
+            print("unrecognized leftRightFirst value")
     expStop = False
     passThisTrial = False
     responsesAutopilot = []
@@ -139,7 +164,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
     if autopilot: #I haven't bothered to make autopilot display the response screen
         responsesAutopilot.append('Z')
     else:
-        OKrespZone = visual.GratingStim(myWin, tex="sin", mask="gauss", texRes=64, size=[.5, .5], sf=[0, 0], name='OKrespZone')
+        OKrespZone = visual.GratingStim(myWin, tex="sin", mask="gauss", texRes=64, units='norm', size=[.5, .5], sf=[0, 0], name='OKrespZone')
         OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(-1,-1,-1),alignHoriz='center', alignVert='center',height=.13,units='norm',autoLog=False)
         OKtextStim.setText('OK')
         whichResp0, expStop = \
@@ -175,14 +200,20 @@ def setupSoundsForResponse():
     return clickSound, badKeySound
 
 if __name__=='__main__':  #Running this file directly, must want to test functions in this file
-    myWin = visual.Window(colorSpace='rgb',color=(0,0,0))
+    from psychopy import monitors
+    monitorname = 'testmonitor'
+    mon = monitors.Monitor(monitorname,width=40.5, distance=57)
+    windowUnits = 'deg' #purely to make sure lineup array still works when windowUnits are something different from norm units
+    myWin = visual.Window(monitor=mon,colorSpace='rgb',color=(0,0,0),units=windowUnits)
+    #myWin = visual.Window(monitor=mon,size=(widthPix,heightPix),allowGUI=allowGUI,units=units,color=bgColor,colorSpace='rgb',fullscr=fullscr,screen=scrn,waitBlanking=waitBlank) #Holcombe lab monitor
+
     logging.console.setLevel(logging.WARNING)
     autopilot = False
     clickSound, badClickSound = setupSoundsForResponse()
     
     alphabet = list(string.ascii_uppercase)
     possibleResps = alphabet
-    possibleResps.remove('C'); possibleResps.remove('V') #per Goodbourn & Holcombe, including backwards-ltrs experiments
+    #possibleResps.remove('C'); possibleResps.remove('V') #per Goodbourn & Holcombe, including backwards-ltrs experiments
     
     #drawResponseArrays(myWin,xOffset,possibleResps,True,0)
     myWin.flip()
@@ -194,7 +225,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     responsesAutopilot = ' '
     myMouse = event.Mouse()
     bothSides = True
-    leftRightFirst = True
+    leftRightFirst = False
     expStop,passThisTrial,responses,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
 

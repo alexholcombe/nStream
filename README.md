@@ -15,3 +15,4 @@ The addition of letterLineupResponse.py means that, for the dual-stream (simulta
 ** NOTES **
 
 What proportion of trials should be single-trial?
+

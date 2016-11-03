@@ -8,6 +8,7 @@ import numpy as np
 from math import atan, log, ceil
 from copy import deepcopy
 import time, sys, os#, pylab
+import string
 try:
     from noiseStaircaseHelpers import printStaircase, toStaircase, outOfStaircase, createNoise, plotDataAndPsychometricCurve
 except ImportError:
@@ -880,8 +881,17 @@ else: #not staircase
         lineupResponse = True
         if lineupResponse:
             bothSides = True
+            if thisTrial['task']=='T1':
+                bothSides = False
+                sideFirst = thisTrial['targetLeftRightIfOne']
+            else:
+                sideFirst = thisTrial['firstRespLRifTwo']
+            print('sideFirst = ',sideFirst)
+            alphabet = list(string.ascii_uppercase)
+            possibleResps = alphabet
+            #possibleResps.remove('C'); possibleResps.remove('V')
             expStop,passThisTrial,responses,responsesAutopilot = \
-                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,bothSides,thisTrial['firstRespLRifTwo'],autopilot)
+                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,bothSides,sideFirst,autopilot)
         else:
             expStop,passThisTrial,responses,responsesAutopilot = \
                     stringResponse.collectStringResponse(numRespsWanted,respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
