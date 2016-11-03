@@ -1,5 +1,7 @@
 from __future__ import print_function
 from psychopy import event, sound, logging
+from psychopy import visual, event, sound
+
 import numpy as np
 import string
 from math import floor
@@ -16,7 +18,7 @@ def calcRespYandBoundingBox(possibleResps, i):
 def drawRespOption(myWin,x,color,drawBoundingBox,possibleResps,i):
         y, w, h = calcRespYandBoundingBox( possibleResps, i )
         option = visual.TextStim(myWin,colorSpace='rgb',color=color,alignHoriz='center', alignVert='center',
-                                                                    height=h,units='norm',autoLog=autoLogging)
+                                                                    height=h,units='norm',autoLog=False)
         option.setText(possibleResps[i])
         option.pos = (x, y)
         option.draw()
@@ -41,8 +43,8 @@ def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
     numResps = len(possibleResps)
     dimRGB = 0.3
     drawBoundingBox = False #to debug to visualise response regions, make True 
+    lightnessLR = (dimRGB,1) if leftRight else (1,dimRGB) #lightness on left and right sides
     if bothSides:
-        lightnessLR = (dimRGB,1) if leftRight else (1,dimRGB) #lightness on left and right sides
         drawArray(myWin,possibleResps, xOffset*-1, lightnessLR[0],drawBoundingBox)
         drawArray(myWin,possibleResps, xOffset, lightnessLR[1],drawBoundingBox)
     else: #only draw one side
@@ -55,10 +57,15 @@ def checkForOKclick(mousePos,respZone):
             OK = True
     return OK
 
-def collectOneLineupResponse(myWin,myMouse,leftRight,OKtextStim,possibleResps,xOffset,clickSound,badClickSound):
+def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
    xOffsetThis = xOffset if leftRight else -1*xOffset
    myMouse.clickReset()
-   OKrespZone = visual.Circle(myWin, radius=.2, edges=30, fillColor=(-.2,-.2,-.2), fillColorSpace='rgb', lineColor=None, units='norm', autoLog=False)
+   sideIndicator = visual.Rect(myWin, width=.14, height=.04, fillColor=(1,1,1), fillColorSpace='rgb', lineColor=None, units='norm', autoLog=False)
+   sideIndicatorX = .77*(xOffset if leftRight else -xOffset)
+   sideIndicator.setPos( [sideIndicatorX, 0] )
+   chosenLtr = visual.TextStim(myWin,colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.4,units='norm',autoLog=False)
+   chosenLtr.setPos( [sideIndicatorX,0] )
+   
    whichResp = -1
    state = 'waitingForFirstClick' 
    #waitingForClick means OK is on the screen, so can either click a lineup item, or click OK
@@ -66,12 +73,17 @@ def collectOneLineupResponse(myWin,myMouse,leftRight,OKtextStim,possibleResps,xO
    expStop = False
    while state != 'finished' and not expStop:
         #draw everything corresponding to this state
-        drawResponseArrays(myWin,xOffset,possibleResps,bothSides=True,leftRight=leftRight)
+        drawResponseArrays(myWin,xOffset,possibleResps,drawBothSides,leftRight=leftRight)
         if state == 'waitingForClick':
-            #draw selected one in red
+            #draw selected one in red, and bigly
             drawRespOption(myWin,xOffsetThis,(1,-1,-1),False,possibleResps,whichResp)
+            chosenLtr.setText(possibleResps[whichResp])
+            chosenLtr.draw()
             OKrespZone.draw()
             OKtextStim.draw()
+        else:
+            sideIndicator.draw()
+            
         myWin.flip()
         #poll keyboard and mouse
 
@@ -117,20 +129,30 @@ def collectOneLineupResponse(myWin,myMouse,leftRight,OKtextStim,possibleResps,xO
    print('Returning with response=',response,' expStop=',expStop)
    return response, expStop
             
-def doLineup(myWin,myMouse,OKtextStim,xOffset,clickSound,badClickSound,requireAcceptance,leftRightFirst,autopilot):
+def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightFirst,autopilot):
     expStop = False
     passThisTrial = False
-    responsesAutopilot = ['Z','Z']
-    #drawResponseArrays(myWin,xOffset,possibleResps,bothSides=True,leftRight=leftRightFirst)
-    #myWin.flip()
+    responsesAutopilot = []
+    responses = []
     #First collect one, then dim that one and collect the other
-    print("xOffset in doLineup=",xOffset)
-    whichResp0, expStop = collectOneLineupResponse(myWin,myMouse,leftRightFirst,OKtextStim,possibleResps, xOffset, clickSound, badClickSound)
-    if not expStop:
-        #Draw arrays again, with that one dim, to collect the other response
-        whichResp1, expStop = collectOneLineupResponse(myWin,myMouse,not leftRightFirst,OKtextStim, possibleResps, xOffset, clickSound, badClickSound)
-    else: whichResp1 = -1
-    responses = [whichResp0, whichResp1]
+    xOffset = 0.7
+    if autopilot: #I haven't bothered to make autopilot display the response screen
+        responsesAutopilot.append('Z')
+    else:
+        OKrespZone = visual.GratingStim(myWin, tex="sin", mask="gauss", texRes=64, size=[.5, .5], sf=[0, 0], name='OKrespZone')
+        OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(-1,-1,-1),alignHoriz='center', alignVert='center',height=.13,units='norm',autoLog=False)
+        OKtextStim.setText('OK')
+        whichResp0, expStop = \
+                collectOneLineupResponse(myWin,myMouse,bothSides,leftRightFirst,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+        responses.append(whichResp0)
+    if not expStop and bothSides:
+        if autopilot:
+            responsesAutopilot.append('Z')
+        else:
+            #Draw arrays again, with that one dim, to collect the other response
+            whichResp1, expStop =  \
+                collectOneLineupResponse(myWin,myMouse,bothSides,not leftRightFirst,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+            responses.append(whichResp1)
     return expStop,passThisTrial,responses,responsesAutopilot
 
 def setupSoundsForResponse():
@@ -153,40 +175,29 @@ def setupSoundsForResponse():
     return clickSound, badKeySound
 
 if __name__=='__main__':  #Running this file directly, must want to test functions in this file
-    from psychopy import monitors, visual, event, data, logging, core, sound, gui
     myWin = visual.Window(colorSpace='rgb',color=(0,0,0))
     logging.console.setLevel(logging.WARNING)
-    autoLogging=False
     autopilot = False
     clickSound, badClickSound = setupSoundsForResponse()
-
-    respPromptStim = visual.TextStim(myWin,pos=(0, -.7),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
-    OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.2,units='norm',autoLog=autoLogging)
-    OKtextStim.setText('OK')
-
+    
     alphabet = list(string.ascii_uppercase)
     possibleResps = alphabet
     possibleResps.remove('C'); possibleResps.remove('V') #per Goodbourn & Holcombe, including backwards-ltrs experiments
     
-    xOffset = .7
     #drawResponseArrays(myWin,xOffset,possibleResps,True,0)
     myWin.flip()
 
-    acceptTextStim = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=(1,1,0),alignHoriz='center', alignVert='center',height=.16,units='norm',autoLog=autoLogging)
-    acceptTextStim.setText('OK')
-    acceptTextStim.draw()
-    
     responseDebug=False; responses = list(); responsesAutopilot = list();
-    requireAcceptance = True
     expStop = False
     
     passThisTrial = False
     responsesAutopilot = ' '
-    myMouse = event.Mouse() 
-    leftRightFirst = False
+    myMouse = event.Mouse()
+    bothSides = True
+    leftRightFirst = True
     expStop,passThisTrial,responses,responsesAutopilot = \
-                doLineup(myWin, myMouse, OKtextStim, xOffset, clickSound, badClickSound, requireAcceptance, leftRightFirst, autopilot)
+                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
 
-    print('responses=',responses)
+    print('autopilot=',autopilot, 'responses=',responses)
     print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
     print('Finished') 

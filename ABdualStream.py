@@ -12,10 +12,10 @@ try:
     from noiseStaircaseHelpers import printStaircase, toStaircase, outOfStaircase, createNoise, plotDataAndPsychometricCurve
 except ImportError:
     print('Could not import from noiseStaircaseHelpers.py (you need that file to be in the same directory)')
-try:
-    import stringResponse
-except ImportError:
-    print('Could not import strongResponse.py (you need that file to be in the same directory)')
+try: import stringResponse
+except ImportError:  print('Could not import strongResponse.py (you need that file to be in the same directory)')
+try: import letterLineupResponse
+except ImportError:  print('Could not import letterLineupResponse.py (you need that file to be in the same directory)')
 descendingPsycho = True
 #Whether AB task is run, dual stream, or both, is determined by setup of conditions. Search for trialHandler
 tasks=['T1','T1T2']; task = tasks[1]
@@ -23,7 +23,7 @@ tasks=['T1','T1T2']; task = tasks[1]
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
 #widthPix, heightPix
 quitFinder = False #if checkRefreshEtc, quitFinder becomes True
-autopilot=True
+autopilot=False
 demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
@@ -308,12 +308,15 @@ if doAB:
 #For the dual-stream simultaneous target
 stimListDualStream=[]
 possibleCuePositions =  np.array([6,7,8,9,10]) 
-for cuesPos in possibleCuePositions:
-    for task in  ['T1','T1T2']: #T1 task is just for the single-target tasks, but both streams are presented
-        for targetLeftRightIfOne in  ['left','right']:
-            stimListDualStream.append( {'numStreams':2, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 'cue1pos':cuesPos, 'cue2lag':0 } )  #cue2lag = 0, meaning simultaneous targets
+for task in  ['T1','T1T2']: #T1 task is just for the single-target tasks, but both streams are presented
+  for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
+    for cuesPos in possibleCuePositions:
+      for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
+        stimListDualStream.append( 
+               {'numStreams':2, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 'cue1pos':cuesPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue2lag':0 } 
+             )  #cue2lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
+trialsPerConditionDualStream = 1 #10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 
@@ -703,6 +706,7 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
     else: #incorrect
         highA.play() #low.play()
 
+myMouse = event.Mouse()
 expStop=False; framesSaved=0
 nDone = -1 #change to zero once start main part of experiment
 if doStaircase:
@@ -873,9 +877,15 @@ else: #not staircase
             numRespsWanted = 2
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
         print("autopilot=",autopilot)
-        expStop,passThisTrial,responses,responsesAutopilot = \
-                stringResponse.collectStringResponse(numRespsWanted,respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
-                                                                                requireAcceptance,autopilot,responseDebug=True)
+        lineupResponse = True
+        if lineupResponse:
+            bothSides = True
+            expStop,passThisTrial,responses,responsesAutopilot = \
+                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,bothSides,thisTrial['firstRespLRifTwo'],autopilot)
+        else:
+            expStop,passThisTrial,responses,responsesAutopilot = \
+                    stringResponse.collectStringResponse(numRespsWanted,respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
+                                                                                    requireAcceptance,autopilot,responseDebug=True)
         print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
         if not expStop:
             print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
@@ -933,6 +943,7 @@ else: #not staircase
 timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
 msg = 'Finishing at '+timeAndDateStr
 print(msg); logging.info(msg)
+logging.flush()
 if expStop:
     msg = 'user aborted experiment on keypress with trials done=' + str(nDone) + ' of ' + str(trials.nTotal+1)
     print(msg); logging.error(msg)
@@ -940,16 +951,16 @@ if expStop:
 if (nDone >0):
     print('Of ',nDone,' trials, on ',numTrialsCorrect*1.0/nDone*100., '% of all trials all targets reported exactly correct',sep='')
     print('All targets approximately correct in ',round(numTrialsApproxCorrect*1.0/nDone*100,1),'% of trials',sep='')
-    print('T1: ',round(numTrialsEachCorrect[0]*1.0/nDone*100.,2), '% correct',sep='')
-    if len(numTrialsEachCorrect) >1:
-        print('T2: ',round(numTrialsEachCorrect[1]*1.0/nDone*100,2),'% correct',sep='')
-    print('T1: ',round(numTrialsEachApproxCorrect[0]*1.0/nDone*100,2),'% approximately correct',sep='')
-    if len(numTrialsEachCorrect) >1:
-        print('T2: ',round(numTrialsEachApproxCorrect[1]*1.0/nDone*100,2),'% approximately correct',sep='')
-        print('T2 for each of the lags,',np.around(possibleCue2lags,0),': ', np.around(100*nTrialsCorrectT2eachLag / nTrialsEachLag,3), '%correct, and ',
-                 np.around(100*nTrialsApproxCorrectT2eachLag/nTrialsEachLag,3),'%approximately correct')
-   #print numRightWrongEachSpeedOrder[:,1] / ( numRightWrongEachSpeedOrder[:,0] + numRightWrongEachSpeedOrder[:,1])   
+    if doAB:
+        print('T1: ',round(numTrialsEachCorrect[0]*1.0/nDone*100.,2), '% correct',sep='')
+        if len(numTrialsEachCorrect) >1:
+            print('T2: ',round(numTrialsEachCorrect[1]*1.0/nDone*100,2),'% correct',sep='')
+        print('T1: ',round(numTrialsEachApproxCorrect[0]*1.0/nDone*100,2),'% approximately correct',sep='')
+        if len(numTrialsEachCorrect) >1:
+            print('T2: ',round(numTrialsEachApproxCorrect[1]*1.0/nDone*100,2),'% approximately correct',sep='')
+            print('T2 for each of the lags,',np.around(possibleCue2lags,0),': ', np.around(100*nTrialsCorrectT2eachLag / nTrialsEachLag,3), '%correct, and ',
+                     np.around(100*nTrialsApproxCorrectT2eachLag/nTrialsEachLag,3),'%approximately correct')
 
-logging.flush(); dataFile.close()
+dataFile.close()
 myWin.close() #have to close window if want to show a plot
 #ADD PLOT OF AB PERFORMANCE?
