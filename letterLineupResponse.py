@@ -38,7 +38,7 @@ def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
     possibleResps is usually an array of all the letters to populate the array with.
     xOffset is offset of center of response array relative to center of screen, in norm units
     '''
-    print("leftRight=",leftRight, "xOffset=",xOffset)
+    #print("leftRight=",leftRight, "xOffset=",xOffset)
     numResps = len(possibleResps)
     dimRGB = 0.3
     drawBoundingBox = False #to debug to visualise response regions, make True 
@@ -70,7 +70,7 @@ def convertXYtoNormUnits(XY,currUnits,win):
             yPix = tools.monitorunittools.deg2pix(XY[1], win.monitor, correctFlat=False)
             xNorm = xPix / (widthPix/2)
             yNorm = yPix / (heightPix/2)
-            print("Converted ",XY," from ",currUnits," units first to pixels: ",xPix,yPix," then to norm: ",xNorm,yNorm)
+            #print("Converted ",XY," from ",currUnits," units first to pixels: ",xPix,yPix," then to norm: ",xNorm,yNorm)
     return xNorm, yNorm
 
 
@@ -114,10 +114,10 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
         #Check what was clicked, if anything
         OK = False
         if any(pressed):
-            print('Clicked and state=',state)
+            #print('Clicked and state=',state)
             if state == 'waitingForClick':
                 OK = checkForOKclick(mousePos,OKrespZone)
-                print('OK=', OK)
+                #print('OK=', OK)
                 if OK:
                     state = 'finished'
             if not OK: #didn't click OK. Check whether clicked near response array item
@@ -132,9 +132,9 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
                         clickSound.play()
                         relToBtm = mousePos[1] - (btmmostY - h/2)
                         whichResp = int (relToBtm / h)
-                        print("whichResp from bottom = ",whichResp)
+                        #print("whichResp from bottom = ",whichResp)
                         whichResp = len(possibleResps) - 1- whichResp
-                        print("whichResp from top = ",whichResp, "xOffsetThis=",xOffsetThis, " About to redraw and draw one item in red")
+                        #print("whichResp from top = ",whichResp, "xOffsetThis=",xOffsetThis, " About to redraw and draw one item in red")
                         state = 'waitingForClick' 
                 else: 
                     badClickSound.play()
@@ -144,7 +144,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
                     expStop = True
                     #noResponseYet = False
    response = possibleResps[whichResp]
-   print('Returning with response=',response,' expStop=',expStop)
+   #print('Returning with response=',response,' expStop=',expStop)
    return response, expStop
             
 def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightFirst,autopilot):

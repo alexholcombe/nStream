@@ -530,7 +530,7 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2la
     #relies on global variables:
     #   logging, bgColor
     #
-    print("numStreams = ",numStreams)
+    print("numStreams = ",numStreams, 'task=',task, 'targetLeftRightIfOne=',targetLeftRightIfOne, 'cue1temporalPos=',cue1temporalPos)
     numTargets = 1
     cuesTemporalPos = [] #will contain the positions of all the cues (targets)
     cuesTemporalPos.append(cue1temporalPos)
@@ -664,40 +664,25 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2la
     return streamLtrSequences,cuesTemporalPos,corrAnswers, ts  
 
 def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targetLeftRightIfOne,numStreams,
-                                                      letterSeqStream1,letterSeqStream2,cuesTemporalPos,correctAnsStream1,correctAnsStream2):
+                                                      streamLtrSequences,cuesTemporalPos,corrAnswers):
     #Handle response, calculate whether correct, ########################################
     if autopilot or passThisTrial:
         responses = responsesAutopilot
         if autopilot: print("autopilot and fake responses are:",responses)
-    correctAnswers = correctAnsStream1
-    if numStreams>1:
-        print('correctAnsStream1=',correctAnsStream1,'correctAnsStream2=',correctAnsStream2,'task=',task,'targetLeftRightIfOne=',targetLeftRightIfOne)
-        if task=='T1':
-            if targetLeftRightIfOne == 'left':
-                correctAnswers = np.array([correctAnsStream1])
-            elif targetLeftRightIfOne == 'right':
-                correctAnswers = np.array([correctAnsStream2])
-        elif task=='T1T2': 
-            if correctAnsStream1.size == 1: #you are not allowed to concatenate arrays of length 1
-                correctAnswers = np.array([correctAnsStream1, correctAnsStream2])
-            else:
-                correctAnswers = np.concatenate((correctAnsStream1, correctAnsStream2))
-    eachCorrect = np.zeros( len(np.atleast_1d(correctAnsStream1)) + (numStreams-1)*len(np.atleast_1d(correctAnsStream2)) )
-    eachApproxCorrect = np.zeros( len(np.atleast_1d(correctAnsStream1)) + (numStreams-1)*len(np.atleast_1d(correctAnsStream2)) )
-    posOfResponse = np.zeros( len(cuesTemporalPos) )
+
+    #tension between calculating %corr for each response position and separating them out by target
+
+    #assume it's single- or multi-target thing where each target in a different stream
+    #eventually need some whichStreamsAreCuesReferringTo variable
+    eachCorrect = np.zeros( len(cuesTemporalPos) )
+    eachApproxCorrect = np.zeros( len(cuesTemporalPos) )
+    posEachResponse = np.zeros( len(cuesTemporalPos) )
     responsePosRelative = np.zeros( len(cuesTemporalPos) )
     for cueI in range(len(cuesTemporalPos)): #score response to each cue
-        thisLetterSeq = letterSeqStream1
-        if task=='T1': 
-            if targetLeftRightIfOne=='right':
-              thisLetterSeq = letterSeqStream2
-        if numStreams>1:
-            if cueI>0:
-                thisLetterSeq = letterSeqStream2
         if correctAnswers[cueI] == letterToNumber( responses[cueI] ):
             eachCorrect[cueI] = 1
+        thisCueLetterSeq = streamLtrSequences[cueI]
         posThisResponse= np.where( letterToNumber(responses[cueI])==thisLetterSeq )
-        print('for cue ',cueI,' responses=',responses,'correctAnswers=',correctAnswers,'posThisResponse=',posThisResponse,' letterSeqStream1=',letterSeqStream1,' letterSeqStream2=',letterSeqStream2) #debugOFF
         posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the response was found in the letter sequence
         if len(posThisResponse) > 1:
             logging.error('Expected response to have occurred in only one position in stream')
@@ -706,14 +691,12 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targe
             logging.warn('Response was not present in the stimulus stream')
         else: 
             posThisResponse = posThisResponse[0]
-        posOfResponse[cueI]= posThisResponse
+        posEachResponse[cueI]= posThisResponse
         responsePosRelative[cueI] = posOfResponse[cueI] - cuesTemporalPos[cueI]
-        eachApproxCorrect[cueI] +=   abs(responsePosRelative[cueI]) <= 3 #Vul efficacy measure of getting it right to within plus/minus 
+        eachApproxCorrect[cueI] +=   abs(responsePosRelative[cueI]) <= 3 #Vul efficacy measure of getting it right to within plus/minus
 
-    if numStreams>1:
-        print("correctAnsStream1=",correctAnsStream1, " or ", numberToLetter(correctAnsStream1), " correctAnsStream2=",correctAnsStream2, " or ", numberToLetter(correctAnsStream2), 'correctAnswers=',correctAnswers ) #debugON
+    print("correctAnswers=",correctAnswers,"eachCorrect=",eachCorrect,"posEachResponse=",posEachResponse,"responsePosRelative=",responsePosRelative)
 
-    print("eachCorrect=",eachCorrect) #debugOFF
     for cueI in range(len(cuesTemporalPos)): #print response stuff to dataFile
         #header was answerPos0, answer0, response0, correct0, responsePosRelative0
         print(cuesTemporalPos[cueI],'\t', end='', file=dataFile)
@@ -728,9 +711,9 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targe
         print(eachCorrect[cueI] , '\t', end='',file=dataFile)   #correct0
         print(responsePosRelative[cueI], '\t', end='',file=dataFile) #responsePosRelative0
         print('for cueI=',cueI,' cuesTemporalPos[cueI]=',cuesTemporalPos[cueI], ' answerCharacter=',answerCharacter, ' responses[cueI]=',responses[cueI], ' eachCorrect[cueI]=',eachCorrect[cueI],' resopnsePosRelative[cueI]= ',responsePosRelative[cueI])
-        if task=='T1T2':
+        if len(eachCorrect)>1:
             correct = eachCorrect.all()
-        elif task=='T1':
+        else:
             correct = eachCorrect[0]
         T1approxCorrect = eachApproxCorrect[0]
     return correct,eachCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop
@@ -920,7 +903,6 @@ else: #not staircase
         elif thisTrial['task']=='T1T2':
             numRespsWanted = 2
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
-        print("autopilot=",autopilot)
         lineupResponse = True
         if lineupResponse:
             bothSides = True
