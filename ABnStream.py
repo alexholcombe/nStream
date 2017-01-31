@@ -30,10 +30,10 @@ demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
 if autopilot: subject='auto'
-if os.path.isdir('.'+os.sep+'data'):
-    dataDir='data'
+if os.path.isdir('.'+os.sep+'rawData'):
+    dataDir='rawData'
 else:
-    print('"data" directory does not exist, so saving data in present working directory')
+    print('"rawData" directory does not exist, so saving data in present working directory')
     dataDir='.'
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
