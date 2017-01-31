@@ -40,7 +40,7 @@ def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
     '''
     #print("leftRight=",leftRight, "xOffset=",xOffset)
     numResps = len(possibleResps)
-    dimRGB = 0.3
+    dimRGB = 0.1
     drawBoundingBox = False #to debug to visualise response regions, make True 
     lightnessLR = (dimRGB,1) if leftRight else (1,dimRGB) #lightness on left and right sides
     if bothSides:

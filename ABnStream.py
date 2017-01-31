@@ -19,8 +19,6 @@ except ImportError:  print('Could not import strongResponse.py (you need that fi
 try: import letterLineupResponse
 except ImportError:  print('Could not import letterLineupResponse.py (you need that file to be in the same directory)')
 descendingPsycho = True
-#Whether AB task is run, dual stream, or both, is determined by setup of conditions. Search for trialHandler
-tasks=['T1','T1T2']; task = tasks[1]
 #THINGS THAT COULD PREVENT SUCCESS ON A STRANGE MACHINE
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
 #widthPix, heightPix
@@ -55,7 +53,7 @@ cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 de
 widthPix= 1280 #monitor width in pixels of Agosta
 heightPix= 1024 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
-scrn=0 #0 to use main screen, 1 to use external screen connected to computer
+scrn=1 #0 to use main screen, 1 to use external screen connected to computer
 fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
@@ -280,7 +278,8 @@ if showRefreshMisses:
 else: fixSizePix = 32
 fixColor = [1,1,1]
 if exportImages: fixColor= [0,0,0]
-fixatnNoiseTexture = np.round( np.random.rand(fixSizePix/4,fixSizePix/4) ,0 )   *2.0-1 #Can counterphase flicker  noise texture to create salient flicker if you break fixation
+fixatnTextureWidth = np.round(fixSizePix/4).astype(int)
+fixatnNoiseTexture = np.round( np.random.rand(fixatnTextureWidth,fixatnTextureWidth) ,0 )   *2.0-1 #Can counterphase flicker  noise texture to create salient flicker if you break fixation
 
 fixation= visual.PatchStim(myWin, tex=fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False)
 fixationBlank= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
@@ -298,32 +297,23 @@ screenshot= False; screenshotDone = False
 
 #SETTING THE CONDITIONS
 #For the optional attentional blink
-doAB= False
-if doAB:
-    stimListAB = []
-    trialsPerConditionAB  = 10 #4 #default value
-    possibleCue1positions =  np.array([6,7,8,9,10])  #used in Martini E2, group 2 lizzy double check this
-    possibleCue2lags = np.array([1,2,3,4,6,10]) # np.array([1,2,5,8,10]) for VGP: 1,2,3,4,6,10
-    for cue1pos in possibleCue1positions:
-       for cue2lag in possibleCue2lags:
-            stimListAB.append( {'targetLeftRightIfOne':'left','numStreams':1, 'task':'T1T2', 'cue1pos':cue1pos, 'cue2lag':cue2lag } ) #Charlie (28/6): same changes as other version of code. First two keys in the dict are new
-    trialsAB = data.TrialHandler(stimListAB,trialsPerCondition) #constant stimuli method
-    trialsForPossibleStaircase = data.TrialHandler(stimListAB,trialsPerCondition) #independent randomization, just to create random trials for staircase phase
     
 #For the dual-stream simultaneous target
 stimListDualStream=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) 
-for task in  ['T1','T1T2']: #T1 task is just for the single-target tasks, but both streams are presented
-  for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
-    for cueTemporalPos in possibleCueTemporalPositions:
-      for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
-        stimListDualStream.append( 
-               {'numStreams':2, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 'cue1pos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue2lag':0 } 
-             )  #cue2lag = 0, meaning simultaneous targets
+#tasks=['T1','T1T2','allCued']
+numStreamPossibilities = np.array([2]) #this needs to be listed here so when print header can work out the maximum value
+for numStreams in numStreamPossibilities:
+    for task in  ['T1','allCued']: #T1 task is just for the single-target tasks, but both streams are presented
+      for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
+        for cueTemporalPos in possibleCueTemporalPositions:
+          for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
+            stimListDualStream.append( 
+                   {'numStreams':numStreams, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 'cue0pos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0 } 
+                 )  #cue1lag = 0, meaning simultaneous targets
 
 trialsPerConditionDualStream = 1 #10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
-
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -357,11 +347,12 @@ def letterToNumber(letter): #A = 0, Z = 25
 print('experimentPhase\ttrialnum\tsubject\ttask\t',file=dataFile,end='')
 print('noisePercent\t',end='',file=dataFile)
 if task=='T1':
-    numRespsWanted = 1
+    maxNumRespsWanted = 1
 elif task=='T1T2':
-    numRespsWanted = 2
+    maxNumRespsWanted = 2
+else: maxNumRespsWanted = max(numStreamPossibilities)
 print('targetLeftRightIfOne\t',end='',file=dataFile)
-for i in range(numRespsWanted):
+for i in range(maxNumRespsWanted):
    dataFile.write('answerPos'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
    dataFile.write('answer'+str(i)+'\t')
    dataFile.write('response'+str(i)+'\t')
@@ -433,7 +424,8 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
             np.random.shuffle(noiseCoordsEachStream[streami]) #refresh the noise by shuffling the possible locations of noise dots
             numNoiseDotsThis = numNoiseDotsEachStream[streami]
             dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-            posThisDeg =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1) 
+            posThisDeg =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1)
+            print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffset=',cueOffset,'numStream=',numStreams)
             #Displace the noise to present it over the letter stream
             dotCoords[:,0] += posThisDeg[0]
             dotCoords[:,1] += posThisDeg[1]
@@ -445,7 +437,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
 #############################################################################################################################
 
 cues = list()
-for cueN in xrange(2):
+for cueN in xrange(maxNumRespsWanted):
     cue = visual.Circle(myWin, 
                  radius=cueRadius,#Martini used circles with diameter of 12 deg
                  lineColorSpace = 'rgb',
@@ -454,7 +446,7 @@ for cueN in xrange(2):
                  units = 'deg',
                  fillColorSpace = 'rgb',
                  fillColor=None, #beware, with convex shapes fill colors don't work
-                 pos= [0,0], #the anchor (rotation and vertices are position with respect to this)
+                 pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
                  interpolate=True,
                  autoLog=False)#this stim changes too much for autologging to be useful
     cues.append(cue)
@@ -518,29 +510,34 @@ def timingCheckAndLog(ts,trialN):
 trialClock = core.Clock()
 numTrialsCorrect = 0; 
 numTrialsApproxCorrect = 0;
-numTrialsEachCorrect= np.zeros( numRespsWanted )
-numTrialsEachApproxCorrect= np.zeros( numRespsWanted )
-if doAB:
-    nTrialsCorrectT2eachLag = np.zeros(len(possibleCue2lags)); nTrialsEachLag = np.zeros(len(possibleCue2lags))
-    nTrialsApproxCorrectT2eachLag = np.zeros(len(possibleCue2lags));
-    numRightWrongEachCuepos = np.zeros([ len(possibleCue1positions), 1 ]); #summary results to print out at end
-    numRightWrongEachCue2lag = np.zeros([ len(possibleCue2lags), 1 ]); #summary results to print out at end
+numTrialsEachCorrect= np.zeros( maxNumRespsWanted )
+numTrialsEachApproxCorrect= np.zeros( maxNumRespsWanted )
     
-def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2lag, proportnNoise,trialN):
+def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1lag, proportnNoise,trialN):
     #relies on global variables:
     #   logging, bgColor
     #
-    print("numStreams = ",numStreams, 'task=',task, 'targetLeftRightIfOne=',targetLeftRightIfOne, 'cue1temporalPos=',cue1temporalPos)
-    numTargets = 1
-    cuesTemporalPos = [] #will contain the positions of all the cues (targets)
-    cuesTemporalPos.append(cue1temporalPos)
-    if task=='T1T2':
-        cuesTemporalPos.append(cue1temporalPos+cue2lag)
-        numTargets = 2
-    #target on only one side will be task 'T1' so only one cue
-    cuesTemporalPos = np.array(cuesTemporalPos)
+    print("numStreams = ",numStreams, 'task=',task)
+    if task != 'allCued':
+        print('targetLeftRightIfOne=',targetLeftRightIfOne, 'cue0temporalPos=',cue0temporalPos)
     
-    streamLtrSequences = list() #assign the letters to be shown in each stream
+    #set up which temporal positions are cued
+    cuesTemporalPos = [] #will contain the positions of all the cues (targets)
+    if task=='T1T2':
+        cuesTemporalPos.append(cue0temporalPos+cue1lag)
+        numTargets = 2
+    elif task =='T1': #target on only one side will be task 'T1' so only one cue
+        numTargets = 1
+        cuesTemporalPos.append(cue0temporalPos)
+    else: #allCued task
+        numTargets = numStreams
+        for streami in xrange(numStreams):
+            cuesTemporalPos.append(cue0temporalPos) #all cues at the same time
+     
+    cuesTemporalPos = np.array(cuesTemporalPos) #convert to np array
+        
+    #assign the letters to be shown in each stream
+    streamLtrSequences = list() 
     for streami in xrange(numStreams):
         letterSeqThisStream =  np.arange(0,26)
         np.random.shuffle(letterSeqThisStream)
@@ -556,25 +553,25 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2la
         numRespsWanted = 1
     elif thisTrial['task']=='T1T2':
         numRespsWanted = 2 #to be expanded later
+    else: #allCued
+        numRespsWanted = numStreams
             
-    if numStreams ==1:
+    if task =='T1':
+        numTarget = 1
         if targetLeftRightIfOne=='left':
-            numTargets = 1
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
         elif targetLeftRightIfOne=='right':
-            numTargets = 1
             corrAnswers.append( np.array( streamLtrSequences[1][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
         else: 
-            print("UNEXPECTED targetLeftRightIfOne value!")
-       
-    if numStreams ==2:
-        if task =='T1T2':
+            print("UNEXPECTED targetLeftRightIfOne value!")   
+    elif numStreams ==2 and task =='T1T2': #attentional blink
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   ) #which streams contain targets? Need variable for that.
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[1]] )   )#which streams contain targets? Need variable for that.
-        elif task=='T1': #simultaneous targets
-            corrAnswers.append(  np.array( streamLtrSequences[0][cuesTemporalPos[0]] )    )
-            corrAnswers.append(  np.array( streamLtrSequences[1][cuesTemporalPos[0]] )    )
-    #print("corrrectAnsStream1=",correctAnsStream1, " or ", numberToLetter(correctAnsStream1), " correctAnsStream2=",correctAnsStream2, " or ", numberToLetter(correctAnsStream2) ) #debugOFF
+    else: #assume all streams cued and to be reported.  Need which streams contain targets varaible eventually
+        for cuei in xrange( len(cuesTemporalPos) ):
+            corrAnswers.append(  np.array( streamLtrSequences[cuei][cuesTemporalPos[cuei]] )    )
+    cue0item = streamLtrSequences[0][cuesTemporalPos[0]]
+    print("corrAnswers numeric=",corrAnswers,  "corrAnswers=", [numberToLetter(x) for x in corrAnswers],  "Cue 0 cues item ",cue0item, " which is letter ",numberToLetter(cue0item)) 
 
     #set cue positions. They (objects to be drawn) are in an array called cues
     if task=='T1':
@@ -582,20 +579,23 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2la
             stream=1
             cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
             cues[1].setPos([999,999]) #offscreen
-        elif  targetLeftRightIfOne == 'right':
+        elif targetLeftRightIfOne == 'right':
             stream=0
             cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
             cues[1].setPos([999,999]) #offscreen
-
-    if task=='T1T2':
+    elif task=='T1T2':
         if numStreams==1:
-            for cue in cues:
-                cue.setPos([0,0])
+            for respi in numRespsWanted:
+                cues[respi].setPos([0,0])
         elif numStreams==2: #2 streams with targets in different streams
             stream=1
             cues[0].setPos(  calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
             stream=0
             cues[1].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
+    else:
+        for streami in xrange(numStreams):
+            posThis = calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=0)
+            cues[streami].setPos( posThis )
 
     noiseEachStream = list(); noiseCoordsEachStream = list(); numNoiseDotsEachStream = list()
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
@@ -604,7 +604,6 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue1temporalPos, cue2la
             noiseEachStream.append(noiseThis)
             numNoiseDotsEachStream.append(numNoiseDotsThis)
             noiseCoordsEachStream.append(allFieldCoordsThis)
-    
     #Work out how to displace the noise so it will be on top of the streams, and then displace it
     for streami in xrange(numStreams):
         numNoiseDotsThis = numNoiseDotsEachStream[streami]
@@ -679,10 +678,10 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targe
     posEachResponse = np.zeros( len(cuesTemporalPos) )
     responsePosRelative = np.zeros( len(cuesTemporalPos) )
     for cueI in range(len(cuesTemporalPos)): #score response to each cue
-        if correctAnswers[cueI] == letterToNumber( responses[cueI] ):
+        if corrAnswers[cueI] == letterToNumber( responses[cueI] ):
             eachCorrect[cueI] = 1
         thisCueLetterSeq = streamLtrSequences[cueI]
-        posThisResponse= np.where( letterToNumber(responses[cueI])==thisLetterSeq )
+        posThisResponse= np.where( letterToNumber(responses[cueI])==thisCueLetterSeq )
         posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the response was found in the letter sequence
         if len(posThisResponse) > 1:
             logging.error('Expected response to have occurred in only one position in stream')
@@ -692,25 +691,22 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targe
         else: 
             posThisResponse = posThisResponse[0]
         posEachResponse[cueI]= posThisResponse
-        responsePosRelative[cueI] = posOfResponse[cueI] - cuesTemporalPos[cueI]
+        responsePosRelative[cueI] = posThisResponse - cuesTemporalPos[cueI]
         eachApproxCorrect[cueI] +=   abs(responsePosRelative[cueI]) <= 3 #Vul efficacy measure of getting it right to within plus/minus
 
-    print("correctAnswers=",correctAnswers,"eachCorrect=",eachCorrect,"posEachResponse=",posEachResponse,"responsePosRelative=",responsePosRelative)
+    #print("corrAnswers=",corrAnswers,"eachCorrect=",eachCorrect,"posEachResponse=",posEachResponse,"responsePosRelative=",responsePosRelative)
 
     for cueI in range(len(cuesTemporalPos)): #print response stuff to dataFile
         #header was answerPos0, answer0, response0, correct0, responsePosRelative0
         print(cuesTemporalPos[cueI],'\t', end='', file=dataFile)
-        if numStreams>1:
-            if cueI>0:
-                thisLetterSeq = letterSeqStream2
-            else:
-                thisLetterSeq = letterSeqStream1
-        answerCharacter = numberToLetter( correctAnswers[cueI] )
+        thisCueLetterSeq = streamLtrSequences[cueI]
+        answerCharacter = numberToLetter( corrAnswers[cueI] )
         print(answerCharacter, '\t', end='', file=dataFile) #answer0
         print(responses[cueI], '\t', end='', file=dataFile) #response0
         print(eachCorrect[cueI] , '\t', end='',file=dataFile)   #correct0
         print(responsePosRelative[cueI], '\t', end='',file=dataFile) #responsePosRelative0
-        print('for cueI=',cueI,' cuesTemporalPos[cueI]=',cuesTemporalPos[cueI], ' answerCharacter=',answerCharacter, ' responses[cueI]=',responses[cueI], ' eachCorrect[cueI]=',eachCorrect[cueI],' resopnsePosRelative[cueI]= ',responsePosRelative[cueI])
+        print('for cueI=',cueI,' cuesTemporalPos[cueI]=',cuesTemporalPos[cueI], ' answerCharacter=',answerCharacter, ' responses[cueI]=',responses[cueI], 
+                  ' responsePosRelative[cueI]= ',responsePosRelative[cueI], ' eachCorrect[cueI]=',eachCorrect[cueI], 'eachApproxCorrect[cueI]=', eachApproxCorrect[cueI])
         if len(eachCorrect)>1:
             correct = eachCorrect.all()
         else:
@@ -795,8 +791,8 @@ if doStaircase:
                 break #break out of the trials loop
         #print('staircaseTrialN=',staircaseTrialN)
 
-        streamLtrSequences, cuesTemporalPos,correctAnswers, numRespsWanted, ts  = do_RSVP_stim(numStreams,
-                                                            thisTrial['task'],thisTrial['targetLeftRightIfOne'],cue1pos, cue2lag, noisePercent/100.,staircaseTrialN)
+        streamLtrSequences, cuesTemporalPos,corrAnswers, numRespsWanted, ts  = do_RSVP_stim(numStreams,
+                                                            thisTrial['task'],thisTrial['targetLeftRightIfOne'],cue0pos, cue1lag, noisePercent/100.,staircaseTrialN)
         numCasesInterframeLong = timingCheckAndLog(ts,staircaseTrialN)
 
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
@@ -813,7 +809,7 @@ if doStaircase:
             print(staircaseTrialN,'\t', end='', file=dataFile) #first thing printed on each line of dataFile
             print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,2),'\t', end='', file=dataFile)
             correct,eachCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = (
-                    handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,thisTrial['task'],thisTrial['targetLeftRightIfOne'],letterSequence,cuesTemporalPos,correctAnswers) )
+                    handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,thisTrial['task'],thisTrial['targetLeftRightIfOne'],letterSequence,cuesTemporalPos,corrAnswers) )
             print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
             core.wait(.06)
             if feedback: 
@@ -858,8 +854,6 @@ if doStaircase:
     pylab.show() #must call this to actually show plot
 else: #not staircase
     noisePercent = defaultNoiseLevel
-    phasesMsg = 'Experiment will have '+str(trialsAB.nTotal if doAB else 0)+ ' AB and ' + str(trialsDualStream.nTotal) + '  dualstream trials. Letters will be drawn with superposed noise of' + "{:.2%}".format(defaultNoiseLevel)
-    print(phasesMsg); logging.info(phasesMsg)
     
     ABfirst = False
     nDone =0
@@ -891,12 +885,12 @@ else: #not staircase
         #end control of which block we are in 
         
         thisTrial = trials.next() #get a proper (non-staircase) trial
-        cue1pos = thisTrial['cue1pos']
-        cue2lag = None
+        cue0pos = thisTrial['cue0pos']
+        cue1lag = None
         if thisTrial['task']=="T1T2":
-            cue2lag = thisTrial['cue2lag']
+            cue1lag = thisTrial['cue1lag']
         numStreams = thisTrial['numStreams']
-        streamLtrSequences,cuesTemporalPos,corrAnswers,ts  = do_RSVP_stim(numStreams,thisTrial['task'],thisTrial['targetLeftRightIfOne'],cue1pos, cue2lag, noisePercent/100.,nDone)
+        streamLtrSequences,cuesTemporalPos,corrAnswers,ts  = do_RSVP_stim(numStreams,thisTrial['task'],thisTrial['targetLeftRightIfOne'], cue0pos, cue1lag, noisePercent/100.,nDone)
         numCasesInterframeLong = timingCheckAndLog(ts,nDone)
         if thisTrial['task']=='T1':
             numRespsWanted = 1
@@ -986,16 +980,6 @@ if expStop:
 if (nDone >0):
     print('Of ',nDone,' trials, on ',numTrialsCorrect*1.0/nDone*100., '% of all trials all targets reported exactly correct',sep='')
     print('All targets approximately correct in ',round(numTrialsApproxCorrect*1.0/nDone*100,1),'% of trials',sep='')
-    if doAB:
-        print('T1: ',round(numTrialsEachCorrect[0]*1.0/nDone*100.,2), '% correct',sep='')
-        if len(numTrialsEachCorrect) >1:
-            print('T2: ',round(numTrialsEachCorrect[1]*1.0/nDone*100,2),'% correct',sep='')
-        print('T1: ',round(numTrialsEachApproxCorrect[0]*1.0/nDone*100,2),'% approximately correct',sep='')
-        if len(numTrialsEachCorrect) >1:
-            print('T2: ',round(numTrialsEachApproxCorrect[1]*1.0/nDone*100,2),'% approximately correct',sep='')
-            print('T2 for each of the lags,',np.around(possibleCue2lags,0),': ', np.around(100*nTrialsCorrectT2eachLag / nTrialsEachLag,3), '%correct, and ',
-                     np.around(100*nTrialsApproxCorrectT2eachLag/nTrialsEachLag,3),'%approximately correct')
 
 dataFile.close()
 myWin.close() #have to close window if want to show a plot
-#ADD PLOT OF AB PERFORMANCE?
