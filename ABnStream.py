@@ -36,7 +36,7 @@ else:
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
-feedback=False
+feedback=True
 autoLogging=False
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
@@ -94,7 +94,7 @@ if quitFinder:
 
 #letter size 2.5 deg
 numLettersToPresent = 26
-SOAms = 133 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+SOAms =  233#133 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 #Minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
 letterDurMs = 80 #23.6  in Martini E2 and E1b (actually he used 22.2 but that's because he had a crazy refresh rate of 90 Hz)
 
@@ -161,7 +161,7 @@ else: #checkRefreshEtc
     myWin.allowGUI =True
 myWin.close() #have to close window to show dialog box
 
-defaultNoiseLevel = 90.0 #to use if no staircase, can be set by user
+defaultNoiseLevel = 0#90.0 #to use if no staircase, can be set by user
 dlgLabelsOrdered = list()
 if doStaircase:
     myDlg = gui.Dlg(title="Staircase to find appropriate noisePercent", pos=(200,400))
@@ -300,11 +300,11 @@ screenshot= False; screenshotDone = False
     
 #For the dual-stream simultaneous target
 stimListDualStream=[]
-possibleCueTemporalPositions =  np.array([6,7,8,9,10]) 
+possibleCueTemporalPositions =  np.array([6]) #debugAH np.array([6,7,8,9,10]) 
 #tasks=['T1','T1T2','allCued']
 numStreamPossibilities = np.array([2]) #this needs to be listed here so when print header can work out the maximum value
 for numStreams in numStreamPossibilities:
-    for task in  ['T1','allCued']: #T1 task is just for the single-target tasks, but both streams are presented
+    for task in  ['allCued']: #T1 task is just for the single-target tasks, but both streams are presented
       for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
         for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
@@ -419,18 +419,19 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
     
     #noise
     refreshNoise = False #Not recommended because takes longer than a frame, even to shuffle apparently. Or may be setXYs step
-    if proportnNoise>0 and refreshNoise:
-        if frameOfThisLetter ==0: #refresh it if it's the first frame of the noise, so each letter gets a different noise but noise not dynamic within a letter
-            np.random.shuffle(noiseCoordsEachStream[streami]) #refresh the noise by shuffling the possible locations of noise dots
-            numNoiseDotsThis = numNoiseDotsEachStream[streami]
-            dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-            posThisDeg =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1)
-            print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffset=',cueOffset,'numStream=',numStreams)
-            #Displace the noise to present it over the letter stream
-            dotCoords[:,0] += posThisDeg[0]
-            dotCoords[:,1] += posThisDeg[1]
-            noiseEachStream[streami].setXYs(dotCoords)
-    noiseEachStream[streami].draw()
+    if proportnNoise>0:
+        if refreshNoise:
+            if frameOfThisLetter ==0: #refresh it if it's the first frame of the noise, so each letter gets a different noise but noise not dynamic within a letter
+                np.random.shuffle(noiseCoordsEachStream[streami]) #refresh the noise by shuffling the possible locations of noise dots
+                numNoiseDotsThis = numNoiseDotsEachStream[streami]
+                dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
+                posThisDeg =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1)
+                print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffset=',cueOffset,'numStream=',numStreams)
+                #Displace the noise to present it over the letter stream
+                dotCoords[:,0] += posThisDeg[0]
+                dotCoords[:,1] += posThisDeg[1]
+                noiseEachStream[streami].setXYs(dotCoords)
+        noiseEachStream[streami].draw()
 
   return True 
 # #######End of function definition that displays the stimuli!!!! #####################################
@@ -558,9 +559,9 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
             
     if task =='T1':
         numTarget = 1
-        if targetLeftRightIfOne=='left':
+        if targetLeftRightIfOne=='right':
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
-        elif targetLeftRightIfOne=='right':
+        elif targetLeftRightIfOne=='left':
             corrAnswers.append( np.array( streamLtrSequences[1][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
         else: 
             print("UNEXPECTED targetLeftRightIfOne value!")   
@@ -568,9 +569,12 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   ) #which streams contain targets? Need variable for that.
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[1]] )   )#which streams contain targets? Need variable for that.
     else: #assume all streams cued and to be reported.  Need which streams contain targets varaible eventually
+        #Need to take into account which stream is queried first, second, etc.
         for cuei in xrange( len(cuesTemporalPos) ):
             corrAnswers.append(  np.array( streamLtrSequences[cuei][cuesTemporalPos[cuei]] )    )
     cue0item = streamLtrSequences[0][cuesTemporalPos[0]]
+    print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
+    print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
     print("corrAnswers numeric=",corrAnswers,  "corrAnswers=", [numberToLetter(x) for x in corrAnswers],  "Cue 0 cues item ",cue0item, " which is letter ",numberToLetter(cue0item)) 
 
     #set cue positions. They (objects to be drawn) are in an array called cues
@@ -578,11 +582,9 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
         if targetLeftRightIfOne == 'left':
             stream=1
             cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
-            cues[1].setPos([999,999]) #offscreen
         elif targetLeftRightIfOne == 'right':
             stream=0
             cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
-            cues[1].setPos([999,999]) #offscreen
     elif task=='T1T2':
         if numStreams==1:
             for respi in numRespsWanted:
@@ -592,7 +594,7 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
             cues[0].setPos(  calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
             stream=0
             cues[1].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
-    else:
+    else: #all streams have a target
         for streami in xrange(numStreams):
             posThis = calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=0)
             cues[streami].setPos( posThis )
@@ -604,15 +606,15 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
             noiseEachStream.append(noiseThis)
             numNoiseDotsEachStream.append(numNoiseDotsThis)
             noiseCoordsEachStream.append(allFieldCoordsThis)
-    #Work out how to displace the noise so it will be on top of the streams, and then displace it
-    for streami in xrange(numStreams):
-        numNoiseDotsThis = numNoiseDotsEachStream[streami]
-        dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-        posThisPix =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1) 
-        #Displace the noise to present it over the letter stream
-        dotCoords[:,0] += posThisPix[0]
-        dotCoords[:,1] += posThisPix[1]
-        noiseEachStream[streami].setXYs(dotCoords)
+        #Work out how to displace the noise so it will be on top of the streams, and then displace it
+        for streami in xrange(numStreams):
+            numNoiseDotsThis = numNoiseDotsEachStream[streami]
+            dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
+            posThisPix =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1) 
+            #Displace the noise to present it over the letter stream
+            dotCoords[:,0] += posThisPix[0]
+            dotCoords[:,1] += posThisPix[1]
+            noiseEachStream[streami].setXYs(dotCoords)
     #end prep of cuesTemporalPos, streamLtrSequences, corrAnswers, noiseEachStream, numNoiseDotsEachStream, noiseCoordsEachStream
     
     preDrawStimToGreasePipeline = list() #I don't know why this works, but without drawing it I have consistent timing blip first time that draw ringInnerR for phantom contours
@@ -662,7 +664,7 @@ def do_RSVP_stim(numStreams, task, targetLeftRightIfOne, cue0temporalPos, cue1la
     postCueNumBlobsAway=-999 #doesn't apply to non-tracking and click tracking task
     return streamLtrSequences,cuesTemporalPos,corrAnswers, ts  
 
-def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,targetLeftRightIfOne,numStreams,
+def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numStreams,
                                                       streamLtrSequences,cuesTemporalPos,corrAnswers):
     #Handle response, calculate whether correct, ########################################
     if autopilot or passThisTrial:
@@ -727,7 +729,7 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
         for i in range(2): 
             high.play();  low.play(); 
     else: #incorrect
-        highA.play() #low.play()
+        low.play()
 
        
 myMouse = event.Mouse()
@@ -900,11 +902,12 @@ else: #not staircase
         lineupResponse = True
         if lineupResponse:
             bothSides = True
+            if numRespsWanted == 1 and numStreams > 1:
             if thisTrial['task']=='T1':
                 bothSides = False
                 sideFirst = thisTrial['targetLeftRightIfOne']
             else:
-                sideFirst = thisTrial['firstRespLRifTwo']
+                sideFirst = thisTrial['firstRespLR']
             print('sideFirst = ',sideFirst)
             alphabet = list(string.ascii_uppercase)
             possibleResps = alphabet
@@ -944,7 +947,8 @@ else: #not staircase
                  myWin.saveMovieFrames('exported/frames.mov')  
                  expStop=True
             core.wait(.1)
-            if feedback: play_high_tone_correct_low_incorrect(correct, passThisTrial=False)
+            if feedback: 
+                play_high_tone_correct_low_incorrect(correct, passThisTrial=False)
             nDone+=1
             
             dataFile.flush(); logging.flush()
