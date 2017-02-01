@@ -146,7 +146,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
    response = possibleResps[whichResp]
    #print('Returning with response=',response,' expStop=',expStop)
    return response, expStop
-            
+        
 def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightFirst,autopilot):
     if type(leftRightFirst) is str: #convert to 0/1
         if leftRightFirst == 'right':

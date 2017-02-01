@@ -306,9 +306,9 @@ numResponsesWanted=1; maxNumRespsWanted=1
 numStreamPossibilities = np.array([2]) #this needs to be listed here so when print header can work out the maximum value
 for numStreams in numStreamPossibilities:
     for task in  ['allCued']: #T1 task is just for the single-target tasks, but both streams are presented
-        if task=='T1T2':
+       if task=='T1T2':
             numResponsesWanted=2
-      for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
+       for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
         for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
             stimListDualStream.append( 
@@ -548,7 +548,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
       while (streamLtrSequences[0]==streamLtrSequences[1]).any():
         np.random.shuffle(streamLtrSequences[0])
 
-    #set up corrAnswers and respsWhichStream. 
+    #set up corrAnswers, whichStreamEachResp, whichStreamEachCue, and cues' positions
     #corrAnswers is in order of how streams are drawn
     #whichStreamEachResp is which stream each response refers to (which stream was queried for 0th response, 1st response, etc)
     #whichStreamEachCue (not coded yet) will indicate which stream each cue refers to. These can be in different order than whichStreamEachResp, because randomised which queried first
@@ -559,25 +559,43 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
             whichStreamEachResp.append(0) #first drawn is East
             whichStreamEachCue.append(0)
+            stream=0
+            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )  
         elif trial['targetLeftRightIfOne']=='left':
             corrAnswers.append( np.array( streamLtrSequences[1][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
             whichStreamEachResp.append(1)
             whichStreamEachCue.append(0)
+            stream=1
+            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
         else: 
-            print("UNEXPECTED targetLeftRightIfOne value!")   
-    elif numStreams ==2 and trial['task'] =='T1T2': #attentional blink
+            print("UNEXPECTED targetLeftRightIfOne value!")
+    elif trial['task'] =='T1T2': #attentional blink
+        if numStreams==1:
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   )
             whichStreamEachCue.append(0)
             whichStreamEachResp.append(0)
             corrAnswers.append( np.array( streamLtrSequences[0][cuesTemporalPos[1]] )   )
             whichStreamEachCue.append(0)
             whichStreamEachResp.append(0)
-    else: #assume all streams cued and to be reported.  Need which streams contain targets varaible eventually
+            if len(cuesTemporalPos) > 2:
+                print("WARNING: Expected only 2 temporal positions for cues with T1T2 task, but have ", len(cuesTemporalPos))
+            cues[0].setPos([0,0])
+            cues[1].setPos([0,0])
+        elif numStreams==2:  #2 streams with targets in different streams
+            print("ERROR: Not set up for 2-stream AB currently, but seems like that's what you are asking for")
+            #stream=1
+            #cues[0].setPos(  calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
+            #stream=0
+            #cues[1].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
+    else: #assume all streams cued and to be reported.
         #Need to take into account which stream is queried first, second, etc.
         for cuei in xrange( len(cuesTemporalPos) ):
             corrAnswers.append(  np.array( streamLtrSequences[cuei][cuesTemporalPos[cuei]] )    )
-            whichStreamEachCue.append( cuei )
-            whichStreamEachResp.append( cuei )
+            thisStream = cuei
+            whichStreamEachCue.append( thisStream )
+            whichStreamEachResp.append( thisStream )
+            posThis = calcStreamPos(numStreams,thisStream,cueOffset,streamOrNoise=0)
+            cues[thisStream].setPos( posThis )
         #randomly shuffle query order
         random.shuffle(whichStreamEachResp)
         #reduce whichStreamEachResp to numRespsWanted
@@ -586,28 +604,6 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
     print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
     print("corrAnswers numeric=",corrAnswers,  "corrAnswers=", [numberToLetter(x) for x in corrAnswers],  "Cue 0 cues item ",cue0item, " which is letter ",numberToLetter(cue0item)) 
-
-    #set cue positions. They (objects to be drawn) are in an array called cues
-    if trial['task']=='T1':
-        if trial['targetLeftRightIfOne'] == 'left':
-            stream=1
-            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
-        elif trial['targetLeftRightIfOne'] == 'right':
-            stream=0
-            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
-    elif trial['task']=='T1T2':
-        if numStreams==1:
-            for respi in numRespsWanted:
-                cues[respi].setPos([0,0])
-        elif numStreams==2: #2 streams with targets in different streams
-            stream=1
-            cues[0].setPos(  calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
-            stream=0
-            cues[1].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
-    else: #all streams have a target
-        for streami in xrange(numStreams):
-            posThis = calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=0)
-            cues[streami].setPos( posThis )
 
     noiseEachStream = list(); noiseCoordsEachStream = list(); numNoiseDotsEachStream = list()
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
@@ -905,19 +901,23 @@ else: #not staircase
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
         lineupResponse = True
         if lineupResponse:
-            bothSides = True
-            if numRespsWanted == 1 and numStreams > 1:
-            if thisTrial['task']=='T1':
-                bothSides = False
-                sideFirst = thisTrial['targetLeftRightIfOne']
-            else:
-                sideFirst = thisTrial['firstRespLR']
-            print('sideFirst = ',sideFirst)
-            alphabet = list(string.ascii_uppercase)
-            possibleResps = alphabet
-            #possibleResps.remove('C'); possibleResps.remove('V')
-            expStop,passThisTrial,responses,responsesAutopilot = \
-                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,bothSides,sideFirst,autopilot)
+            if len(whichStreamEachResp) != numRespsWanted:
+                print("len(whichStreamEachResp) does not match numRespsWanted")
+            if numRespsWanted == 1
+                if numStreams == 2:
+                    showBothSides = False
+                    sideFirstLeftRight= not whichStreamEachResp[0]  #have to flip it because 0 means East, right       # thisTrial['targetLeftRightIfOne']
+            else: #numRespsWanted >1
+                if numStreams ==2:
+                    showBothSides = True
+                    sideFirstLeftRight =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
+                else: #numStreams must be greater than 2. Probably only want to do lineup for 1. As stopap measure, can put the lineup centrally on every trial
+                    showBothSides = False
+                print('sideFirstLeftRight = ',sideFirstLeftRight)
+                alphabet = list(string.ascii_uppercase)
+                possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
+                expStop,passThisTrial,responses,responsesAutopilot = \
+                    letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRight,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
         else:
             expStop,passThisTrial,responses,responsesAutopilot = \
                     stringResponse.collectStringResponse(numRespsWanted,respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
