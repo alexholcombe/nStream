@@ -32,7 +32,7 @@ def drawArray(myWin,possibleResps,x,lightness,drawBoundingBox):
     for i in xrange(len(possibleResps)):
         drawRespOption(myWin,x,(lightness,lightness,lightness),drawBoundingBox,possibleResps,i)
 
-def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
+def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRightCentral):
     '''If bothSides, draw array on both sides, with one side dimmed
     If leftRight=0, collect response from left side, and draw other side dim. Otherwise if =1, from right side.
     possibleResps is usually an array of all the letters to populate the array with.
@@ -41,14 +41,25 @@ def drawResponseArrays(myWin,xOffset,possibleResps,bothSides,leftRight):
     #print("leftRight=",leftRight, "xOffset=",xOffset)
     numResps = len(possibleResps)
     dimRGB = -.3
-    drawBoundingBox = False #to debug to visualise response regions, make True 
-    lightnessLR = (dimRGB,1) if leftRight else (1,dimRGB) #lightness on left and right sides
+    drawBoundingBox = False #to debug to visualise response regions, make True
     if bothSides:
+        if leftRightCentral == 0:
+            lightnessLR = (1,dimRGB) #lightness on left and right sides
+        elif leftRightCentral ==1:
+            lightnessLR = (dimRGB,1) 
         drawArray(myWin,possibleResps, xOffset*-1, lightnessLR[0],drawBoundingBox)
         drawArray(myWin,possibleResps, xOffset, lightnessLR[1],drawBoundingBox)
     else: #only draw one side
-        x = xOffset if leftRight else -1*xOffset
-        drawArray(myWin,possibleResps, x, lightnessLR[leftRight],drawBoundingBox)
+        lightness = 1
+        x = xOffset if leftRightCentral==1 else -1*xOffset
+        if leftRightCentral ==0:
+            x = -1*xOffset
+        elif leftRightCentral ==1:
+            x = xOffset
+            lightnessLR = (dimRGB,1) 
+        elif leftRightCentral==2:
+            x = 0        
+        drawArray(myWin,possibleResps, x, lightness,drawBoundingBox)
 
 def checkForOKclick(mousePos,respZone):
     OK = False
@@ -74,11 +85,18 @@ def convertXYtoNormUnits(XY,currUnits,win):
     return xNorm, yNorm
 
 
-def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
-   xOffsetThis = xOffset if leftRight else -1*xOffset
+def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
+   if leftRightCentral == 0: #left
+        xOffsetThis = -1*xOffset
+   elif leftRightCentral == 1: #right
+        xOffsetThis = xOffset
+   elif leftRightCentral == 2: #central
+        xOffsetThis = 0
+        OKrespZone.pos += [0,-.3]
+        OKtextStim.pos+= [0,-.3]
    myMouse.clickReset()
    sideIndicator = visual.Rect(myWin, width=.14, height=.04, fillColor=(1,1,1), fillColorSpace='rgb', lineColor=None, units='norm', autoLog=False)
-   sideIndicatorX = .77*(xOffset if leftRight else -xOffset)
+   sideIndicatorX = .77*xOffsetThis
    sideIndicator.setPos( [sideIndicatorX, 0] )
    chosenLtr = visual.TextStim(myWin,colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.4,units='norm',autoLog=False)
    chosenLtr.setPos( [sideIndicatorX,0] )
@@ -90,7 +108,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
    expStop = False
    while state != 'finished' and not expStop:
         #draw everything corresponding to this state
-        drawResponseArrays(myWin,xOffset,possibleResps,drawBothSides,leftRight=leftRight)
+        drawResponseArrays(myWin,xOffset,possibleResps,drawBothSides,leftRightCentral=leftRightCentral)
         if state == 'waitingForClick':
             #draw selected one in red, and bigly
             drawRespOption(myWin,xOffsetThis,(1,-1,-1),False,possibleResps,whichResp)
@@ -99,7 +117,8 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
             OKrespZone.draw()
             OKtextStim.draw()
         else:
-            sideIndicator.draw()
+            if leftRightCentral != 2:
+                sideIndicator.draw()
             
         myWin.flip()
         #poll keyboard and mouse
@@ -147,14 +166,17 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRight,OKtextStim,OK
    #print('Returning with response=',response,' expStop=',expStop)
    return response, expStop
         
-def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightFirst,autopilot):
-    if type(leftRightFirst) is str: #convert to 0/1
-        if leftRightFirst == 'right':
-            leftRightFirst = 1
-        elif leftRightFirst == 'left':
-            leftRightFirst = 0
+def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
+    #leftRightCentral is 0 if draw on left side first (or only), 1 if draw right side first (or only), 2 if draw centrally only
+    if type(leftRightCentral) is str: #convert to 0/1
+        if leftRightCentral == 'right':
+            leftRightCentral = 1
+        elif leftRightCentral == 'left':
+            leftRightCentral = 0
+        elif leftRightCentral == 'central':
+            leftRightCentral = 2
         else:
-            print("unrecognized leftRightFirst value")
+            print("unrecognized leftRightCentral value")
     expStop = False
     passThisTrial = False
     responsesAutopilot = []
@@ -168,7 +190,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
         OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(-1,-1,-1),alignHoriz='center', alignVert='center',height=.13,units='norm',autoLog=False)
         OKtextStim.setText('OK')
         whichResp0, expStop = \
-                collectOneLineupResponse(myWin,myMouse,bothSides,leftRightFirst,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+                collectOneLineupResponse(myWin,myMouse,bothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
         responses.append(whichResp0)
     if not expStop and bothSides:
         if autopilot:
@@ -176,7 +198,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
         else:
             #Draw arrays again, with that one dim, to collect the other response
             whichResp1, expStop =  \
-                collectOneLineupResponse(myWin,myMouse,bothSides,not leftRightFirst,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+                collectOneLineupResponse(myWin,myMouse,bothSides,not leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
             responses.append(whichResp1)
     return expStop,passThisTrial,responses,responsesAutopilot
 
@@ -217,13 +239,22 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     
     #drawResponseArrays(myWin,xOffset,possibleResps,True,0)
     myWin.flip()
+    passThisTrial = False
+    myMouse = event.Mouse()
 
     responseDebug=False; responses = list(); responsesAutopilot = list();
     expStop = False
+    bothSides = False
+    leftRightCentral = 2 #central
+    expStop,passThisTrial,responses,responsesAutopilot = \
+                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
+
+    print('autopilot=',autopilot, 'responses=',responses)
+    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
     
-    passThisTrial = False
-    responsesAutopilot = ' '
-    myMouse = event.Mouse()
+    responseDebug=False; responses = list(); responsesAutopilot = list();
+    expStop = False
+    
     bothSides = True
     leftRightFirst = False
     expStop,passThisTrial,responses,responsesAutopilot = \
