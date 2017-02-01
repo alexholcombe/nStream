@@ -154,19 +154,21 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                 if OK:
                     state = 'finished'
             if not OK: #didn't click OK. Check whether clicked near response array item
-                coord, w, h = calcRespYandBoundingBox( possibleResps, horizVert, 1)
-                x = constCoord if horizVert else coord
-                y = coord if horizVert else constCoord
-                print("response array item x =",x," y=",y, " based on constCoord= ", constCoord, "coord=", coord, "horizVert=",horizVert)
                 topmostCoord, topmostW, topmostH =  calcRespYandBoundingBox( possibleResps, horizVert, 0) #determine bounds of adjacent option
                 topmostX = constCoord if horizVert else topmostCoord
                 topmostY = topmostCoord if horizVert else constCoord
                 btmmostCoord, btmmostW, btmmostH =  calcRespYandBoundingBox(possibleResps,horizVert, len(possibleResps)-1)
                 btmmostX = constCoord if horizVert else btmmostCoord
                 btmmostY = btmmostCoord if horizVert else constCoord
-                
-                horizBounds = [constCoord-w/2, constCoord+w/2]
-                vertBounds = [btmmostY - h/2, topmostY + h/2]
+                w = topmostW
+                h = topmostH
+                if horizVert:
+                    horizBounds = [ constCoord-w/2, constCoord+w/2 ]
+                    vertBounds = [btmmostY - h/2, topmostY + h/2]
+                else: #horizontal
+                    horizBounds = [topmostX-w/2, btmmostX+w/2,]
+                    vertBounds =  [constCoord-h/2, constCoord+w/2 ]
+                print("horizBounds=",horizBounds," vertBounds=",vertBounds, " constCoord=", constCoord)
                 xValid = horizBounds[0] <= mousePos[0] <= horizBounds[1]  #clicked in a valid x-position
                 yValid = vertBounds[0] <= mousePos[1] <= vertBounds[1]  #clicked in a valid y-position
                 if xValid and yValid:
@@ -260,6 +262,17 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     myWin.flip()
     passThisTrial = False
     myMouse = event.Mouse()
+
+    #Do horizontal lineups
+    responseDebug=False; responses = list(); responsesAutopilot = list();
+    expStop = False
+    bothSides = False
+    leftRightCentral = 2 #central
+    expStop,passThisTrial,responses,responsesAutopilot = \
+                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
+
+    print('autopilot=',autopilot, 'responses=',responses)
+    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
     
     #Do vertical lineups
     responseDebug=False; responses = list(); responsesAutopilot = list();
@@ -269,17 +282,6 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     leftRightFirst = False
     expStop,passThisTrial,responses,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
-
-    print('autopilot=',autopilot, 'responses=',responses)
-    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
-
-    #Do horizontal lineups
-    responseDebug=False; responses = list(); responsesAutopilot = list();
-    expStop = False
-    bothSides = False
-    leftRightCentral = 2 #central
-    expStop,passThisTrial,responses,responsesAutopilot = \
-                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
 
     print('autopilot=',autopilot, 'responses=',responses)
     print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
