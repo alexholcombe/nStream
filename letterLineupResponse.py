@@ -16,7 +16,7 @@ def calcRespYandBoundingBox(possibleResps, horizVert, i):
     if horizVert==1:
         increment*=- 1 #go down from top
     coordinate = startCoordinate + increment
-    boxWidth = 0.1
+    boxWidth = spacingCtrToCtr #0.1
     boxHeight = spacingCtrToCtr
     return coordinate, boxWidth, boxHeight
 
@@ -104,16 +104,20 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
         horizVert = 1 #vertical
    elif leftRightCentral == 2: #central
         constCoord = 0
-        OKrespZone.pos += [0,-.3]
-        OKtextStim.pos+= [0,-.3]
+        OKrespZone.pos += [0,-.6]
+        OKtextStim.pos+= [0,-.6]
         horizVert = 0 #horizontal
    
    myMouse.clickReset()
    sideIndicator = visual.Rect(myWin, width=.14, height=.04, fillColor=(1,1,1), fillColorSpace='rgb', lineColor=None, units='norm', autoLog=False)
-   sideIndicatorX = .77*constCoord
-   sideIndicator.setPos( [sideIndicatorX, 0] )
+   sideIndicatorCoord = .77*constCoord
+   sideIndicator.setPos( [sideIndicatorCoord, 0] )
    chosenLtr = visual.TextStim(myWin,colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.4,units='norm',autoLog=False)
-   chosenLtr.setPos( [sideIndicatorX,0] )
+   if horizVert: #vertical array
+    chosenLtr.setPos( [sideIndicatorCoord,0] )  #big drawing of chosen letter, offset from lineup
+   else: #horizontal array
+    sideIndicatorCoord = -.3
+    chosenLtr.setPos( [0,sideIndicatorCoord] )  #big drawing of chosen letter, offset from lineup
    
    whichResp = -1
    state = 'waitingForFirstClick' 
@@ -166,17 +170,22 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                     horizBounds = [ constCoord-w/2, constCoord+w/2 ]
                     vertBounds = [btmmostY - h/2, topmostY + h/2]
                 else: #horizontal
-                    horizBounds = [topmostX-w/2, btmmostX+w/2,]
+                    horizBounds = [topmostX-w/2, btmmostX+w/2,]  #top letter in vertical is first in horizontal
                     vertBounds =  [constCoord-h/2, constCoord+w/2 ]
                 print("horizBounds=",horizBounds," vertBounds=",vertBounds, " constCoord=", constCoord)
                 xValid = horizBounds[0] <= mousePos[0] <= horizBounds[1]  #clicked in a valid x-position
                 yValid = vertBounds[0] <= mousePos[1] <= vertBounds[1]  #clicked in a valid y-position
                 if xValid and yValid:
                         clickSound.play()
-                        relToBtm = mousePos[1] - (btmmostY - h/2)
-                        whichResp = int (relToBtm / h)
-                        #print("whichResp from bottom = ",whichResp)
-                        whichResp = len(possibleResps) - 1- whichResp
+                        relToBtm = mousePos[1] - vertBounds[0] #mouse coordinates go up from -1 to +1
+                        relToLeft = mousePos[0] - horizBounds[0]
+                        if horizVert: #vertical
+                            whichResp = int (relToBtm / h)
+                            #change from relToBtm to relative to top
+                            whichResp = len(possibleResps) - 1- whichResp 
+                        else: #horizontal
+                            whichResp = int(relToLeft / w)
+                            print("whichResp from left hopefully = ",whichResp, " corresponding to ", possibleResps[whichResp])
                         #print("whichResp from top = ",whichResp, "xOffsetThis=",xOffsetThis, " About to redraw and draw one item in red")
                         state = 'waitingForClick' 
                 else: 
