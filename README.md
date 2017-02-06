@@ -14,7 +14,7 @@ The addition of letterLineupResponse.py means that, for the dual-stream (simulta
 
 ** NOTES **
 
-* Not printing out letter sequence yet
+* Ask Charlie about stream positions
 
 * It's always the right stream
 Originally I thought whichStreamEachCue would always start with zero. Dumb!

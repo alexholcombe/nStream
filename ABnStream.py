@@ -670,7 +670,8 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     
     #debug printouts
     print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
-    print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
+    if trial['numStreams']>1:
+        print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
     firstCueStream = whichStreamEachCue[0]
     firstCueItem = streamLtrSequences[firstCueStream][cuesTemporalPos[0]]
     print( "corrAnsEachResp=", [numberToLetter(x) for x in corrAnsEachResp],  "First cue cues stream",firstCueStream,   " and letter ",numberToLetter(firstCueItem), end='')
