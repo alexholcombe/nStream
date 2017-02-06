@@ -53,7 +53,7 @@ cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 de
 widthPix= 1280 #monitor width in pixels of Agosta
 heightPix= 1024 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
-scrn=1 #0 to use main screen, 1 to use external screen connected to computer
+scrn=0 #0 to use main screen, 1 to use external screen connected to computer
 fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
@@ -95,9 +95,9 @@ if quitFinder:
 
 #letter size 2.5 deg
 numLettersToPresent = 26
-SOAms =  233#133 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+SOAms =  115 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 #Minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-letterDurMs = 80 #23.6  in Martini E2 and E1b (actually he used 22.2 but that's because he had a crazy refresh rate of 90 Hz)
+letterDurMs = 60 #23.6  in Martini E2 and E1b (actually he used 22.2 but that's because he had a crazy refresh rate of 90 Hz)
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -275,16 +275,17 @@ except: #in case file missing, create inferiro click manually
     click=sound.Sound('D',octave=4, sampleRate=22050, secs=0.015, bits=8)
 
 if showRefreshMisses:
-    fixSizePix = 32 #2.6  #make fixation bigger so flicker more conspicuous
-else: fixSizePix = 32
+    fixSizePix = 12 #2.6  #make fixation bigger so flicker more conspicuous
+else: fixSizePix = 6
 fixColor = [1,1,1]
+fixatnPtSize = 4
 if exportImages: fixColor= [0,0,0]
 fixatnTextureWidth = np.round(fixSizePix/4).astype(int)
 fixatnNoiseTexture = np.round( np.random.rand(fixatnTextureWidth,fixatnTextureWidth) ,0 )   *2.0-1 #Can counterphase flicker  noise texture to create salient flicker if you break fixation
 
 fixatn= visual.PatchStim(myWin, tex=fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False)
 fixatnBlank= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
-fixatnPoint= visual.PatchStim(myWin,tex='none',colorSpace='rgb',color=(1,1,1),size=10,units='pix',autoLog=autoLogging)
+fixatnPoint= visual.PatchStim(myWin,tex='none',colorSpace='rgb',color=(1,1,1),size=fixatnPtSize,units='pix',autoLog=autoLogging)
 
 respPromptStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 acceptTextStim = visual.TextStim(myWin,pos=(0, -.7),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
@@ -301,10 +302,10 @@ screenshot= False; screenshotDone = False
     
 #For the dual-stream simultaneous target
 stimListDualStream=[]
-possibleCueTemporalPositions =  np.array([6]) #debugAH np.array([6,7,8,9,10]) 
+possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued']
 numResponsesWanted=1; maxNumRespsWanted=1
-numStreamPossibilities = np.array([4]) #this needs to be listed here so when print header can work out the maximum value
+numStreamPossibilities = np.array([6]) #this needs to be listed here so when print header can work out the maximum value
 for numStreams in numStreamPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -367,6 +368,8 @@ if printInOrderOfResponses:
        dataFile.write('whichStream'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichRespCue'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('responsePosRelative'+str(i)+'\t')
+for i in range(max(numStreamPossibilities)):
+    dataFile.write('streamLtrSequence'+str(i)+'\t')
 print('timingBlips',file=dataFile)
 #end of header
 
@@ -468,7 +471,7 @@ for cueN in xrange(max(numStreamPossibilities)):
 #predraw all 26 letters 
 ltrHeight = 3 #Martini letters were 2.5deg high
 cueOffset = 6
-maxStreams = 4
+maxStreams = max(numStreamPossibilities)
 ltrStreams = list()
 for streami in xrange(maxStreams):
     streamThis = list()
@@ -491,7 +494,7 @@ def timingCheckAndLog(ts,trialN):
     #ts is a list of the times of the clock after each frame
     interframeIntervs = np.diff(ts)*1000
     #print '   interframe intervs were ',around(interframeIntervs,1) #DEBUGOFF
-    frameTimeTolerance=.3 #proportion longer than refreshRate that will not count as a miss
+    frameTimeTolerance=.2 #proportion longer than refreshRate that will not count as a miss
     longFrameLimit = np.round(1000/refreshRate*(1.0+frameTimeTolerance),2)
     idxsInterframeLong = np.where( interframeIntervs > longFrameLimit ) [0] #frames that exceeded 150% of expected duration
     numCasesInterframeLong = len( idxsInterframeLong )
@@ -715,8 +718,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             if i%4>=2 or demo or exportImages: 
                   fixatn.draw()
             else: fixatnBlank.draw()
-        else:
-            fixatnPoint.draw()
+        fixatnPoint.draw() #small circle on top
         myWin.flip()  #end fixation interval
     #myWin.setRecordFrameIntervals(True);  #can't get it to stop detecting superlong frames
     t0 = trialClock.getTime()
@@ -726,8 +728,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             if n%4>=2 or demo or exportImages: 
                   fixatn.draw()
             else: fixatnBlank.draw()
-        else:
-            fixatnPoint.draw()
+        fixatnPoint.draw()
         worked = oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
                                                      numStreams,ltrStreams,
                                                      noiseEachStream,proportnNoise,noiseCoordsEachStream,numNoiseDotsEachStream) #draw letter and possibly cue and noise on top
@@ -801,10 +802,10 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
             #header should be resp0, eachRespCorrect0, whichStream0,
             print(responses[respI], '\t', end ='', file=dataFile) #respN
             answerCharacter = numberToLetter( corrAnsEachResp[respI] )
-            print(answerCharacter, 'answerCharacter\t', end='', file=dataFile) #answer0
-            print(eachRespCorrect[respI],'eachRespCorrect\t', end='', file=dataFile) #eachRespCorrect0.  This is in order of responses
-            print(whichStreamEachResp[respI], 'whichStream\t', end='', file=dataFile) #whichStream0
-            print(whichRespEachCue[respI], 'whichRespEachCue\t', end='', file=dataFile) #whichRespEachCue0
+            print(answerCharacter, '\t', end='', file=dataFile) #answer0
+            print(eachRespCorrect[respI],'\t', end='', file=dataFile) #eachRespCorrect0.  This is in order of responses
+            print(whichStreamEachResp[respI], '\t', end='', file=dataFile) #whichStream0
+            print(whichRespEachCue[respI], '\t', end='', file=dataFile) #whichRespEachCue0
             #Ideally, determine temporal position of cue corresponding to this response, with help of whichStreamEachCue
             #But maybe there is not necessarily any unique mapping between them and the cuesTemporalPos. But, can rely on experiment design nums (cue1lag, etc.)
             #Are cuesTemporalPos always in the order of the responses? (with the proviso that those with same temporal pos will be different streams)
@@ -847,6 +848,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
         print(responsePosRelative[respI], '\t', end='',file=dataFile) #responsePosRelative0
     #print('for cueI=',cueI,' cuesTemporalPos[cueI]=',cuesTemporalPos[cueI], ' answerCharacter=',answerCharacter, ' responses[cueI]=',responses[cueI], 
     #          ' responsePosRelative[cueI]= ',responsePosRelative[cueI], ' eachCorrect[cueI]=',eachCorrect[cueI], 'eachApproxCorrect[cueI]=', eachApproxCorrect[cueI])
+    
     if len(eachRespCorrect)>1:
         allCorrect = eachRespCorrect.all()
     else:
@@ -1067,6 +1069,10 @@ else: #not staircase
                     passThisTrial,responses,responsesAutopilot,thisTrial['task'],numStreams,streamLtrSequences,cuesTemporalPos,whichStreamEachCue,
                     whichStreamEachResp,corrAnsEachResp,whichRespEachCue)
             print('Scored response.   allCorrect=', allCorrect) #debugAH
+            for i in range(thisTrial['numStreams']):
+                thisStreamLtrs = [numberToLetter(x) for x in streamLtrSequences[i]]
+                dataFile.write( ''.join(thisStreamLtrs)     +'\t')
+
             print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
         
             numTrialsCorrect += allCorrect #so count -1 as 0
