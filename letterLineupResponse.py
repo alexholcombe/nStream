@@ -172,7 +172,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                 else: #horizontal
                     horizBounds = [topmostX-w/2, btmmostX+w/2,]  #top letter in vertical is first in horizontal
                     vertBounds =  [constCoord-h/2, constCoord+w/2 ]
-                print("horizBounds=",horizBounds," vertBounds=",vertBounds, " constCoord=", constCoord)
+                #print("horizBounds=",horizBounds," vertBounds=",vertBounds, " constCoord=", constCoord)
                 xValid = horizBounds[0] <= mousePos[0] <= horizBounds[1]  #clicked in a valid x-position
                 yValid = vertBounds[0] <= mousePos[1] <= vertBounds[1]  #clicked in a valid y-position
                 if xValid and yValid:
