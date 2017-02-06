@@ -14,5 +14,14 @@ The addition of letterLineupResponse.py means that, for the dual-stream (simulta
 
 ** NOTES **
 
+* Not printing out letter sequence yet
+
+* It's always the right stream
+Originally I thought whichStreamEachCue would always start with zero. Dumb!
+line 646
+
 What proportion of trials should be single-trial?
 
+Dooesn't fully support yet cuing more than 2 streams and then having single post-cue.
+
+Need to check output file printing
