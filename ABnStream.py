@@ -366,7 +366,6 @@ if printInOrderOfResponses:
        dataFile.write('correct'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichStream'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichRespCue'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
-       dataFile.write('eachCorrect'+str(i)+'\t')
        dataFile.write('responsePosRelative'+str(i)+'\t')
 print('timingBlips',file=dataFile)
 #end of header
@@ -647,21 +646,23 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             cues[streamI].setPos( posThis )
         for cuei in xrange(numCues):  #work out correct answer for each cue
             whichStreamThisCue = whichStreamEachCue[cuei]
-            letterIdxThisStream = np.array( streamLtrSequences[whichStreamThisCue][cuesTemporalPos[cuei]] ) 
+            letterIdxThisStream = streamLtrSequences[whichStreamThisCue][cuesTemporalPos[cuei]]
             corrAnsEachCue.append( letterIdxThisStream    )
             corrAnsEachResp.append( letterIdxThisStream )
+            whichRespEachCue.append(cuei) #assume that responses are queried in the order of the cues. Note that above, which stream each cue corresponds to is random
 
         #Need to shuffle which stream is queried first, second, etc. Remember, we're assuming there's only one temporalPos
         #reduce whichStreamEachResp to numRespsWanted. Also whichRespEachCue. Leave corrAnsEachResp same length so can do error analysis checking for swaps.
-        whichRespEachCue = deepcopy(whichStreamEachResp) #Because stream order and cue order was initially identical, so cues=streams
+        whichRespEachCue = np.array(whichRespEachCue) #so that behaves correctly with np.where
         #whichRespEachCue can be longer than number of responses. Otherwise may never get to cue (stream) corresponding to the single response cued.
         #So, go through and replace all that are greater than numRespsWanted with -999
         cuesNotQueriedIdxs= np.where( whichRespEachCue > trial['numRespsWanted']-1 )[0] #these streams were not to be responded to
-        print('cuesNotQueriedIdxs=',cuesNotQueriedIdxs) #AHdebug
+        print('cuesNotQueriedIdxs=',cuesNotQueriedIdxs,'whichRespEachCue=',whichRespEachCue, 'where output= ', np.where( whichRespEachCue > trial['numRespsWanted']-1 ),  'numRespsWanted=', trial['numRespsWanted'] ) #AHdebug
         if len( cuesNotQueriedIdxs ) > 0:
             whichRespEachCue[ cuesNotQueriedIdxs ] = -999 #Leaving those that actually were queried.
         whichStreamEachResp = whichStreamEachResp[ :trial['numRespsWanted'] ] #reduce to actual number of responses
         corrAnsEachResp = corrAnsEachResp[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
+        whichRespEachCue = whichRespEachCue[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
         print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,'whichRespEachCue=',whichRespEachCue,  ' corrAnsEachResp=',corrAnsEachResp)
     
     #debug printouts
@@ -842,8 +843,8 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,numSt
                 print('-999','\t', end='', file=dataFile)
                 whichStreamEachCue,whichStreamEachRes
                       
-    print(eachRespCorrect[cueI] , '\t', end='',file=dataFile)   #correct0
-    print(responsePosRelative[cueI], '\t', end='',file=dataFile) #responsePosRelative0
+    for respI in range(len(responses)):
+        print(responsePosRelative[respI], '\t', end='',file=dataFile) #responsePosRelative0
     #print('for cueI=',cueI,' cuesTemporalPos[cueI]=',cuesTemporalPos[cueI], ' answerCharacter=',answerCharacter, ' responses[cueI]=',responses[cueI], 
     #          ' responsePosRelative[cueI]= ',responsePosRelative[cueI], ' eachCorrect[cueI]=',eachCorrect[cueI], 'eachApproxCorrect[cueI]=', eachApproxCorrect[cueI])
     if len(eachRespCorrect)>1:
