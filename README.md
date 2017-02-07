@@ -14,9 +14,12 @@ The addition of letterLineupResponse.py means that, for the dual-stream (simulta
 
 ** NOTES **
 
-* Ask Charlie about stream positions
+* Increase presentation rate
 
-* It's always the right stream
+* Increase streams
+
+*Compare skew empirically
+
 Originally I thought whichStreamEachCue would always start with zero. Dumb!
 line 646
 
@@ -24,4 +27,3 @@ What proportion of trials should be single-trial?
 
 Dooesn't fully support yet cuing more than 2 streams and then having single post-cue.
 
-Need to check output file printing
