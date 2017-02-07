@@ -5,7 +5,7 @@ from __future__ import print_function, division
 from psychopy import monitors, visual, event, data, logging, core, sound, gui
 import psychopy.info
 import numpy as np
-from math import atan, log, ceil, cos, sin, pi
+from math import atan, log, ceil, cos, sin, pi, atan2
 from copy import deepcopy
 import time, sys, os#, pylab
 import string, random
@@ -47,6 +47,7 @@ prefaceStaircaseNoise = np.array([5,20,20,20, 50,50,50,5,80,80,80,5,95,95,95]) #
 threshCriterion = 0.58
 bgColor = [-.7,-.7,-.7] # [-1,-1,-1]
 cueColor = [1.,1.,1.]
+cueType = 'endogenous' #'exogenousRing':
 letterColor = [1.,1.,1.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
 
@@ -54,7 +55,7 @@ widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
 scrn=0 #0 to use main screen, 1 to use external screen connected to computer
-fullscr=True #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
+fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
 if exportImages:
@@ -72,7 +73,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
     
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -453,17 +454,27 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
 
 cues = list()
 for cueN in xrange(max(numStreamPossibilities)):
-    cue = visual.Circle(myWin, 
-                 radius=cueRadius,#Martini used circles with diameter of 12 deg
-                 lineColorSpace = 'rgb',
-                 lineColor=bgColor,
-                 lineWidth=2.0, #in pixels
-                 units = 'deg',
-                 fillColorSpace = 'rgb',
-                 fillColor=None, #beware, with convex shapes fill colors don't work
-                 pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
-                 interpolate=True,
-                 autoLog=False)#this stim changes too much for autologging to be useful
+    if cueType == 'exogenousRing':
+        cue = visual.Circle(myWin, 
+                     radius=cueRadius,#Martini used circles with diameter of 12 deg
+                     lineColorSpace = 'rgb',
+                     lineColor=bgColor,
+                     lineWidth=2.0, #in pixels
+                     units = 'deg',
+                     fillColorSpace = 'rgb',
+                     fillColor=None, #beware, with convex shapes fill colors don't work
+                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
+                     interpolate=True,
+                     autoLog=False)#this stim changes too much for autologging to be useful
+    elif cueType =='endogenous':  #tiny dot at fixation point
+        cue = visual.Rect(myWin,
+                units='pix',
+                width=4, height=4,
+                fillColorSpace='rgb',
+                fillColor=[1,-1,-1],
+                lineWidth=0,
+                interpolate=True,
+                autoLog = False)
     cues.append(cue)
 
 #predraw all 26 letters 
@@ -595,7 +606,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             whichStreamEachCue.append(0)
             whichRespEachCue.append(0)
             stream=0
-            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )  
+            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
         elif trial['targetLeftRightIfOne']=='left':
             corrAnsEachResp.append( np.array( streamLtrSequences[1][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
             whichStreamEachResp.append(1)
@@ -679,7 +690,16 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
         print(  " while second cue cues stream",secondCueStream, " and letter ",numberToLetter(secondCueItem) )
     else: print('')
     #end debug printouts
-    
+
+    if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
+        for cue in cues:
+            x=cue.pos[0]; y=cue.pos[1]
+            angleRad = atan2(y,x)
+            desiredDistFromFixatn=2 #pixels
+            newX = desiredDistFromFixatn*cos(angleRad)
+            newY = desiredDistFromFixatn*sin(angleRad)
+            cue.setPos([newX,newY])
+            
     noiseEachStream = list(); noiseCoordsEachStream = list(); numNoiseDotsEachStream = list()
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
         for streami in xrange(numStreams):
