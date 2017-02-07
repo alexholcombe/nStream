@@ -273,7 +273,7 @@ except: #in case file missing, create inferiro click manually
     click=sound.Sound('D',octave=4, sampleRate=22050, secs=0.015, bits=8)
 
 if showRefreshMisses:
-    fixSizePix = 12 #2.6  #make fixation bigger so flicker more conspicuous
+    fixSizePix = 18 #2.6  #make fixation bigger so flicker more conspicuous
 else: fixSizePix = 6
 fixColor = [1,1,1]
 fixatnPtSize = 4
@@ -282,7 +282,7 @@ fixatnTextureWidth = np.round(fixSizePix/4).astype(int)
 fixatnNoiseTexture = np.round( np.random.rand(fixatnTextureWidth,fixatnTextureWidth) ,0 )   *2.0-1 #Can counterphase flicker  noise texture to create salient flicker if you break fixation
 
 fixatn= visual.PatchStim(myWin, tex=fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False)
-fixatnBlank= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
+fixatnCounterphase= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
 fixatnPoint= visual.PatchStim(myWin,tex='none',colorSpace='rgb',color=(1,1,1),size=fixatnPtSize,units='pix',autoLog=autoLogging)
 
 respPromptStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
@@ -712,11 +712,13 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     fixatnPeriodMin = 0.3
     fixatnPeriodFrames = int(   (np.random.rand(1)/2.+fixatnPeriodMin)   *refreshRate)  #random interval between 800ms and 1.3s (changed when Fahed ran outer ring ident)
     ts = list(); #to store time of each drawing, to check whether skipped frames
-    for i in range(fixatnPeriodFrames+20):  #prestim fixation interval
+    if (fixatnPeriodFrames-1) % 2 ==0:
+        fixatnPeriodFrames +=1 #make it odd so that phase will be correct for transitioning to fixation flicker during the trial
+    for i in range(fixatnPeriodFrames):  #prestim fixation interval
         if showRefreshMisses: #flicker fixation on and off at framerate to see when skip frame
-            if i%4>=2 or demo or exportImages: 
+            if i%2 or demo or exportImages: 
                   fixatn.draw()
-            else: fixatnBlank.draw()
+            else: fixatnCounterphase.draw()
         fixatnPoint.draw() #small circle on top
         myWin.flip()  #end fixation interval
     #myWin.setRecordFrameIntervals(True);  #can't get it to stop detecting superlong frames
@@ -724,9 +726,9 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
         if showRefreshMisses: #flicker fixation on and off at framerate to see when skip frame
-            if n%4>=2 or demo or exportImages: 
+            if n%2 or demo or exportImages: 
                   fixatn.draw()
-            else: fixatnBlank.draw()
+            else: fixatnCounterphase.draw()
         fixatnPoint.draw()
         worked = oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
                                                      numStreams,ltrStreams,
