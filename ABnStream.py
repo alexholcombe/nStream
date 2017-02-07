@@ -37,6 +37,7 @@ timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
+refreshRate = 60
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
@@ -71,7 +72,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
     
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': 85 }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -176,13 +177,11 @@ if doStaircase:
     dlgLabelsOrdered.append('easyTrials')
     myDlg.addField('Staircase trials (default=' + str(staircaseTrials) + '):', tip="Staircase will run until this number is reached or it thinks it has precise estimate of threshold")
     dlgLabelsOrdered.append('staircaseTrials')
-    pctCompletedBreak = 101
 else:
     myDlg.addField('\tPercent noise dots=',  defaultNoiseLevel, tip=str(defaultNoiseLevel))
     dlgLabelsOrdered.append('defaultNoiseLevel')
     #myDlg.addField('Trials per condition (default=' + str(trialsPerCondition) + '):', trialsPerCondition, tip=str(trialsPerCondition))
     #dlgLabelsOrdered.append('trialsPerCondition')
-    pctCompletedBreak = 50
     
 myDlg.addText(refreshMsg1, color='Black')
 if refreshRateWrong:
@@ -322,7 +321,7 @@ for numStreams in numStreamPossibilities:
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue } 
               )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 12 #10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
+trialsPerConditionDualStream = 1#12 #10 
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
@@ -1102,24 +1101,27 @@ else: #not staircase
             
             dataFile.flush(); logging.flush()
             print('nDone=', nDone,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
-            if (trials.nTotal > 6 and nDone > 2 and nDone %
-                 ( trials.nTotal*pctCompletedBreak/100. ) ==1):  #dont modulus 0 because then will do it for last trial
-                    nextText.setText('Press "SPACE" to continue!')
-                    nextText.draw()
-                    progressMsg = 'Completed ' + str(trials.thisN) + ' of ' + str(trials.nTotal) + ' trials'  #EVA if this doesn't work, change it to progressMsg = ' '
-                    NextRemindCountText.setText(progressMsg)
-                    NextRemindCountText.draw()
-                    myWin.flip() # myWin.flip(clearBuffer=True) 
-                    waiting=True
-                    while waiting:
-                       if autopilot: break
-                       elif expStop == True:break
-                       for key in event.getKeys():      #check if pressed abort-type key
-                             if key in ['space','ESCAPE']: 
-                                waiting=False
-                             if key in ['ESCAPE']:
-                                expStop = False
-                    myWin.clearBuffer()
+            pctTrialsCompletedForBreak = np.array([.5,.75])  
+            breakTrials = np.round(trials.nTotal*pctTrialsCompletedForBreak)
+            timeForTrialsRemainingMsg = np.any(trials.thisN==breakTrials)
+            if timeForTrialsRemainingMsg :
+                pctDone = round(    (1.0*trials.thisN) / (1.0*trials.nTotal)*100,  0  )
+                nextText.setText('Press "SPACE" to continue!')
+                nextText.draw()
+                progressMsg = 'Completed ' + str(trials.thisN) + ' of ' + str(trials.nTotal) + ' trials'  #EVA if this doesn't work, change it to progressMsg = ' '
+                NextRemindCountText.setText(progressMsg)
+                NextRemindCountText.draw()
+                myWin.flip() # myWin.flip(clearBuffer=True) 
+                waiting=True
+                while waiting:
+                   if autopilot: break
+                   elif expStop == True:break
+                   for key in event.getKeys():      #check if pressed abort-type key
+                         if key in ['space','ESCAPE']: 
+                            waiting=False
+                         if key in ['ESCAPE']:
+                            expStop = False
+                myWin.clearBuffer()
             core.wait(.2); time.sleep(.2)
         #end main trials loop
 timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
