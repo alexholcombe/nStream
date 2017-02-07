@@ -2,7 +2,6 @@
 #See the README.md for more information: https://github.com/alexholcombe/attentional-blink/blob/master/README.md
 #git remote add origin https://github.com/alexholcombe/nStream
 from __future__ import print_function, division
-#from __future__ import division
 from psychopy import monitors, visual, event, data, logging, core, sound, gui
 import psychopy.info
 import numpy as np
@@ -36,7 +35,7 @@ else:
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
-feedback=True
+feedback=False
 autoLogging=False
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
@@ -50,11 +49,11 @@ cueColor = [1.,1.,1.]
 letterColor = [1.,1.,1.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
 
-widthPix= 1280 #monitor width in pixels of Agosta
-heightPix= 1024 #800 #monitor height in pixels
+widthPix= 1024 #monitor width in pixels of Agosta
+heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
 scrn=0 #0 to use main screen, 1 to use external screen connected to computer
-fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
+fullscr=True #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
 if exportImages:
@@ -72,7 +71,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
     
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': False, 'Screen refresh rate': 60 }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': 85 }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -95,7 +94,7 @@ if quitFinder:
 
 #letter size 2.5 deg
 numLettersToPresent = 26
-SOAms =  115 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+SOAms =  82.35 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 #Minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
 letterDurMs = 60 #23.6  in Martini E2 and E1b (actually he used 22.2 but that's because he had a crazy refresh rate of 90 Hz)
 
@@ -305,7 +304,7 @@ stimListDualStream=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued']
 numResponsesWanted=1; maxNumRespsWanted=1
-numStreamPossibilities = np.array([6]) #this needs to be listed here so when print header can work out the maximum value
+numStreamPossibilities = np.array([8]) #this needs to be listed here so when print header can work out the maximum value
 for numStreams in numStreamPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -323,7 +322,7 @@ for numStreams in numStreamPossibilities:
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue } 
               )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 1 #10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
+trialsPerConditionDualStream = 12 #10 #max(1, trialsAB.nTotal / len(stimListDualStream) )
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
@@ -1037,6 +1036,7 @@ else: #not staircase
 
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
         lineupResponse = True
+        myWin.setMouseVisible(True)
         if lineupResponse:
             if len(whichStreamEachResp) != thisTrial['numRespsWanted']:
                 print("len(whichStreamEachResp) does not match numRespsWanted")
@@ -1061,6 +1061,8 @@ else: #not staircase
             expStop,passThisTrial,responses,responsesAutopilot = \
                     stringResponse.collectStringResponse(thisTrial['numRespsWanted'],respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
                                                                                     requireAcceptance,autopilot,responseDebug=True)
+        myMouse.clickReset()
+        myWin.setMouseVisible(False)
         print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
         if not expStop:
             print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
