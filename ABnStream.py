@@ -37,7 +37,7 @@ timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
-refreshRate = 60
+refreshRate = 85
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
@@ -48,6 +48,8 @@ threshCriterion = 0.58
 bgColor = [-.7,-.7,-.7] # [-1,-1,-1]
 cueColor = [1.,1.,1.]
 cueType = 'endogenous' #'exogenousRing':
+if cueType == 'endogenous':
+    cueColor = [1,-1,-1]
 letterColor = [1.,1.,1.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
 
@@ -55,7 +57,7 @@ widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
 scrn=0 #0 to use main screen, 1 to use external screen connected to computer
-fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
+fullscr=True #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
 if exportImages:
@@ -73,7 +75,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
     
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -96,7 +98,7 @@ if quitFinder:
 
 #letter size 2.5 deg
 numLettersToPresent = 26
-SOAms =  82.35 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+SOAms = 82.35 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 #Minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
 letterDurMs = 60 #23.6  in Martini E2 and E1b (actually he used 22.2 but that's because he had a crazy refresh rate of 90 Hz)
 
@@ -284,8 +286,8 @@ fixatnNoiseTexture = np.round( np.random.rand(fixatnTextureWidth,fixatnTextureWi
 
 fixatn= visual.PatchStim(myWin, tex=fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False)
 fixatnCounterphase= visual.PatchStim(myWin, tex= -1*fixatnNoiseTexture, size=(fixSizePix,fixSizePix), units='pix', mask='circle', interpolate=False, autoLog=False) #reverse contrast
-fixatnPoint= visual.PatchStim(myWin,tex='none',colorSpace='rgb',color=(1,1,1),size=fixatnPtSize,units='pix',autoLog=autoLogging)
-
+fixatnPoint= visual.Circle(myWin,fillColorSpace='rgb',fillColor=(1,1,1),radius=fixatnPtSize,pos=[0,0],units='pix',autoLog=autoLogging)
+                     
 respPromptStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 acceptTextStim = visual.TextStim(myWin,pos=(0, -.7),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 acceptTextStim.setText('Hit ENTER to accept. Backspace to edit')
@@ -322,7 +324,7 @@ for numStreams in numStreamPossibilities:
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue } 
               )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 1#12 #10 
+trialsPerConditionDualStream = 10#12
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
@@ -415,7 +417,10 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
     thisCueFrameStart = cueFrames[cueN]
     if n>=thisCueFrameStart and n<thisCueFrameStart+cueDurFrames:
          thisCue = whichStreamEachCue[cueN]
-         cues[thisCue].setLineColor( cueColor )
+         if cueType=='endogenous':
+            cues[thisCue].setFillColor( cueColor )
+         else:
+            cues[thisCue].setLineColor( cueColor )
          cuesTimeToDraw[thisCue] = True
 
   for cueN in xrange(len(cues)):
@@ -467,13 +472,13 @@ for cueN in xrange(max(numStreamPossibilities)):
                      interpolate=True,
                      autoLog=False)#this stim changes too much for autologging to be useful
     elif cueType =='endogenous':  #tiny dot at fixation point
-        cue = visual.Rect(myWin,
+        cue = visual.Circle(myWin,
                 units='pix',
-                width=4, height=4,
+                radius=1, #4
                 fillColorSpace='rgb',
-                fillColor=[1,-1,-1],
+                fillColor=bgColor,
                 lineWidth=0,
-                interpolate=True,
+                interpolate=False,
                 autoLog = False)
     cues.append(cue)
 
@@ -655,6 +660,14 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             #assume each cue the succeeding stream (usually all cues same temporal position)
             #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
             posThis = calcStreamPos(numStreams,streamI,cueOffset,streamOrNoise=0)
+            if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
+#                angleRad = streamI/numStreams * 2*pi
+                desiredDistFromFixatn=2 #pixels
+#                newX = desiredDistFromFixatn*cos(angleRad)
+#                newY = desiredDistFromFixatn*sin(angleRad)
+#                print('newX=',newX,'newY=',newY)
+#                posThis = [newX,newY]
+                posThis = calcStreamPos(numStreams,streamI,desiredDistFromFixatn,streamOrNoise=0)
             cues[streamI].setPos( posThis )
         for cuei in xrange(numCues):  #work out correct answer for each cue
             whichStreamThisCue = whichStreamEachCue[cuei]
@@ -669,36 +682,27 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
         #whichRespEachCue can be longer than number of responses. Otherwise may never get to cue (stream) corresponding to the single response cued.
         #So, go through and replace all that are greater than numRespsWanted with -999
         cuesNotQueriedIdxs= np.where( whichRespEachCue > trial['numRespsWanted']-1 )[0] #these streams were not to be responded to
-        print('cuesNotQueriedIdxs=',cuesNotQueriedIdxs,'whichRespEachCue=',whichRespEachCue, 'where output= ', np.where( whichRespEachCue > trial['numRespsWanted']-1 ),  'numRespsWanted=', trial['numRespsWanted'] ) #AHdebug
+        #print('cuesNotQueriedIdxs=',cuesNotQueriedIdxs,'whichRespEachCue=',whichRespEachCue, 'where output= ', np.where( whichRespEachCue > trial['numRespsWanted']-1 ),  'numRespsWanted=', trial['numRespsWanted'] ) #AHdebug
         if len( cuesNotQueriedIdxs ) > 0:
             whichRespEachCue[ cuesNotQueriedIdxs ] = -999 #Leaving those that actually were queried.
         whichStreamEachResp = whichStreamEachResp[ :trial['numRespsWanted'] ] #reduce to actual number of responses
         corrAnsEachResp = corrAnsEachResp[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
         whichRespEachCue = whichRespEachCue[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
-        print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,'whichRespEachCue=',whichRespEachCue,  ' corrAnsEachResp=',corrAnsEachResp)
+        #print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,'whichRespEachCue=',whichRespEachCue,  ' corrAnsEachResp=',corrAnsEachResp)
     
     #debug printouts
-    print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
-    if trial['numStreams']>1:
-        print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
+    #print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
+    #if trial['numStreams']>1:
+    #    print( 'streamLtrSequences[1]=',[numberToLetter(x) for x in streamLtrSequences[1]] )
     firstCueStream = whichStreamEachCue[0]
     firstCueItem = streamLtrSequences[firstCueStream][cuesTemporalPos[0]]
-    print( "corrAnsEachResp=", [numberToLetter(x) for x in corrAnsEachResp],  "First cue cues stream",firstCueStream,   " and letter ",numberToLetter(firstCueItem), end='')
+    #print( "corrAnsEachResp=", [numberToLetter(x) for x in corrAnsEachResp],  "First cue cues stream",firstCueStream,   " and letter ",numberToLetter(firstCueItem), end='')
     if trial['numToCue'] > 1:
         secondCueStream = whichStreamEachCue[1]
         secondCueItem = streamLtrSequences[secondCueStream][cuesTemporalPos[1]]
         print(  " while second cue cues stream",secondCueStream, " and letter ",numberToLetter(secondCueItem) )
     else: print('')
     #end debug printouts
-
-    if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
-        for cue in cues:
-            x=cue.pos[0]; y=cue.pos[1]
-            angleRad = atan2(y,x)
-            desiredDistFromFixatn=2 #pixels
-            newX = desiredDistFromFixatn*cos(angleRad)
-            newY = desiredDistFromFixatn*sin(angleRad)
-            cue.setPos([newX,newY])
             
     noiseEachStream = list(); noiseCoordsEachStream = list(); numNoiseDotsEachStream = list()
     if proportnNoise > 0: #generating noise is time-consuming, so only do it once per trial. Then shuffle noise coordinates for each letter
@@ -720,6 +724,9 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     
     preDrawStimToGreasePipeline = list() #I don't know why this works, but without drawing it I have consistent timing blip first time that draw ringInnerR for phantom contours
     for cue in cues:
+      if cueType == 'endogenous':
+        cue.setFillColor(bgColor)
+      else:
         cue.setLineColor(bgColor)
     preDrawStimToGreasePipeline.extend([cue])
     for stim in preDrawStimToGreasePipeline:
