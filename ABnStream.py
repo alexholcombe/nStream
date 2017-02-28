@@ -304,7 +304,7 @@ stimListDualStream=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued']
 numResponsesWanted=1; maxNumRespsWanted=1
-numStreamPossibilities = np.array([8]) #this needs to be listed here so when print header can work out the maximum value
+numStreamPossibilities = np.array([6]) #this needs to be listed here so when print header can work out the maximum value
 for numStreams in numStreamPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
