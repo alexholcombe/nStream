@@ -37,7 +37,7 @@ timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=True
 autoLogging=False
-refreshRate = 85
+refreshRate = 60
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
@@ -57,7 +57,7 @@ widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #monitor width in cm
 scrn=0 #0 to use main screen, 1 to use external screen connected to computer
-fullscr=False #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
+fullscr=True #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
 allowGUI = False
 if demo: monitorwidth = 23#18.0
 if exportImages:
@@ -75,7 +75,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
     
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -99,8 +99,8 @@ if quitFinder:
 #letter size 2.5 deg
 numLettersToPresent = 26
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 282.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 282.35 #60
+SOAms = 182.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -307,7 +307,7 @@ possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,
 tasks=['T1','T1T2','allCued','oneCued']
 numResponsesWanted=1; maxNumRespsWanted=1
 numRings = 3
-streamsPerRingPossibilities = np.array([8]) #this needs to be listed here so when print header can work out the maximum value
+streamsPerRingPossibilities = np.array([7]) #this needs to be listed here so when print header can work out the maximum value
 for streamsPerRing in streamsPerRingPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -436,6 +436,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
   for streami in xrange(numRings*streamsPerRing):
     thisStream = ltrStreams[streami]
     thisLtrIdx = streamLtrSequences[streami][letterN] #which letter of the predecided sequence should be shown
+    #setting the letter size (height) takes a lot of time, so each stream must be drawn in correct height before the trial starts
     if showLetter:
       thisStream[thisLtrIdx].setColor( letterColor )
     else: thisStream[thisLtrIdx].setColor( bgColor )
@@ -453,7 +454,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
                 numNoiseDotsThis = numNoiseDotsEachStream[streami]
                 dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
                 posThisDeg =  calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise=1)
-                print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffsets=',cueOffsets,'numStream=',numStreams)
+                #print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffsets=',cueOffsets,'numStream=',numStreams)
                 #Displace the noise to present it over the letter stream
                 dotCoords[:,0] += posThisDeg[0]
                 dotCoords[:,1] += posThisDeg[1]
@@ -491,14 +492,23 @@ for cueN in xrange(numRings * max(streamsPerRingPossibilities)):
 
 #In each stream, predraw all 26 letters
 ltrHeight = 3 #Martini letters were 2.5deg high
-cueOffsets = [6,10,14]
+cueOffsets = [3,7,11.5]
 maxStreams = numRings * max(streamsPerRingPossibilities)
 ltrStreams = list()
 for streami in xrange(maxStreams):
     streamThis = list()
+    #calc desired eccentricity and size
+    #currently assumes streamsPerRing and numRings and cueOffsets doesn't change
+    thisRingNum =  int( streami / streamsPerRing )
+    ltrHeightBase = 1/2.*ltrHeight
+    #eccentricity scale including exponent. Check Strasburger
+    mFactor = 1/7.
+    ltrHeightThis = ltrHeightBase * mFactor*cueOffsets[thisRingNum]
+    #print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
+    #thisStream[thisLtrIdx].setHeight( ltrHeightThis )
     for i in range(0,26):
         ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-        ltr.setHeight( ltrHeight )
+        ltr.setHeight( ltrHeightThis )      
         letter = numberToLetter(i)
         ltr.setText(letter,log=False)
         ltr.setColor(bgColor)
