@@ -119,7 +119,8 @@ mon = monitors.Monitor(monitorname,width=monitorwidth, distance=viewdist)#relyin
 mon.setSizePix( (widthPix,heightPix) )
 units='deg' #'cm'
 def openMyStimWindow(): #make it a function because have to do it several times, want to be sure is identical each time
-    myWin = visual.Window(monitor=mon,size=(widthPix,heightPix),allowGUI=allowGUI,units=units,color=bgColor,colorSpace='rgb',fullscr=fullscr,screen=scrn,waitBlanking=waitBlank) #Holcombe lab monitor
+    myWin = visual.Window(monitor=mon,size=(widthPix,heightPix),allowGUI=allowGUI,units=units,color=bgColor,colorSpace='rgb',fullscr=fullscr,screen=scrn,waitBlanking=waitBlank,
+                   winType='pyglet' ) #pygame doesn't work, don't know why. Works in textLocationTest.py
     return myWin
 myWin = openMyStimWindow()
 refreshMsg2 = ''
@@ -398,8 +399,8 @@ def calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise):
     if streamOrNoise:  #Because the noise coords were drawn in pixels but the cue position is specified in deg, I must convert pix to deg
         pos *= noiseOffsetKludge*pixelperdegree
         
-    pos = np.round(pos)
-    pos = pos.astype(int)
+    #pos = np.round(pos) #rounding or integer is a bad idea. Then for small radii, not equally spaced
+    #pos = pos.astype(int)
     return pos
 
 def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
@@ -504,7 +505,7 @@ for streami in xrange(maxStreams):
     #eccentricity scale including exponent. Check Strasburger
     mFactor = 1/7.
     ltrHeightThis = ltrHeightBase * mFactor*cueOffsets[thisRingNum]
-    #print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
+    print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
     #thisStream[thisLtrIdx].setHeight( ltrHeightThis )
     for i in range(0,26):
         ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
@@ -514,8 +515,6 @@ for streami in xrange(maxStreams):
         ltr.setColor(bgColor)
         streamThis.append( ltr )
     ltrStreams.append( streamThis )
-#print('streamThis=',streamThis,'ltr=',ltr)
-#print('ltrStreams=',ltrStreams)
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
 noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
