@@ -35,7 +35,7 @@ else:
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
-feedback=True
+feedback=False
 autoLogging=False
 refreshRate = 60
 if demo:
@@ -99,8 +99,8 @@ if quitFinder:
 #letter size 2.5 deg
 numLettersToPresent = 26
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 182.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 60
+SOAms = 82.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 60#60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -321,9 +321,11 @@ for streamsPerRing in streamsPerRingPossibilities:
        for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
         for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
+            baseAngle= random.random()*360
             stimListDualStream.append(         
                  {'numRings':numRings, 'streamsPerRing':streamsPerRing, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue } 
+                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
+                    'baseAngle':baseAngle} 
               )  #cue1lag = 0, meaning simultaneous targets
 
 trialsPerConditionDualStream = 10#12
@@ -361,6 +363,7 @@ def letterToNumber(letter): #A = 0, Z = 25
 print('experimentPhase\ttrialnum\tsubject\ttask\t',file=dataFile,end='')
 print('noisePercent\t',end='',file=dataFile)
 print('targetLeftRightIfOne\t',end='',file=dataFile)
+print('baseAngle\t',end='',file=dataFile)
 printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
@@ -377,7 +380,7 @@ print('timingBlips',file=dataFile)
 #end of header
 
             
-def calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise):
+def calcStreamPos(numRings,streamsPerRing,baseAngle,cueOffsets,streami,streamOrNoise):
     #streamOrNoise because noise coordinates have to be in deg, stream in pix
     #cueOffsets are in deg, for instance indicating the eccentricity of the streams/cues
     noiseOffsetKludge = 0.9 #Because the noise coords were drawn in pixels but the cue position is specified in deg, I must convert pix to deg for noise case
@@ -391,7 +394,7 @@ def calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise):
             #assume want them evenly spaced, counterclockwise starting from directly east
             halfAngle = 360/streamsPerRing/2.0
             thisRingAngleOffset = (thisRingNum % 2) * halfAngle #offset odd-numbered rings by half the angle
-            thisAngle = ringStreami/streamsPerRing * 360 + thisRingAngleOffset
+            thisAngle = baseAngle + ringStreami/streamsPerRing * 360 + thisRingAngleOffset
             x = cueOffsets[thisRingNum]*cos(thisAngle/180*pi)
             y = cueOffsets[thisRingNum]*sin(thisAngle/180*pi)
             pos = np.array([x,y])
@@ -404,7 +407,7 @@ def calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise):
     return pos
 
 def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
-                                      numRings,streamsPerRing,ltrStreams,
+                                      numRings,streamsPerRing,ltrStreams,baseAngleThisTrial,
                                       noiseEachStream,proportnNoise,noiseCoordsEachStream,numNoiseDotsEachStream):#draw letter and possibly cue and noise on top
 #defining a function to draw each frame of stim. 
 
@@ -441,7 +444,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
     if showLetter:
       thisStream[thisLtrIdx].setColor( letterColor )
     else: thisStream[thisLtrIdx].setColor( bgColor )
-    posThis = calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise=0)
+    posThis = calcStreamPos(numRings,streamsPerRing,baseAngleThisTrial,cueOffsets,streami,streamOrNoise=0)
 
     thisStream[thisLtrIdx].pos = posThis
     thisStream[thisLtrIdx].draw()
@@ -491,6 +494,13 @@ for cueN in xrange(numRings * max(streamsPerRingPossibilities)):
                 autoLog = False)
     cues.append(cue)
 
+def calcLtrHeightSize( ltrHeight, cueOffsets, ringNum ):
+    ltrHeightBase = 1/2.*ltrHeight
+    #eccentricity scale including exponent. Check Strasburger
+    mFactor = 1/5.
+    ltrHeightThis = ltrHeightBase * mFactor*cueOffsets[ringNum]
+    return ltrHeightThis
+    
 #In each stream, predraw all 26 letters
 ltrHeight = 3 #Martini letters were 2.5deg high
 cueOffsets = [3,7,11.5]
@@ -501,12 +511,8 @@ for streami in xrange(maxStreams):
     #calc desired eccentricity and size
     #currently assumes streamsPerRing and numRings and cueOffsets doesn't change
     thisRingNum =  int( streami / streamsPerRing )
-    ltrHeightBase = 1/2.*ltrHeight
-    #eccentricity scale including exponent. Check Strasburger
-    mFactor = 1/7.
-    ltrHeightThis = ltrHeightBase * mFactor*cueOffsets[thisRingNum]
-    print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
-    #thisStream[thisLtrIdx].setHeight( ltrHeightThis )
+    ltrHeightThis = calcLtrHeightSize( ltrHeight, cueOffsets, thisRingNum )
+    #print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
     for i in range(0,26):
         ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
         ltr.setHeight( ltrHeightThis )      
@@ -676,7 +682,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         for streamI in xrange( numRings*streamsPerRing ): #Drawing the cues in the location they're supposed to be in
             #assume each cue the succeeding stream (usually all cues same temporal position)
             #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
-            posThis =  calcStreamPos(numRings,streamsPerRing,cueOffsets,streamI,streamOrNoise=0)
+            posThis =  calcStreamPos(numRings,streamsPerRing,trial['baseAngle'],cueOffsets,streamI,streamOrNoise=0)
             if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
 #                angleRad = streamI/numStreams * 2*pi
                 desiredDistFromFixatn=2 #pixels
@@ -687,6 +693,8 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
                 desiredDistFromFixatnEachRing = [ desiredDistFromFixatn ] * numRings
                 posThis = calcStreamPos(numRings,streamsPerRing,desiredDistFromFixatnEachRing,streamI,streamOrNoise=0)
             cues[streamI].setPos( posThis )
+            cueRadiusThis = 1.05*calcLtrHeightSize( ltrHeight, cueOffsets, ringNum=int(streamI/streamsPerRing) )
+            cues[streamI].setRadius( cueRadiusThis )
         for cuei in xrange(numCues):  #work out correct answer for each cue
             whichStreamThisCue = whichStreamEachCue[cuei]
             letterIdxThisStream = streamLtrSequences[whichStreamThisCue][cuesTemporalPos[cuei]]
@@ -733,7 +741,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         for streami in xrange(numRings*streamsPerRing):
             numNoiseDotsThis = numNoiseDotsEachStream[streami]
             dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-            posThisPix =  calcStreamPos(numRings,streamsPerRing,cueOffsets,streami,streamOrNoise=1)
+            posThisPix =  calcStreamPos(numRings,streamsPerRing,trial['baseAngle'],cueOffsets,streami,streamOrNoise=1)
             #Displace the noise to present it over the letter stream
             dotCoords[:,0] += posThisPix[0]
             dotCoords[:,1] += posThisPix[1]
@@ -776,7 +784,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
             else: fixatnCounterphase.draw()
         fixatnPoint.draw()
         worked = oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
-                                                      numRings,streamsPerRing,ltrStreams,
+                                                      numRings,streamsPerRing,ltrStreams,thisTrial['baseAngle'],
                                                      noiseEachStream,proportnNoise,noiseCoordsEachStream,numNoiseDotsEachStream) #draw letter and possibly cue and noise on top
         if exportImages:
             myWin.getMovieFrame(buffer='back') #for later saving
@@ -1113,7 +1121,9 @@ else: #not staircase
         if not expStop:
             print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
             print(nDone,'\t', end='', file=dataFile)
-            print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,3),'\t', thisTrial['targetLeftRightIfOne'],'\t', end='', file=dataFile)
+            print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,3),'\t', 
+                  thisTrial['targetLeftRightIfOne'],'\t',thisTrial['baseAngle'],'\t', end='', file=dataFile)
+            
             allCorrect,eachRespCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = handleAndScoreResponse(
                     passThisTrial,responses,responsesAutopilot,thisTrial['task'],streamLtrSequences,cuesTemporalPos,whichStreamEachCue,
                     whichStreamEachResp,corrAnsEachResp,whichRespEachCue)

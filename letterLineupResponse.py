@@ -185,7 +185,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                             whichResp = len(possibleResps) - 1- whichResp 
                         else: #horizontal
                             whichResp = int(relToLeft / w)
-                            print("whichResp from left hopefully = ",whichResp, " corresponding to ", possibleResps[whichResp])
+                            #print("whichResp from left hopefully = ",whichResp, " corresponding to ", possibleResps[whichResp])
                         #print("whichResp from top = ",whichResp, "xOffsetThis=",xOffsetThis, " About to redraw and draw one item in red")
                         state = 'waitingForClick' 
                 else: 
@@ -280,8 +280,8 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     expStop,passThisTrial,responses,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
 
-    print('autopilot=',autopilot, 'responses=',responses)
-    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
+    #print('autopilot=',autopilot, 'responses=',responses)
+    #print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
     
     #Do vertical lineups
     responseDebug=False; responses = list(); responsesAutopilot = list();
@@ -292,8 +292,8 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     expStop,passThisTrial,responses,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
 
-    print('autopilot=',autopilot, 'responses=',responses)
-    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
+    #print('autopilot=',autopilot, 'responses=',responses)
+    #print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
     
     
     print('Finished') 
