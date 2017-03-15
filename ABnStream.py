@@ -14,7 +14,7 @@ import string, random
 eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.83.01 mistakenly included an old version of pylink which prevents EyelinkEyetrackerForPsychopySUPA3 stuff from importing
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = False
+eyetracking = True
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -43,11 +43,6 @@ else:
     dataDir='.'
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
-if eyetracking:
-    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
-        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
-    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
-    
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
@@ -137,6 +132,7 @@ def openMyStimWindow(): #make it a function because have to do it several times,
                    winType='pyglet' ) #pygame doesn't work, don't know why. Works in textLocationTest.py
     return myWin
 myWin = openMyStimWindow()
+
 refreshMsg2 = ''
 if not checkRefreshEtc:
     refreshMsg1 = 'REFRESH RATE WAS NOT CHECKED'
@@ -583,6 +579,11 @@ numTrialsApproxCorrect = 0;
 numTrialsEachRespCorrect= np.zeros( maxNumRespsWanted )
 numTrialsEachApproxCorrect= np.zeros( maxNumRespsWanted )
 
+if eyetracking:
+    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+    
 def shuffleArraysIdentically(a, b):
     assert len(a) == len(b)
     aList = False; bList = False
