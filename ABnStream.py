@@ -310,6 +310,10 @@ nextText = visual.TextStim(myWin,pos=(0, .1),colorSpace='rgb',color = (1,1,1),al
 NextRemindCountText = visual.TextStim(myWin,pos=(0,.2),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 screenshot= False; screenshotDone = False
 
+def roundToNearestY(x,y): #round x to nearest y, e.g. rounding 65 to nearest 30 = 60
+    ans = round (x*1.0 / y) * y
+    return ans
+
 #SETTING THE CONDITIONS
 #For the optional attentional blink
     
@@ -332,7 +336,13 @@ for streamsPerRing in streamsPerRingPossibilities:
        for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
         for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
-            baseAngleCWfromEast= random.random()*360
+            if streamsPerRing == max(streamsPerRingPossibilities): 
+                baseAngleCWfromEast = 0
+            else: #change base angle so that in the 2 streams condition, they equally often occupy each of the possible angles of the nStreams condition
+                baseAngleCWfromEast= random.random()*360
+                #round baseAngle to the nearest multiple of 360/max(streamsPerRingPossibilities)
+                anglesMustBeMultipleOf = 360/max(streamsPerRingPossibilities)
+                baseAngleCWfromEast = roundToNearestY(baseAngleCWfromEast, anglesMustBeMultipleOf)
             stimListDualStream.append(         
                  {'numRings':numRings, 'streamsPerRing':streamsPerRing, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
