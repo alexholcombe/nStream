@@ -385,6 +385,7 @@ assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
     for i in range(maxNumRespsWanted):
        dataFile.write('resp'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
+       dataFile.write('button'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('answer'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('correct'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichStream'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
@@ -871,6 +872,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
         for respI in range(len(responses)): #give info about each response. responses seem to be in the order they are made
             #header should be resp0, eachRespCorrect0, whichStream0,
             print(responses[respI], '\t', end ='', file=dataFile) #respN
+            print(buttons[respI],'\t', end='', file=dataFile) #buttonN
             answerCharacter = numberToLetter( corrAnsEachResp[respI] )
             print(answerCharacter, '\t', end='', file=dataFile) #answer0
             print(eachRespCorrect[respI],'\t', end='', file=dataFile) #eachRespCorrect0.  This is in order of responses
@@ -881,7 +883,8 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
             #Are cuesTemporalPos always in the order of the responses? (with the proviso that those with same temporal pos will be different streams)
         while respI < maxNumRespsWanted-1:
             respI+=1
-            print('-999','\t', end='', file=dataFile) #response N/A for this trialClock
+            print('-999','\t', end='', file=dataFile) #response N/A for this trial
+            print('-999','\t', end='', file=dataFile) #button N/A for this trial
             if respI < len(corrAnsEachResp): #more answers than responses stored, to correspond to other streams to allow analysis of swaps, using whichStreamEachResp
                 answerCharacter = numberToLetter( corrAnsEachResp[respI] )
                 print(answerCharacter, '\t', end='', file=dataFile) #answerN
@@ -891,6 +894,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
                 print(whichStreamEachResp[respI], '\t', end='', file=dataFile) #whichStreamN
             else: print('-999','\t', end='', file=dataFile) #whichStreamN N/A
             print('-999','\t', end='', file=dataFile) #whichRespEachCue N/A
+        
     else: #print in order of cues
         #print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,' corrAnsEachResp=',corrAnsEachResp, ' whichStreamEachCue=',whichStreamEachCue,'whichRespEachCue same as whichStreamEachResp')
         #responses, corrAnsEachResp, whichStreamEachResp will still line up
@@ -910,8 +914,9 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
             
             if cueI < numRespsWanted:     #assuming order of responses same as order of cues. Remedy with whichStreamEachCue and whichStreamEachResp
                 print(responses[cueI], '\t', end='', file=dataFile) #response0 etc.
+                print(buttons[cueI], '\t', end='', file=dataFile) #button0 etc.
             else:
-                print('-999','\t', end='', file=dataFile)
+                print('-999\t-999','\t', end='', file=dataFile) #responseN,buttonN
                 whichStreamEachCue,whichStreamEachRes
                       
     for respI in range(len(responses)):
