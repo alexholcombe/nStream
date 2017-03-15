@@ -27,3 +27,6 @@ What proportion of trials should be single-trial?
 
 Doesn't fully support yet cuing more than 2 streams and then having single post-cue.
 
+Add different mouse clicks for confidence and low confidence.
+
+Add eyetracking code.

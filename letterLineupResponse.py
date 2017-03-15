@@ -4,6 +4,7 @@ from psychopy import visual, event, sound, tools
 import numpy as np
 import string
 from math import floor
+from copy import deepcopy
 
 def calcRespYandBoundingBox(possibleResps, horizVert, i):
     spacingCtrToCtr = 2.0 / len(possibleResps)
@@ -151,7 +152,6 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
         #Check what was clicked, if anything
         OK = False
         if any(pressed):
-            #print('Clicked and state=',state)
             if state == 'waitingForClick':
                 OK = checkForOKclick(mousePos,OKrespZone)
                 #print('OK=', OK)
@@ -187,6 +187,8 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                             whichResp = int(relToLeft / w)
                             #print("whichResp from left hopefully = ",whichResp, " corresponding to ", possibleResps[whichResp])
                         #print("whichResp from top = ",whichResp, "xOffsetThis=",xOffsetThis, " About to redraw and draw one item in red")
+                        lastValidClickButtons = deepcopy(pressed) #record which buttons pressed. Have to make copy, otherwise will change when pressd changes later
+                        print('lastValidClickButtons=',lastValidClickButtons)
                         state = 'waitingForClick' 
                 else: 
                     badClickSound.play()
@@ -196,8 +198,17 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                     expStop = True
                     #noResponseYet = False
    response = possibleResps[whichResp]
-   #print('Returning with response=',response,' expStop=',expStop)
-   return response, expStop
+   
+   #Determine which button was pressed
+   whichPressed = np.where(lastValidClickButtons)[0]
+   if len(whichPressed)>1:
+        print("Thought it was impossible to have pressed both buttons")
+        print('whichPressed=',whichPressed)
+   else:
+        button = whichPressed[0]
+   
+   #print('Returning with response=',response,'button=',button,' expStop=',expStop)
+   return response, button, expStop
         
 def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
     #leftRightCentral is 0 if draw on left side first (or only), 1 if draw right side first (or only), 2 if draw centrally only
@@ -214,6 +225,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
     passThisTrial = False
     responsesAutopilot = []
     responses = []
+    buttons = []
     #First collect one, then dim that one and collect the other
     xOffset = 0.7
     if autopilot: #I haven't bothered to make autopilot display the response screen
@@ -222,18 +234,20 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
         OKrespZone = visual.GratingStim(myWin, tex="sin", mask="gauss", texRes=64, units='norm', size=[.5, .5], sf=[0, 0], name='OKrespZone')
         OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(-1,-1,-1),alignHoriz='center', alignVert='center',height=.13,units='norm',autoLog=False)
         OKtextStim.setText('OK')
-        whichResp0, expStop = \
+        whichResp0, whichButtonResp0, expStop = \
                 collectOneLineupResponse(myWin,myMouse,bothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
         responses.append(whichResp0)
+        buttons.append(whichButtonResp0)
     if not expStop and bothSides:
         if autopilot:
             responsesAutopilot.append('Z')
         else:
             #Draw arrays again, with that one dim, to collect the other response
-            whichResp1, expStop =  \
+            whichResp1, whichButtonResp1, expStop =  \
                 collectOneLineupResponse(myWin,myMouse,bothSides,not leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
             responses.append(whichResp1)
-    return expStop,passThisTrial,responses,responsesAutopilot
+            buttons.append(whichButtonResp0)
+    return expStop,passThisTrial,responses,buttons,responsesAutopilot
 
 def setupSoundsForResponse():
     fileName = '406__tictacshutup__click-1-d.wav'
@@ -277,7 +291,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     expStop = False
     bothSides = False
     leftRightCentral = 2 #central
-    expStop,passThisTrial,responses,responsesAutopilot = \
+    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
 
     #print('autopilot=',autopilot, 'responses=',responses)
@@ -289,7 +303,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     
     bothSides = True
     leftRightFirst = False
-    expStop,passThisTrial,responses,responsesAutopilot = \
+    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
                 doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
 
     #print('autopilot=',autopilot, 'responses=',responses)

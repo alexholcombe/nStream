@@ -9,6 +9,15 @@ from math import atan, log, ceil, cos, sin, pi, atan2
 from copy import deepcopy
 import time, sys, os#, pylab
 import string, random
+
+#Eyetracking stuff
+eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.83.01 mistakenly included an old version of pylink which prevents EyelinkEyetrackerForPsychopySUPA3 stuff from importing
+if eyetrackingOption: 
+    from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
+eyetracking = False
+getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
+#End eyetracking stuff
+
 try:
     from noiseStaircaseHelpers import printStaircase, toStaircase, outOfStaircase, createNoise, plotDataAndPsychometricCurve
 except ImportError:
@@ -34,6 +43,11 @@ else:
     dataDir='.'
 timeAndDateStr = time.strftime("%d%b%Y_%H-%M", time.localtime())
 
+if eyetracking:
+    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+    
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
@@ -73,7 +87,7 @@ viewdist = 57. #cm
 pixelperdegree = widthPix/ (atan(monitorwidth/viewdist) /np.pi*180)
 msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
-    
+ 
 # create a dialog from dictionary 
 infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
@@ -928,7 +942,12 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
     else: #incorrect
         low.play()
 
-       
+
+if eyetracking:
+    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+
 myMouse = event.Mouse()
 expStop=False; framesSaved=0
 nDone = -1 #change to zero once start main part of experiment
@@ -1084,10 +1103,15 @@ else: #not staircase
                 msg='Starting AB part of experiment'
                 logging.info(msg); print(msg)
         #end control of which block we are in 
+        if eyetracking: 
+            tracker.startEyeTracking(nDone,True,widthPix,heightPix) #start recording with eyetracker
         
         thisTrial = trials.next() #get a proper (non-staircase) trial
-        streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  = do_RSVP_stim(
-                                    numRings,streamsPerRing,thisTrial,noisePercent/100.,nDone)
+        streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  = \
+                    do_RSVP_stim(numRings,streamsPerRing,thisTrial,noisePercent/100.,nDone)  #DO THE TRIAL!
+        if eyetracking:
+            tracker.stopEyeTracking()
+        
         numCasesInterframeLong = timingCheckAndLog(ts,nDone)
 
         responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
@@ -1111,7 +1135,7 @@ else: #not staircase
             #print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral)
             alphabet = list(string.ascii_uppercase)
             possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
-            expStop,passThisTrial,responses,responsesAutopilot = \
+            expStop,passThisTrial,responses,buttons,responsesAutopilot = \
                 letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
         else:
             expStop,passThisTrial,responses,responsesAutopilot = \
@@ -1188,6 +1212,8 @@ else: #not staircase
             core.wait(.2); time.sleep(.2)
         #end main trials loop
 timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
+if eyetracking and getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+    tracker.closeConnectionToEyeTracker(eyeMoveFile)
 msg = 'Finishing at '+timeAndDateStr
 print(msg); logging.info(msg)
 logging.flush()
