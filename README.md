@@ -25,5 +25,5 @@ line 646
 
 What proportion of trials should be single-trial?
 
-Dooesn't fully support yet cuing more than 2 streams and then having single post-cue.
+Doesn't fully support yet cuing more than 2 streams and then having single post-cue.
 
