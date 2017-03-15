@@ -31,4 +31,5 @@ Add different mouse clicks for confidence and low confidence.
 
 Add eyetracking code.
 line 919
-Angle binning and confidence feedback
+Angle binning MAKE SURE STREAM POS COUNTERBALANCED IN NSTREAMS CONDITION
+ and confidence feedback

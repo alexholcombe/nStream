@@ -14,7 +14,7 @@ import string, random
 eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.83.01 mistakenly included an old version of pylink which prevents EyelinkEyetrackerForPsychopySUPA3 stuff from importing
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = True
+eyetracking = False
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -333,16 +333,20 @@ for streamsPerRing in streamsPerRingPossibilities:
        elif task=='oneCued':
             numToCue = 1
        print('task=',task)
-       for targetLeftRightIfOne in  ['left','right']: #If single target, should it be on the left or the right?
-        for cueTemporalPos in possibleCueTemporalPositions:
+       #setting targetLeftRightIfOne constant because which stream randomisation taken care of by baseAngle. Stream0 will always be the one cued, but it'll be in a random position
+       for targetLeftRightIfOne in  ['right']: # ['left','right']: #If single target, should it be on the left or the right?
+        anglesMustBeMultipleOf =  int( round(360 / max(streamsPerRingPossibilities) ) )
+        randomlyAssignCuesToStreams = True
+        for baseAngleCWfromEast in range(0,360,anglesMustBeMultipleOf): #cued stream will always be stream0. Its position is randomized by baseAngleCWfromEast
+         for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
-            if streamsPerRing == max(streamsPerRingPossibilities): 
-                baseAngleCWfromEast = 0
-            else: #change base angle so that in the 2 streams condition, they equally often occupy each of the possible angles of the nStreams condition
-                baseAngleCWfromEast= random.random()*360
-                #round baseAngle to the nearest multiple of 360/max(streamsPerRingPossibilities)
-                anglesMustBeMultipleOf = 360/max(streamsPerRingPossibilities)
-                baseAngleCWfromEast = roundToNearestY(baseAngleCWfromEast, anglesMustBeMultipleOf)
+#            if streamsPerRing == max(streamsPerRingPossibilities): 
+#                baseAngleCWfromEast = 0
+#            else: #change base angle so that in the 2 streams condition, they equally often occupy each of the possible angles of the nStreams condition
+#                baseAngleCWfromEast= random.random()*360
+#                #round baseAngle to the nearest multiple of 360/max(streamsPerRingPossibilities)
+#                anglesMustBeMultipleOf = 360/max(streamsPerRingPossibilities)
+#                baseAngleCWfromEast = roundToNearestY(baseAngleCWfromEast, anglesMustBeMultipleOf)
             stimListDualStream.append(         
                  {'numRings':numRings, 'streamsPerRing':streamsPerRing, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
@@ -704,7 +708,8 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         numCues = len(cuesTemporalPos) 
         #Randomly assign cues to streams (with no repeats, because assuming all cues identical)
         whichStreamEachCue = range(numRings*streamsPerRing)
-        random.shuffle(whichStreamEachCue)
+        if randomlyAssignCuesToStreams: #not doing it in nStreams versus 2 streams, because position stream 0, cued is randomised by baseAngle
+            random.shuffle(whichStreamEachCue)
         whichStreamEachCue = whichStreamEachCue[:numCues] #Now will be random subset of streams, numCues long
         whichStreamEachResp = deepcopy(whichStreamEachCue)
         for streamI in xrange( numRings*streamsPerRing ): #Drawing the cues in the location they're supposed to be in
@@ -1152,7 +1157,7 @@ else: #not staircase
             alphabet = list(string.ascii_uppercase)
             possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
             expStop,passThisTrial,responses,buttons,responsesAutopilot = \
-                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
+                letterLineupResponse.doLineup(myWin,bgColor,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
         else:
             expStop,passThisTrial,responses,responsesAutopilot = \
                     stringResponse.collectStringResponse(thisTrial['numRespsWanted'],respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,

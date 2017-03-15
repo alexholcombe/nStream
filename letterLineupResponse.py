@@ -21,30 +21,35 @@ def calcRespYandBoundingBox(possibleResps, horizVert, i):
     boxHeight = spacingCtrToCtr
     return coordinate, boxWidth, boxHeight
 
-def drawRespOption(myWin,constantCoord,horizVert,color,drawBoundingBox,possibleResps,i):
+def drawRespOption(myWin,bgColor,constantCoord,horizVert,color,drawBoundingBox,relativeSize,possibleResps,i):
         #constantCoord is x if horizVert=1 (vertical), y if horizontal
+        #relativeSize multiplied by standard size to get desired size
         coord, w, h = calcRespYandBoundingBox( possibleResps, horizVert, i )
-        option = visual.TextStim(myWin,colorSpace='rgb',color=color,alignHoriz='center', alignVert='center',
-                                                                    height=h,units='norm',autoLog=False)
-        option.setText(possibleResps[i])
         x = constantCoord if horizVert else coord
         y = coord if horizVert else constantCoord
+        if relativeSize != 1: #erase bounding box so erase old letter before drawing new differently-sized letter 
+            print('drawing to erase')
+            boundingBox = visual.Rect(myWin,width=w,height=h, pos=(x,y), fillColor=bgColor, lineColor=None, units='norm' ,autoLog=False) 
+            boundingBox.draw()
+        option = visual.TextStim(myWin,colorSpace='rgb',color=color,alignHoriz='center', alignVert='center',
+                                                                    height=h*relativeSize,units='norm',autoLog=False)
+        option.setText(possibleResps[i])
         option.pos = (x, y)
         option.draw()
         if drawBoundingBox:
             boundingBox = visual.Rect(myWin,width=w,height=h, pos=(x,y))
             boundingBox.draw()
         
-def drawArray(myWin,possibleResps,horizVert,constCoord,lightness,drawBoundingBox):
+def drawArray(myWin,bgColor,possibleResps,horizVert,constCoord,lightness,drawBoundingBox):
     '''Draw possibleResps in position x with RGB lightness    
      constCoord is x if horizVert=1 (vertical), y if horizontal
     '''
     #print("lightness in drawArray=",lightness," x=",x)
     #Draw it vertically, from top to bottom
     for i in xrange(len(possibleResps)):
-        drawRespOption(myWin,constCoord,horizVert,(lightness,lightness,lightness),drawBoundingBox,possibleResps,i)
+        drawRespOption(myWin,bgColor,constCoord,horizVert,(lightness,lightness,lightness),drawBoundingBox,1,possibleResps,i)
 
-def drawResponseArrays(myWin,horizVert,xOffset,possibleResps,bothSides,leftRightCentral):
+def drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,bothSides,leftRightCentral):
     '''If bothSides, draw array on both sides, with one side dimmed
     If leftRight=0, collect response from left side, and draw other side dim. Otherwise if =1, from right side.
     possibleResps is usually an array of all the letters to populate the array with.
@@ -59,8 +64,8 @@ def drawResponseArrays(myWin,horizVert,xOffset,possibleResps,bothSides,leftRight
             lightnessLR = (1,dimRGB) #lightness on left and right sides
         elif leftRightCentral ==1:
             lightnessLR = (dimRGB,1) 
-        drawArray(myWin,possibleResps,horizVert, xOffset*-1, lightnessLR[0],drawBoundingBox)
-        drawArray(myWin,possibleResps,horizVert, xOffset, lightnessLR[1],drawBoundingBox)
+        drawArray(myWin,bgColor,possibleResps,horizVert, xOffset*-1, lightnessLR[0],drawBoundingBox)
+        drawArray(myWin,bgColor,possibleResps,horizVert, xOffset, lightnessLR[1],drawBoundingBox)
     else: #only draw one side
         lightness = 1
         x = xOffset if leftRightCentral==1 else -1*xOffset
@@ -71,7 +76,7 @@ def drawResponseArrays(myWin,horizVert,xOffset,possibleResps,bothSides,leftRight
             lightnessLR = (dimRGB,1) 
         elif leftRightCentral==2:
             x = 0
-        drawArray(myWin,possibleResps,horizVert, x, lightness,drawBoundingBox)
+        drawArray(myWin,bgColor,possibleResps,horizVert, x, lightness,drawBoundingBox)
 
 def checkForOKclick(mousePos,respZone):
     OK = False
@@ -96,7 +101,7 @@ def convertXYtoNormUnits(XY,currUnits,win):
             #print("Converted ",XY," from ",currUnits," units first to pixels: ",xPix,yPix," then to norm: ",xNorm,yNorm)
     return xNorm, yNorm
 
-def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
+def collectOneLineupResponse(myWin,bgColor,myMouse,drawBothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps,xOffset,clickSound,badClickSound):
    if leftRightCentral == 0: #left
         constCoord = -1*xOffset
         horizVert = 1 #vertical
@@ -127,11 +132,16 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
    expStop = False
    while state != 'finished' and not expStop:
         #draw everything corresponding to this state
-        drawResponseArrays(myWin,horizVert,xOffset,possibleResps,drawBothSides,leftRightCentral=leftRightCentral)
+        drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,drawBothSides,leftRightCentral=leftRightCentral)
         if state == 'waitingForClick':
-            #draw selected one in red, and bigly
-            drawRespOption(myWin,constCoord,horizVert,(1,-1,-1),False,possibleResps,whichResp)
+            #draw selected one in green, and bigly
+            selectedColor = (-1,-1,1) #green
+            buttonThis = np.where(pressed)[0] #assume only one button can be recorded as pressed
+            if buttonThis == 0:
+                selectedColor = (1,1,-1) #yellow for low confidence,
+            drawRespOption(myWin,bgColor,constCoord,horizVert,selectedColor,False,1.5,possibleResps,whichResp)
             chosenLtr.setText(possibleResps[whichResp])
+            chosenLtr.setColor( selectedColor )
             chosenLtr.draw()
             OKrespZone.draw()
             OKtextStim.draw()
@@ -210,7 +220,7 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
    #print('Returning with response=',response,'button=',button,' expStop=',expStop)
    return response, button, expStop
         
-def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
+def doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
     #leftRightCentral is 0 if draw on left side first (or only), 1 if draw right side first (or only), 2 if draw centrally only
     if type(leftRightCentral) is str: #convert to 0/1
         if leftRightCentral == 'right':
@@ -235,7 +245,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
         OKtextStim = visual.TextStim(myWin,pos=(0, 0),colorSpace='rgb',color=(-1,-1,-1),alignHoriz='center', alignVert='center',height=.13,units='norm',autoLog=False)
         OKtextStim.setText('OK')
         whichResp0, whichButtonResp0, expStop = \
-                collectOneLineupResponse(myWin,myMouse,bothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+                collectOneLineupResponse(myWin,bgColor,myMouse,bothSides,leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
         responses.append(whichResp0)
         buttons.append(whichButtonResp0)
     if not expStop and bothSides:
@@ -244,7 +254,7 @@ def doLineup(myWin,myMouse,clickSound,badClickSound,possibleResps,bothSides,left
         else:
             #Draw arrays again, with that one dim, to collect the other response
             whichResp1, whichButtonResp1, expStop =  \
-                collectOneLineupResponse(myWin,myMouse,bothSides,not leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
+                collectOneLineupResponse(myWin,bgColor,myMouse,bothSides,not leftRightCentral,OKtextStim,OKrespZone,possibleResps, xOffset, clickSound, badClickSound)
             responses.append(whichResp1)
             buttons.append(whichButtonResp0)
     return expStop,passThisTrial,responses,buttons,responsesAutopilot
@@ -273,7 +283,8 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     monitorname = 'testmonitor'
     mon = monitors.Monitor(monitorname,width=40.5, distance=57)
     windowUnits = 'deg' #purely to make sure lineup array still works when windowUnits are something different from norm units
-    myWin = visual.Window(monitor=mon,colorSpace='rgb',color=(0,0,0),units=windowUnits)
+    bgColor = [-.7,-.7,-.7] 
+    myWin = visual.Window(monitor=mon,colorSpace='rgb',color=bgColor,units=windowUnits)
     #myWin = visual.Window(monitor=mon,size=(widthPix,heightPix),allowGUI=allowGUI,units=units,color=bgColor,colorSpace='rgb',fullscr=fullscr,screen=scrn,waitBlanking=waitBlank) #Holcombe lab monitor
 
     logging.console.setLevel(logging.WARNING)
@@ -292,7 +303,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     bothSides = False
     leftRightCentral = 2 #central
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
-                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
+                doLineup(myWin, bgColor, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightCentral, autopilot)
 
     #print('autopilot=',autopilot, 'responses=',responses)
     #print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
@@ -304,7 +315,7 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     bothSides = True
     leftRightFirst = False
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
-                doLineup(myWin, myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
+                doLineup(myWin, bgColor,myMouse, clickSound, badClickSound, possibleResps, bothSides, leftRightFirst, autopilot)
 
     #print('autopilot=',autopilot, 'responses=',responses)
     #print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
