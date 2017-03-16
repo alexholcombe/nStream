@@ -1209,7 +1209,7 @@ else: #not staircase
             
             dataFile.flush(); logging.flush()
             print('nDone=', nDone,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
-            pctTrialsCompletedForBreak = np.array([.5,.75])  
+            pctTrialsCompletedForBreak = np.array([.6,.8])  
             breakTrials = np.round(trials.nTotal*pctTrialsCompletedForBreak)
             timeForTrialsRemainingMsg = np.any(trials.thisN==breakTrials)
             if timeForTrialsRemainingMsg :
