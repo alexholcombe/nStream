@@ -353,7 +353,7 @@ for streamsPerRing in streamsPerRingPossibilities:
                     'baseAngleCWfromEast':baseAngleCWfromEast} 
               )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 10#12
+trialsPerConditionDualStream = 2
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \

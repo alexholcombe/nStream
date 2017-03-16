@@ -135,7 +135,7 @@ def collectOneLineupResponse(myWin,bgColor,myMouse,drawBothSides,leftRightCentra
         drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,drawBothSides,leftRightCentral=leftRightCentral)
         if state == 'waitingForClick':
             #draw selected one in green, and bigly
-            selectedColor = (-1,-1,1) #green
+            selectedColor = (-1,1,-1) #green
             buttonThis = np.where(pressed)[0] #assume only one button can be recorded as pressed
             if buttonThis == 0:
                 selectedColor = (1,1,-1) #yellow for low confidence,
