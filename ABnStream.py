@@ -310,6 +310,30 @@ nextText = visual.TextStim(myWin,pos=(0, .1),colorSpace='rgb',color = (1,1,1),al
 NextRemindCountText = visual.TextStim(myWin,pos=(0,.2),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 screenshot= False; screenshotDone = False
 
+instructions1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+instructions2 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+
+instructionText1 = """
+This experiment is made up of 200 trials. On each trial you will fixate your eyes on a central point on the screen.Then several rapid, randomly-ordered sequences of letters will appear at two or 8 locations on the screen.You must not move your eyes from the fixation point while these sequences are playing.
+
+One of the letters will appear with a white ring around it.Your job is to tell us which of the letters appeared within the white ring. Again, you must not move your eyes from the fixation point in the centre of the screen while the letter streams are shown.
+
+Press space to read more instructions
+"""
+
+instructionText2 ="""
+At the end of each trial you will see a screen in which the whole alphabet is displayed. You should click on the letter that you saw within the circle.
+
+However, you may have been UNSURE about the letter that you saw. If you were UNSURE about the letter you saw, click the letter using the LEFT mouse button. The letter you selected will turn YELLOW. If you were SURE about  the letter that you saw, click the letter with the RIGHT mouse button. The letter you clicked will turn GREEN.\n
+
+Please tell the experimenter you have read the instructions. Be sure to ask him if you have any questions. 
+"""
+instructions1.text = instructionText1
+instructions2.text = instructionText2
+
+
+
+
 def roundToNearestY(x,y): #round x to nearest y, e.g. rounding 65 to nearest 30 = 60
     ans = round (x*1.0 / y) * y
     return ans
@@ -964,13 +988,35 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
         low.play()
 
 
+expStop=False
+
+instructions1.draw()
+myWin.flip()
+waiting = True
+while waiting:
+   for key in event.getKeys():      #check if pressed abort-type key
+         if key in ['space','ESCAPE']: 
+            waiting=False
+         if key in ['ESCAPE']:
+            expStop = True
+
+instructions2.draw()
+myWin.flip()
+waiting = True
+while waiting:
+    for key in event.getKeys():
+        if key in ['m', 'ESCAPE']:
+            waiting = False
+        if key in ['Escape']:
+            expStop = True
+
 if eyetracking:
     if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
         eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
     tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
 
 myMouse = event.Mouse()
-expStop=False; framesSaved=0
+framesSaved=0
 nDone = -1 #change to zero once start main part of experiment
 if doStaircase:
     #create the staircase handler
