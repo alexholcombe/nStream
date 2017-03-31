@@ -2,20 +2,20 @@
 clear all;
 
 % Add directories
-usePath = '~/Google Drive/nStream/';
+usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 
 % Task parameters
-sampleNames = {'End6Streams82msSOA','Ex6Streams115msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'twoStreams','eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
 itemRate = 7.5;
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = 6;
+nParticipants = 3;
 nTrials = 200;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -27,7 +27,7 @@ pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB m
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 300;
+nReplicates = 200;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;

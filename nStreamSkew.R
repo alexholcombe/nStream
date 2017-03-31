@@ -2,11 +2,15 @@ library(ggplot2)
 
 rm(list=ls())
 
-setwd('~/gitcode/nStream/')
+setwd('~/gitCode/nStream/')
 source('~/R_utils/ggplotElements.R')
 
-plots <- T #if true, create plots
-savePlots <- T #save plots?
+plots <- F #if true, create plots
+if(plots){
+  savePlots <- F #save plots?
+}
+
+saveCSV = T
 
 
 dataPath <- 'rawData/'
@@ -41,15 +45,7 @@ dataSets <- list()
 
 
 for(dataset in files){
-  ID <- strsplit(dataset, '(?<=A|s)/|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the letter A or an underscore followed by any digit
-  cue <- strsplit(dataset, '(?<=A)/|_(?=[0-9])', perl=T)[[1]][1]
-  cue <- strsplit(cue, '(?<=rawData)/|[0-9]', perl=T)[[1]][2]
-  
-  if(cue == 'End'){
-    cue <- 'Endogenous'
-  } else {
-      cue <- 'Exogenous'
-    }
+  ID <- strsplit(dataset, '(?<=8|s)/|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
   
   #Some date formatting
   dateString <- strsplit(strsplit(dataset, '_(?=[0-9])', perl=T)[[1]][2],'')[[1]]
@@ -63,7 +59,7 @@ for(dataset in files){
   #nStreams <- length(grep('streamLtrSequence', colnames(temp))) 
   
   
-  dataSets[[ID]][[dataString]][['data']] <- temp
+  dataSets[[ID]][[as.character(dateString)]][['data']] <- temp
 }
 
 allExogenousErrors <- c()
@@ -78,8 +74,10 @@ for(participant in names(dataSets)){
         temp$correctPos[rowN] <- which(strsplit(temp[rowN, paste0('streamLtrSequence', temp$whichStream0[rowN])],'')[[1]]==gsub(' ','',temp$answer0[rowN]))-1
         temp$responsePos[rowN] <- which(strsplit(temp[rowN, paste0('streamLtrSequence', temp$whichStream0[rowN])],'')[[1]]==gsub(' ','',temp$resp0[rowN]))-1
       }
-      tempSkewStreams <- aggregate(responsePosRelative0~whichStream0, temp, skew)
+
+      tempSkewNStreams <- aggregate(responsePosRelative0~streamsPerRing, temp, skew)
       tempSkewTotal <- skew(temp$responsePosRelative0)
+      
       if(plots){
           tempPlot <- ggplot(temp, aes(x=responsePosRelative0))+
             geom_histogram(binwidth = 1)+
@@ -111,38 +109,65 @@ for(participant in names(dataSets)){
       
       #A three dimensional array. The dimensions represent trial, stream, and type of error (temporal or spatial)
       #Maybe extend this to an array that represents all possibe combinations of temporal and spatial error for a given trial
-  
-      responsePos <- array(NA, dim = c(nrow(temp), length(streamColumns), 2))
-      responsePos[,,2] <- matrix(1:length(streamColumns), nrow = nrow(temp), ncol=length(streamColumns), byrow=T)
       
-      #For each trial, where did the response fall in each stream?
-      for(column in 1:length(streamColumns)){
-        x <- t(sapply(strsplit(temp[,streamColumns[column]],''), function(x) x))
-        for(rowN in 1:nrow(temp)){
-          response <- gsub(' ' ,'',temp$resp0[rowN])
-          stream <- x[rowN,]
-          temporalPos <- which(stream==response) - temp$correctPos[rowN]
-          responsePos[rowN,column,1] <- temporalPos
-          responsePos[rowN,column,2] <- responsePos[rowN,column,2] - temp$whichStream0[rowN]
-        }
-        
+# 
+#       responsePos8Streams <- array(NA, dim = c(length(which(temp$streamsPerRing==8)), 8, 2))
+#       responsePos8Streams[,,2] <- matrix(1:length(streamColumns), nrow = length(which(temp$streamsPerRing==8)), ncol=8, byrow=T)
+# 
+#       responsePos2Streams <- array(NA, dim = c(length(which(temp$streamsPerRing==2)), 2, 2))
+#       responsePos2Streams[,,2] <- matrix(1:length(streamColumns), nrow = length(which(temp$streamsPerRing==2)), ncol=2, byrow=T)      
+#       
+#       
+#       thisTwoStreamRow <- 0 #Iterates through the rows of the 2 stream array
+#       thisEightStreamRow <- 0
+#       
+#       #For each trial, where did the response fall in each stream?
+#       for(column in 1:length(streamColumns)){
+#         x <- t(sapply(strsplit(temp[,streamColumns[column]],''), function(x) x))
+#         for(rowN in 1:nrow(temp)){
+#           
+#           nStreamThisRow <- temp$streamsPerRing[rowN] #How many streams on this row?
+#           
+#           if(column == 1){ #Only increase the counters if its the first column, there's 8 iterations per row
+#             if(nStreamThisRow == 2){
+#               thisTwoStreamRow = thisTwoStreamRow+1
+#             } else if(nStreamThisRow == 8){
+#               thisEightStreamRow = thisEightStreamRow+1
+#             }
+#           }
+#           
+#           response <- gsub(' ' ,'',temp$resp0[rowN])
+#           
+#           stream <- x[rowN,]
+#           temporalPos <- which(stream==response) - temp$correctPos[rowN]
+#           if(nStreamThisRow==2 & column<3){
+#             
+#             responsePos2Streams[thisTwoStreamRow,column,1] <- temporalPos
+#             responsePos2Streams[thisTwoStreamRow,column,2] <- responsePos2Streams[thisTwoStreamRow,column,2] - temp$whichStream0[rowN]
+#           } else if(nStreamThisRow==8) {
+#           
+#             responsePos8Streams[thisEightStreamRow,column,1] <- temporalPos
+#             responsePos8Streams[thisEightStreamRow,column,2] <- responsePos8Streams[thisEightStreamRow,column,2] - temp$whichStream0[rowN]
+#           }
+#         }
+#         
+#       }
+      ###########################################################################################################
+      #### nTrials kludge. Equating the number of trials for the MM. Dropping the first 20 and the final >220 ### 
+      ###########################################################################################################
+      
+      tempKludged <- temp[21:220,]
+      
+      twoStreams <- tempKludged[tempKludged$streamsPerRing==2,]
+      eightStreams <- tempKludged[tempKludged$streamsPerRing==8,]
+      
+      if(saveCSV){
+        write.table(twoStreams, paste0('wrangledData/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        write.table(eightStreams, paste0('wrangledData/eightStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
       }
       
-      cueForFolder <- c('Ex','End')[(cue=='Endogenous')+1]
       
-      if(cue == 'Exogenous' & nStreams=='6Streams'){
-        SOAString <- '115msSOA'
-      } else { 
-        SOAString <- '82msSOA'  
-      }
-
-      twoStreams <- temp[temp$streamsPerRing==2,]
-      eightStreams <- temp[temp$streamsPerRing==8,]
-      
-      write.table(twoStreams, paste0('wrangledData/twoStreams/',cueForFolder, nStreams, SOAString,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-      write.table(eightStreams, paste0('wrangledData/eightStreams/',cueForFolder, nStreams, SOAString,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-      
-      dataSets[[participant]][[nStreams]][[cue]][['skewStreams']] <- tempSkewStreams
-      dataSets[[participant]][[nStreams]][[cue]][['skew']] <- tempSkewTotal 
+      dataSets[[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
+      dataSets[[participant]][[dateString]][['skew']] <- tempSkewTotal 
   }
 }
