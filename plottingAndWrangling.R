@@ -43,6 +43,7 @@ dataSets <- list()
 #The next two (8/2) are endogenously cued by red pixel in fixation stimulus. 6 streams at 82.35ms. Changed to 6 streams because endogenous cue was too ambiguous with 8 streams
 #North-East cue is a little off in the endogenous cuing expt as of 8/2/2017
 
+totalRows <- 0
 
 for(dataset in files){
   ID <- strsplit(dataset, '(?<=8|A)/|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
@@ -58,14 +59,17 @@ for(dataset in files){
   
   temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
   
+  totalRows <- totalRows + nrow(temp) - 20
+  
   #nStreams <- length(grep('streamLtrSequence', colnames(temp))) 
   
   
   dataSets[[group]][[ID]][[as.character(dateString)]][['data']] <- temp
 }
 
-allExogenousErrors <- c()
-allEndogenousErrors <- c()
+allErrors <- data.frame(exp = character(totalRows), error = numeric(totalRows), stringsAsFactors = F)
+
+startRow <- 1
 
 for(group in names(dataSets)){
 	for(participant in names(dataSets[[group]])){
@@ -80,8 +84,11 @@ for(group in names(dataSets)){
         
 	      if(group == '2vs8'){
 	        tempSkewNStreams <- aggregate(responsePosRelative0~streamsPerRing, temp, skew)
-	        tempSkewTotal <- skew(temp$responsePosRelative0)
+	      } else {
+	        tempSkewNStreams <- aggregate(responsePosRelative0~whichStream0, temp, skew)
 	      }
+	      
+	      tempSkewTotal <- skew(temp$responsePosRelative0)
 	      
 	      if(plots){
             tempPlot <- ggplot(temp, aes(x=responsePosRelative0))+
@@ -100,14 +107,22 @@ for(group in names(dataSets)){
 	            plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
 	              geom_histogram(binwidth = 1)+
 	              scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
-	              #geom_text(data=tempSkewStreams, x = 10, y=10, aes(label=paste0('skew =', round(responsePosRelative0,2))))+
-	              facet_wrap(~whichStream0)
+	              geom_vline(xintercept = 0, linetype = 'dashed')+
+	              labs(x = 'Serial Position Error',
+	                   y='Count',
+	                   title = paste0('participant: ', participant, ' Exp: ', group))+
+	              facet_wrap(~whichStream0)+
+	              apatheme
 	          } else {
 	            plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
 	              geom_histogram(binwidth = 1)+
 	              scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
-	              #geom_text(data=tempSkewStreams, x = 10, y=10, aes(label=paste0('skew =', round(responsePosRelative0,2))))+
-	              facet_wrap(~streamsPerRing)
+	              geom_vline(xintercept = 0, linetype = 'dashed')+
+	              labs(x = 'Serial Position Error',
+	                   y='Count',
+	                   title = paste0('participant: ', participant, ' Exp: ', group))+
+	              facet_wrap(~streamsPerRing)+
+	              apatheme
 	          }
             if(savePlots){
               ggsave(paste0('plots/',group,'/',participant,'.png'),tempPlot, width = 20, height = 20, units = 'cm')
@@ -171,23 +186,70 @@ for(group in names(dataSets)){
 	      
 	      tempKludged <- temp[21:nrow(temp),]
 	      
+	      
 	      if(group=='2vs8'){
 	      	twoStreams <- tempKludged[tempKludged$streamsPerRing==2,]
 	      	eightStreams <- tempKludged[tempKludged$streamsPerRing==8,]
+	 
+	      	
+	      	endRow <- startRow + nrow(twoStreams) -1
+	      	
+	      	print(startRow)
+	      	print(endRow)
+	      	
+	      	allErrors$exp[startRow:endRow] <- 'twoStreams'
+	      	allErrors$error[startRow:endRow] <- twoStreams$responsePosRelative0
+	      	
+	      	startRow <- endRow+1
+	      	
+	      	endRow <- startRow + nrow(eightStreams)-1
+	      	
+	      	print(startRow)
+	      	print(endRow)
+	      	
+	      	allErrors$exp[startRow:endRow] <- 'eightStreams'
+	      	allErrors$error[startRow:endRow] <- eightStreams$responsePosRelative0
+	      	
+	      	startRow <- endRow + 1
+	      	
 	      	if(saveCSV){
 	        	write.table(twoStreams, paste0('wrangledData/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
 	        	write.table(eightStreams, paste0('wrangledData/eightStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
 	     	 }
 	      } else {
+	        
+	        endRow <- startRow + nrow(tempKludged) - 1
+	        
+	        print(startRow)
+	        print(endRow)
+	        
+	        allErrors$exp[startRow:endRow] <- group
+	        allErrors$error[startRow:endRow] <- tempKludged$responsePosRelative0
+	        
+	        startRow <- endRow + 1
+	        
 	      	if(saveCSV){
-	      		write.table(twoStreams, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-	        	write.table(eightStreams, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+	      		write.table(temp, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
 	      	}
 	      }
+	      
 	      
 	      
 	      dataSets[[group]][[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
 	      dataSets[[group]][[participant]][[dateString]][['skew']] <- tempSkewTotal 
 	  	}
     }
+}
+
+allErrors$exp <- factor(allErrors$exp, levels = c('twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'))
+
+totalPlot <- ggplot(allErrors[allErrors$exp %in% c('twoStreams','eightStreams'),], aes(x=error))+
+  geom_histogram(binwidth = 1)+
+  labs(y = 'Count', x = 'Serial Position Error')+
+  facet_wrap(~exp)+
+  geom_vline(xintercept = 0, linetype = 'dashed')+
+  apatheme
+
+if(savePlots){
+  ggsave(paste0('plots/2vs8Combined.png'),totalPlot, width = 20, height = 20, units = 'cm')
 }
