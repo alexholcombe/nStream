@@ -3,7 +3,7 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     global xDomain;
     global pseudo_uniform;
 
-    [p mu sigma]
+    %[p mu sigma]
     
     mu = log(mu);
     sigma = log(sigma);

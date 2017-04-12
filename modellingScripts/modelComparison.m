@@ -1,16 +1,16 @@
 clear all;
 
 % Add directories
-usePath = '~/Google Drive/nStream/';
+usePath = '~/gitCode/nStream/';
 likelihoodDirectory = 'modelOutput/Likelihood/';
 addpath(usePath)
 
 % Task parameters
-sampleNames = {'End6Streams82msSOA','Ex6Streams115msSOA'};
+sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'};
 modelNames = {'logNormal','normal'};
 
 nSamples = numel(sampleNames);
-nParticipants = [6 6];
+nParticipants = [3 3 6 4];
 nModels = numel(modelNames);
 nParams = 3;
 
@@ -41,7 +41,7 @@ for thisModel = 1:nModels
     for thisSample = 1:nSamples
        thisNParticipants = nParticipants(thisSample)
        for thisParticipant = 1:thisNParticipants
-           [thisAICByParticipant thisBICByParticipant] = aicbic(-allMinNegLogLikelihoods_byParticipant(thisSample, thisParticipant),nParams, allNTrials_byParticipant(thisSample, thisParticipant));
+           [thisAICByParticipant thisBICByParticipant] = aicbic(-allMinNegLogLikelihoods_byParticipant(thisSample, thisParticipant),nParams, allNTrials_byParticipant(thisSample, thisParticipant))
            allBICsByParticipant(thisSample, thisParticipant, thisModel) = thisBICByParticipant;
        end
     end
@@ -52,3 +52,16 @@ BFByParticipant = exp(-.5*deltaBICByParticipant);
 
 deltaBICCombined = allBICsCombined(:,1) - allBICsCombined(:,2);
 BFCombined = exp(-.5*deltaBICCombined);
+
+csvFile = fopen('../BFCombined.csv','w');
+fprintf(csvFile, 'twoStreams, eightStreams, End6Strm82msSOA,  Ex6Strm82msSOA \n');
+dlmwrite('../BFCombined.csv', BFCombined', '-append', 'precision','%i');
+
+
+for thisSample = 1:nSamples
+    sampleName = sampleNames(thisSample)
+    fileName= strcat('../BFsByParticipant_', sampleName, '.csv');
+    fileName = fileName{1};
+    csvFile = fopen(fileName,'w');
+    dlmwrite(fileName, BFByParticipant(thisSample,:)', '-append', 'precision', '%i');
+end 

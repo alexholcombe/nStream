@@ -4,7 +4,7 @@
 
 clear all; %#ok<CLSCR>
 
-allGroups = {'twoStreams','eightStreams'};
+allGroups = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'};
 baseDirectory = '~/gitCode/nStream/';
 dataDirectory = [baseDirectory 'wrangledData/'];
 saveDirectory = [baseDirectory 'modelOutput/'];
@@ -13,7 +13,7 @@ saveDirectory = [baseDirectory 'modelOutput/'];
 
 % Specifiy the format of the data in the text file.
 
-dataFormat = {'%s%d%s%s%d%s%d%d%s%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%d%d%s%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%d'};
+dataFormat = {'%s%d%s%s%d%s%d%d%s%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%d%d%s%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d'};
 
 % For the RSVP analysis, the variables we need are:
 % compiledErrors(thisCondition,thisParticipant,thisSession,thisTrial,thisSide);
@@ -28,8 +28,8 @@ dataFormat = {'%s%d%s%s%d%s%d%d%s%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%d','%s%d%s%s%d
 % 6: Subject
 % 7: Cued Stream position. 0 is 12 o'clock. Increases clockwise
 
-dataColumns = {[25 15 4 9 26 3 13],[25 15 4 9 26 3 13]};
-streams = [2 8];
+dataColumns = {[25 15 4 9 26 3 13],[25 15 4 9 26 3 13],[20 12 4 7 21 3 10],[20 12 4 7 21 3 10]};
+streams = [2 8 6 6];
 % Specify the maximum number of trials (per participant, condition, etc).
 % We do this so that we can build the
 % data matrices to this size. They'll be trimmed afterwards to the actual

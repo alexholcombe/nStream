@@ -8,14 +8,14 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
-itemRate = 7.5;
+itemRate = 12;
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = 3;
+nParticipants = [3 3 6 4];
 nTrials = 200;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -27,7 +27,7 @@ pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB m
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 200;
+nReplicates = 400;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -52,12 +52,12 @@ nLetters = length(letterArray); % Number of possible letters
 rateFactor = 1000./itemRate;
 
 % Build data structures
-allAccuracy_byParticipant = NaN(nSamples,nParticipants);
-allEstimates_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allLowerBounds_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allUpperBounds_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allMinNegLogLikelihoods_byParticipant = NaN(nSamples,nParticipants);
-allNTrials_byParticipant = NaN(nSamples,nParticipants)
+allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
+allEstimates_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allLowerBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allUpperBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allMinNegLogLikelihoods_byParticipant = NaN(nSamples,max(nParticipants));
+allNTrials_byParticipant = NaN(nSamples,max(nParticipants))
 
 
 allAccuracy_Combined = NaN(nSamples);
@@ -80,8 +80,8 @@ for thisSample = 1:nSamples
     % compiledErrors(thisParticipant,thisSession,thisTrial);
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
-    nParticipants = size(compiledErrors);
-    nParticipants = nParticipants(1)
+    thisNParticipants = size(compiledErrors);
+    thisNParticipants = thisNParticipants(1);
     
     % MODEL -------------------------------------------------------------------
 
@@ -190,8 +190,8 @@ for thisSample = 1:nSamples
     % compiledErrors(thisParticipant,thisSession,thisTrial);
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
-    nParticipants = size(compiledErrors);
-    nParticipants = nParticipants(1);
+    thisNParticipants = size(compiledErrors);
+    thisNParticipants = thisNParticipants(1);
     
     % MODEL -------------------------------------------------------------------
 
@@ -234,7 +234,7 @@ for thisSample = 1:nSamples
 
         for thisStream = 1:nStreams
 
-            for thisParticipant = 1:nParticipants
+            for thisParticipant = 1:thisNParticipants
                 
                 fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
                 minNegLogLikelihoodByParticipant = inf;
@@ -318,7 +318,7 @@ writeFile = fopen('TGRSVP_Exp2_AccuracyNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -333,7 +333,7 @@ writeFile = fopen('TGRSVP_Exp2_EfficacyNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -348,7 +348,7 @@ writeFile = fopen('TGRSVP_Exp2_LatencyNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -363,7 +363,7 @@ writeFile = fopen('TGRSVP_Exp2_PrecisionNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams

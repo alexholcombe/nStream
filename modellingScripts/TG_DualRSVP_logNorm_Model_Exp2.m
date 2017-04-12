@@ -2,18 +2,18 @@
 clear all;
 
 % Add directories
-usePath = '~/Google Drive/nStream/';
+usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
-sampleNames = {'End6Streams82msSOA','Ex6Streams115msSOA'};
+sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
-itemRate = 7.5;
+itemRate = 12;
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = 6;
+nParticipants = [3 3 6 4];
 nTrials = 200;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -48,12 +48,12 @@ nLetters = length(letterArray); % Number of possible letters
 rateFactor = 1000./itemRate;
 
 % Build data structures
-allAccuracy_byParticipant = NaN(nSamples,nParticipants);
-allEstimates_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allLowerBounds_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allUpperBounds_byParticipant = NaN(nSamples,nParticipants,nFreeParameters);
-allMinNegLogLikelihoods_byParticipant = NaN(nSamples,nParticipants);
-allNTrials_byParticipant = NaN(nSamples,nParticipants);
+allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
+allEstimates_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allLowerBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allUpperBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
+allMinNegLogLikelihoods_byParticipant = NaN(nSamples,max(nParticipants));
+allNTrials_byParticipant = NaN(nSamples,max(nParticipants))
 
 
 allAccuracy_Combined = NaN(nSamples);
@@ -76,8 +76,8 @@ for thisSample = 1:nSamples
     % compiledErrors(thisParticipant,thisSession,thisTrial);
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
-    nParticipants = size(compiledErrors);
-    nParticipants = nParticipants(1)
+    thisNParticipants = size(compiledErrors);
+    thisNParticipants = thisNParticipants(1);
     
     % MODEL -------------------------------------------------------------------
 
@@ -141,10 +141,11 @@ for thisSample = 1:nSamples
              muGuess = abs(((3*rand)-1.5));
         end
         parameterGuess = [pGuess muGuess sigmaGuess];
-        parameterLowerBound = [0 -4 (1+1e-4)]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
+        parameterLowerBound = [0 1e-4 (1+1e-4)]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
         parameterUpperBound = [1 exp(4) exp(5)];
 
         [currentEstimatesCombined, currentCIsCombined] = mle(theseErrorsCombined, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
+        
         %[result pseudo_normal normFactor_uniform normFactor_normal uniResultTemp normResultTemp normResult uniResult] = pdf_global(theseErrors, parameterGuess);
         % Compute negative log likelihood
         thisNegLogLikelihoodCombined = -sum(log(pdf_normmixture(theseErrorsCombined,currentEstimatesCombined(1),currentEstimatesCombined(2),currentEstimatesCombined(3))));
@@ -186,7 +187,7 @@ for thisSample = 1:nSamples
 
         for thisStream = 1:nStreams
 
-            for thisParticipant = 1:nParticipants
+            for thisParticipant = 1:thisNParticipants
                 
                 fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
                 minNegLogLikelihoodByParticipant = inf;
@@ -213,7 +214,7 @@ for thisSample = 1:nSamples
                          muGuess = abs(((3*rand)-1.5));
                     end
                     parameterGuess = [pGuess muGuess sigmaGuess];
-                    parameterLowerBound = [0 -4 (1+1e-4)]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
+                    parameterLowerBound = [0 0 (1+1e-4)]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
                     parameterUpperBound = [1 4 5];
 
                     [currentEstimatesByParticipant, currentCIsByParticipant] = mle(theseErrorsByParticipant, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
@@ -274,7 +275,7 @@ writeFile = fopen('TGRSVP_Exp2_AccuracyLogNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -289,7 +290,7 @@ writeFile = fopen('TGRSVP_Exp2_EfficacyLogNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -304,7 +305,7 @@ writeFile = fopen('TGRSVP_Exp2_LatencyLogNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
@@ -319,7 +320,7 @@ writeFile = fopen('TGRSVP_Exp2_PrecisionLogNorm.csv','w');  % Overwrite file
 fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants
+    for thisParticipant = 1:nParticipants(thisSample)
         fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
