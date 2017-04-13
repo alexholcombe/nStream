@@ -6,6 +6,7 @@ rm(list=ls()) #remove all variables in workspace?
 #source('../ggplotElements.R') #charlie-specific
 
 source('ggplotElements.R')
+theme_set(theme_apa(base_size = 20)) 
 
 plots <- T #if true, create plots
 if(plots){
@@ -99,8 +100,7 @@ for(group in names(dataSets)){
               geom_vline(xintercept = 0, linetype = 'dashed')+
               labs(x = 'Serial Position Error',
                    y='Count',
-                   title = paste0('participant: ', participant, ' Exp: ', group))+
-              apatheme
+                   title = paste0('participant: ', participant, ' Exp: ', group))
             
             show(tempPlot)
             
@@ -112,8 +112,7 @@ for(group in names(dataSets)){
 	              labs(x = 'Serial Position Error',
 	                   y='Count',
 	                   title = paste0('participant: ', participant, ' Exp: ', group))+
-	              facet_wrap(~whichStream0)+
-	              apatheme
+	              facet_wrap(~whichStream0)
 	          } else {
 	            plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
 	              geom_histogram(binwidth = 1)+
@@ -122,8 +121,7 @@ for(group in names(dataSets)){
 	              labs(x = 'Serial Position Error',
 	                   y='Count',
 	                   title = paste0('participant: ', participant, ' Exp: ', group))+
-	              facet_wrap(~streamsPerRing)+
-	              apatheme
+	              facet_wrap(~streamsPerRing)
 	          }
             if(savePlots){
               ggsave(paste0('plots/',group,'/',participant,'.png'),tempPlot, width = 20, height = 20, units = 'cm')
