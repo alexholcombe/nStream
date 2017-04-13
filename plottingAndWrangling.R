@@ -1,9 +1,11 @@
 library(ggplot2)
 
-rm(list=ls())
+rm(list=ls()) #remove all variables in workspace?
 
-setwd('~/gitCode/nStream/')
-source('../ggplotElements.R')
+#setwd('~/gitCode/nStream/')  #Charlie-specific
+#source('../ggplotElements.R') #charlie-specific
+
+source('ggplotElements.R')
 
 plots <- T #if true, create plots
 if(plots){
@@ -26,7 +28,6 @@ for(group in groups){
   groupFiles <- groupFiles[grep('Hubert',groupFiles, invert=T)]
   files <- c(files, groupFiles)
 }
-
 
 
 skew <- function(x){
