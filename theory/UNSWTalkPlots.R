@@ -41,9 +41,11 @@ normErrorDensity <- ggplot(normObs, aes(x=error))+
   scale_alpha_manual(values = c(1,.8))+
   labs(x = 'Serial Position Error', fill = 'Trial', colour ='Trial', alpha = 'Trial', title = 'Model')+
   theme(axis.text.x = element_text(family='Arial', size=20))+
-  xlim(-17,17) + geom_vline(xintercept=0) + ylim(ylims)
+  xlim(-17,17) +  ylim(ylims)+ #+ geom_vline(xintercept=0) 
+  theme(plot.background = element_rect(fill = "transparent",colour = NA),  panel.background = element_blank()) #so can save transparent image, hopefully
 
 normErrorDensity
+ggsave("normErrorDensity.png", bg = "transparent")
 
 logNormErrorHist <- ggplot(logNormObs, aes(x=error))+
   geom_histogram(binwidth = 1)+
@@ -54,11 +56,12 @@ logNormErrorDensity <- ggplot(logNormObs, aes(x=error))+
   scale_fill_manual(values = c('#feb24c', '#31a354'))+
   scale_colour_manual(values = c('#feb24c', '#31a354'))+
   scale_alpha_manual(values = c(1,.8))+
-  xlim(-17,17) +  geom_vline(xintercept=0) 
+  xlim(-17,17) + # geom_vline(xintercept=0) 
   labs(x = 'Serial Position Error', fill = 'Trial', colour ='Trial', alpha = 'Trial', title = 'Model') +
-  theme (plot.background = element_rect(fill = "transparent",colour = NA)) #so can save transparent image, hopefully
+  theme (plot.background = element_rect(fill = "transparent",colour = NA),  panel.background = element_blank()) #so can save transparent image, hopefully
 #+  theme(axis.text.x = element_text(family='Arial', size=20)) 
 
 logNormErrorDensity 
+ggsave("logNormErrorDensity.png", bg = "transparent")
 
 logNormErrorDensity + ylim(ylims) 
