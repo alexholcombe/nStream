@@ -1,6 +1,7 @@
 rm(list=ls())
 library(ggplot2)
 source('../ggplotElements.R')
+theme_set(theme_apa(base_size = 20)) 
 
 p <- .75
 nTrials <- 5000
@@ -22,7 +23,6 @@ logNormObs <- data.frame(trial = c(rep('guessing', times = (1-p)*nTrials), rep('
 normErrorHist <- ggplot(normObs, aes(x=error))+
   geom_histogram(binwidth = 1)+
   labs(x='Serial Position Error', title = 'Errors')+
-  apatheme+
   theme(axis.text.x = element_text(family='Arial', size=20))+
   lims(x=c(-17,17))
 
@@ -35,7 +35,6 @@ normErrorDensity <- ggplot(normObs, aes(x=error))+
   scale_colour_manual(values = c('#feb24c', '#31a354'))+
   scale_alpha_manual(values = c(1,.8))+
   labs(x = 'Serial Position Error', fill = 'Trial', colour ='Trial', alpha = 'Trial', title = 'Underlying Model')+
-  apatheme+
   theme(axis.text.x = element_text(family='Arial', size=20))+
   lims(x=c(-17,17))
 
@@ -44,7 +43,6 @@ normErrorDensity
 logNormErrorHist <- ggplot(logNormObs, aes(x=error))+
   geom_histogram(binwidth = 1)+
   labs(x='Serial Position Error', title = 'Empirical Errors')+
-  apatheme
 
 
 logNormErrorDensity <- ggplot(logNormObs, aes(x=error))+
@@ -53,7 +51,6 @@ logNormErrorDensity <- ggplot(logNormObs, aes(x=error))+
   scale_colour_manual(values = c('#feb24c', '#31a354'))+
   scale_alpha_manual(values = c(1,.8))+
   labs(x = 'Serial Position Error', fill = 'Trial', colour ='Trial', alpha = 'Trial', title = 'Underlying Model')+
-  apatheme+
   theme(axis.text.x = element_text(family='Arial', size=20))
 
 logNormErrorDensity
