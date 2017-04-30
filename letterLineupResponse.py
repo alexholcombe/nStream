@@ -291,6 +291,8 @@ if __name__=='__main__':  #Running this file directly, must want to test functio
     autopilot = False
     clickSound, badClickSound = setupSoundsForResponse()
     alphabet = list(string.ascii_uppercase)
+    alphabet.remove('W')
+    alphabet.remove('C')
     possibleResps = alphabet
     #possibleResps.remove('C'); possibleResps.remove('V') #per Goodbourn & Holcombe, including backwards-ltrs experiments
     myWin.flip()

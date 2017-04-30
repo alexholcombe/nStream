@@ -50,6 +50,7 @@ refreshRate = 60
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
+font = 'sloan'
 staircaseTrials = 25
 prefaceStaircaseTrialsN = 20 #22
 prefaceStaircaseNoise = np.array([5,20,20,20, 50,50,50,5,80,80,80,5,95,95,95]) #will be recycled / not all used, as needed
@@ -387,13 +388,14 @@ def numberToLetter(number): #0 = A, 25 = Z
     #if it's not really a letter, return @
     #if type(number) != type(5) and type(number) != type(np.array([3])[0]): #not an integer or numpy.int32
     #    return ('@')
-    if number < 0 or number > 25:
-        return ('@')
-    else: #it's probably a letter
-        try:
-            return chr( ord('A')+number )
-        except:
-            return('@')
+    if number is not 2 and number is not 22:
+        if number < 0 or number > 25:
+            return ('@')
+        else: #it's probably a letter
+            try:
+                return chr( ord('A')+number )
+            except:
+                return('@')
 
 def letterToNumber(letter): #A = 0, Z = 25
     #if it's not really a letter, return -999
@@ -565,7 +567,7 @@ for streami in xrange(maxStreams):
     ltrHeightThis = calcLtrHeightSize( ltrHeight, cueOffsets, thisRingNum )
     #print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
     for i in range(0,26):
-        ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+        ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
         ltr.setHeight( ltrHeightThis )      
         letter = numberToLetter(i)
         ltr.setText(letter,log=False)
