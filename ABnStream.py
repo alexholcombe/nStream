@@ -107,7 +107,7 @@ if quitFinder:
     os.system(shellCmd)
 
 #letter size 2.5 deg
-numLettersToPresent = 26
+numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
 SOAms = 82.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 letterDurMs = 60#60
@@ -567,12 +567,14 @@ for streami in xrange(maxStreams):
     ltrHeightThis = calcLtrHeightSize( ltrHeight, cueOffsets, thisRingNum )
     #print('thisRingNum = ',thisRingNum,'streamsPerRing=',streamsPerRing, ' ltrHeightThis=',ltrHeightThis)
     for i in range(0,26):
-        ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-        ltr.setHeight( ltrHeightThis )      
-        letter = numberToLetter(i)
-        ltr.setText(letter,log=False)
-        ltr.setColor(bgColor)
-        streamThis.append( ltr )
+        if i is not 2 and i is not 22:
+            ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+            ltr.setHeight( ltrHeightThis )      
+            letter = numberToLetter(i)
+            print(letter)
+            ltr.setText(letter,log=False)
+            ltr.setColor(bgColor)
+            streamThis.append( ltr )
     ltrStreams.append( streamThis )
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
@@ -671,7 +673,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
     #assign the letters to be shown in each stream
     streamLtrSequences = list() 
     for streami in xrange(numRings * streamsPerRing):
-        letterSeqThisStream =  np.arange(0,26)
+        letterSeqThisStream =  np.arange(0,numLettersToPresent)
         np.random.shuffle(letterSeqThisStream)
         streamLtrSequences.append( letterSeqThisStream )
     avoidDuplicates = False
@@ -1203,7 +1205,8 @@ else: #not staircase
                     showBothSides = False
             #print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral)
             alphabet = list(string.ascii_uppercase)
-            possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
+            possibleResps = alphabet 
+            possibleResps.remove('C'); possibleResps.remove('W')
             expStop,passThisTrial,responses,buttons,responsesAutopilot = \
                 letterLineupResponse.doLineup(myWin,bgColor,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
         else:
