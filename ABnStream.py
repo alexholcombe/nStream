@@ -109,8 +109,8 @@ if quitFinder:
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 700 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 700#60
+SOAms = 82.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 60 #60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -388,27 +388,24 @@ def numberToLetter(number): #0 = A, 25 = Z
     #if it's not really a letter, return @
     #if type(number) != type(5) and type(number) != type(np.array([3])[0]): #not an integer or numpy.int32
     #    return ('@')
-    if number is not 2 and number is not 22:
-        if number < 0 or number > 25:
-            return ('@')
-        else: #it's probably a letter
-            try:
-                return chr( ord('A')+number )
-            except:
-                return('@')
+    alpha = [i for i in string.ascii_uppercase]
+    #print('Inside numberToLetter, number = ' + str(number))
+    if number < 0 or number > len(alpha) or number == 2 or number == 22:
+        return '@'
+    else:
+        return alpha[number]
+
 
 def letterToNumber(letter): #A = 0, Z = 25
     #if it's not really a letter, return -999
     #HOW CAN I GENERICALLY TEST FOR LENGTH. EVEN IN CASE OF A NUMBER THAT' SNOT PART OF AN ARRAY?
-    try:
-        #if len(letter) > 1:
-        #    return (-999)
-        if letter < 'A' or letter > 'Z':
-            return (-999)
-        else: #it's a letter
-            return ord(letter)-ord('A')
-    except:
-        return (-999)
+    alpha = [i for i in string.ascii_uppercase]
+    alpha.remove('C')
+    alpha.remove('W')
+    if letter == 'C' or letter == 'W':
+        return '@'
+    else:
+        return alpha.index(letter)
 
 #print header for data file
 print('experimentPhase\ttrialnum\tsubject\ttask\t',file=dataFile,end='')
@@ -764,7 +761,6 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
             corrAnsEachCue.append( letterIdxThisStream    )
             corrAnsEachResp.append( letterIdxThisStream )
             whichRespEachCue.append(cuei) #assume that responses are queried in the order of the cues. Note that above, which stream each cue corresponds to is random
-
         #Need to shuffle which stream is queried first, second, etc. Remember, we're assuming there's only one temporalPos
         #reduce whichStreamEachResp to numRespsWanted. Also whichRespEachCue. Leave corrAnsEachResp same length so can do error analysis checking for swaps.
         whichRespEachCue = np.array(whichRespEachCue) #so that behaves correctly with np.where
@@ -884,9 +880,12 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
         if corrAnsEachResp[respI] == letterToNumber( responses[respI] ):
             eachRespCorrect[respI] = 1 #doesn't compensate for different response query orders
         thisStream = whichStreamEachResp[respI]
-        thisRespLetterSeq = streamLtrSequences[thisStream]
+        thisRespLetterSeq = np.array([ltrStreams[thisStream][item].text for item in streamLtrSequences[thisStream]])
+        #print(thisRespLetterSeq)
         thisResponse = responses[respI]
-        posThisResponse= np.where( letterToNumber(thisResponse)==thisRespLetterSeq ) #what position in the stream is the letter the person reported
+        #print('thisResponse: '+ str(thisResponse))
+        posThisResponse= np.where( thisResponse==thisRespLetterSeq ) #what position in the stream is the letter the person reported
+        #print('posThisResponse: ' + str(posThisResponse))
         posThisResponse= posThisResponse[0] #list with potentially two entries, want first which will be array of places where the response was found in the letter sequence
         if len(posThisResponse) > 1:
             logging.error('Expected response to have occurred in only one position in stream')
@@ -918,7 +917,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
             #header should be resp0, eachRespCorrect0, whichStream0,
             print(responses[respI], '\t', end ='', file=dataFile) #respN
             print(buttons[respI],'\t', end='', file=dataFile) #buttonN
-            answerCharacter = numberToLetter( corrAnsEachResp[respI] )
+            answerCharacter = thisRespLetterSeq[cueTemporalPos]
             print(cueTemporalPos, '\t', end = '', file = dataFile)
             print(answerCharacter, '\t', end='', file=dataFile) #answer0
             print(eachRespCorrect[respI],'\t', end='', file=dataFile) #eachRespCorrect0.  This is in order of responses
