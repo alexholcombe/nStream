@@ -1,0 +1,52 @@
+23.1692 	INFO 	Successfully set darwin thread to realtime
+24.2381 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.84.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_05_03 15:14 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1493788463
+    experimentScript: ABnStream.py
+    experimentScript.digestSHA1: bda2f01aa0a60a14b08814ad9645ec65d356465e
+    experimentScript.directory: /Users/supalab/Documents/CharlieAndAlex/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2673-10-17-45-208.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 5293.33984375
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.8.5 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0006802721181884408, 'default sr': 44100, 'name': u'Built-in Microph'}, 1: {'host api index': 0, 'latency': 0.0006802721181884408, 'default sr': 44100, 'name': u'Built-in Input'}, 3: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Soundflower (2ch)'}, 4: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Soundflower (64ch)'}}
+    systemPyo.OutputDevices: {2: {'host api index': 0, 'latency': 0.006258503533899784, 'default sr': 44100, 'name': u'Built-in Output'}, 3: {'host api index': 0, 'latency': 0.0, 'default sr': 44100, 'name': u'Soundflower (2ch)'}, 4: {'host api index': 0, 'latency': 0.0, 'default sr': 44100, 'name': u'Soundflower (64ch)'}}
+    systemPyoVersion: 0.8.0
+    systemRavailable: R version 3.1.1 (2014-07-10) -- Sock it to Me
+    systemRebooted: May 3 09:34
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8y 5 Feb 2013
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0047
+    systemUser: supalab
+    systemUserID: 503
+    systemUserProcCount: 37
+    systemUserProcFlagged: mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.048
+    windowRefreshTimeMedian_ms: 16.673
+    windowRefreshTimeAvg_ms: 16.666
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2015_02_16 18:01
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+25.7184 	EXP 	Set  sound=C
