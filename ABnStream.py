@@ -571,7 +571,7 @@ for streami in xrange(maxStreams):
             ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
             ltr.setHeight( ltrHeightThis )      
             letter = numberToLetter(i)
-            print(letter)
+            #print(letter)
             ltr.setText(letter,log=False)
             ltr.setColor(bgColor)
             streamThis.append( ltr )
@@ -673,7 +673,8 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
     #assign the letters to be shown in each stream
     streamLtrSequences = list() 
     for streami in xrange(numRings * streamsPerRing):
-        letterSeqThisStream =  np.arange(0,numLettersToPresent)
+        letterSeqThisStream =  np.arange(0,24)
+        #letterSeqThisStream = np.delete(letterSeqThisStream, [2,22])
         np.random.shuffle(letterSeqThisStream)
         streamLtrSequences.append( letterSeqThisStream )
     avoidDuplicates = False
@@ -837,7 +838,6 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         myWin.flip()  #end fixation interval
     #myWin.setRecordFrameIntervals(True);  #can't get it to stop detecting superlong frames
     t0 = trialClock.getTime()
-    
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
         if showRefreshMisses: #flicker fixation on and off at framerate to see when skip frame
             if n%2 or demo or exportImages: 
@@ -1229,7 +1229,12 @@ else: #not staircase
             print('Scored response.   allCorrect=', allCorrect) #debugAH
             for i in range( numRings * max(streamsPerRingPossibilities) ):
                 if i  < thisTrial['streamsPerRing']:  #did indeed have at least this many streams on this trial
-                    thisStreamLtrs = [numberToLetter(x) for x in streamLtrSequences[i]]
+                    theseText = [ltrStreams[i][textObj] for textObj in streamLtrSequences[i]]
+                    thisStreamLtrs = [x.text for x in theseText]
+                    #print('thisStream printed')
+                    #print([numberToLetter(x) for x in streamLtrSequences[i]])
+                    #print('thisSequence')
+                    #print(streamLtrSequences[i])
                     dataFile.write( ''.join(thisStreamLtrs)     +'\t')
                 else:  #didn't have that many streams on this trial
                     dataFile.write( "-99\t" )
