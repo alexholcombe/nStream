@@ -109,8 +109,8 @@ if quitFinder:
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 82.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 60#60
+SOAms = 700 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 700#60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -422,6 +422,7 @@ if printInOrderOfResponses:
     for i in range(maxNumRespsWanted):
        dataFile.write('resp'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('button'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
+       dataFile.write('cuePos'+str(i)+'\t')
        dataFile.write('answer'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('correct'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichStream'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
@@ -918,6 +919,7 @@ def handleAndScoreResponse(passThisTrial,responses,responsesAutopilot,task,strea
             print(responses[respI], '\t', end ='', file=dataFile) #respN
             print(buttons[respI],'\t', end='', file=dataFile) #buttonN
             answerCharacter = numberToLetter( corrAnsEachResp[respI] )
+            print(cueTemporalPos, '\t', end = '', file = dataFile)
             print(answerCharacter, '\t', end='', file=dataFile) #answer0
             print(eachRespCorrect[respI],'\t', end='', file=dataFile) #eachRespCorrect0.  This is in order of responses
             print(whichStreamEachResp[respI], '\t', end='', file=dataFile) #whichStream0
