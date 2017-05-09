@@ -1,0 +1,551 @@
+30.9989 	INFO 	Successfully set darwin thread to realtime
+32.0602 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.84.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_05_09 10:23 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1494289388
+    experimentScript: ABnStream.py
+    experimentScript.digestSHA1: e05d5e779a101a0f8ca5072c59955863b8842e28
+    experimentScript.directory: /Users/supalab/Documents/CharlieAndAlex/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: False (proxies not attempted)
+    systemHostName: supalabs-macbook-pro.local
+    systemLocale: C
+    systemMemFreeRAM: 5222.82421875
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.8.5 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0006802721181884408, 'default sr': 44100, 'name': u'Built-in Microph'}, 1: {'host api index': 0, 'latency': 0.0006802721181884408, 'default sr': 44100, 'name': u'Built-in Input'}, 3: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Soundflower (2ch)'}, 4: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Soundflower (64ch)'}}
+    systemPyo.OutputDevices: {2: {'host api index': 0, 'latency': 0.006258503533899784, 'default sr': 44100, 'name': u'Built-in Output'}, 3: {'host api index': 0, 'latency': 0.0, 'default sr': 44100, 'name': u'Soundflower (2ch)'}, 4: {'host api index': 0, 'latency': 0.0, 'default sr': 44100, 'name': u'Soundflower (64ch)'}}
+    systemPyoVersion: 0.8.0
+    systemRavailable: R version 3.1.1 (2014-07-10) -- Sock it to Me
+    systemRebooted: May 9 09:09
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8y 5 Feb 2013
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0042
+    systemUser: supalab
+    systemUserID: 503
+    systemUserProcCount: 31
+    systemUserProcFlagged: mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.056
+    windowRefreshTimeMedian_ms: 16.666
+    windowRefreshTimeAvg_ms: 16.665
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2015_02_16 18:01
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+33.5417 	EXP 	Set  sound=C
+33.5431 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+33.7315 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+33.7317 	EXP 	Set  sound=A
+33.9002 	EXP 	Created sequence: random, trialTypes=160, nReps=2, seed=None
+33.9938 	INFO 	 each trialDurFrames=96 or 1600.0 ms
+35.4483 	INFO 	Mouse: using default window
+35.4518 	EXP 	Created unnamed PatchStim = PatchStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='circle', maskParams=None, name='unnamed PatchStim', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.16666667,  0.16666667]), size=array([ 6.,  6.]), tex=None, texRes=128, units='pix', win=Window(...))
+36.6597 	DATA 	Mouse: Middle button down, pos=(1023,1)
+36.6600 	DATA 	Mouse:  Middle button up, pos=(1023,1)
+36.6603 	DATA 	Mouse: Middle button down, pos=(1023,1)
+36.6605 	DATA 	Mouse:  Middle button up, pos=(1023,1)
+70.8398 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+74.8729 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+76.0728 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+77.2394 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+79.8725 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+82.1723 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+87.7886 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+89.2385 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+90.7550 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+92.7215 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+95.9048 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+99.4101 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+100.4211 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+101.4377 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+102.4376 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+104.5874 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+105.4040 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+108.4526 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+112.1369 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+113.2368 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+114.2701 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+117.1532 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+118.4364 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+122.6599 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+143.5014 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+147.0178 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+148.2177 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+149.5342 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+150.6842 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+153.4007 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+158.3937 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+160.6335 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+162.5166 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+163.4500 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+168.1330 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+171.3494 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+194.1841 	DATA 	Keypress: space
+202.8630 	DATA 	Keypress: space
+212.9349 	DATA 	Keypress: m
+213.0013 	INFO 	Mouse: using default window
+213.0044 	EXP 	Created unnamed PatchStim = PatchStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='circle', maskParams=None, name='unnamed PatchStim', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.16666667,  0.16666667]), size=array([ 6.,  6.]), tex=None, texRes=128, units='pix', win=Window(...))
+218.3464 	INFO 	Mouse: using default window
+218.3465 	INFO 	Starting dual stream part of experiment
+218.3794 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+221.1647 	EXP 	New trial (rep=0, index=0): {'cue0temporalPos': 10, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 225, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+223.3624 	EXP 	window1: recordFrameIntervals = False
+223.4815 	EXP 	window1: mouseVisible = True
+223.4844 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+223.5190 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+223.7526 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+227.7287 	DATA 	Mouse: Right button down, pos=(583,379)
+227.7296 	EXP 	Sound  started
+227.9064 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+227.9473 	DATA 	Mouse:  Right button up, pos=(583,379)
+229.6808 	DATA 	Mouse: Left button down, pos=(573,362)
+229.6817 	EXP 	Sound  started
+229.8665 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+229.8763 	DATA 	Mouse:  Left button up, pos=(573,362)
+231.0969 	DATA 	Mouse: Left button down, pos=(517,146)
+231.0978 	EXP 	window1: mouseVisible = False
+231.1687 	DATA 	Mouse:  Left button up, pos=(518,146)
+231.6117 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+247.7105 	EXP 	New trial (rep=0, index=1): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 135, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+249.7438 	EXP 	window1: recordFrameIntervals = False
+249.8527 	EXP 	window1: mouseVisible = True
+249.8558 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+249.8829 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+250.1179 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+252.9849 	DATA 	Mouse: Left button down, pos=(407,398)
+252.9854 	EXP 	Sound  started
+253.1652 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+253.2041 	DATA 	Mouse:  Left button up, pos=(407,398)
+254.2567 	DATA 	Mouse: Left button down, pos=(515,153)
+254.2576 	EXP 	window1: mouseVisible = False
+254.3288 	DATA 	Mouse:  Left button up, pos=(515,153)
+254.7768 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+260.6200 	EXP 	New trial (rep=0, index=2): {'cue0temporalPos': 10, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 225, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+263.1096 	EXP 	window1: recordFrameIntervals = False
+263.2185 	EXP 	window1: mouseVisible = True
+263.2214 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+263.2517 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+263.4894 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+266.6326 	DATA 	Mouse: Middle button down, pos=(295,348)
+266.6332 	EXP 	Sound  started
+266.8111 	EXP 	Sound  started
+266.9874 	EXP 	Sound  started
+267.1688 	DATA 	Mouse:  Middle button up, pos=(324,341)
+267.6007 	DATA 	Mouse: Left button down, pos=(282,381)
+267.6013 	EXP 	Sound  started
+267.7788 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+267.8172 	DATA 	Mouse:  Left button up, pos=(282,381)
+268.6004 	DATA 	Mouse: Middle button down, pos=(479,190)
+268.6014 	EXP 	window1: mouseVisible = False
+268.8085 	DATA 	Mouse:  Middle button up, pos=(508,164)
+269.1091 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+272.3689 	EXP 	New trial (rep=0, index=3): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 225, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+274.4588 	EXP 	window1: recordFrameIntervals = False
+274.5677 	EXP 	window1: mouseVisible = True
+274.5710 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+274.5990 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+274.8344 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+279.4488 	DATA 	Mouse: Left button down, pos=(863,373)
+279.4494 	EXP 	Sound  started
+279.6297 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+279.6696 	DATA 	Mouse:  Left button up, pos=(867,373)
+279.7767 	DATA 	Mouse: Left button down, pos=(871,373)
+279.7772 	EXP 	Sound  started
+279.9641 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+279.9740 	DATA 	Mouse:  Left button up, pos=(871,373)
+280.9287 	DATA 	Mouse: Left button down, pos=(536,125)
+280.9295 	EXP 	window1: mouseVisible = False
+281.0166 	DATA 	Mouse:  Left button up, pos=(536,125)
+281.4416 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+284.4254 	EXP 	New trial (rep=0, index=4): {'cue0temporalPos': 6, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 135, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+286.7913 	EXP 	window1: recordFrameIntervals = False
+286.9007 	EXP 	window1: mouseVisible = True
+286.9057 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+286.9329 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+287.1684 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+291.3849 	DATA 	Mouse: Left button down, pos=(282,362)
+291.3854 	EXP 	Sound  started
+291.5607 	DATA 	Mouse:  Left button up, pos=(282,362)
+291.8727 	DATA 	Mouse: Left button down, pos=(285,368)
+291.8731 	EXP 	Sound  started
+292.0470 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+292.0861 	DATA 	Mouse:  Left button up, pos=(285,368)
+293.4968 	DATA 	Mouse: Left button down, pos=(525,146)
+293.4976 	EXP 	window1: mouseVisible = False
+293.5928 	DATA 	Mouse:  Left button up, pos=(525,146)
+294.0073 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+295.8715 	EXP 	New trial (rep=0, index=5): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 180, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+297.9072 	EXP 	window1: recordFrameIntervals = False
+298.0157 	EXP 	window1: mouseVisible = True
+298.0186 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+298.0463 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+298.3051 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+299.4247 	DATA 	Mouse: Left button down, pos=(371,372)
+299.4252 	EXP 	Sound  started
+299.6047 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+299.6440 	DATA 	Mouse:  Left button up, pos=(371,372)
+300.4087 	DATA 	Mouse: Left button down, pos=(501,151)
+300.4095 	EXP 	window1: mouseVisible = False
+300.4887 	DATA 	Mouse:  Left button up, pos=(501,151)
+300.9235 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+303.7842 	EXP 	New trial (rep=0, index=6): {'cue0temporalPos': 10, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 45, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+305.8066 	EXP 	window1: recordFrameIntervals = False
+305.9152 	EXP 	window1: mouseVisible = True
+305.9186 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+305.9472 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+306.1861 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+310.4890 	DATA 	Mouse: Left button down, pos=(476,374)
+310.4894 	EXP 	Sound  started
+310.6658 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+310.7074 	DATA 	Mouse:  Left button up, pos=(476,374)
+311.5208 	DATA 	Mouse: Left button down, pos=(509,140)
+311.5216 	EXP 	window1: mouseVisible = False
+311.6008 	DATA 	Mouse:  Left button up, pos=(509,140)
+312.0395 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+314.8385 	EXP 	New trial (rep=0, index=7): {'cue0temporalPos': 7, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 135, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+317.2724 	EXP 	window1: recordFrameIntervals = False
+317.3818 	EXP 	window1: mouseVisible = True
+317.3851 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+317.4129 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+317.7198 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+319.6567 	DATA 	Mouse: Left button down, pos=(335,394)
+319.6575 	EXP 	Sound  started
+319.8383 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+319.8796 	DATA 	Mouse:  Left button up, pos=(335,394)
+320.6726 	DATA 	Mouse: Left button down, pos=(509,141)
+320.6734 	EXP 	window1: mouseVisible = False
+320.7607 	DATA 	Mouse:  Left button up, pos=(509,141)
+321.1889 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+324.3653 	EXP 	New trial (rep=0, index=8): {'cue0temporalPos': 8, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 315, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+326.6885 	EXP 	window1: recordFrameIntervals = False
+326.7977 	EXP 	window1: mouseVisible = True
+326.8007 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+326.8295 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+327.0839 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+329.0647 	DATA 	Mouse: Left button down, pos=(550,379)
+329.0652 	EXP 	Sound  started
+329.2534 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+329.2935 	DATA 	Mouse:  Left button up, pos=(550,379)
+330.1767 	DATA 	Mouse: Left button down, pos=(537,140)
+330.1775 	EXP 	window1: mouseVisible = False
+330.2649 	DATA 	Mouse:  Left button up, pos=(537,140)
+330.6882 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+333.7981 	EXP 	New trial (rep=0, index=9): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 270, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+335.9546 	EXP 	window1: recordFrameIntervals = False
+336.0635 	EXP 	window1: mouseVisible = True
+336.0668 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+336.0959 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+336.3393 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+338.0969 	DATA 	Mouse: Left button down, pos=(186,389)
+338.0974 	EXP 	Sound  started
+338.2752 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+338.3141 	DATA 	Mouse:  Left button up, pos=(186,389)
+339.2570 	DATA 	Mouse: Left button down, pos=(563,137)
+339.2578 	EXP 	window1: mouseVisible = False
+339.3448 	DATA 	Mouse:  Left button up, pos=(563,137)
+339.7709 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+341.1812 	EXP 	New trial (rep=0, index=10): {'cue0temporalPos': 10, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 135, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+343.5540 	EXP 	window1: recordFrameIntervals = False
+343.6622 	EXP 	window1: mouseVisible = True
+343.6656 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+343.6941 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+343.9372 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+348.4248 	DATA 	Mouse: Left button down, pos=(302,374)
+348.4254 	EXP 	Sound  started
+348.5995 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+348.6423 	DATA 	Mouse:  Left button up, pos=(302,374)
+349.5128 	DATA 	Mouse: Left button down, pos=(500,159)
+349.5136 	EXP 	window1: mouseVisible = False
+349.6087 	DATA 	Mouse:  Left button up, pos=(500,159)
+350.0202 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+352.2473 	EXP 	New trial (rep=0, index=11): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 90, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+354.3366 	EXP 	window1: recordFrameIntervals = False
+354.4453 	EXP 	window1: mouseVisible = True
+354.4503 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+354.4785 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+354.7159 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+356.5287 	DATA 	Mouse: Left button down, pos=(287,372)
+356.5293 	EXP 	Sound  started
+356.7191 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+356.7586 	DATA 	Mouse:  Left button up, pos=(287,372)
+357.4727 	DATA 	Mouse: Left button down, pos=(471,174)
+357.4735 	EXP 	window1: mouseVisible = False
+357.5608 	DATA 	Mouse:  Left button up, pos=(471,174)
+357.9790 	DATA 	Mouse: Left button down, pos=(483,159)
+357.9863 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+358.0647 	DATA 	Mouse:  Left button up, pos=(483,159)
+360.0292 	EXP 	New trial (rep=0, index=12): {'cue0temporalPos': 7, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 45, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+362.1360 	EXP 	window1: recordFrameIntervals = False
+362.2451 	EXP 	window1: mouseVisible = True
+362.2485 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+362.2763 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+362.5164 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+364.0570 	DATA 	Mouse: Left button down, pos=(400,372)
+364.0575 	EXP 	Sound  started
+364.2352 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+364.2750 	DATA 	Mouse:  Left button up, pos=(400,372)
+365.0889 	DATA 	Mouse: Left button down, pos=(487,170)
+365.0897 	EXP 	window1: mouseVisible = False
+365.1767 	DATA 	Mouse:  Left button up, pos=(487,170)
+365.6024 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+367.4545 	EXP 	New trial (rep=0, index=13): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 180, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+369.8188 	EXP 	window1: recordFrameIntervals = False
+369.9276 	EXP 	window1: mouseVisible = True
+369.9309 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+369.9598 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+370.2122 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+373.7367 	DATA 	Mouse: Left button down, pos=(25,383)
+373.7372 	EXP 	Sound  started
+373.9172 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+373.9566 	DATA 	Mouse:  Left button up, pos=(25,383)
+375.0089 	DATA 	Mouse: Left button down, pos=(494,146)
+375.0097 	EXP 	window1: mouseVisible = False
+375.0968 	DATA 	Mouse:  Left button up, pos=(494,146)
+375.5184 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+376.7452 	EXP 	New trial (rep=0, index=14): {'cue0temporalPos': 6, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 315, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+379.1848 	EXP 	window1: recordFrameIntervals = False
+379.2935 	EXP 	window1: mouseVisible = True
+379.2970 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+379.3243 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+379.5739 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+381.7687 	DATA 	Mouse: Left button down, pos=(662,372)
+381.7692 	EXP 	Sound  started
+381.9457 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+381.9858 	DATA 	Mouse:  Left button up, pos=(662,372)
+382.8487 	DATA 	Mouse: Left button down, pos=(535,144)
+382.8496 	EXP 	window1: mouseVisible = False
+382.9368 	DATA 	Mouse:  Left button up, pos=(534,144)
+383.3678 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+384.8273 	EXP 	New trial (rep=0, index=15): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 90, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+387.2343 	EXP 	window1: recordFrameIntervals = False
+387.3443 	EXP 	window1: mouseVisible = True
+387.3479 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+387.3755 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+387.6328 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+390.1447 	DATA 	Mouse: Left button down, pos=(333,370)
+390.1453 	EXP 	Sound  started
+390.3338 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+390.3755 	DATA 	Mouse:  Left button up, pos=(333,370)
+391.2888 	DATA 	Mouse: Left button down, pos=(509,167)
+391.2895 	EXP 	window1: mouseVisible = False
+391.3771 	DATA 	Mouse:  Left button up, pos=(509,167)
+391.8005 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+395.2119 	EXP 	New trial (rep=0, index=16): {'cue0temporalPos': 8, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 225, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+397.3502 	EXP 	window1: recordFrameIntervals = False
+397.4582 	EXP 	window1: mouseVisible = True
+397.4617 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+397.4908 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+397.7400 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+398.9607 	DATA 	Mouse: Left button down, pos=(627,384)
+398.9655 	EXP 	Sound  started
+399.1520 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+399.1917 	DATA 	Mouse:  Left button up, pos=(627,384)
+400.0087 	DATA 	Mouse: Left button down, pos=(544,151)
+400.0095 	EXP 	window1: mouseVisible = False
+400.0888 	DATA 	Mouse:  Left button up, pos=(544,151)
+400.5167 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+412.8658 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+415.4822 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+417.2155 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+422.2485 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+424.5317 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+426.1315 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+428.6540 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+432.8476 	EXP 	unnamed PatchStim: pos = array([   0., -318.])
+433.7477 	EXP 	unnamed PatchStim: pos = array([   0.,  319.])
+436.3807 	EXP 	unnamed PatchStim: pos = array([-451.,    0.])
+440.3972 	EXP 	unnamed PatchStim: pos = array([ 450.,    0.])
+443.1304 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+454.9761 	EXP 	New trial (rep=0, index=17): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 270, 'streamsPerRing': 8, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'right', 'cue1lag': 0}
+457.4460 	EXP 	window1: recordFrameIntervals = False
+457.5541 	EXP 	window1: mouseVisible = True
+457.5577 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+457.5858 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+457.8269 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+458.0564 	DATA 	Mouse: Middle button down, pos=(451,245)
+458.0570 	EXP 	Sound  started
+458.2426 	EXP 	Sound  started
+458.4229 	EXP 	Sound  started
+458.6031 	DATA 	Mouse:  Middle button up, pos=(451,246)
+459.1684 	DATA 	Mouse: Middle button down, pos=(222,364)
+459.1691 	EXP 	Sound  started
+459.3505 	EXP 	Sound  started
+459.5365 	DATA 	Mouse:  Middle button up, pos=(223,365)
+460.2247 	DATA 	Mouse: Left button down, pos=(203,384)
+460.2252 	EXP 	Sound  started
+460.4096 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+460.4489 	DATA 	Mouse:  Left button up, pos=(203,384)
+461.2168 	DATA 	Mouse: Left button down, pos=(523,146)
+461.2177 	EXP 	window1: mouseVisible = False
+461.3209 	DATA 	Mouse:  Left button up, pos=(523,146)
+461.7290 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+472.3053 	EXP 	New trial (rep=0, index=18): {'cue0temporalPos': 9, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 315, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+474.4949 	EXP 	window1: recordFrameIntervals = False
+474.6041 	EXP 	window1: mouseVisible = True
+474.6076 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+474.6370 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+474.8820 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+477.6328 	DATA 	Mouse: Left button down, pos=(879,370)
+477.6333 	EXP 	Sound  started
+477.8199 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+477.8604 	DATA 	Mouse:  Left button up, pos=(879,370)
+478.7207 	DATA 	Mouse: Left button down, pos=(542,148)
+478.7215 	EXP 	window1: mouseVisible = False
+478.8008 	DATA 	Mouse:  Left button up, pos=(542,148)
+479.2279 	EXP 	unnamed PatchStim: pos = array([ 0.,  0.])
+483.0545 	EXP 	New trial (rep=0, index=19): {'cue0temporalPos': 7, 'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'baseAngleCWfromEast': 90, 'streamsPerRing': 2, 'numRespsWanted': 1, 'numToCue': 1, 'numRings': 1, 'firstRespLRifTwo': 'left', 'cue1lag': 0}
+485.2108 	EXP 	window1: recordFrameIntervals = False
+485.3195 	EXP 	window1: mouseVisible = True
+485.3232 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+485.3517 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+485.5978 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+487.0568 	DATA 	Mouse: Left button down, pos=(1001,372)
+487.0573 	EXP 	Sound  started
+487.2480 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x108f75f90>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+487.2884 	DATA 	Mouse:  Left button up, pos=(1001,372)
+488.1208 	DATA 	Mouse: Left button down, pos=(555,141)
+488.1216 	EXP 	window1: mouseVisible = False
+488.2087 	DATA 	Mouse:  Left button up, pos=(555,141)
