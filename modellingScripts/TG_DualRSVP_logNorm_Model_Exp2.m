@@ -6,15 +6,15 @@ usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'twoStreams','eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
 itemRate = 12;
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [3 3 6 4];
-nTrials = 200;
+nParticipants = [10 10];
+nTrials = 300;
 nSessions = 1;
 nSamples = numel(sampleNames);
 
@@ -24,7 +24,7 @@ nFreeParameters = 3;
 pdf_normmixture = @TGAB_pdf_logNorm_Mixture_Single; % We can use the single-episode AB model
 pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns;
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 400;
+nReplicates = 400 ;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
