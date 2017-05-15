@@ -8,7 +8,7 @@ setwd('~/gitCode/nStream/')  #Charlie-specific
 source('ggplotElements.R')
 theme_set(theme_apa(base_size = 20)) 
 
-plots <- F #if true, create plots
+plots <- T #if true, create plots
 if(plots){
   savePlots <- T #save plots?
 }
@@ -64,7 +64,23 @@ dropThese <- c( 'MH1','OS3','EG11','PC13')
 
 #groups <- c('2vs8','End6Strm82msSOA','Ex6Strm82msSOA')
 
-if(!'plots' %in% list.dirs(full.names=F)) dir.create('plots')
+group = 'SONA'
+
+if(plots){
+  if(savePlots){
+    if(!'plots' %in% list.dirs(full.names=F)){
+      dir.create('plots')
+    }
+    if(!group %in% list.dirs(path = 'plots', full.names = F)){
+      dir.create(paste0('plots/',group))
+    }
+  }
+}
+
+efficacy <- read.csv('modelOutput/CSV/Efficacy.csv')
+latency <- read.csv('modelOutput/CSV/Latency.csv')
+precision <- read.csv('modelOutput/CSV/Precision.csv')
+
 
 files <- list.files(pattern = '^[A-Z][A-Z][0-9].*\\.txt$', path = dataPath, full.names = T)
 #removed split files
@@ -103,15 +119,17 @@ dataSets <- list()
 totalRows <- 0
 
 
+IDs <- character()
+
 
 
 for(dataset in files){
   ID <- strsplit(dataset, '(?<=a)/|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
   if(!ID %in% dropThese){
     #group <- strsplit(dataset,'/')[[1]][2]
-    group = 'SONA'
     print(group)
     print(ID)
+    IDs <- c(IDs, ID)
     #Some date formatting
     dateString <- strsplit(strsplit(dataset, '_(?=[0-9])', perl=T)[[1]][2],'')[[1]]
     day <- paste0(dateString[1:2],collapse='')
@@ -137,7 +155,7 @@ for(dataset in files){
   }
 }
 
-allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), stringsAsFactors = F)
+allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), fixationReject = logical(totalRows), stringsAsFactors = F)
 
 startRow <- 1
 
@@ -145,7 +163,21 @@ for(group in names(dataSets)){
   for(participant in names(dataSets[[group]])){
     for(dateString in names(dataSets[[group]][[participant]])){
       print(participant)
+      
+      nInAlphabeticalOrder <- which(IDs==participant) #parameter estimates from MM are in alphabetical order, so this lets me select the appropriate params
+      
+      
+      #Mixture Modelled parameter estimates
+      twoStreamsLatency <- latency$twoStreams[nInAlphabeticalOrder]
+      twoStreamsPrecision <- precision$eightStreams[nInAlphabeticalOrder]
+      
+      eightStreamsLatency <- latency$eightStreams[nInAlphabeticalOrder]
+      eightStreamsPrecision <- precision$eightStreams[nInAlphabeticalOrder]
+      
+            
       temp <- dataSets[[group]][[participant]][[dateString]][['data']]
+      
+      temp$responsePos <- temp$cuePos0+temp$responsePosRelative0
       
       thisEyetrackerFile <- eyetrackerFiles[grep(paste0('.*',participant,'.*'), eyetrackerFiles)]
       theseFixations <- read.table(thisEyetrackerFile, sep='\t', stringsAsFactors = F, header = T)
@@ -196,35 +228,37 @@ for(group in names(dataSets)){
       
       tempSkewTotal <- skew(temp$responsePosRelative0)
       
+      #Create densities for the SPE with fixation rejections removed
+      
       if(plots){
-        tempPlot <- ggplot(temp, aes(x=responsePosRelative0))+
+        tempPlot <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
           geom_histogram(binwidth = 1)+
           scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
           #geom_text(x = 4, y=30, label=paste0('skew =', round(tempSkewTotal,2)))+
           geom_vline(xintercept = 0, linetype = 'dashed')+
-          facet_wrap(~streamsPerRing)
+          facet_wrap(~streamsPerRing)+
           labs(x = 'Serial Position Error',
                y='Count',
                title = paste0('participant: ', participant, ' Exp: ', group))
         
         show(tempPlot)
         
-        plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
-          geom_histogram(binwidth = 1)+
-          scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
-          geom_vline(xintercept = 0, linetype = 'dashed')+
-          labs(x = 'Serial Position Error',
-               y='Count',
-               title = paste0('participant: ', participant, ' Exp: ', group))+
-          facet_wrap(~whichStream0)
+        # plotByStream <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
+        #   geom_histogram(binwidth = 1)+
+        #   scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
+        #   geom_vline(xintercept = 0, linetype = 'dashed')+
+        #   labs(x = 'Serial Position Error',
+        #        y='Count',
+        #        title = paste0('participant: ', participant, ' Exp: ', group))+
+        #   facet_wrap(~whichStream0)
         
         if(savePlots){
           ggsave(paste0('plots/',group,'/',participant,'.png'),tempPlot, width = 20, height = 20, units = 'cm')
-          ggsave(paste0('plots/',group,'/',participant,'ByStream.png'),plotByStream, width = 20, height = 20, units = 'cm')
+          #ggsave(paste0('plots/',group,'/',participant,'ByStream.png'),plotByStream, width = 20, height = 20, units = 'cm')
         }
         
         dataSets[[group]][[participant]][[dateString]][['plotAll']] <- tempPlot
-        dataSets[[group]][[participant]][[dateString]][['plotByStreams']] <- plotByStream
+        #dataSets[[group]][[participant]][[dateString]][['plotByStreams']] <- plotByStream
       }
       
       streamColumns <- grep('streamLtrSequence', colnames(temp))
@@ -241,6 +275,7 @@ for(group in names(dataSets)){
       allErrors$condition[startRow:endRow] <- 'twoStreams'
       allErrors$ID[startRow:endRow] <- participant
       allErrors$error[startRow:endRow] <- twoStreams$responsePosRelative0
+      allErrors$fixationReject[startRow:endRow] <- twoStreams$fixationReject
       
       startRow <- endRow+1
       
@@ -249,6 +284,7 @@ for(group in names(dataSets)){
       allErrors$condition[startRow:endRow] <- 'eightStreams'
       allErrors$ID[startRow:endRow] <- participant
       allErrors$error[startRow:endRow] <- eightStreams$responsePosRelative0
+      allErrors$fixationReject[startRow:endRow] <- eightStreams$fixationReject
       
       startRow <- endRow + 1
       
@@ -266,7 +302,7 @@ for(group in names(dataSets)){
 #allErrors$exp <- factor(allErrors$exp, levels = c('twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'))
 
 
-totalPlot <- ggplot(allErrors, aes(x=error))+
+totalPlot <- ggplot(allErrors[!allErrors$fixationReject,], aes(x=error))+
   geom_histogram(binwidth = 1)+
   labs(y = 'Count', x = 'Serial Position Error')+
   facet_wrap(~condition)+
@@ -276,6 +312,6 @@ show(totalPlot)
 
 if(plots){
   if(savePlots){
-    ggsave(paste0('plots/2vs8Combined.png'),totalPlot, width = 20, height = 20, units = 'cm')
+    ggsave(paste0('plots/',group,'/Combined.png'),totalPlot, width = 20, height = 20, units = 'cm')
   }
 }
