@@ -1,149 +1,149 @@
-"experimentPhase"	"trialnum"	"subject"	"task"	"noisePercent"	"targetLeftRightIfOne"	"streamsPerRing"	"baseAngleCWfromEast"	"resp0"	"button0"	"cuePos0"	"answer0"	"correct0"	"whichStream0"	"whichRespCue0"	"responsePosRelative0"	"streamLtrSequence0"	"streamLtrSequence1"	"streamLtrSequence2"	"streamLtrSequence3"	"streamLtrSequence4"	"streamLtrSequence5"	"streamLtrSequence6"	"streamLtrSequence7"	"timingBlips"	"fixationReject"
-"main"	21	"LH9 "	" oneCued "	0	" right "	2	315	"H "	0	7	"N "	0	1	0	1	"ZYNQXRHVAGDMPFEBOLITJSUK"	"DXRKIZENHBMVFYAULSTGQOJP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	22	"LH9 "	" oneCued "	0	" right "	2	225	"L "	0	8	"L "	1	0	0	0	"MKAQXTSOLURFYHIPNEBZGDJV"	"LRJQGTUSZVAPXFHNEDBKOIMY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	24	"LH9 "	" oneCued "	0	" right "	2	270	"P "	0	6	"O "	0	0	0	6	"ZDMRSFOYQVGUPBHKLEJIXANT"	"OQJKXYUGHTVLPRSZMFNEDBIA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	25	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	9	"P "	1	0	0	0	"JSQHRNEXLPFGZOAVTKIMDYBU"	"HLXNESDOVMRUGFYIBPKJZATQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	27	"LH9 "	" oneCued "	0	" right "	2	180	"K "	0	10	"B "	0	1	0	1	"RKAIYEZOLDSNVUQJFMPBHTXG"	"SLPZGTEFNRBKVDYMQAXUIJOH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	28	"LH9 "	" oneCued "	0	" right "	2	0	"S "	0	6	"J "	0	0	0	1	"HFTYGRJSLEIVAXQDUPKMZBON"	"KHGTXYOIRZNSPQVMABELFJUD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	30	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	8	"T "	0	0	0	2	"VFQASHRYTIMNUKLXEZDOPJGB"	"HRBQSZLGNKMPFXEVDOIYJATU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	31	"LH9 "	" oneCued "	0	" right "	2	180	"T "	0	10	"V "	0	1	0	1	"DFKTOJGAMRBPHNIXYLZVSEUQ"	"JBRNQYSKEMVTZDUIAFXPHLGO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	32	"LH9 "	" oneCued "	0	" right "	2	90	"N "	0	6	"N "	1	0	0	0	"ILJPFDNHOVAUBTXRMKYZGESQ"	"EBSQZDKJGAHUNOTXVRFYPIML"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	33	"LH9 "	" oneCued "	0	" right "	2	270	"N "	0	10	"L "	0	1	0	1	"LYEKIHZTVGFQPSXABUNJMROD"	"HSEMUBJKVFLNZGYAIPXDRQTO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	34	"LH9 "	" oneCued "	0	" right "	2	0	"R "	0	10	"Q "	0	1	0	3	"UDMNIYVJLOKSHBXGAPFQTEZR"	"OKDZNLEXVSQPBRMIUTYFAJHG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	35	"LH9 "	" oneCued "	0	" right "	2	270	"I "	0	7	"L "	0	0	0	2	"UYOJMVQLFIXDARZKPHBSENGT"	"JVIDHZRXGNFOTQKEBUYALMSP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	38	"LH9 "	" oneCued "	0	" right "	2	270	"N "	0	8	"M "	0	1	0	7	"EPFKTQUDYIZJHGLSOBRMNVAX"	"VYAQOSLDMIJUZFENHPGBRKTX"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	39	"LH9 "	" oneCued "	0	" right "	2	270	"T "	0	6	"T "	1	0	0	0	"KRYQNPTVXDUALZMOIJSGEFBH"	"EPZSMUJAKVHXBYINQROLDTFG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	40	"LH9 "	" oneCued "	0	" right "	2	45	"A "	0	7	"A "	1	1	0	0	"XHNIZJVYBDSLMTGPUOFQREKA"	"ESPUZYRAITHLNVQBMDOGJXFK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	41	"LH9 "	" oneCued "	0	" right "	2	0	"K "	2	8	"K "	1	1	0	0	"RKTIJHXBDVFAMUZYPSGOENLQ"	"QAZIUHMFKNXVJGPDSERYLBTO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	42	"LH9 "	" oneCued "	0	" right "	2	315	"B "	0	8	"V "	0	1	0	-1	"PDLMNOUEBRFAHYGSVJXZTQIK"	"GZURQADBVEPFSYHTXKILNMJO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	43	"LH9 "	" oneCued "	0	" right "	2	90	"F "	0	8	"R "	0	1	0	-6	"ARUEKQVXILDHTMNSFGZJOYPB"	"SMFVKBNURELGZAOHTJDPXIYQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	44	"LH9 "	" oneCued "	0	" right "	2	225	"Z "	0	6	"F "	0	0	0	2	"PGARQMFJZOINVDXBELYKSTHU"	"QZFTYVXNUHJRIASEGDLBOKPM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	46	"LH9 "	" oneCued "	0	" right "	2	225	"F "	0	6	"G "	0	1	0	1	"EFGZUMIAXNOVBQPTHKRLDSJY"	"UJNHKDGFYTARLOPMBXQIZSEV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	47	"LH9 "	" oneCued "	0	" right "	2	90	"T "	0	6	"A "	0	0	0	1	"QRZHUIATEGPONFDSVBYMXJKL"	"QMXISBLKNOHFYEVRJUTPGDZA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	50	"LH9 "	" oneCued "	0	" right "	2	135	"R "	0	6	"R "	1	1	0	0	"ARPNJKBYGUFQOSHZVMLTEXID"	"BMULJDRFVGKTIPXZHNQOSYEA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	52	"LH9 "	" oneCued "	0	" right "	2	90	"A "	0	8	"P "	0	1	0	-1	"RDEATLHOMJPFGQYNSZKIXVUB"	"QYHNRUZAPMTSEXFBJOIVLKGD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	54	"LH9 "	" oneCued "	0	" right "	2	315	"Z "	0	7	"T "	0	0	0	1	"KJOINMBTZEDYUGXVFAPLSHQR"	"GZEBTFDKIXPVSHQRJLUYOAMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	55	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	9	"H "	0	1	0	1	"LJXTPNSEZFBDOVHKQYIMRAUG"	"ANKTGRXYFHMUDQSLPOJZEVIB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	56	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	8	"O "	0	0	0	4	"EJVQLUYFOZADGHBMXIKTSPNR"	"AZETLINSVDGRJUHKBXQYOMFP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	57	"LH9 "	" oneCued "	0	" right "	2	270	"T "	0	7	"J "	0	1	0	1	"IQGRTLMYXPONBEUHKDFSVAZJ"	"SYRBGKIJTDVFNUXMHLZEPAOQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	59	"LH9 "	" oneCued "	0	" right "	2	90	"F "	0	7	"N "	0	1	0	-2	"NBJFEASQTMXUIZDVRYLGHOKP"	"UJTSOFPNYAGRZLHBIVXQMKDE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	64	"LH9 "	" oneCued "	0	" right "	2	270	"X "	2	8	"I "	0	0	0	-1	"NODUGPYXITQVKRFBSLEHZAJM"	"QGEMILPSUDTYNKOXBAZJVRHF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	69	"LH9 "	" oneCued "	0	" right "	2	90	"E "	0	9	"E "	1	1	0	0	"YKEGFMBDTRAXPSZOVUJHINQL"	"XMBRULKTDENHAYQZVIFGOJPS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	70	"LH9 "	" oneCued "	0	" right "	2	315	"B "	0	6	"A "	0	1	0	5	"OUQDEHSBIZPXNMYLFTRKJVAG"	"JIDQSMAZLXKBPEHVUTNRFYGO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	72	"LH9 "	" oneCued "	0	" right "	2	180	"P "	0	6	"N "	0	0	0	4	"JIOQEZNRXSPUGLTDFYKBAHMV"	"KXYTQGBFHJAZMSDENIURVLPO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	74	"LH9 "	" oneCued "	0	" right "	2	270	"S "	0	9	"B "	0	1	0	-2	"PNRZBYDQSILMTVGOJKHAUFXE"	"KHPVEXFSQBGZNDURJLIMAOYT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	75	"LH9 "	" oneCued "	0	" right "	2	135	"M "	0	6	"V "	0	0	0	1	"JTEHFNVMBQDZOXAISGLRYKUP"	"DIOSGXQYAJFERLPVHBZUMTKN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	77	"LH9 "	" oneCued "	0	" right "	2	135	"X "	0	8	"G "	0	0	0	1	"UKNBAMPRGXZQYJSHTDEFOILV"	"HBUNGLSOPTRMKXAJVDYFZEQI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	78	"LH9 "	" oneCued "	0	" right "	2	90	"N "	0	10	"P "	0	1	0	-1	"PJZTKILQFVERAYMBDONXHSGU"	"LXQGBASOHNPEMRUVYZIKTDFJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	80	"LH9 "	" oneCued "	0	" right "	2	135	"B "	0	9	"M "	0	0	0	1	"EJHFOPKYUMBVRXLQGZSATNID"	"TFXHLYZNGABRJQUKPOEVSMDI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	81	"LH9 "	" oneCued "	0	" right "	2	315	"J "	0	8	"N "	0	1	0	12	"JBUTRPDIHXFENLSVZKYOGQMA"	"PGOZQUVINYXRELKFDMASJBHT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	82	"LH9 "	" oneCued "	0	" right "	2	225	"F "	0	7	"N "	0	1	0	1	"VUFRDOTLSKMXINBEGYAPJZHQ"	"RAJQSPTNFVMBXODEUHYLGKZI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	83	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	10	"D "	0	1	0	1	"JBHPOGVAXKMRLEZTFQDIYUSN"	"PUAOIVFEXZDMHQJTKNLBSGYR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	87	"LH9 "	" oneCued "	0	" right "	2	0	"D "	0	6	"X "	0	1	0	-2	"ZPITJKEOGLRMBUSNDAFVQYXH"	"NKRLDHXEZMVTGOBAJPSQFYIU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	89	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	9	"O "	0	0	0	1	"YAHBRJDVEOSIUFZTMGQNXLKP"	"LAQTKIPDJBGUHNFXYMEZSOVR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	90	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	10	"D "	0	0	0	7	"FLHTKENOPMDQJAVBYGRUZSIX"	"UAGDPNTLFXSYMZHRIBEJVOQK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	93	"LH9 "	" oneCued "	0	" right "	2	135	"T "	0	8	"G "	0	0	0	14	"BYKLUSXIGFZOEPDRNVAJHQTM"	"FBVUYKIRXZTGDSHEQOALMPJN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	94	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	10	"K "	1	1	0	0	"TYZKVRAHNOMEBFJLSDPGQIUX"	"FEBYOLDJVSKPHAIUTMGRQNXZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	98	"LH9 "	" oneCued "	0	" right "	2	180	"M "	0	6	"X "	0	0	0	1	"KQBONIXMZJTGEYVFLUARDHSP"	"TPUIJQRLKNVGSDMXEOZABHYF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	101	"LH9 "	" oneCued "	0	" right "	2	180	"B "	0	9	"B "	1	1	0	0	"PNVOSQXRTMLGFZBKAJEYHUDI"	"INZDKTAPLBVSQREFXMGJYHUO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	103	"LH9 "	" oneCued "	0	" right "	2	270	"X "	0	10	"F "	0	0	0	-10	"XTGALDSQKEFIMNVYZURHBOPJ"	"LNAFDOPGIXKRHJZVBTEUMYSQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	110	"LH9 "	" oneCued "	0	" right "	2	0	"Z "	0	9	"R "	0	0	0	1	"QSKXGOJPARZMHDEVTNIYBLFU"	"JYXZEIUTDNBOHGRVAFMKPQLS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	111	"LH9 "	" oneCued "	0	" right "	2	90	"Q "	0	9	"D "	0	1	0	6	"EJTPIMNDYRXFOBLHGSUZQAVK"	"UBEAPYTZRDGKHJSQMXFLVNOI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	116	"LH9 "	" oneCued "	0	" right "	2	315	"D "	0	9	"D "	1	0	0	0	"REXNGSOQIDYPHKLJTAFBZMVU"	"VYOMTDNSJLZBAPEQIRUHKFGX"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	123	"LH9 "	" oneCued "	0	" right "	2	45	"Z "	0	6	"Q "	0	1	0	2	"JDUKYEBPMIXTFROQZSVGHNAL"	"HTYSPNQLZBGMUADVXOFRJIEK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	124	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	6	"L "	0	0	0	2	"EBQAIJLYKXNZUPROHDVFGTMS"	"DKNFXIBZJUQPEYGVASLMTRHO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	126	"LH9 "	" oneCued "	0	" right "	2	90	"S "	0	10	"S "	1	1	0	0	"BJIUVHRKDPTYFNOAMZELGSQX"	"BFLERNPKTZSXUGAHMOJVDQYI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	127	"LH9 "	" oneCued "	0	" right "	2	225	"V "	0	9	"L "	0	1	0	2	"ZIXDMRHAPYKTQNESLJUGFBOV"	"SZYREBFDGLHVQMOJPAXUTIKN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	128	"LH9 "	" oneCued "	0	" right "	2	135	"T "	0	10	"L "	0	1	0	-5	"YARGUZVJOFQSKLDTXMIEHNBP"	"NMVHJTFKBSLIARGEZQOUDPXY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	132	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	7	"K "	1	0	0	0	"YTJNURZKLHBISVGMEDAQFOPX"	"UQBIYXRNHDTZJSPLKAMVOFEG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	134	"LH9 "	" oneCued "	0	" right "	2	180	"D "	0	9	"U "	0	1	0	2	"XDGQRUOYMSVLTEKNJFIAPZBH"	"JVSAMRNZYUGDQTXKBFOPELHI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	138	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	7	"M "	1	0	0	0	"OXZVEQDMUKALGFSPIJYTRHNB"	"MYOVDNPBULHTQIFEXGSZRAKJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	139	"LH9 "	" oneCued "	0	" right "	2	45	"F "	0	6	"T "	0	1	0	1	"HLFTEIBSDJKGPVUMXYZNOQRA"	"HVRJMETFOPQGZILYUNXSBADK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	141	"LH9 "	" oneCued "	0	" right "	2	225	"H "	0	7	"J "	0	0	0	1	"IMRDYLUJHNVAQOTBGPXKZEFS"	"BXORFJDNHGQIEZUMLTYAPKVS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	142	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	10	"S "	1	1	0	0	"HIUXSFMTVAGKYPELDROZBJNQ"	"GVIMAEKLRFSNQTDZJBUOPXHY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	145	"LH9 "	" oneCued "	0	" right "	2	225	"V "	0	10	"V "	1	0	0	0	"NKFHEGTABIVSRPQZDUXMLOYJ"	"XRLTPQVNKJDYMGIOAFHBSZEU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	147	"LH9 "	" oneCued "	0	" right "	2	0	"Y "	0	8	"J "	0	0	0	2	"LBGKMQEFJIYXTUNHZVDOSAPR"	"XNGQMZHAYTBEFVOUDJLIPSKR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	151	"LH9 "	" oneCued "	0	" right "	2	225	"U "	0	9	"Q "	0	0	0	1	"BOXKMVENRQUPZHDGLSTJFAYI"	"IYEKQTJLGHSRFUNADBXOMPVZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	154	"LH9 "	" oneCued "	0	" right "	2	315	"I "	0	10	"F "	0	1	0	-3	"VNZOGMTISYPRUEDQJAXBLFKH"	"PKRGSZBIDYFHVEXANMOJQUTL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	156	"LH9 "	" oneCued "	0	" right "	2	0	"Q "	0	7	"U "	0	1	0	2	"GNXEKMAHPZFLBJDYRSOVQIUT"	"XZORPHNUTQMIBEYSKJDVGAFL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	157	"LH9 "	" oneCued "	0	" right "	2	180	"R "	0	8	"H "	0	1	0	2	"UPESLIFQBDXJZOGKVNTAHRYM"	"IVEMQFPZHLRXBYKJADSNTOUG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	158	"LH9 "	" oneCued "	0	" right "	2	0	"N "	0	9	"R "	0	1	0	5	"UMXLHBIRFZYNGTJOKAPQDEVS"	"PXBVQZJAYRMUESNHKGLFITOD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	160	"LH9 "	" oneCued "	0	" right "	2	0	"X "	0	10	"S "	0	1	0	1	"HJLEINZOUSRPGKDVMFQYBAXT"	"OUJIRAYTKZSXEDNBLFQGPHVM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	162	"LH9 "	" oneCued "	0	" right "	2	270	"P "	0	9	"L "	0	0	0	2	"YISEJUTOXLQPNGHVBDFKAMZR"	"PFXBZEDNQMVLKSHAOUYJTRIG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	164	"LH9 "	" oneCued "	0	" right "	2	90	"H "	0	9	"S "	0	1	0	3	"ROLNIXZUJDGVHAEYBFPKQMTS"	"TANFGZPXISLOHDJURKEYBMQV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	165	"LH9 "	" oneCued "	0	" right "	2	135	"D "	0	6	"L "	0	1	0	2	"LRQKMBJEIANFYXGTSPOZDUHV"	"BPFGTELNDMSXJHIUZVAKQYRO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	166	"LH9 "	" oneCued "	0	" right "	2	225	"R "	0	8	"P "	0	0	0	3	"FOAEUBZYPTIRKNJHQGSDMXVL"	"XRFQBHSINGMDPYAJKLUEOVTZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	169	"LH9 "	" oneCued "	0	" right "	2	180	"N "	0	8	"U "	0	0	0	2	"GALQOMXFUZNVIDHKBPJYETSR"	"SZIHAKERLUMBDVQFOYNJGXTP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	170	"LH9 "	" oneCued "	0	" right "	2	90	"E "	0	7	"Q "	0	0	0	15	"AXOJTSNQKDGFPBYILMUZVHER"	"KPAFZNGOMXIEYBDQSUVJRLHT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	172	"LH9 "	" oneCued "	0	" right "	2	0	"A "	2	6	"Y "	0	1	0	1	"EOMXHFIRYVPLUTDGJASQNZBK"	"XVLQFRYAEIUBGZKSPNMOJTDH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	173	"LH9 "	" oneCued "	0	" right "	2	315	"N "	0	8	"N "	1	0	0	0	"KZXADBQUNISMLGOTFEJRHVYP"	"KSXZRQUJTALMIOYHGNDVPBFE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	174	"LH9 "	" oneCued "	0	" right "	2	45	"V "	0	8	"J "	0	1	0	2	"ZPOXHSFMAGBNUYLVJERIKDTQ"	"OZUDPKSQJGVYIBTFXHEARLMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	178	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	9	"T "	0	1	0	1	"BNLXOSAMQRKHGPIZTUYVFDJE"	"OFXBHLAZGTKJERVDUIPYNMQS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	179	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	8	"K "	0	0	0	1	"IQVHYDRMKPJZNFUBGOSTAEXL"	"UAEXKITJYDVGMQLBOZRSPNHF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	181	"LH9 "	" oneCued "	0	" right "	2	225	"E "	0	8	"M "	0	0	0	3	"NGFTHZJOMIVELYKXRSDBUAPQ"	"QMFKDPBAZJVEIGLHXSRTOYNU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	186	"LH9 "	" oneCued "	0	" right "	2	180	"K "	0	10	"R "	0	1	0	2	"HPZOVIFMYXARGEJQKSLNUTDB"	"VAENFYULGQRZKHDOIXJBMTSP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	190	"LH9 "	" oneCued "	0	" right "	2	180	"O "	0	6	"Y "	0	0	0	-1	"TBKJMOYGRPLXFQIEZUVSADNH"	"OBHSEGVXZQIAUFYPRMDJLNKT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	191	"LH9 "	" oneCued "	0	" right "	2	315	"S "	0	6	"J "	0	0	0	1	"TYADBMJSKEFVRUPZIQGXHLNO"	"YRUFKLQMGXABZPIJSTDENVOH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	194	"LH9 "	" oneCued "	0	" right "	2	270	"G "	0	8	"N "	0	0	0	-8	"GPHLZJEKNQVXOASMUFYTDRBI"	"SAZIJPQUXEYVOKDGTMRHNLFB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	197	"LH9 "	" oneCued "	0	" right "	2	0	"V "	0	8	"X "	0	0	0	1	"DPIARJGLXVOFBUTYSHNMKEQZ"	"LODRYBQAHVMKUSINXTPJFZGE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	200	"LH9 "	" oneCued "	0	" right "	2	90	"O "	0	8	"Q "	0	1	0	5	"EPIDGFVSQHRTZMJLABNOXYUK"	"TXFZUEPMQADRVONLBYIGHKSJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	202	"LH9 "	" oneCued "	0	" right "	2	135	"R "	0	6	"F "	0	0	0	1	"IHKJMSFRDLXAYUPNBGQZVTOE"	"MGLSXORIUEZAPDJFBYVKTHNQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	204	"LH9 "	" oneCued "	0	" right "	2	225	"I "	0	10	"H "	0	0	0	-2	"VDONUAGEITHJRXQPFKBLZYMS"	"ZEOMKITSABUFHLDYVJRNGXQP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	206	"LH9 "	" oneCued "	0	" right "	2	180	"V "	0	9	"H "	0	1	0	1	"HSYEOJFQLKZPIRVNBUTXGMDA"	"PFJOBZRYKHVTXMUQGADESLNI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	207	"LH9 "	" oneCued "	0	" right "	2	90	"K "	0	9	"T "	0	0	0	-7	"UOKMLRHFNTVZXDASGBJQIPEY"	"XNYBPKHSMOIUAVZFGQDJRTEL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	209	"LH9 "	" oneCued "	0	" right "	2	315	"M "	0	6	"M "	1	1	0	0	"HDGUTESYNXMAFKVOBJZPRQIL"	"XHRZVSMJFITAKEPGBLUDNOYQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	210	"LH9 "	" oneCued "	0	" right "	2	90	"V "	0	8	"V "	1	1	0	0	"SLOGBFUAJVPNYIZRTKMEQXHD"	"JQFHEKGLVTSZPNBUYRXAIDOM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	211	"LH9 "	" oneCued "	0	" right "	2	270	"D "	0	7	"I "	0	1	0	2	"VDHSXURNEFZJGLBYPMTKAQIO"	"TZGNREUIQDOSBXLKMPJFVYAH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	220	"LH9 "	" oneCued "	0	" right "	2	315	"U "	0	7	"F "	0	0	0	-4	"MKGUAVXFZOTQLBPIRYSHJNDE"	"JGOATYHDQMRLKFIVZUNPXBES"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	223	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	7	"X "	0	0	0	-5	"ZJPLVOAXFDUHBTSGQMKEYNIR"	"BDHIRZMOGPNJXATFVULYEQKS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	224	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	9	"K "	1	0	0	0	"QFRNPMIHUKJVDATSGLZOBXEY"	"EAMBHTDRZJOIXSQFUPVYLGNK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	225	"LH9 "	" oneCued "	0	" right "	2	0	"S "	0	7	"S "	1	1	0	0	"ZPVIBKUJXRYOHLQTDMNEGSFA"	"YUEBNXLSZFVIQODGPKMARTJH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	227	"LH9 "	" oneCued "	0	" right "	2	135	"G "	0	7	"O "	0	1	0	-4	"DETULAIYPZNMQOVBRSFKJGXH"	"MNDGYTLOIFUAZPBSREXQHKJV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	228	"LH9 "	" oneCued "	0	" right "	2	45	"A "	0	6	"H "	0	0	0	2	"EIQSKMHXAJGPNYDLTZVOBFUR"	"SMEYXQHDOUGNJKZVLAFBIRPT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	233	"LH9 "	" oneCued "	0	" right "	2	315	"O "	0	9	"V "	0	0	0	-4	"UEFRAOGKXVQIZBMTPYSNJDLH"	"PGHFTKQDRIUONYMSAZLXBJVE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	235	"LH9 "	" oneCued "	0	" right "	2	180	"G "	0	8	"Q "	0	0	0	6	"NARDUIYZQBOSTHGPVMFLXKJE"	"UDJOIZGYVQEXNABPKHSTMFLR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	236	"LH9 "	" oneCued "	0	" right "	2	225	"B "	0	10	"Z "	0	1	0	-2	"REUJVQLHDNAZMXFBOPTGKISY"	"LFREJUHMBPZGVKNDXQTIAYOS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	238	"LH9 "	" oneCued "	0	" right "	2	0	"H "	0	9	"L "	0	1	0	1	"ADZNURXTMQJLEPIYSHFOBKGV"	"AISXJRZOULHTDFKEMNYQGBVP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	239	"LH9 "	" oneCued "	0	" right "	2	45	"R "	0	7	"I "	0	1	0	2	"RTHFZNKXDJAOIEMYGPLVUSBQ"	"BTHMYJZIGRDPQKUVELXFAOSN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	240	"LH9 "	" oneCued "	0	" right "	2	0	"K "	0	6	"A "	0	1	0	1	"LJRMDIQFOSXHTKYUBEVGZANP"	"JPDLFQAKXGIMNUHSOEBTYZVR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	243	"LH9 "	" oneCued "	0	" right "	2	90	"V "	0	10	"R "	0	1	0	-5	"PIXBKNTAEVMRYFLUDJHGQSZO"	"BYLDOVHIMTRUJKENGXSAPFQZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	244	"LH9 "	" oneCued "	0	" right "	2	90	"G "	0	7	"G "	1	0	0	0	"IKNADVUGEHTJLFSPXRQBZYOM"	"XNSLTMYOJKZARVQBFPGDUHEI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	247	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	9	"Z "	0	0	0	1	"XATRDMEIBZGKLYPUNOJQVFSH"	"NIQKFTDMOJRZUHPVSXBEAGLY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	250	"LH9 "	" oneCued "	0	" right "	2	315	"T "	0	9	"J "	0	1	0	2	"DUERMOYZIXJHSTLNKPVGBQFA"	"LRPNDSIYOJXTEMFAZBQKHVUG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	251	"LH9 "	" oneCued "	0	" right "	2	225	"P "	0	6	"B "	0	0	0	1	"XQIGNLBPUAOMSTVRKYFJEZDH"	"VRFQSEZBXDJLHMPYIUKGTONA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	252	"LH9 "	" oneCued "	0	" right "	2	45	"L "	0	9	"L "	1	0	0	0	"RVEOPXMQDLUIBZSNAJTGHFYK"	"TYBAEDNMQXKZOVLJRPSIHUGF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	253	"LH9 "	" oneCued "	0	" right "	2	225	"K "	0	9	"Z "	0	1	0	1	"VSAUDLZGOBHINRJQFKXTEYPM"	"YGESULIFBZKTVAJHOPQDRXMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	255	"LH9 "	" oneCued "	0	" right "	2	45	"O "	0	9	"N "	0	0	0	2	"AGMKTFPIVNQOYZJBDUXLHRSE"	"QXVKZUGPOJEMYFNTBLAISDRH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	257	"LH9 "	" oneCued "	0	" right "	2	315	"H "	0	7	"R "	0	0	0	1	"QKMTEPBRHLDOVYAJUFINZXSG"	"GVJZLREFQOUSMTIHDANBXPYK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	259	"LH9 "	" oneCued "	0	" right "	2	135	"O "	0	8	"Z "	0	1	0	2	"EGBHVJUDLARQPZKXYSTMNIFO"	"TYNAMDXEZQOILSKBRJVFGUPH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	260	"LH9 "	" oneCued "	0	" right "	2	180	"Q "	0	10	"X "	0	0	0	9	"EGJRANYSLKXOIFUTVDZQHBPM"	"ZPLYNKOAUDQXMBSTFGIRJHEV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	263	"LH9 "	" oneCued "	0	" right "	2	0	"D "	0	7	"N "	0	0	0	3	"HLEZSOYNUIDTRJQPMFGKVABX"	"OSNURLZBKTEMGYPHJDXVAFQI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	264	"LH9 "	" oneCued "	0	" right "	2	90	"P "	0	10	"Q "	0	0	0	1	"YLSEFURVTNQPIZXBGMKHADJO"	"KHFLRJTMBUNPQSVXADZEOIGY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	265	"LH9 "	" oneCued "	0	" right "	2	315	"F "	0	10	"F "	1	0	0	0	"MZRPBSOKUJFYAGXQNVDLEIHT"	"OHVJQFMPYUABXEDSGTLRKNZI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	266	"LH9 "	" oneCued "	0	" right "	2	135	"H "	0	7	"H "	1	0	0	0	"LUXANKQHJPZTEYGMIRFOVSBD"	"KQATLVFXMDNRUBZIESOJYGPH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	268	"LH9 "	" oneCued "	0	" right "	2	225	"P "	0	7	"G "	0	1	0	-1	"BDPXEFANJVZOSRMLYUQGHKTI"	"TYMUKXPGVZOSLJDANQRBIFEH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	269	"LH9 "	" oneCued "	0	" right "	2	270	"X "	0	9	"Y "	0	1	0	1	"DXPLKMQZYVUOEJBAIGFHNSRT"	"JRSEVZQGAYXIBPKOUNHDLTMF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	274	"LH9 "	" oneCued "	0	" right "	2	45	"D "	0	10	"L "	0	0	0	2	"ZOSKMBNJAULYDFQGTEIHXPRV"	"BQLPRYNXKGISUJMAHDFVZTOE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	275	"LH9 "	" oneCued "	0	" right "	2	0	"E "	0	10	"A "	0	0	0	1	"TUIHVNKRSQAEGYDPJLFZBXOM"	"HRUQMDJSBINKZEGOFXLTAVPY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	277	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	10	"U "	0	1	0	1	"IZJFGUPYBDESVNXOKALHQTRM"	"LFINXPHEAJUSYQGDBORMVZKT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	278	"LH9 "	" oneCued "	0	" right "	2	180	"D "	0	9	"H "	0	0	0	-4	"XMRYIDLOBHQVFKNASEUJPTZG"	"UFZMPAOLKHTESNJDIGXQRVYB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	279	"LH9 "	" oneCued "	0	" right "	2	0	"M "	0	8	"A "	0	0	0	2	"BRYZNTLHASMQUDKJOEFXGIPV"	"ZOFBLYXHKPVSJGQMDRAEUTIN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	282	"LH9 "	" oneCued "	0	" right "	2	270	"K "	0	7	"K "	1	1	0	0	"MDZRFBVUNHEGLOKPXASQITYJ"	"UOTAXDVKLIRYFJBMNQSHPGZE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	284	"LH9 "	" oneCued "	0	" right "	2	270	"H "	0	10	"L "	0	1	0	5	"AEYVXQDOHTKMUNSBZJLPFGIR"	"KYUOJMEQBTLRDNXHFGPIASVZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	287	"LH9 "	" oneCued "	0	" right "	2	90	"B "	0	6	"A "	0	1	0	14	"DVFUQTBXRLOPSZIKENYAJHGM"	"TSDGRZAEPNUOKHYVJIFQBMXL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	289	"LH9 "	" oneCued "	0	" right "	2	45	"D "	0	6	"U "	0	0	0	2	"MPQSNZUTDYGXVRFHBKIOJLEA"	"XAJDOGEQNSTVZRLKPMHIFUBY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	292	"LH9 "	" oneCued "	0	" right "	2	90	"M "	0	6	"X "	0	0	0	1	"OPLFJYXMUVKZQSREHBADTING"	"YRTZXGDNFBPJLUIAOQVHSEMK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	293	"LH9 "	" oneCued "	0	" right "	2	180	"S "	0	6	"U "	0	1	0	1	"ENSUKDVLOYIRFHMQZGJTXBPA"	"KHIBLPUSVTRNAZJDYGXOFMQE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	296	"LH9 "	" oneCued "	0	" right "	2	180	"R "	0	7	"G "	0	1	0	2	"RJSAZTXDEBOYQFUVPNKLHGMI"	"NBZOJQAGERSKVDFILXPUYTHM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	297	"LH9 "	" oneCued "	0	" right "	2	135	"X "	0	8	"X "	1	1	0	0	"EKDGIVNLHFJOYRAUMPZTQSBX"	"YSFPKDTUXIVBJHAMZEQONRGL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	300	"LH9 "	" oneCued "	0	" right "	2	225	"R "	0	6	"P "	0	0	0	1	"ZVBUYFPRGDEHKJMXOTSIQLNA"	"EFSXZKBMNUVLJOYQPIARHGTD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	302	"LH9 "	" oneCued "	0	" right "	2	180	"B "	0	7	"T "	0	0	0	1	"SFJPVNHTBOYZIRMGLEQKAXDU"	"LBHKSAQEUOYFRIXNMJVPGDTZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	303	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	10	"I "	0	1	0	-1	"KGADSZVJNPRBOEXTIHUMFLYQ"	"SNGTRUMXAKIFLQZDVOBYEPHJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	306	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	6	"G "	0	1	0	1	"YIHBKSFRTPJGQDZENXMALVUO"	"IHEOVQGMJPRATUSDFYKLZXBN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	308	"LH9 "	" oneCued "	0	" right "	2	315	"Q "	0	10	"S "	0	0	0	-10	"QLREGZIUPNSXFBHJODAMVTYK"	"UPOXRTIKABFHYNDJVMSQLZGE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	309	"LH9 "	" oneCued "	0	" right "	2	225	"D "	0	7	"D "	1	0	0	0	"XLPAGTODVZBURMNJKFEHYSIQ"	"UZBDTFSIMNEAJKXLPYGRHQVO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	310	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	6	"G "	0	0	0	1	"LPNBETGMVUHSJQOAIZRYXKFD"	"OAVPKZFSNEYBLDJMITRGXQUH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	311	"LH9 "	" oneCued "	0	" right "	2	270	"S "	0	8	"T "	0	0	0	2	"VAYMKEULTQSIBJDXOHGPZFRN"	"TMZVDIPRYKAFJSHBGXOQNLUE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	315	"LH9 "	" oneCued "	0	" right "	2	270	"Y "	0	10	"A "	0	1	0	-6	"RGBSFVKYNQPZOIEDTHXMLAJU"	"FEMTYONUXQAVIRHPDLSJBKZG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	317	"LH9 "	" oneCued "	0	" right "	2	0	"B "	0	9	"K "	0	0	0	1	"HPGNYMQDVKBTILRZFAXSEOJU"	"IKRPEHDYQSGMNATUJOVFXZBL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
-"main"	319	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	8	"E "	0	1	0	1	"JEDHMOTXLUVRZGASBKYFNIPQ"	"RXZOGLIVEKNUMQHAJYDTPSFB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	FALSE
+"experimentPhase"	"trialnum"	"subject"	"task"	"noisePercent"	"targetLeftRightIfOne"	"streamsPerRing"	"baseAngleCWfromEast"	"resp0"	"button0"	"cuePos0"	"answer0"	"correct0"	"whichStream0"	"whichRespCue0"	"responsePosRelative0"	"streamLtrSequence0"	"streamLtrSequence1"	"streamLtrSequence2"	"streamLtrSequence3"	"streamLtrSequence4"	"streamLtrSequence5"	"streamLtrSequence6"	"streamLtrSequence7"	"timingBlips"	"responsePos"	"fixationReject"
+"main"	21	"LH9 "	" oneCued "	0	" right "	2	315	"H "	0	7	"N "	0	1	0	1	"ZYNQXRHVAGDMPFEBOLITJSUK"	"DXRKIZENHBMVFYAULSTGQOJP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	22	"LH9 "	" oneCued "	0	" right "	2	225	"L "	0	8	"L "	1	0	0	0	"MKAQXTSOLURFYHIPNEBZGDJV"	"LRJQGTUSZVAPXFHNEDBKOIMY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	24	"LH9 "	" oneCued "	0	" right "	2	270	"P "	0	6	"O "	0	0	0	6	"ZDMRSFOYQVGUPBHKLEJIXANT"	"OQJKXYUGHTVLPRSZMFNEDBIA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	12	FALSE
+"main"	25	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	9	"P "	1	0	0	0	"JSQHRNEXLPFGZOAVTKIMDYBU"	"HLXNESDOVMRUGFYIBPKJZATQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	27	"LH9 "	" oneCued "	0	" right "	2	180	"K "	0	10	"B "	0	1	0	1	"RKAIYEZOLDSNVUQJFMPBHTXG"	"SLPZGTEFNRBKVDYMQAXUIJOH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	28	"LH9 "	" oneCued "	0	" right "	2	0	"S "	0	6	"J "	0	0	0	1	"HFTYGRJSLEIVAXQDUPKMZBON"	"KHGTXYOIRZNSPQVMABELFJUD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	30	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	8	"T "	0	0	0	2	"VFQASHRYTIMNUKLXEZDOPJGB"	"HRBQSZLGNKMPFXEVDOIYJATU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	31	"LH9 "	" oneCued "	0	" right "	2	180	"T "	0	10	"V "	0	1	0	1	"DFKTOJGAMRBPHNIXYLZVSEUQ"	"JBRNQYSKEMVTZDUIAFXPHLGO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	32	"LH9 "	" oneCued "	0	" right "	2	90	"N "	0	6	"N "	1	0	0	0	"ILJPFDNHOVAUBTXRMKYZGESQ"	"EBSQZDKJGAHUNOTXVRFYPIML"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	33	"LH9 "	" oneCued "	0	" right "	2	270	"N "	0	10	"L "	0	1	0	1	"LYEKIHZTVGFQPSXABUNJMROD"	"HSEMUBJKVFLNZGYAIPXDRQTO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	34	"LH9 "	" oneCued "	0	" right "	2	0	"R "	0	10	"Q "	0	1	0	3	"UDMNIYVJLOKSHBXGAPFQTEZR"	"OKDZNLEXVSQPBRMIUTYFAJHG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	13	FALSE
+"main"	35	"LH9 "	" oneCued "	0	" right "	2	270	"I "	0	7	"L "	0	0	0	2	"UYOJMVQLFIXDARZKPHBSENGT"	"JVIDHZRXGNFOTQKEBUYALMSP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	38	"LH9 "	" oneCued "	0	" right "	2	270	"N "	0	8	"M "	0	1	0	7	"EPFKTQUDYIZJHGLSOBRMNVAX"	"VYAQOSLDMIJUZFENHPGBRKTX"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	15	FALSE
+"main"	39	"LH9 "	" oneCued "	0	" right "	2	270	"T "	0	6	"T "	1	0	0	0	"KRYQNPTVXDUALZMOIJSGEFBH"	"EPZSMUJAKVHXBYINQROLDTFG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	40	"LH9 "	" oneCued "	0	" right "	2	45	"A "	0	7	"A "	1	1	0	0	"XHNIZJVYBDSLMTGPUOFQREKA"	"ESPUZYRAITHLNVQBMDOGJXFK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	41	"LH9 "	" oneCued "	0	" right "	2	0	"K "	2	8	"K "	1	1	0	0	"RKTIJHXBDVFAMUZYPSGOENLQ"	"QAZIUHMFKNXVJGPDSERYLBTO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	42	"LH9 "	" oneCued "	0	" right "	2	315	"B "	0	8	"V "	0	1	0	-1	"PDLMNOUEBRFAHYGSVJXZTQIK"	"GZURQADBVEPFSYHTXKILNMJO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	43	"LH9 "	" oneCued "	0	" right "	2	90	"F "	0	8	"R "	0	1	0	-6	"ARUEKQVXILDHTMNSFGZJOYPB"	"SMFVKBNURELGZAOHTJDPXIYQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	2	FALSE
+"main"	44	"LH9 "	" oneCued "	0	" right "	2	225	"Z "	0	6	"F "	0	0	0	2	"PGARQMFJZOINVDXBELYKSTHU"	"QZFTYVXNUHJRIASEGDLBOKPM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	46	"LH9 "	" oneCued "	0	" right "	2	225	"F "	0	6	"G "	0	1	0	1	"EFGZUMIAXNOVBQPTHKRLDSJY"	"UJNHKDGFYTARLOPMBXQIZSEV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	47	"LH9 "	" oneCued "	0	" right "	2	90	"T "	0	6	"A "	0	0	0	1	"QRZHUIATEGPONFDSVBYMXJKL"	"QMXISBLKNOHFYEVRJUTPGDZA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	50	"LH9 "	" oneCued "	0	" right "	2	135	"R "	0	6	"R "	1	1	0	0	"ARPNJKBYGUFQOSHZVMLTEXID"	"BMULJDRFVGKTIPXZHNQOSYEA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	52	"LH9 "	" oneCued "	0	" right "	2	90	"A "	0	8	"P "	0	1	0	-1	"RDEATLHOMJPFGQYNSZKIXVUB"	"QYHNRUZAPMTSEXFBJOIVLKGD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	54	"LH9 "	" oneCued "	0	" right "	2	315	"Z "	0	7	"T "	0	0	0	1	"KJOINMBTZEDYUGXVFAPLSHQR"	"GZEBTFDKIXPVSHQRJLUYOAMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	55	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	9	"H "	0	1	0	1	"LJXTPNSEZFBDOVHKQYIMRAUG"	"ANKTGRXYFHMUDQSLPOJZEVIB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	56	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	8	"O "	0	0	0	4	"EJVQLUYFOZADGHBMXIKTSPNR"	"AZETLINSVDGRJUHKBXQYOMFP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	12	FALSE
+"main"	57	"LH9 "	" oneCued "	0	" right "	2	270	"T "	0	7	"J "	0	1	0	1	"IQGRTLMYXPONBEUHKDFSVAZJ"	"SYRBGKIJTDVFNUXMHLZEPAOQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	59	"LH9 "	" oneCued "	0	" right "	2	90	"F "	0	7	"N "	0	1	0	-2	"NBJFEASQTMXUIZDVRYLGHOKP"	"UJTSOFPNYAGRZLHBIVXQMKDE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	64	"LH9 "	" oneCued "	0	" right "	2	270	"X "	2	8	"I "	0	0	0	-1	"NODUGPYXITQVKRFBSLEHZAJM"	"QGEMILPSUDTYNKOXBAZJVRHF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	69	"LH9 "	" oneCued "	0	" right "	2	90	"E "	0	9	"E "	1	1	0	0	"YKEGFMBDTRAXPSZOVUJHINQL"	"XMBRULKTDENHAYQZVIFGOJPS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	70	"LH9 "	" oneCued "	0	" right "	2	315	"B "	0	6	"A "	0	1	0	5	"OUQDEHSBIZPXNMYLFTRKJVAG"	"JIDQSMAZLXKBPEHVUTNRFYGO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	72	"LH9 "	" oneCued "	0	" right "	2	180	"P "	0	6	"N "	0	0	0	4	"JIOQEZNRXSPUGLTDFYKBAHMV"	"KXYTQGBFHJAZMSDENIURVLPO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	74	"LH9 "	" oneCued "	0	" right "	2	270	"S "	0	9	"B "	0	1	0	-2	"PNRZBYDQSILMTVGOJKHAUFXE"	"KHPVEXFSQBGZNDURJLIMAOYT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	75	"LH9 "	" oneCued "	0	" right "	2	135	"M "	0	6	"V "	0	0	0	1	"JTEHFNVMBQDZOXAISGLRYKUP"	"DIOSGXQYAJFERLPVHBZUMTKN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	77	"LH9 "	" oneCued "	0	" right "	2	135	"X "	0	8	"G "	0	0	0	1	"UKNBAMPRGXZQYJSHTDEFOILV"	"HBUNGLSOPTRMKXAJVDYFZEQI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	78	"LH9 "	" oneCued "	0	" right "	2	90	"N "	0	10	"P "	0	1	0	-1	"PJZTKILQFVERAYMBDONXHSGU"	"LXQGBASOHNPEMRUVYZIKTDFJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	80	"LH9 "	" oneCued "	0	" right "	2	135	"B "	0	9	"M "	0	0	0	1	"EJHFOPKYUMBVRXLQGZSATNID"	"TFXHLYZNGABRJQUKPOEVSMDI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	81	"LH9 "	" oneCued "	0	" right "	2	315	"J "	0	8	"N "	0	1	0	12	"JBUTRPDIHXFENLSVZKYOGQMA"	"PGOZQUVINYXRELKFDMASJBHT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	20	FALSE
+"main"	82	"LH9 "	" oneCued "	0	" right "	2	225	"F "	0	7	"N "	0	1	0	1	"VUFRDOTLSKMXINBEGYAPJZHQ"	"RAJQSPTNFVMBXODEUHYLGKZI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	83	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	10	"D "	0	1	0	1	"JBHPOGVAXKMRLEZTFQDIYUSN"	"PUAOIVFEXZDMHQJTKNLBSGYR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	87	"LH9 "	" oneCued "	0	" right "	2	0	"D "	0	6	"X "	0	1	0	-2	"ZPITJKEOGLRMBUSNDAFVQYXH"	"NKRLDHXEZMVTGOBAJPSQFYIU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	4	FALSE
+"main"	89	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	9	"O "	0	0	0	1	"YAHBRJDVEOSIUFZTMGQNXLKP"	"LAQTKIPDJBGUHNFXYMEZSOVR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	90	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	10	"D "	0	0	0	7	"FLHTKENOPMDQJAVBYGRUZSIX"	"UAGDPNTLFXSYMZHRIBEJVOQK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	17	FALSE
+"main"	93	"LH9 "	" oneCued "	0	" right "	2	135	"T "	0	8	"G "	0	0	0	14	"BYKLUSXIGFZOEPDRNVAJHQTM"	"FBVUYKIRXZTGDSHEQOALMPJN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	22	FALSE
+"main"	94	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	10	"K "	1	1	0	0	"TYZKVRAHNOMEBFJLSDPGQIUX"	"FEBYOLDJVSKPHAIUTMGRQNXZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	98	"LH9 "	" oneCued "	0	" right "	2	180	"M "	0	6	"X "	0	0	0	1	"KQBONIXMZJTGEYVFLUARDHSP"	"TPUIJQRLKNVGSDMXEOZABHYF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	101	"LH9 "	" oneCued "	0	" right "	2	180	"B "	0	9	"B "	1	1	0	0	"PNVOSQXRTMLGFZBKAJEYHUDI"	"INZDKTAPLBVSQREFXMGJYHUO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	103	"LH9 "	" oneCued "	0	" right "	2	270	"X "	0	10	"F "	0	0	0	-10	"XTGALDSQKEFIMNVYZURHBOPJ"	"LNAFDOPGIXKRHJZVBTEUMYSQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	0	FALSE
+"main"	110	"LH9 "	" oneCued "	0	" right "	2	0	"Z "	0	9	"R "	0	0	0	1	"QSKXGOJPARZMHDEVTNIYBLFU"	"JYXZEIUTDNBOHGRVAFMKPQLS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	111	"LH9 "	" oneCued "	0	" right "	2	90	"Q "	0	9	"D "	0	1	0	6	"EJTPIMNDYRXFOBLHGSUZQAVK"	"UBEAPYTZRDGKHJSQMXFLVNOI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	15	FALSE
+"main"	116	"LH9 "	" oneCued "	0	" right "	2	315	"D "	0	9	"D "	1	0	0	0	"REXNGSOQIDYPHKLJTAFBZMVU"	"VYOMTDNSJLZBAPEQIRUHKFGX"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	123	"LH9 "	" oneCued "	0	" right "	2	45	"Z "	0	6	"Q "	0	1	0	2	"JDUKYEBPMIXTFROQZSVGHNAL"	"HTYSPNQLZBGMUADVXOFRJIEK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	124	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	6	"L "	0	0	0	2	"EBQAIJLYKXNZUPROHDVFGTMS"	"DKNFXIBZJUQPEYGVASLMTRHO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	126	"LH9 "	" oneCued "	0	" right "	2	90	"S "	0	10	"S "	1	1	0	0	"BJIUVHRKDPTYFNOAMZELGSQX"	"BFLERNPKTZSXUGAHMOJVDQYI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	127	"LH9 "	" oneCued "	0	" right "	2	225	"V "	0	9	"L "	0	1	0	2	"ZIXDMRHAPYKTQNESLJUGFBOV"	"SZYREBFDGLHVQMOJPAXUTIKN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	128	"LH9 "	" oneCued "	0	" right "	2	135	"T "	0	10	"L "	0	1	0	-5	"YARGUZVJOFQSKLDTXMIEHNBP"	"NMVHJTFKBSLIARGEZQOUDPXY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	132	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	7	"K "	1	0	0	0	"YTJNURZKLHBISVGMEDAQFOPX"	"UQBIYXRNHDTZJSPLKAMVOFEG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	134	"LH9 "	" oneCued "	0	" right "	2	180	"D "	0	9	"U "	0	1	0	2	"XDGQRUOYMSVLTEKNJFIAPZBH"	"JVSAMRNZYUGDQTXKBFOPELHI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	138	"LH9 "	" oneCued "	0	" right "	2	45	"M "	0	7	"M "	1	0	0	0	"OXZVEQDMUKALGFSPIJYTRHNB"	"MYOVDNPBULHTQIFEXGSZRAKJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	139	"LH9 "	" oneCued "	0	" right "	2	45	"F "	0	6	"T "	0	1	0	1	"HLFTEIBSDJKGPVUMXYZNOQRA"	"HVRJMETFOPQGZILYUNXSBADK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	141	"LH9 "	" oneCued "	0	" right "	2	225	"H "	0	7	"J "	0	0	0	1	"IMRDYLUJHNVAQOTBGPXKZEFS"	"BXORFJDNHGQIEZUMLTYAPKVS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	142	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	10	"S "	1	1	0	0	"HIUXSFMTVAGKYPELDROZBJNQ"	"GVIMAEKLRFSNQTDZJBUOPXHY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	145	"LH9 "	" oneCued "	0	" right "	2	225	"V "	0	10	"V "	1	0	0	0	"NKFHEGTABIVSRPQZDUXMLOYJ"	"XRLTPQVNKJDYMGIOAFHBSZEU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	147	"LH9 "	" oneCued "	0	" right "	2	0	"Y "	0	8	"J "	0	0	0	2	"LBGKMQEFJIYXTUNHZVDOSAPR"	"XNGQMZHAYTBEFVOUDJLIPSKR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	151	"LH9 "	" oneCued "	0	" right "	2	225	"U "	0	9	"Q "	0	0	0	1	"BOXKMVENRQUPZHDGLSTJFAYI"	"IYEKQTJLGHSRFUNADBXOMPVZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	154	"LH9 "	" oneCued "	0	" right "	2	315	"I "	0	10	"F "	0	1	0	-3	"VNZOGMTISYPRUEDQJAXBLFKH"	"PKRGSZBIDYFHVEXANMOJQUTL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	156	"LH9 "	" oneCued "	0	" right "	2	0	"Q "	0	7	"U "	0	1	0	2	"GNXEKMAHPZFLBJDYRSOVQIUT"	"XZORPHNUTQMIBEYSKJDVGAFL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	157	"LH9 "	" oneCued "	0	" right "	2	180	"R "	0	8	"H "	0	1	0	2	"UPESLIFQBDXJZOGKVNTAHRYM"	"IVEMQFPZHLRXBYKJADSNTOUG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	158	"LH9 "	" oneCued "	0	" right "	2	0	"N "	0	9	"R "	0	1	0	5	"UMXLHBIRFZYNGTJOKAPQDEVS"	"PXBVQZJAYRMUESNHKGLFITOD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	14	FALSE
+"main"	160	"LH9 "	" oneCued "	0	" right "	2	0	"X "	0	10	"S "	0	1	0	1	"HJLEINZOUSRPGKDVMFQYBAXT"	"OUJIRAYTKZSXEDNBLFQGPHVM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	162	"LH9 "	" oneCued "	0	" right "	2	270	"P "	0	9	"L "	0	0	0	2	"YISEJUTOXLQPNGHVBDFKAMZR"	"PFXBZEDNQMVLKSHAOUYJTRIG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	164	"LH9 "	" oneCued "	0	" right "	2	90	"H "	0	9	"S "	0	1	0	3	"ROLNIXZUJDGVHAEYBFPKQMTS"	"TANFGZPXISLOHDJURKEYBMQV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	12	FALSE
+"main"	165	"LH9 "	" oneCued "	0	" right "	2	135	"D "	0	6	"L "	0	1	0	2	"LRQKMBJEIANFYXGTSPOZDUHV"	"BPFGTELNDMSXJHIUZVAKQYRO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	166	"LH9 "	" oneCued "	0	" right "	2	225	"R "	0	8	"P "	0	0	0	3	"FOAEUBZYPTIRKNJHQGSDMXVL"	"XRFQBHSINGMDPYAJKLUEOVTZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	169	"LH9 "	" oneCued "	0	" right "	2	180	"N "	0	8	"U "	0	0	0	2	"GALQOMXFUZNVIDHKBPJYETSR"	"SZIHAKERLUMBDVQFOYNJGXTP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	170	"LH9 "	" oneCued "	0	" right "	2	90	"E "	0	7	"Q "	0	0	0	15	"AXOJTSNQKDGFPBYILMUZVHER"	"KPAFZNGOMXIEYBDQSUVJRLHT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	22	FALSE
+"main"	172	"LH9 "	" oneCued "	0	" right "	2	0	"A "	2	6	"Y "	0	1	0	1	"EOMXHFIRYVPLUTDGJASQNZBK"	"XVLQFRYAEIUBGZKSPNMOJTDH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	173	"LH9 "	" oneCued "	0	" right "	2	315	"N "	0	8	"N "	1	0	0	0	"KZXADBQUNISMLGOTFEJRHVYP"	"KSXZRQUJTALMIOYHGNDVPBFE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	174	"LH9 "	" oneCued "	0	" right "	2	45	"V "	0	8	"J "	0	1	0	2	"ZPOXHSFMAGBNUYLVJERIKDTQ"	"OZUDPKSQJGVYIBTFXHEARLMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	178	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	9	"T "	0	1	0	1	"BNLXOSAMQRKHGPIZTUYVFDJE"	"OFXBHLAZGTKJERVDUIPYNMQS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	179	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	8	"K "	0	0	0	1	"IQVHYDRMKPJZNFUBGOSTAEXL"	"UAEXKITJYDVGMQLBOZRSPNHF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	181	"LH9 "	" oneCued "	0	" right "	2	225	"E "	0	8	"M "	0	0	0	3	"NGFTHZJOMIVELYKXRSDBUAPQ"	"QMFKDPBAZJVEIGLHXSRTOYNU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	186	"LH9 "	" oneCued "	0	" right "	2	180	"K "	0	10	"R "	0	1	0	2	"HPZOVIFMYXARGEJQKSLNUTDB"	"VAENFYULGQRZKHDOIXJBMTSP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	12	FALSE
+"main"	190	"LH9 "	" oneCued "	0	" right "	2	180	"O "	0	6	"Y "	0	0	0	-1	"TBKJMOYGRPLXFQIEZUVSADNH"	"OBHSEGVXZQIAUFYPRMDJLNKT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	191	"LH9 "	" oneCued "	0	" right "	2	315	"S "	0	6	"J "	0	0	0	1	"TYADBMJSKEFVRUPZIQGXHLNO"	"YRUFKLQMGXABZPIJSTDENVOH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	194	"LH9 "	" oneCued "	0	" right "	2	270	"G "	0	8	"N "	0	0	0	-8	"GPHLZJEKNQVXOASMUFYTDRBI"	"SAZIJPQUXEYVOKDGTMRHNLFB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	0	FALSE
+"main"	197	"LH9 "	" oneCued "	0	" right "	2	0	"V "	0	8	"X "	0	0	0	1	"DPIARJGLXVOFBUTYSHNMKEQZ"	"LODRYBQAHVMKUSINXTPJFZGE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	200	"LH9 "	" oneCued "	0	" right "	2	90	"O "	0	8	"Q "	0	1	0	5	"EPIDGFVSQHRTZMJLABNOXYUK"	"TXFZUEPMQADRVONLBYIGHKSJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	13	FALSE
+"main"	202	"LH9 "	" oneCued "	0	" right "	2	135	"R "	0	6	"F "	0	0	0	1	"IHKJMSFRDLXAYUPNBGQZVTOE"	"MGLSXORIUEZAPDJFBYVKTHNQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	204	"LH9 "	" oneCued "	0	" right "	2	225	"I "	0	10	"H "	0	0	0	-2	"VDONUAGEITHJRXQPFKBLZYMS"	"ZEOMKITSABUFHLDYVJRNGXQP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	206	"LH9 "	" oneCued "	0	" right "	2	180	"V "	0	9	"H "	0	1	0	1	"HSYEOJFQLKZPIRVNBUTXGMDA"	"PFJOBZRYKHVTXMUQGADESLNI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	207	"LH9 "	" oneCued "	0	" right "	2	90	"K "	0	9	"T "	0	0	0	-7	"UOKMLRHFNTVZXDASGBJQIPEY"	"XNYBPKHSMOIUAVZFGQDJRTEL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	2	FALSE
+"main"	209	"LH9 "	" oneCued "	0	" right "	2	315	"M "	0	6	"M "	1	1	0	0	"HDGUTESYNXMAFKVOBJZPRQIL"	"XHRZVSMJFITAKEPGBLUDNOYQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	210	"LH9 "	" oneCued "	0	" right "	2	90	"V "	0	8	"V "	1	1	0	0	"SLOGBFUAJVPNYIZRTKMEQXHD"	"JQFHEKGLVTSZPNBUYRXAIDOM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	211	"LH9 "	" oneCued "	0	" right "	2	270	"D "	0	7	"I "	0	1	0	2	"VDHSXURNEFZJGLBYPMTKAQIO"	"TZGNREUIQDOSBXLKMPJFVYAH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	220	"LH9 "	" oneCued "	0	" right "	2	315	"U "	0	7	"F "	0	0	0	-4	"MKGUAVXFZOTQLBPIRYSHJNDE"	"JGOATYHDQMRLKFIVZUNPXBES"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	3	FALSE
+"main"	223	"LH9 "	" oneCued "	0	" right "	2	45	"P "	0	7	"X "	0	0	0	-5	"ZJPLVOAXFDUHBTSGQMKEYNIR"	"BDHIRZMOGPNJXATFVULYEQKS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	2	FALSE
+"main"	224	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	9	"K "	1	0	0	0	"QFRNPMIHUKJVDATSGLZOBXEY"	"EAMBHTDRZJOIXSQFUPVYLGNK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	225	"LH9 "	" oneCued "	0	" right "	2	0	"S "	0	7	"S "	1	1	0	0	"ZPVIBKUJXRYOHLQTDMNEGSFA"	"YUEBNXLSZFVIQODGPKMARTJH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	227	"LH9 "	" oneCued "	0	" right "	2	135	"G "	0	7	"O "	0	1	0	-4	"DETULAIYPZNMQOVBRSFKJGXH"	"MNDGYTLOIFUAZPBSREXQHKJV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	3	FALSE
+"main"	228	"LH9 "	" oneCued "	0	" right "	2	45	"A "	0	6	"H "	0	0	0	2	"EIQSKMHXAJGPNYDLTZVOBFUR"	"SMEYXQHDOUGNJKZVLAFBIRPT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	233	"LH9 "	" oneCued "	0	" right "	2	315	"O "	0	9	"V "	0	0	0	-4	"UEFRAOGKXVQIZBMTPYSNJDLH"	"PGHFTKQDRIUONYMSAZLXBJVE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	235	"LH9 "	" oneCued "	0	" right "	2	180	"G "	0	8	"Q "	0	0	0	6	"NARDUIYZQBOSTHGPVMFLXKJE"	"UDJOIZGYVQEXNABPKHSTMFLR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	14	FALSE
+"main"	236	"LH9 "	" oneCued "	0	" right "	2	225	"B "	0	10	"Z "	0	1	0	-2	"REUJVQLHDNAZMXFBOPTGKISY"	"LFREJUHMBPZGVKNDXQTIAYOS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	238	"LH9 "	" oneCued "	0	" right "	2	0	"H "	0	9	"L "	0	1	0	1	"ADZNURXTMQJLEPIYSHFOBKGV"	"AISXJRZOULHTDFKEMNYQGBVP"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	239	"LH9 "	" oneCued "	0	" right "	2	45	"R "	0	7	"I "	0	1	0	2	"RTHFZNKXDJAOIEMYGPLVUSBQ"	"BTHMYJZIGRDPQKUVELXFAOSN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	240	"LH9 "	" oneCued "	0	" right "	2	0	"K "	0	6	"A "	0	1	0	1	"LJRMDIQFOSXHTKYUBEVGZANP"	"JPDLFQAKXGIMNUHSOEBTYZVR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	243	"LH9 "	" oneCued "	0	" right "	2	90	"V "	0	10	"R "	0	1	0	-5	"PIXBKNTAEVMRYFLUDJHGQSZO"	"BYLDOVHIMTRUJKENGXSAPFQZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	244	"LH9 "	" oneCued "	0	" right "	2	90	"G "	0	7	"G "	1	0	0	0	"IKNADVUGEHTJLFSPXRQBZYOM"	"XNSLTMYOJKZARVQBFPGDUHEI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	247	"LH9 "	" oneCued "	0	" right "	2	225	"G "	0	9	"Z "	0	0	0	1	"XATRDMEIBZGKLYPUNOJQVFSH"	"NIQKFTDMOJRZUHPVSXBEAGLY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	250	"LH9 "	" oneCued "	0	" right "	2	315	"T "	0	9	"J "	0	1	0	2	"DUERMOYZIXJHSTLNKPVGBQFA"	"LRPNDSIYOJXTEMFAZBQKHVUG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	251	"LH9 "	" oneCued "	0	" right "	2	225	"P "	0	6	"B "	0	0	0	1	"XQIGNLBPUAOMSTVRKYFJEZDH"	"VRFQSEZBXDJLHMPYIUKGTONA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	252	"LH9 "	" oneCued "	0	" right "	2	45	"L "	0	9	"L "	1	0	0	0	"RVEOPXMQDLUIBZSNAJTGHFYK"	"TYBAEDNMQXKZOVLJRPSIHUGF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	253	"LH9 "	" oneCued "	0	" right "	2	225	"K "	0	9	"Z "	0	1	0	1	"VSAUDLZGOBHINRJQFKXTEYPM"	"YGESULIFBZKTVAJHOPQDRXMN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	255	"LH9 "	" oneCued "	0	" right "	2	45	"O "	0	9	"N "	0	0	0	2	"AGMKTFPIVNQOYZJBDUXLHRSE"	"QXVKZUGPOJEMYFNTBLAISDRH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	257	"LH9 "	" oneCued "	0	" right "	2	315	"H "	0	7	"R "	0	0	0	1	"QKMTEPBRHLDOVYAJUFINZXSG"	"GVJZLREFQOUSMTIHDANBXPYK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	259	"LH9 "	" oneCued "	0	" right "	2	135	"O "	0	8	"Z "	0	1	0	2	"EGBHVJUDLARQPZKXYSTMNIFO"	"TYNAMDXEZQOILSKBRJVFGUPH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	260	"LH9 "	" oneCued "	0	" right "	2	180	"Q "	0	10	"X "	0	0	0	9	"EGJRANYSLKXOIFUTVDZQHBPM"	"ZPLYNKOAUDQXMBSTFGIRJHEV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	19	FALSE
+"main"	263	"LH9 "	" oneCued "	0	" right "	2	0	"D "	0	7	"N "	0	0	0	3	"HLEZSOYNUIDTRJQPMFGKVABX"	"OSNURLZBKTEMGYPHJDXVAFQI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	264	"LH9 "	" oneCued "	0	" right "	2	90	"P "	0	10	"Q "	0	0	0	1	"YLSEFURVTNQPIZXBGMKHADJO"	"KHFLRJTMBUNPQSVXADZEOIGY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	265	"LH9 "	" oneCued "	0	" right "	2	315	"F "	0	10	"F "	1	0	0	0	"MZRPBSOKUJFYAGXQNVDLEIHT"	"OHVJQFMPYUABXEDSGTLRKNZI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	266	"LH9 "	" oneCued "	0	" right "	2	135	"H "	0	7	"H "	1	0	0	0	"LUXANKQHJPZTEYGMIRFOVSBD"	"KQATLVFXMDNRUBZIESOJYGPH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	268	"LH9 "	" oneCued "	0	" right "	2	225	"P "	0	7	"G "	0	1	0	-1	"BDPXEFANJVZOSRMLYUQGHKTI"	"TYMUKXPGVZOSLJDANQRBIFEH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	269	"LH9 "	" oneCued "	0	" right "	2	270	"X "	0	9	"Y "	0	1	0	1	"DXPLKMQZYVUOEJBAIGFHNSRT"	"JRSEVZQGAYXIBPKOUNHDLTMF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	274	"LH9 "	" oneCued "	0	" right "	2	45	"D "	0	10	"L "	0	0	0	2	"ZOSKMBNJAULYDFQGTEIHXPRV"	"BQLPRYNXKGISUJMAHDFVZTOE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	12	FALSE
+"main"	275	"LH9 "	" oneCued "	0	" right "	2	0	"E "	0	10	"A "	0	0	0	1	"TUIHVNKRSQAEGYDPJLFZBXOM"	"HRUQMDJSBINKZEGOFXLTAVPY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	277	"LH9 "	" oneCued "	0	" right "	2	135	"S "	0	10	"U "	0	1	0	1	"IZJFGUPYBDESVNXOKALHQTRM"	"LFINXPHEAJUSYQGDBORMVZKT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	278	"LH9 "	" oneCued "	0	" right "	2	180	"D "	0	9	"H "	0	0	0	-4	"XMRYIDLOBHQVFKNASEUJPTZG"	"UFZMPAOLKHTESNJDIGXQRVYB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	5	FALSE
+"main"	279	"LH9 "	" oneCued "	0	" right "	2	0	"M "	0	8	"A "	0	0	0	2	"BRYZNTLHASMQUDKJOEFXGIPV"	"ZOFBLYXHKPVSJGQMDRAEUTIN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	282	"LH9 "	" oneCued "	0	" right "	2	270	"K "	0	7	"K "	1	1	0	0	"MDZRFBVUNHEGLOKPXASQITYJ"	"UOTAXDVKLIRYFJBMNQSHPGZE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	284	"LH9 "	" oneCued "	0	" right "	2	270	"H "	0	10	"L "	0	1	0	5	"AEYVXQDOHTKMUNSBZJLPFGIR"	"KYUOJMEQBTLRDNXHFGPIASVZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	15	FALSE
+"main"	287	"LH9 "	" oneCued "	0	" right "	2	90	"B "	0	6	"A "	0	1	0	14	"DVFUQTBXRLOPSZIKENYAJHGM"	"TSDGRZAEPNUOKHYVJIFQBMXL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	20	FALSE
+"main"	289	"LH9 "	" oneCued "	0	" right "	2	45	"D "	0	6	"U "	0	0	0	2	"MPQSNZUTDYGXVRFHBKIOJLEA"	"XAJDOGEQNSTVZRLKPMHIFUBY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	292	"LH9 "	" oneCued "	0	" right "	2	90	"M "	0	6	"X "	0	0	0	1	"OPLFJYXMUVKZQSREHBADTING"	"YRTZXGDNFBPJLUIAOQVHSEMK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	293	"LH9 "	" oneCued "	0	" right "	2	180	"S "	0	6	"U "	0	1	0	1	"ENSUKDVLOYIRFHMQZGJTXBPA"	"KHIBLPUSVTRNAZJDYGXOFMQE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	296	"LH9 "	" oneCued "	0	" right "	2	180	"R "	0	7	"G "	0	1	0	2	"RJSAZTXDEBOYQFUVPNKLHGMI"	"NBZOJQAGERSKVDFILXPUYTHM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	297	"LH9 "	" oneCued "	0	" right "	2	135	"X "	0	8	"X "	1	1	0	0	"EKDGIVNLHFJOYRAUMPZTQSBX"	"YSFPKDTUXIVBJHAMZEQONRGL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	300	"LH9 "	" oneCued "	0	" right "	2	225	"R "	0	6	"P "	0	0	0	1	"ZVBUYFPRGDEHKJMXOTSIQLNA"	"EFSXZKBMNUVLJOYQPIARHGTD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	302	"LH9 "	" oneCued "	0	" right "	2	180	"B "	0	7	"T "	0	0	0	1	"SFJPVNHTBOYZIRMGLEQKAXDU"	"LBHKSAQEUOYFRIXNMJVPGDTZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	303	"LH9 "	" oneCued "	0	" right "	2	135	"K "	0	10	"I "	0	1	0	-1	"KGADSZVJNPRBOEXTIHUMFLYQ"	"SNGTRUMXAKIFLQZDVOBYEPHJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	306	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	6	"G "	0	1	0	1	"YIHBKSFRTPJGQDZENXMALVUO"	"IHEOVQGMJPRATUSDFYKLZXBN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	308	"LH9 "	" oneCued "	0	" right "	2	315	"Q "	0	10	"S "	0	0	0	-10	"QLREGZIUPNSXFBHJODAMVTYK"	"UPOXRTIKABFHYNDJVMSQLZGE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	0	FALSE
+"main"	309	"LH9 "	" oneCued "	0	" right "	2	225	"D "	0	7	"D "	1	0	0	0	"XLPAGTODVZBURMNJKFEHYSIQ"	"UZBDTFSIMNEAJKXLPYGRHQVO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	310	"LH9 "	" oneCued "	0	" right "	2	270	"M "	0	6	"G "	0	0	0	1	"LPNBETGMVUHSJQOAIZRYXKFD"	"OAVPKZFSNEYBLDJMITRGXQUH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	311	"LH9 "	" oneCued "	0	" right "	2	270	"S "	0	8	"T "	0	0	0	2	"VAYMKEULTQSIBJDXOHGPZFRN"	"TMZVDIPRYKAFJSHBGXOQNLUE"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	315	"LH9 "	" oneCued "	0	" right "	2	270	"Y "	0	10	"A "	0	1	0	-6	"RGBSFVKYNQPZOIEDTHXMLAJU"	"FEMTYONUXQAVIRHPDLSJBKZG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	4	FALSE
+"main"	317	"LH9 "	" oneCued "	0	" right "	2	0	"B "	0	9	"K "	0	0	0	1	"HPGNYMQDVKBTILRZFAXSEOJU"	"IKRPEHDYQSGMNATUJOVFXZBL"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	319	"LH9 "	" oneCued "	0	" right "	2	315	"K "	0	8	"E "	0	1	0	1	"JEDHMOTXLUVRZGASBKYFNIPQ"	"RXZOGLIVEKNUMQHAJYDTPSFB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
