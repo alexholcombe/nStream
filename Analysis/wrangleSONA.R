@@ -83,6 +83,7 @@ precision <- read.csv('modelOutput/CSV/Precision.csv')
 
 
 files <- list.files(pattern = '^[A-Z][A-Z][0-9].*\\.txt$', path = dataPath, full.names = T)
+print(files)
 #removed split files
 #splitFiles <- grep('rawData/IK4_04May2017_14-35.txt|rawData/IK42_04May2017_15-06.txt|rawData/LT5_04May2017_15-52.txt|rawData/LT52_04May2017_16-21.txt', files)
 #files <- files[-splitFiles]
@@ -224,6 +225,10 @@ for(group in names(dataSets)){
         }
       }
       
+      if(mean(temp$fixationReject)>.4){
+        next
+      }
+      
       tempSkewNStreams <- aggregate(responsePosRelative0~whichStream0, temp, skew)
       
       tempSkewTotal <- skew(temp$responsePosRelative0)
@@ -233,7 +238,7 @@ for(group in names(dataSets)){
       if(plots){
         tempPlot <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
           geom_histogram(binwidth = 1)+
-          scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
+          scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),4))+
           #geom_text(x = 4, y=30, label=paste0('skew =', round(tempSkewTotal,2)))+
           geom_vline(xintercept = 0, linetype = 'dashed')+
           facet_wrap(~streamsPerRing)+
@@ -253,7 +258,7 @@ for(group in names(dataSets)){
         #   facet_wrap(~whichStream0)
         
         if(savePlots){
-          ggsave(paste0('plots/',group,'/',participant,'.png'),tempPlot, width = 20, height = 20, units = 'cm')
+          ggsave(paste0('plots/',group,'/',participant,'.png'),tempPlot, width = 30, height = 30, units = 'cm')
           #ggsave(paste0('plots/',group,'/',participant,'ByStream.png'),plotByStream, width = 20, height = 20, units = 'cm')
         }
         
