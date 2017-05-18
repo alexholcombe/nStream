@@ -58,11 +58,13 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){
           fixationDistance <- sqrt(xVector^2 + yVector^2)
           
           eyeTrackedData$fixationDistance[thisFixationRow] <- fixationDistance
-          
+
           if(fixationDistance>=criterion){
             if(!eyeTrackedData$CURRENT_FIX_BLINK_AROUND[thisFixationRow] %in% c('BEFORE','AFTER') ){
               if(index<=220){
-                RSVPData$fixationReject[index] <- TRUE 
+                #RSVPData$fixationReject[index] <- TRUE
+                print(fixationDistance)
+                print(index)
               }
             }
           }
@@ -70,6 +72,6 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){
       }
     }
   }
-  assign(paste0(ID,'Eye'), eyeTrackedData)
-  assign(paste0(ID,'RSVP'), RSVPData)
+  #assign(paste0(ID,'Eye'), eyeTrackedData)
+  #assign(paste0(ID,'RSVP'), RSVPData)
 }
