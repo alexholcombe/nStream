@@ -1,11 +1,36 @@
+---
+title: "nStreams Analysis"
+author: "Charlie Ludowici"
+date: "5/18/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list=ls())
+library(ggplot2)
+
 ## Computing the posterior distribution of standardized effect size
 
 ##(You can ignore the warnings, they are just saying you might be off in the
 ## tenth decimal place somewhere)
-latency <- read.csv('modelOutput/CSV/Latency.csv')
+MMlatency <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+MMprecision <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
 
-t = t.test(x = latency$eightStreams, y=latency$twoStreams, paired = T)$statistic[[1]]
+latency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
 
+precision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
+
+frequentistTest = t.test(x = latency$eightStreams, y=latency$twoStreams, paired = T)
+t <- frequentistTest$statistic[[1]]
+frequentistTest
+```
+
+
+```{r warning=FALSE}
 posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
                       priorMean=0,priorSD=1) {
         N = ifelse(is.null(N2), N1, N1*N2/(N1+N2))
@@ -18,10 +43,7 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
         f=function(delta) K*prior(delta)
         
         #(The as.integer bits above just provide bounds for the prior if you want them)
-        
-        
-
-        
+      
         likelihood <- function(delta) dt(t, df, delta*sqrt(N))
         
         #marginal likelihood
@@ -35,7 +57,7 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
 
 ###### Example #######
 
-t  <- 6.056
+t  <- t
 N1 <- 10
 N2 <- 10
 
@@ -62,35 +84,6 @@ ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior))+
   geom_line(aes(y=prior), linetype='dashed')+
   labs(x = expression(delta), y='Density')
-# 
-# #plot the posterior distribution of delta
-# plot(delta, posterior(t,N1,delta=delta,
-#                       priorMean=priorMean,priorSD=priorSD),type="l")
-# 
-# #Posterior when delta is restricted to be above 0 (one-sided test)
-# plot(delta, posterior(t,N1,delta=delta,lo=0,
-#                       priorMean=priorMean,priorSD=priorSD),type="l")
-# 
-# #posterior mean
-# post.mean = integrate(function(delta) delta* posterior(t,N1,delta=delta,
-#                        priorMean=priorMean,priorSD=priorSD), -Inf, Inf)[[1]]
-# post.mean
-# 
-# #posterior mode
-# post.mode <-  optimize(function(delta) posterior(t, N1, delta=delta,priorMean=priorMean,priorSD=priorSD),
-#                  interval=c(-4,4),maximum = T)[[1]]
-# 
-# post.mode
-# 
-# #posterior variance
-# post.var = integrate(function(delta){
-#            delta^2* posterior(t,N1,delta=delta,priorMean=priorMean,priorSD=priorSD)}, 
-#              -Inf, Inf)[[1]] - post.mean^2
-# 
-# post.var
-# 
-# #posterior sd
-# post.sd = sqrt(post.var)
-# post.sd
-# 
-# 
+
+
+```
