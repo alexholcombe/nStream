@@ -1,6 +1,5 @@
 Group,SingleLeft,SingleRight,DualLeft,DualRight
 1,0.7885
-1,0.8321
 1,0.7308
 1,0.8649
 1,0.8173
@@ -9,8 +8,8 @@ Group,SingleLeft,SingleRight,DualLeft,DualRight
 1,0.7193
 1,0.9168
 1,0.4535
+1,0.6880
 2,0.8295
-2,0.8486
 2,0.7243
 2,0.7990
 2,0.6701
@@ -19,3 +18,4 @@ Group,SingleLeft,SingleRight,DualLeft,DualRight
 2,0.8694
 2,0.9029
 2,0.5565
+2,0.7066
