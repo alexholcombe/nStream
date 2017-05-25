@@ -10,11 +10,14 @@ theme_set(theme_apa(base_size = 20))
 
 plots <- T #if true, create plots
 if(plots){
-  savePlots <- T #save plots?
+  savePlots <- F #save plots?
 }
 
-saveCSV = T
+saveIndividualTSV <- F #Save data files?
+saveAllErrorsTSV <- T
 
+bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
+nRepetitions <- 1000 #number of bootstrap repetitions
 
 dataPath <- 'rawData'
 
@@ -156,7 +159,7 @@ for(dataset in files){
   }
 }
 
-allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), fixationReject = logical(totalRows), stringsAsFactors = F)
+allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), fixationReject = logical(totalRows), button = numeric(totalRows), stringsAsFactors = F)
 
 startRow <- 1
 
@@ -225,7 +228,7 @@ for(group in names(dataSets)){
         }
       }
       
-      if(mean(temp$fixationReject)>.4){
+      if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
         next
       }
       
@@ -236,11 +239,38 @@ for(group in names(dataSets)){
       #Create densities for the SPE with fixation rejections removed
       
       if(plots){
+        
+        
+        if(bootstrapPredictions){
+          nEight <- length(which(temp$streamsPerRing==8))
+          nTwo <- length(which(temp$streamsPerRing==2))
+          
+          eightB <- data.frame(bootStrappedPredictions = numeric(nEight*nRepetitions))
+          twoB <- data.frame(bootStrappedPredictions = numeric(nTwo*nRepetitions))
+          
+          for(repetition in 1:nRepetitions){
+            eight <- round(rnorm(nEight, eightStreamsLatency,eightStreamsPrecision)/83.25)
+            eightRows <- (repetition*nEight-nEight+1):(repetition*nEight)
+            
+            two <- round(rnorm(nTwo, twoStreamsLatency,twoStreamsPrecision)/83.25)
+            twoRows <- (repetition*nTwo-nTwo+1):(repetition*nTwo)
+            
+            eightB$bootStrappedPredictions[eightRows] <- eight
+            twoB$bootStrappedPredictions[twoRows] <- two
+          }
+          bootstrapResults <- rbind(eightB, twoB)
+          bootstrapResults$streamsPerRing <- 0
+          bootstrapResults$streamsPerRing[1:nrow(twoB)] <- 2
+          bootstrapResults$streamsPerRing[nrow(twoB)+1:nrow(eightB)] <- 8
+        }
+
+          
         tempPlot <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
           geom_histogram(binwidth = 1)+
           scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),4))+
           #geom_text(x = 4, y=30, label=paste0('skew =', round(tempSkewTotal,2)))+
           geom_vline(xintercept = 0, linetype = 'dashed')+
+          #stat_summary(data=bootstrapResults, aes(x=bootstrapPredictions), fun.y=mean, geom='line')+
           facet_wrap(~streamsPerRing)+
           labs(x = 'Serial Position Error',
                y='Count',
@@ -281,6 +311,7 @@ for(group in names(dataSets)){
       allErrors$ID[startRow:endRow] <- participant
       allErrors$error[startRow:endRow] <- twoStreams$responsePosRelative0
       allErrors$fixationReject[startRow:endRow] <- twoStreams$fixationReject
+      allErrors$button[startRow:endRow] <- twoStreams$button0
       
       startRow <- endRow+1
       
@@ -290,10 +321,11 @@ for(group in names(dataSets)){
       allErrors$ID[startRow:endRow] <- participant
       allErrors$error[startRow:endRow] <- eightStreams$responsePosRelative0
       allErrors$fixationReject[startRow:endRow] <- eightStreams$fixationReject
+      allErrors$button[startRow:endRow] <- eightStreams$button0
       
       startRow <- endRow + 1
       
-      if(saveCSV){
+      if(saveIndividualTSV){
         write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
         write.table(eightStreams[!eightStreams$fixationReject,], paste0('wrangledData/',group,'/eightStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
       }
@@ -306,11 +338,21 @@ for(group in names(dataSets)){
 
 #allErrors$exp <- factor(allErrors$exp, levels = c('twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'))
 
+#Drop any unused rows. These were allocated for participant(s) who had too many fixation rejections
+allErrors <- allErrors[!allErrors$ID=='',]
+allErrors <- allErrors[allErrors$button %in% c(0,2),]
+
+if(saveAllErrorsTSV){
+  write.table(allErrors, file = 'Analysis/allErrors.txt', sep='\t', row.names = F, col.names = T)
+}
+
+#plus or minus one SPE for kim
+kim <- aggregate(error~ID, data = allErrors[allErrors$condition=='twoStreams',], FUN = function(x) length(which(x>=-1 & x<=1))/length(x))
 
 totalPlot <- ggplot(allErrors[!allErrors$fixationReject,], aes(x=error))+
   geom_histogram(binwidth = 1)+
   labs(y = 'Count', x = 'Serial Position Error')+
-  facet_wrap(~condition)+
+  facet_wrap(~condition+button)+
   geom_vline(xintercept = 0, linetype = 'dashed')
 
 show(totalPlot)
