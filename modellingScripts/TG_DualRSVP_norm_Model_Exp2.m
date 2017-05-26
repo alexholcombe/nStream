@@ -15,7 +15,7 @@ itemRates = [12,12,12,8.6957];
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [10 10];
+nParticipants = [10 10 6 4];
 nTrials = 300;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -27,7 +27,7 @@ pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB m
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 1;
+nReplicates = 200;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -317,70 +317,70 @@ for thisSample = 1:nSamples
 
 end
 
-% % Write the data to *.csv files for analysis in JASP
-% cd([usePath 'modelOutput/CSV/']);
-% 
-% % Accuracy
-% writeFile = fopen('TGRSVP_Exp2_AccuracyNorm.csv','w');  % Overwrite file
-% fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
-% 
-% for thisSample = 1:nSamples
-%     for thisParticipant = 1:nParticipants(thisSample)
-%         fprintf(writeFile,'\n%d',thisSample); % Group
-%         for thisCondition = 1:nConditions
-%             for thisStream = 1:nStreams
-%                 fprintf(writeFile,',%.4f', allAccuracy_byParticipant(thisSample,thisParticipant));
-%             end
-%         end
-%     end
-% end
-% 
-% % Efficacy
-% writeFile = fopen('TGRSVP_Exp2_EfficacyNorm.csv','w');  % Overwrite file
-% fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
-% 
-% for thisSample = 1:nSamples
-%     for thisParticipant = 1:nParticipants(thisSample)
-%         fprintf(writeFile,'\n%d',thisSample); % Group
-%         for thisCondition = 1:nConditions
-%             for thisStream = 1:nStreams
-%                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,1));
-%             end
-%         end
-%     end
-% end
-% 
-% % Latency
-% writeFile = fopen('TGRSVP_Exp2_LatencyNorm.csv','w');  % Overwrite file
-% fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
-% 
-% for thisSample = 1:nSamples
-%     for thisParticipant = 1:nParticipants(thisSample)
-%         fprintf(writeFile,'\n%d',thisSample); % Group
-%         for thisCondition = 1:nConditions
-%             for thisStream = 1:nStreams
-%                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,2));
-%             end
-%         end
-%     end
-% end
-% 
-% % Precision
-% writeFile = fopen('TGRSVP_Exp2_PrecisionNorm.csv','w');  % Overwrite file
-% fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
-% 
-% for thisSample = 1:nSamples
-%     for thisParticipant = 1:nParticipants(thisSample)
-%         %fprintf(writeFile,'\n%d',thisSample); % Group
-%         for thisCondition = 1:nConditions
-%             for thisStream = 1:nStreams
-%                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
-%             end
-%         end
-%     end
-% end
-% 
-% cd('../Likelihood/') %Save the likelihood information for model comparison
+% Write the data to *.csv files for analysis in JASP
+cd([usePath 'modelOutput/CSV/']);
 
-%save('normalModelLikelihoodByParticipant', 'allMinNegLogLikelihoods_byParticipant', 'allNTrials_byParticipant')
-%save('normalModelLikelihoodCombined', 'allMinNegLogLikelihoods_Combined', 'allNTrials_Combined')
+% Accuracy
+writeFile = fopen('TGRSVP_Exp2_AccuracyNorm.csv','w');  % Overwrite file
+fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+
+for thisSample = 1:nSamples
+    for thisParticipant = 1:nParticipants(thisSample)
+        fprintf(writeFile,'\n%d',thisSample); % Group
+        for thisCondition = 1:nConditions
+            for thisStream = 1:nStreams
+                fprintf(writeFile,',%.4f', allAccuracy_byParticipant(thisSample,thisParticipant));
+            end
+        end
+    end
+end
+
+% Efficacy
+writeFile = fopen('TGRSVP_Exp2_EfficacyNorm.csv','w');  % Overwrite file
+fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+
+for thisSample = 1:nSamples
+    for thisParticipant = 1:nParticipants(thisSample)
+        fprintf(writeFile,'\n%d',thisSample); % Group
+        for thisCondition = 1:nConditions
+            for thisStream = 1:nStreams
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,1));
+            end
+        end
+    end
+end
+
+% Latency
+writeFile = fopen('TGRSVP_Exp2_LatencyNorm.csv','w');  % Overwrite file
+fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+
+for thisSample = 1:nSamples
+    for thisParticipant = 1:nParticipants(thisSample)
+        fprintf(writeFile,'\n%d',thisSample); % Group
+        for thisCondition = 1:nConditions
+            for thisStream = 1:nStreams
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,2));
+            end
+        end
+    end
+end
+
+% Precision
+writeFile = fopen('TGRSVP_Exp2_PrecisionNorm.csv','w');  % Overwrite file
+fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+
+for thisSample = 1:nSamples
+    for thisParticipant = 1:nParticipants(thisSample)
+        %fprintf(writeFile,'\n%d',thisSample); % Group
+        for thisCondition = 1:nConditions
+            for thisStream = 1:nStreams
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
+            end
+        end
+    end
+end
+
+cd('../Likelihood/') %Save the likelihood information for model comparison
+
+save('normalModelLikelihoodByParticipant', 'allMinNegLogLikelihoods_byParticipant', 'allNTrials_byParticipant')
+save('normalModelLikelihoodCombined', 'allMinNegLogLikelihoods_Combined', 'allNTrials_Combined')
