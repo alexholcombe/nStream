@@ -106,12 +106,14 @@ BFplus
 
 delta  <- seq(-2, 4, .01)
 
-posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
-                                                                       priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta, priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+
+posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
 #This would only work for normal, we use Cauchy!
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
+
 
 ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
@@ -172,8 +174,13 @@ BFplus
 
 delta  <- seq(-4, 2, .01)
 
+posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
 posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
                                                                        priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+
+posteriorModeEfficacy <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
 ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
