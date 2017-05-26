@@ -6,9 +6,9 @@ usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'SONA/twoStreams','SONA/eightStreams','Pilots/Ex8Streams82msSOA', 'Pilots/Ex6Streams115msSOA'
 
-itemRate = 12;
+itemRates = [12,12,12,8.6957];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
@@ -45,7 +45,7 @@ options = statset('MaxIter', fitMaxIter, 'MaxFunEvals', fitMaxFunEvals, 'Display
 
 % Task parameters
 nLetters = length(letterArray); % Number of possible letters
-rateFactor = 1000./itemRate;
+rateFactors = 1000./itemRates;
 
 % Build data structures
 allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
@@ -67,6 +67,8 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
+    
+    
     % Load data
     cd(dataDirectory);
     load(['CompiledData_TGRSVP_Exp2_' sampleNames{thisSample} '.mat']);
@@ -78,6 +80,8 @@ for thisSample = 1:nSamples
 
     thisNParticipants = size(compiledErrors);
     thisNParticipants = thisNParticipants(1);
+    
+    thisRateFactor = rateFactors(thisSample)
     
     % MODEL -------------------------------------------------------------------
 
@@ -174,9 +178,9 @@ for thisSample = 1:nSamples
 
         % Use mixture
 
-        allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 rateFactor rateFactor];
-        allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 rateFactor rateFactor];
-        allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 rateFactor rateFactor];
+        allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 thisRateFactor thisRateFactor];
+        allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 thisRateFactor thisRateFactor];
+        allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 thisRateFactor thisRateFactor];
         allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
         allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
 
@@ -248,9 +252,9 @@ for thisSample = 1:nSamples
 
                     % Use mixture
 
-                    allEstimates_byParticipant(thisSample,thisParticipant,:) = bestEstimatesByParticipant.*[1 rateFactor rateFactor];
-                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 rateFactor rateFactor];
-                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 rateFactor rateFactor];
+                    allEstimates_byParticipant(thisSample,thisParticipant,:) = bestEstimatesByParticipant.*[1 thisRateFactor thisRateFactor];
+                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 thisRateFactor thisRateFactor];
+                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 thisRateFactor thisRateFactor];
                     allMinNegLogLikelihoods_byParticipant(thisSample, thisParticipant) = minNegLogLikelihoodByParticipant;
                     allNTrials_byParticipant(thisSample, thisParticipant) = numel(theseErrorsByParticipant);
                     
