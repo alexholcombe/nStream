@@ -3,8 +3,8 @@ library(ggplot2)
 source('../ggplotElements.R')
 theme_set(theme_apa(base_size = 20) ) 
 
-p <- .75
-nTrials <- 5000
+p <- .99 #efficacy
+nTrials <- 10000
 latency <- 0.6
 precision <- 1.5
 
@@ -14,8 +14,8 @@ maxError <- 17
 guessing <- runif((1-p)*nTrials, min = minError, max = maxError)
 normSelected <- rnorm(p*nTrials, mean = latency, sd = precision)
 
-logNorm_sd = 7
-logNorm_latency = 2
+logNorm_sd = 3 #7
+logNorm_latency = 1
 logNormSelected <- rlnorm(p*nTrials, mean = logNorm_latency, sd=log(logNorm_sd))
 
 
