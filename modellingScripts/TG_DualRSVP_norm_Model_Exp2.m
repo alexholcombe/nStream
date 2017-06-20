@@ -8,15 +8,15 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
-itemRate = 12;
+itemRates = [12,12,12,8.6957];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [3 3 6 4];
-nTrials = 200;
+nParticipants = [10 10 6 4];
+nTrials = 300;
 nSessions = 1;
 nSamples = numel(sampleNames);
 
@@ -27,7 +27,7 @@ pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB m
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 400;
+nReplicates = 200;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -49,7 +49,7 @@ addpath(genpath(usePath));
 
 % Task parameters
 nLetters = length(letterArray); % Number of possible letters
-rateFactor = 1000./itemRate;
+rateFactors = 1000./itemRates;
 
 % Build data structures
 allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
@@ -71,9 +71,13 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
+    splitName = strsplit(sampleNames{thisSample},'/')
+    folder = splitName{1}
+    group = splitName{2}
+    
     % Load data
     cd(dataDirectory);
-    load(['CompiledData_TGRSVP_Exp2_' sampleNames{thisSample} '.mat']);
+    load([folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
     
     
     
@@ -82,6 +86,8 @@ for thisSample = 1:nSamples
 
     thisNParticipants = size(compiledErrors);
     thisNParticipants = thisNParticipants(1);
+    
+    rateFactor = rateFactors(thisSample);
     
     % MODEL -------------------------------------------------------------------
 
@@ -183,7 +189,8 @@ for thisSample = 1:nSamples
     
     % Load data
     cd(dataDirectory);
-    load(['CompiledData_TGRSVP_Exp2_' sampleNames{thisSample} '.mat']);
+    load( [folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
+   
     
     
     
@@ -364,7 +371,7 @@ fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%d',thisSample); % Group
+        %fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
