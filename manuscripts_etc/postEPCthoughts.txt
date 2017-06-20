@@ -1,0 +1,6 @@
+The most famous theory of attention says that binding doesn’t happen without attention.
+
+So, have we shown binding without attention?  Yes, but is it *just* a sensory interaction effect?  Try color to make it more stereotypical binding.  Pat thinks that Vul & Rich never did RSVP with many concurrent streams, they always did single-stream.
+
+Sally: pattern of letter confusions / feature migrations different for endogenous and exogenous? Do some fancy analysis to investigate that.
+
