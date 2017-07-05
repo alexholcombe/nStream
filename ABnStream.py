@@ -36,7 +36,11 @@ except ImportError:
 try: #LetterToNumber NumberToLetter
     from alphabetHelpers import *
 except ImportError:  
-    print('Could not import letterLineupResponse.py (you need that file to be in the same directory)')
+    print('Could not import alphabetHelpers.py (you need that file to be in the same directory)')
+try:
+    from corticalMagnification import *
+except ImportError:
+    print('Could not import corticalMagnification.py (you need that file to be in the same directory)')
 
 
 
@@ -98,7 +102,7 @@ msg= 'pixelperdegree=' + str( round(pixelperdegree,2) )
 logging.info(pixelperdegree)
  
 # create a dialog from dictionary 
-infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+infoFirst = { 'Do staircase (only)': False, 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
 OK = gui.DlgFromDict(dictionary=infoFirst, 
     title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
     order=['Do staircase (only)', 'Check refresh etc', 'Fullscreen (timing errors if not)'], 
@@ -377,7 +381,7 @@ for nStreams in nStreamsPossibilities:
             numToCue = nStreams
        elif task=='oneCued':
             numToCue = 1
-       print('task=',task)
+       #print('task=',task)
        #setting targetLeftRightIfOne constant because which stream randomisation taken care of by baseAngle. Stream0 will always be the one cued, but it'll be in a random position
        for targetLeftRightIfOne in  ['right']: # ['left','right']: #If single target, should it be on the left or the right?
         anglesMustBeMultipleOf =  int( round(360 / max(nStreamsPossibilities) ) )
@@ -505,10 +509,7 @@ def oneFrameOfStim(n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfra
     if showLetter:
       thisStream[thisLtrIdx].setColor( letterColor )
     else: thisStream[thisLtrIdx].setColor( bgColor )
-    posThis = calcStreamPos(nStreams, baseAngleThisTrial,cueOffsets,streami,streamOrNoise=0)
 
-    thisStream[thisLtrIdx].pos = posThis
-    thisStream[thisLtrIdx].text = thisStream[thisLtrIdx].text #From psychopy docs: Changing textStim properties can make the next draw slow. Resetting the text speeds it up...
     thisStream[thisLtrIdx].draw()
     
     #noise
@@ -564,7 +565,7 @@ def calcLtrHeightSize( ltrHeight, cueOffsets, ringNum ):
     return ltrHeightThis
     
 #In each stream, predraw all 26 letters
-ltrHeight = 3 #Martini letters were 2.5deg high
+ltrHeight = 2.5 #Martini letters were 2.5deg high
 cueOffsets = [3,7,11.5]
 maxStreams = max(nStreamsPossibilities)
 ltrStreams = list()
@@ -572,13 +573,12 @@ for streami in xrange(maxStreams):
     streamThis = list()
     #calc desired eccentricity and size
     #currently assumes nStreams and numRings and cueOffsets doesn't change
-    thisRingNum =  int( streami / nStreams )
-    ltrHeightThis = calcLtrHeightSize( ltrHeight, cueOffsets, thisRingNum )
+    
     #print('thisRingNum = ',thisRingNum,'nStreams=',nStreams, ' ltrHeightThis=',ltrHeightThis)
     for i in range(0,26):
         if i is not 2 and i is not 22:
             ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-            ltr.setHeight( ltrHeightThis )      
+                
             letter = numberToLetter(i)
             #print(letter)
             ltr.setText(letter,log=False)
@@ -690,6 +690,23 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
     if avoidDuplicates: #between first two streams
       while (streamLtrSequences[0]==streamLtrSequences[1]).any():
         np.random.shuffle(streamLtrSequences[0])
+
+    for streami in xrange(nStreams): #Let's set position and scale height outside of the frame loop
+      thisStream = ltrStreams[streami]
+      for letterN in range(numLettersToPresent):
+          thisLtrIdx = streamLtrSequences[streami][letterN] #which letter of the predecided sequence should be shown
+          #setting the letter size (height) takes a lot of time, so each stream must be drawn in correct height before the trial starts
+
+          posThis = calcStreamPos(nStreams, thisTrial['baseAngleCWfromEast'],cueOffsets,streami,streamOrNoise=0)
+
+          thisStream[thisLtrIdx].pos = posThis
+          
+          print('thisStream[thisLtrIdx].pos: '+str(thisStream[thisLtrIdx].pos))
+
+          thisStream[thisLtrIdx] = corticalMagnification(thisStream[thisLtrIdx], ltrHeight)
+          
+          thisStream[thisLtrIdx].text = thisStream[thisLtrIdx].text
+      ltrStreams[streami] = thisStream
 
     #set up corrAnsEachResp, whichStreamEachResp, whichStreamEachCue, whichRespEachCue, and cues' positions 
     #change corrAnswers to answerEachResp everywhere. To recover stream, could use whichStreamEachResp. Sensible if only one stream is queried and just want to print out that on each trial.
