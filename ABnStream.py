@@ -556,16 +556,9 @@ for cueN in xrange(max(nStreamsPossibilities)):
                 interpolate=False,
                 autoLog = False)
     cues.append(cue)
-
-def calcLtrHeightSize( ltrHeight, cueOffsets, ringNum ):
-    ltrHeightBase = 1/2.*ltrHeight
-    #eccentricity scale including exponent. Check Strasburger
-    mFactor = 1/5.
-    ltrHeightThis = ltrHeightBase * mFactor*cueOffsets[ringNum]
-    return ltrHeightThis
     
 #In each stream, predraw all 26 letters
-ltrHeight = 2.5 #Martini letters were 2.5deg high
+ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
 cueOffsets = [3,7,11.5]
 maxStreams = max(nStreamsPossibilities)
 ltrStreams = list()
@@ -701,7 +694,7 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
 
           thisStream[thisLtrIdx].pos = posThis
           
-          print('thisStream[thisLtrIdx].pos: '+str(thisStream[thisLtrIdx].pos))
+          #print('thisStream[thisLtrIdx].pos: '+str(thisStream[thisLtrIdx].pos))
 
           thisStream[thisLtrIdx] = corticalMagnification(thisStream[thisLtrIdx], ltrHeight)
           
@@ -759,22 +752,6 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
             random.shuffle(whichStreamEachCue)
         whichStreamEachCue = whichStreamEachCue[:numCues] #Now will be random subset of streams, numCues long
         whichStreamEachResp = deepcopy(whichStreamEachCue)
-        for streamI in xrange(nStreams ): #Drawing the cues in the location they're supposed to be in
-            #assume each cue the succeeding stream (usually all cues same temporal position)
-            #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
-            posThis =  calcStreamPos(nStreams, trial['baseAngleCWfromEast'],cueOffsets,streamI,streamOrNoise=0)
-            if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
-#                angleRad = streamI/numStreams * 2*pi
-                desiredDistFromFixatn=2 #pixels
-#                newX = desiredDistFromFixatn*cos(angleRad)
-#                newY = desiredDistFromFixatn*sin(angleRad)
-#                print('newX=',newX,'newY=',newY)
-#                posThis = [newX,newY]
-                desiredDistFromFixatnEachRing = [ desiredDistFromFixatn ]
-                posThis = calcStreamPos(nStreams,desiredDistFromFixatnEachRing,streamI,streamOrNoise=0)
-            cues[streamI].setPos( posThis )
-            cueRadiusThis = 1.05*calcLtrHeightSize( ltrHeight, cueOffsets, ringNum=int(streamI/nStreams) )
-            cues[streamI].setRadius( cueRadiusThis )
         for cuei in xrange(numCues):  #work out correct answer for each cue
             whichStreamThisCue = whichStreamEachCue[cuei]
             letterIdxThisStream = streamLtrSequences[whichStreamThisCue][cuesTemporalPos[cuei]]
@@ -795,6 +772,23 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
         whichRespEachCue = whichRespEachCue[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
         #print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,'whichRespEachCue=',whichRespEachCue,  ' corrAnsEachResp=',corrAnsEachResp)
     
+        #Position the cue and scale its size
+        for cuedStream in whichStreamEachResp: #Drawing the cues in the location they're supposed to be in
+            #assume each cue the succeeding stream (usually all cues same temporal position)
+            #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
+            posThis =  calcStreamPos(nStreams, trial['baseAngleCWfromEast'],cueOffsets,cuedStream,streamOrNoise=0)
+            if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
+#                angleRad = streamI/numStreams * 2*pi
+                desiredDistFromFixatn=2 #pixels
+#                newX = desiredDistFromFixatn*cos(angleRad)
+#                newY = desiredDistFromFixatn*sin(angleRad)
+#                print('newX=',newX,'newY=',newY)
+#                posThis = [newX,newY]
+                desiredDistFromFixatnEachRing = [ desiredDistFromFixatn ]
+                posThis = calcStreamPos(nStreams,desiredDistFromFixatnEachRing,streamI,streamOrNoise=0)
+            cues[cuedStream].setPos( posThis )
+            cues[cuedStream] = corticalMagnification(cues[cuedStream], 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+
     #debug printouts
     #print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
     #if trial['numStreams']>1:
