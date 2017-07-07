@@ -10,23 +10,21 @@ def corticalMagnification(stimulus, ltrHeight, cue=False):
 	####The Magnification factor is the cortical area associated with processing the stimulus
 	####Magnification Factor = A/(eccentricity+e2)
 
-	###The 2 vs 8 experiment had 1 degree letters at 3 degrees of eccentricity
+	###The 2 vs 8 experiment had .9 degree letters at 3 degrees of eccentricity
 
 	###The scaling from the fovea to 3degrees is
 
-	###Global ltrHeight is the height we want letters to be scaled to at 3degrees of eccentricity
-
-	foveaToThree = (3+e2)/e2
+	#foveaToThree = (3+e2)/e2
 
 	###Foveated letters would have to be this large to get a ltrHeight degree high letter at 3 degrees of eccentricity
 
-	foveatedSize= ltrHeight/foveaToThree
+	foveatedSize= (ltrHeight*e2)/(3+e2)
 
 	ltrHeight = foveatedSize #ltrHeight is now the letter height at fixation (never really happens)
 
 	#baseMagnification = A/(e2) #when E = 0
 
-	stimulusEccentricity = sqrt(stimulus.pos[0]**2 + stimulus.pos[1]**2) #E
+	stimulusEccentricity = sqrt(stimulus.pos[0]**2 + stimulus.pos[1]**2) #Eccentricity
 
 
 	#stimulusMagnification = A/(stimulusEccentricity+e2)
