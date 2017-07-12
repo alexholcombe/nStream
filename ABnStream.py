@@ -82,12 +82,15 @@ font = 'sloan'
 threshCriterion = 0.58
 bgColor = [-.7,-.7,-.7] # [-1,-1,-1]
 cueColor = [1.,1.,1.]
-cueType = 'exogenousRing' #'endogenous':
+cueType = 'lowerCase' #'exogenousRing' #'endogenous':
 if cueType == 'endogenous':
     cueColor = [1,-1,-1]
 letterColor = [1.,1.,1.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
 
+#There's no lowercase in sloan
+if cueType is 'lowerCase':
+    font = 'Arial'
 
 viewdist = 57. #cm
 
@@ -106,6 +109,8 @@ mon.setSizePix( (widthPix,heightPix) )
 units='deg' #'cm'
 
 scrn = 1
+
+doStaircase = False
 
 screenValues = {
     'widthPix': 1024, #monitor width in pixels of Agosta
@@ -286,8 +291,8 @@ possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,
 tasks=['T1','T1T2','allCued','oneCued']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 7
-nStreamsPossibilities = np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
-nStreamsPossibilities = np.append(nStreamsPossibilities,21)
+nStreamsPossibilities = np.array([2]) #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+#nStreamsPossibilities = np.append(nStreamsPossibilities,21)
 for nStreams in nStreamsPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -341,6 +346,62 @@ for i in xrange(max(nStreamsPossibilities)):
     dataFile.write('streamLtrSequence'+str(i)+'\t')
 print('timingBlips',file=dataFile)
 #end of header
+
+################################
+#### Cue and Stream Stimuli ####
+################################
+
+
+cues = list()
+for cueN in xrange(maxNumRespsWanted):
+    if cueType == 'exogenousRing':
+        cue = visual.Circle(myWin, 
+                     radius=cueRadius,#Martini used circles with diameter of 12 deg
+                     lineColorSpace = 'rgb',
+                     lineColor=bgColor,
+                     lineWidth=2.0, #in pixels
+                     units = 'deg',
+                     fillColorSpace = 'rgb',
+                     fillColor=None, #beware, with convex shapes fill colors don't work
+                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
+                     interpolate=True,
+                     autoLog=False)#this stim changes too much for autologging to be useful
+        cues.append(cue)
+    elif cueType =='endogenous':  #tiny dot at fixation point
+        cue = visual.Circle(myWin,
+                units='pix',
+                radius=1, #4
+                fillColorSpace='rgb',
+                fillColor=bgColor,
+                lineWidth=0,
+                interpolate=False,
+                autoLog = False)
+        cues.append(cue)
+    
+#In each stream, predraw all 26 letters
+ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
+cueOffsets = [3,7,11.5]
+maxStreams = max(nStreamsPossibilities)
+ltrStreams = list()
+for streami in xrange(maxStreams):
+    streamThis = list()
+    #calc desired eccentricity and size
+    #currently assumes nStreams and numRings and cueOffsets doesn't change
+    
+    #print('thisRingNum = ',thisRingNum,'nStreams=',nStreams, ' ltrHeightThis=',ltrHeightThis)
+    for i in range(0,26):
+        if i is not 2 and i is not 22:
+            ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
+                
+            letter = numberToLetter(i)
+            #print(letter)
+            ltr.setText(letter,log=False)
+            ltr.setColor(bgColor)
+            streamThis.append( ltr )
+    ltrStreams.append( streamThis )
+#All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
+noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
+noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
 
             
 def calcStreamPos(nStreams, baseAngleCWfromEast,cueOffsets,streami,streamOrNoise):
@@ -396,17 +457,18 @@ def oneFrameOfStim(n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfra
   cuesTimeToDraw = list([False])*len(cues) #if don't use this, for AB task, bg color T2 cue will be drawn on top of T1 cue
   
   #cue graphics objects for all possible streams should be drawn (in bgColor or cueColor) in E N W S order
-  for cueN in xrange(len(cuesTemporalPos)): #For each cue, see whether it is time to draw it
-    thisCueFrameStart = cueFrames[cueN]
-    if n>=thisCueFrameStart and n<thisCueFrameStart+cueDurFrames:
-         thisCue = whichStreamEachCue[cueN]
-         if cueType=='endogenous':
-            cues[thisCue].setFillColor( cueColor )
-         else:
-            cues[thisCue].setLineColor( cueColor )
-         cuesTimeToDraw[thisCue] = True
-    elif n==thisCueFrameStart+cueDurFrames+1: #Only set colour after the cue is shown, rather than on every frame
-        cue.setLineColor( bgColor )
+  if cueType is not 'lowerCase':
+    for cueN in xrange(len(cuesTemporalPos)): #For each cue, see whether it is time to draw it
+      thisCueFrameStart = cueFrames[cueN]
+      if n>=thisCueFrameStart and n<thisCueFrameStart+cueDurFrames:
+           thisCue = whichStreamEachCue[cueN]
+           if cueType=='endogenous':
+              cues[thisCue].setFillColor( cueColor )
+           elif cueType=='exogenous':
+              cues[thisCue].setLineColor( cueColor )
+           cuesTimeToDraw[thisCue] = True
+      elif n==thisCueFrameStart+cueDurFrames+1: #Only set colour after the cue is shown, rather than on every frame
+          cue.setLineColor( bgColor )
 
   for cueN in xrange(len(cues)):
     if cuesTimeToDraw[cueN] == True:  ##if don't use this, for AB task, bg color T2 cue will be drawn on top of T1 cue
@@ -442,55 +504,6 @@ def oneFrameOfStim(n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfra
 # #######End of function definition that displays the stimuli!!!! #####################################
 #############################################################################################################################
 
-cues = list()
-for cueN in xrange(maxNumRespsWanted):
-    if cueType == 'exogenousRing':
-        cue = visual.Circle(myWin, 
-                     radius=cueRadius,#Martini used circles with diameter of 12 deg
-                     lineColorSpace = 'rgb',
-                     lineColor=bgColor,
-                     lineWidth=2.0, #in pixels
-                     units = 'deg',
-                     fillColorSpace = 'rgb',
-                     fillColor=None, #beware, with convex shapes fill colors don't work
-                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
-                     interpolate=True,
-                     autoLog=False)#this stim changes too much for autologging to be useful
-    elif cueType =='endogenous':  #tiny dot at fixation point
-        cue = visual.Circle(myWin,
-                units='pix',
-                radius=1, #4
-                fillColorSpace='rgb',
-                fillColor=bgColor,
-                lineWidth=0,
-                interpolate=False,
-                autoLog = False)
-    cues.append(cue)
-    
-#In each stream, predraw all 26 letters
-ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
-cueOffsets = [3,7,11.5]
-maxStreams = max(nStreamsPossibilities)
-ltrStreams = list()
-for streami in xrange(maxStreams):
-    streamThis = list()
-    #calc desired eccentricity and size
-    #currently assumes nStreams and numRings and cueOffsets doesn't change
-    
-    #print('thisRingNum = ',thisRingNum,'nStreams=',nStreams, ' ltrHeightThis=',ltrHeightThis)
-    for i in range(0,26):
-        if i is not 2 and i is not 22:
-            ltr = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb', font = font, color=letterColor,alignHoriz='center',alignVert='center',units='deg',autoLog=autoLogging)
-                
-            letter = numberToLetter(i)
-            #print(letter)
-            ltr.setText(letter,log=False)
-            ltr.setColor(bgColor)
-            streamThis.append( ltr )
-    ltrStreams.append( streamThis )
-#All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
-noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
-noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
 
 def timingCheckAndLog(ts,trialN):
     #check for timing problems and log them
@@ -598,6 +611,13 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
 
     for streami in xrange(nStreams): #Let's set position and scale height outside of the frame loop
       thisStream = ltrStreams[streami]
+      print('streami = ' + str(streami))
+      if cueType is 'lowerCase' and streami is 0: #cued stream is always stream0, the orientation changes with baseAngleCWfromEast, see Alex's comment at line 304
+          print('Got to lower() setting loop')
+          for thisCue in cuesTemporalPos:
+            thisStream[thisCue].text = thisStream[thisCue].text.lower() #Set the cued items to lower case
+            print('thisStream[thisCue].text is ' + thisStream[thisCue].text)
+            thisStream[thisCue].colour = [1.,0.,0.] #Debugging 
       for letterN in range(numLettersToPresent):
           thisLtrIdx = streamLtrSequences[streami][letterN] #which letter of the predecided sequence should be shown
           #setting the letter size (height) takes a lot of time, so each stream must be drawn in correct height before the trial starts
@@ -692,23 +712,24 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
         whichRespEachCue = whichRespEachCue[ :trial['numRespsWanted'] ]  #reduce to actual number of responses.
         #print('whichStreamEachCue=',whichStreamEachCue,' whichStreamEachResp=',whichStreamEachResp,'whichRespEachCue=',whichRespEachCue,  ' corrAnsEachResp=',corrAnsEachResp)
     
-        #Position the cue and scale its size
-        for cuedStream in whichStreamEachResp: #Drawing the cues in the location they're supposed to be in
-            cueIdx= whichStreamEachResp.index(cuedStream)
-            #assume each cue the succeeding stream (usually all cues same temporal position)
-            #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
-            posThis =  calcStreamPos(nStreams, trial['baseAngleCWfromEast'],cueOffsets,cuedStream,streamOrNoise=0)
-            if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
-#                angleRad = streamI/numStreams * 2*pi
-                desiredDistFromFixatn=2 #pixels
-#                newX = desiredDistFromFixatn*cos(angleRad)
-#                newY = desiredDistFromFixatn*sin(angleRad)
-#                print('newX=',newX,'newY=',newY)
-#                posThis = [newX,newY]
-                desiredDistFromFixatnEachRing = [ desiredDistFromFixatn ]
-                posThis = calcStreamPos(nStreams,desiredDistFromFixatnEachRing,streamI,streamOrNoise=0)
-            cues[cueIdx].setPos( posThis )
-            cues[cueIdx] = corticalMagnification(cues[cueIdx], 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+        #Position the cue and scale its size, not applicable to lowercase cues, they're letters, so they have position already
+        if cueType is not 'lowerCase':
+          for cuedStream in whichStreamEachResp: #Drawing the cues in the location they're supposed to be in
+              cueIdx= whichStreamEachResp.index(cuedStream)
+              #assume each cue the succeeding stream (usually all cues same temporal position)
+              #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
+              posThis =  calcStreamPos(nStreams, trial['baseAngleCWfromEast'],cueOffsets,cuedStream,streamOrNoise=0)
+              if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
+  #                angleRad = streamI/numStreams * 2*pi
+                  desiredDistFromFixatn=2 #pixels
+  #                newX = desiredDistFromFixatn*cos(angleRad)
+  #                newY = desiredDistFromFixatn*sin(angleRad)
+  #                print('newX=',newX,'newY=',newY)
+  #                posThis = [newX,newY]
+                  desiredDistFromFixatnEachRing = [ desiredDistFromFixatn ]
+                  posThis = calcStreamPos(nStreams,desiredDistFromFixatnEachRing,streamI,streamOrNoise=0)
+              cues[cueIdx].setPos( posThis )
+              cues[cueIdx] = corticalMagnification(cues[cueIdx], 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
 
     #debug printouts
     #print( 'streamLtrSequences[0]=',[numberToLetter(x) for x in streamLtrSequences[0]] )
@@ -741,19 +762,20 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
             dotCoords[:,1] += posThisPix[1]
             noiseEachStream[streami].setXYs(dotCoords)
     #end prep of cuesTemporalPos, streamLtrSequences, corrAnsEachResp, noiseEachStream, numNoiseDotsEachStream, noiseCoordsEachStream
-    
-    preDrawStimToGreasePipeline = list() #I don't know why this works, but without drawing it I have consistent timing blip first time that draw ringInnerR for phantom contours
-    for cue in cues:
-      if cueType == 'endogenous':
-        cue.setFillColor(bgColor)
-      else:
-        cue.setLineColor(bgColor)
-    preDrawStimToGreasePipeline.extend([cue])
-    for stim in preDrawStimToGreasePipeline:
-        stim.draw()
-    myWin.flip(); myWin.flip()
-    #end preparation of stimuli
-    
+
+    if cueType is not 'lowerCase':
+        preDrawStimToGreasePipeline = list() #I don't know why this works, but without drawing it I have consistent timing blip first time that draw ringInnerR for phantom contours
+        for cue in cues:
+          if cueType == 'endogenous':
+            cue.setFillColor(bgColor)
+          elif cueType == 'exogenous':
+            cue.setLineColor(bgColor)
+        preDrawStimToGreasePipeline.extend([cue])
+        for stim in preDrawStimToGreasePipeline:
+            stim.draw()
+        myWin.flip(); myWin.flip()
+        #end preparation of stimuli
+        
     core.wait(.1);
     trialClock.reset()
     fixatnPeriodMin = 0.3
@@ -786,7 +808,12 @@ def do_RSVP_stim(nStreams, trial, proportnNoise,trialN):
         t=trialClock.getTime()-t0;  ts.append(t);
     #end of big stimulus loop
     myWin.setRecordFrameIntervals(False);
-
+    
+    #Reset the case of the cued item if using the lowercase cue
+    for thisCue in cuesTemporalPos:
+        ltrStreams[0][thisCue].text = thisStream[thisCue].text.upper()
+        ltrStreams[0][thisCue].color = bgColor
+    
     if task=='T1':
         respPromptStim.setText('Which letter was circled?',log=False)
     elif task=='T1T2':
@@ -957,7 +984,7 @@ if doStaircase:
     pass
     #nothing
 else: #not staircase
-    noisePercent = defaultNoiseLevel
+    noisePercent = 0 #Legacy, remove
     
     ABfirst = False
     nDone =0
