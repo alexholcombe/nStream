@@ -403,6 +403,24 @@ for stream in xrange(max(nStreamsPossibilities)):
         alignVert='center',
         units='deg',
         autoLog=autoLogging)
+    '''
+    Because each stream has a different angular offset from the x axis, I can't use set pos here. 
+    In order to scale the object according to magnification - which I'm doing here to save doing it on every trial -
+    I need to fake the position of the object so that it's the same eccentricity as it will be later on
+    Objects will never been drawn in the position I'm about to calculate. It's just here for the cortical magnification function
+    '''
+    ringOfThisStim = int(stream/streamsPerRing)
+    x = 0
+    y = cueOffsets[ringOfThisStim] #We're using cue offsets to set the position of the rings
+    
+    streamText.pos = (x,y)
+
+    streamText = corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
+        stimulus = streamText,
+        ltrHeight = ltrHeight,
+        cue = False)
+
+
     streamTextObjects.append( streamText )
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
@@ -494,6 +512,8 @@ def doRSVPStim(trial):
     numTargets = trial['numToCue']  
     
     cuedFrame = trial['cue0temporalPos']
+    cuedStream = np.random.choice(np.arange(nStreams), 1)
+
     print('cueFrame = ' + str(cuedFrame))
 
     streamPositions = list() #Might need to pass this to elementArrayStim as xys. Might not though
@@ -535,7 +555,7 @@ def doRSVPStim(trial):
         stimuliToDraw = list() #Can pass a list to bufferimageStim!
 
         for thisStream in xrange(nStreams):
-            cueThisFrame = thisStream == 0 and thisFrame == cuedFrame #If true, draw the cue and capture that too
+            cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
 
             thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
             
@@ -543,7 +563,7 @@ def doRSVPStim(trial):
             
             thisStreamStimulus = streamTextObjects[thisStream] #The text object for this stream
             thisStreamStimulus.text = thisLtr
-
+            
             thisPos = calcStreamPos(
                 trial = trial, 
                 cueOffsets = cueOffsets, 
@@ -552,11 +572,6 @@ def doRSVPStim(trial):
                 )
 
             thisStreamStimulus.pos = thisPos
-
-            thisStreamStimulus = corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
-                stimulus = thisStreamStimulus,
-                ltrHeight = ltrHeight,
-                cue = False)
 
             stimuliToDraw.append(thisStreamStimulus)
 
@@ -624,7 +639,18 @@ for n in xrange(20):
     trial = trialsDualStream.next()
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts = doRSVPStim(trial)
-
+#    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
+#            letterLineupResponse.doLineup(
+#            myWin,
+#            bgColor,
+#            myMouse,
+#            clickSound,
+#            badKeySound,
+#            potentialLetters,
+#            showBothSides,
+#            sideFirstLeftRightCentral,
+#            autopilot
+#            ) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
     timingBlips = checkTiming(ts)
     allBlips.append(timingBlips)
     
