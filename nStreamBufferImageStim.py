@@ -85,7 +85,7 @@ cueColor = [1.,1.,1.]
 cueType = 'exogenousRing' #'lowerCase' #'exogenousRing' #'endogenous':
 if cueType == 'endogenous':
     cueColor = [1,-1,-1]
-letterColor = [1.,1.,1.]
+letterColor = [1.,0.,0.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
 
 #There's no lowercase in sloan
@@ -277,6 +277,7 @@ Please tell the experimenter you have read the instructions. Be sure to ask him 
 instructions1.text = instructionText1
 instructions2.text = instructionText2
 
+<<<<<<< HEAD
 ######################################
 ### Buffered image size dimensions ###
 ######################################
@@ -319,6 +320,8 @@ centreX, centreY = [int(dimension/2) for dimension in mask.shape]
 
 mask[centreX-fixSizePix:centreX+fixSizePix, centreY-fixSizePix:centreY+fixSizePix] = 0
 
+=======
+>>>>>>> fe86774a5829003632dd1619600d2c847f97b8bb
 ######################################
 ####### SETTING THE CONDITIONS #######
 ######################################
@@ -326,20 +329,20 @@ mask[centreX-fixSizePix:centreX+fixSizePix, centreY-fixSizePix:centreY+fixSizePi
 #For the optional attentional blink
     
 #For the dual-stream simultaneous target
-stimListDualStream=[]
+stimList=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
-tasks=['T1','T1T2','allCued','oneCued']
+tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 7
-nStreamsPossibilities = np.array([21]) #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
-#nStreamsPossibilities = np.append(nStreamsPossibilities,21)
+nStreamsPossibilities = np.arange(2,21,3) #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+nStreamsPossibilities = np.append(nStreamsPossibilities,21)
 for nStreams in nStreamsPossibilities:
-    for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
+    for task in [ tasks[4] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
             numResponsesWanted=2; numToCue=-999
        elif task=='allCued':
             numToCue = nStreams
-       elif task=='oneCued':
+       elif task=='oneCued' or task is 'nStreams':
             numToCue = 1
        #print('task=',task)
        #setting targetLeftRightIfOne constant because which stream randomisation taken care of by baseAngle. Stream0 will always be the one cued, but it'll be in a random position
@@ -349,15 +352,15 @@ for nStreams in nStreamsPossibilities:
         proportionNoise = 0
         for baseAngleCWfromEast in range(0,360,anglesMustBeMultipleOf): #cued stream will always be stream0. Its position is randomized by baseAngleCWfromEast
          for cueTemporalPos in possibleCueTemporalPositions:
-          for firstRespLRifTwo in ['left','right']:  #If dual target and lineup response, should left one or right one be queried first?
-            stimListDualStream.append(         
+          for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
+            stimList.append(         
                  {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
                     'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise} 
               )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 2
-trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
+trialsPerCondition = 2
+trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -384,8 +387,7 @@ if printInOrderOfResponses:
        dataFile.write('whichRespCue'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('responsePosRelative'+str(i)+'\t')
 for i in xrange(max(nStreamsPossibilities)):
-    dataFile.write('streamLtrSequence'+str(i)+'\t')
-    dataFile.write('orientationList'+str(i)+'\t')  #have to use write to avoid ' ' between successive text, at least until Python 3
+    dataFile.write('streamLtrSequence'+str(i)+'\t')#have to use write to avoid ' ' between successive text, at least until Python 3
 print('timingBlips',file=dataFile)
 #end of header
 
@@ -469,6 +471,20 @@ print(streamTextObjects.shape)
 noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
 noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
 
+###############
+#### Mouse ####
+###############
+myMouse = event.Mouse()
+
+##############
+### Sounds ###
+##############
+
+clickSound, badKeySound = stringResponse.setupSoundsForResponse()
+
+#################
+### Functions ###
+#################
 
 def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     '''
@@ -585,7 +601,7 @@ def doRSVPStim(trial):
         streamLetterIdentities[thisStream,:] = theseIdentities
         #print('For stream %(streamN)d the letters are: %(theseLetters)s' % {'streamN':thisStream, 'theseLetters':''.join(theseIdentities)})
 
-    correctIdx = streamLetterIdxs[0,cuedFrame] #Always cue the first stream (which is offset randomly from 0 deg). Only one cue atm, so use the first cue pos in the list
+    correctIdx = streamLetterIdxs[cuedStream,cuedFrame] 
     
     correctLetter = alphabetHelpers.numberToLetter(correctIdx, potentialLetters) #potentialLetters is global
 
@@ -665,29 +681,71 @@ def doRSVPStim(trial):
         myWin.flip()
         ts.append(trialClock.getTime() - t0)
 
-    return streamLetterIdxs, streamLetterIdentities, correctLetter, ts
+    return streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuedFrame
 
 allBlips = list()
-for n in xrange(20):
+expStop = False #If True, end experiment
+n = 0 #Which trial?
+while n < trials.nTotal and not expStop:
     trialClock = core.Clock()
-    trial = trialsDualStream.next()
+    trial = trials.next()
+    showBothSides = False #Need to modify this if doing 2 streams only, that way we can replicate the G&H lineups
+    sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
 
-    streamLetterIdxs, streamLetterIdentities, correctLetter, ts = doRSVPStim(trial)
-#    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
-#            letterLineupResponse.doLineup(
-#            myWin,
-#            bgColor,
-#            myMouse,
-#            clickSound,
-#            badKeySound,
-#            potentialLetters,
-#            showBothSides,
-#            sideFirstLeftRightCentral,
-#            autopilot
-#            ) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
+    streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
+    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
+            letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
+            myWin,
+            bgColor,
+            myMouse,
+            clickSound,
+            badKeySound,
+            potentialLetters,
+            showBothSides,
+            sideFirstLeftRightCentral,
+            autopilot
+            )
+    
+    accuracy = responses[0] == correctLetter
+    responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[1] #need index on where because it treats sliced streamLetterIdentities as a ndarray
+    SPE = responseLetterIdx[0] - cuePos
+    print(responseLetterIdx)
+    print(cuedStream)
+    print(SPE)
+
     timingBlips = checkTiming(ts)
     allBlips.append(timingBlips)
-    
+
+    dataFile.write(
+        'main\t' + 
+        str(n) + '\t' + 
+        subject + '\t' + 
+        trial['task'] + '\t' +
+        str(trial['proportionNoise']) + '\t' +
+        str(trial['targetLeftRightIfOne']) + '\t' +
+        str(trial['nStreams']) + '\t' +
+        str(trial['baseAngleCWfromEast']) + '\t' +
+        responses[0] + '\t' +
+        str(buttons[0]) + '\t' +
+        str(cuePos) + '\t' +
+        correctLetter + '\t' +
+        str(accuracy) + '\t' +
+        str(cuedStream[0]) + '\t' +
+        '0' + '\t' +
+        str(SPE) + '\t'
+        )
+
+    for stream in xrange(max(nStreamsPossibilities)):
+        if stream < trial['nStreams']:
+            dataFile.write(''.join(streamLetterIdentities[stream,:]) + '\t')
+        else:
+            dataFile.write('999\t')
+            
+    dataFile.write(str(timingBlips) + '\n')
+    dataFile.flush()
+    n += 1
 print('Max timingBlips from 20 trials was ' + str(max(allBlips)))
+dataFile.flush()
+dataFile.close()
 
 
