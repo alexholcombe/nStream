@@ -277,12 +277,47 @@ Please tell the experimenter you have read the instructions. Be sure to ask him 
 instructions1.text = instructionText1
 instructions2.text = instructionText2
 
+######################################
+### Buffered image size dimensions ###
+######################################
+
+'''
+Element array stim textures must be a power of two. I'm doing this here to keep it out of the doRSVPstim loop
+'''
+
+new_size = max(  [
+                int(np.power(2, np.ceil(np.log(dim_size) / np.log(2))))
+                for dim_size in (screenValues['heightPix'], screenValues['widthPix'])
+            ]
+        )
+
+pad_amounts = []
+
+for dim in ['heightPix','widthPix']:
+
+    first_offset = int((new_size - screenValues[dim]) / 2.0)
+    second_offset = new_size - screenValues[dim] - first_offset
+
+    pad_amounts.append([first_offset, second_offset])
+    
+    
+###########################################################
+### Mask covering only fixation so fixation can flicker ###
+###########################################################
 
 
+mask = np.full((screenValues['widthPix'],screenValues['heightPix']), 1, int)
 
-def roundToNearestY(x,y): #round x to nearest y, e.g. rounding 65 to nearest 30 = 60
-    ans = round (x*1.0 / y) * y
-    return ans
+mask = np.pad(
+    array = mask,
+    pad_width=pad_amounts,
+    mode="constant",
+    constant_values= 1
+)
+
+centreX, centreY = [int(dimension/2) for dimension in mask.shape]
+
+mask[centreX-fixSizePix:centreX+fixSizePix, centreY-fixSizePix:centreY+fixSizePix] = 0
 
 ######################################
 ####### SETTING THE CONDITIONS #######
@@ -393,35 +428,43 @@ potentialLetters = [letter for letter in string.ascii_uppercase if letter not in
 streamTextObjects = list() #A text object for every stream. I'll update the text for each frame
 
 for stream in xrange(max(nStreamsPossibilities)):
-    streamText = visual.TextStim(
-        myWin,
-        pos=(0,0),
-        colorSpace='rgb', 
-        font = font, 
-        color=letterColor,
-        alignHoriz='center',
-        alignVert='center',
-        units='deg',
-        autoLog=autoLogging)
-    '''
-    Because each stream has a different angular offset from the x axis, I can't use set pos here. 
-    In order to scale the object according to magnification - which I'm doing here to save doing it on every trial -
-    I need to fake the position of the object so that it's the same eccentricity as it will be later on
-    Objects will never been drawn in the position I'm about to calculate. It's just here for the cortical magnification function
-    '''
-    ringOfThisStim = int(stream/streamsPerRing)
-    x = 0
-    y = cueOffsets[ringOfThisStim] #We're using cue offsets to set the position of the rings
-    
-    streamText.pos = (x,y)
+    thisStream = list()
+    for letter in potentialLetters:
+        streamText = visual.TextStim(
+            myWin,
+            pos=(0,0),
+            colorSpace='rgb', 
+            font = font, 
+            color=letterColor,
+            alignHoriz='center',
+            alignVert='center',
+            units='deg',
+            text = letter,
+            autoLog=autoLogging)
+        '''
+        Because each stream has a different angular offset from the x axis, I can't use set pos here. 
+        In order to scale the object according to magnification - which I'm doing here to save doing it on every trial -
+        I need to fake the position of the object so that it's the same eccentricity as it will be later on
+        Objects will never been drawn in the position I'm about to calculate. It's just here for the cortical magnification function
+        '''
+        ringOfThisStim = int(stream/streamsPerRing)
+        x = 0
+        y = cueOffsets[ringOfThisStim] #We're using cue offsets to set the position of the rings
+        
+        streamText.pos = (x,y)
 
-    streamText = corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
-        stimulus = streamText,
-        ltrHeight = ltrHeight,
-        cue = False)
+        streamText = corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
+            stimulus = streamText,
+            ltrHeight = ltrHeight,
+            cue = False)
+        thisStream.append(streamText)
 
+    streamTextObjects.append( thisStream )
 
-    streamTextObjects.append( streamText )
+streamTextObjects = np.array(streamTextObjects)
+
+print('streamTextObjects shape')
+print(streamTextObjects.shape)
 #All noise dot coordinates ultimately in pixels, so can specify each dot is one pixel 
 noiseFieldWidthDeg=ltrHeight *0.9  #1.0 makes noise sometimes intrude into circle
 noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
@@ -488,7 +531,10 @@ def oneFrameOfStim(n, frameStimuli):
     thisFrame = frameStimuli[thisFrameN]
 
     if drawFrame:
-        thisFrame.draw()
+        if n % 2 == 0:
+            thisFrame[1].draw() #dimmed fixation
+        else:
+            thisFrame[0].draw() #Normal fixation
 
     return True
 
@@ -546,11 +592,7 @@ def doRSVPStim(trial):
     frameStimuli = list() #A list of elementArrayStim objects, each represents a frame. Drawing one of these objects will draw the letters and the cue for that frame
 
     for thisFrame in xrange(numLettersToPresent):
-        theseStimuli = streamLetterIdxs[:,thisFrame] #The stimuli to be shown on this frame
-        
-        thisFramePixels = np.zeros(
-            shape = (screenValues['heightPix'], screenValues['widthPix'])
-            )
+        theseStimuli = streamLetterIdxs[:,thisFrame] #The alphabetical indexes of stimuli to be shown on this frame
         
         stimuliToDraw = list() #Can pass a list to bufferimageStim!
 
@@ -559,10 +601,7 @@ def doRSVPStim(trial):
 
             thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
             
-            thisLtr = alphabetHelpers.numberToLetter(thisLetterIdx, potentialLetters) 
-            
-            thisStreamStimulus = streamTextObjects[thisStream] #The text object for this stream
-            thisStreamStimulus.text = thisLtr
+            thisStreamStimulus = streamTextObjects[thisStream,thisLetterIdx] #The text object for this stream
             
             thisPos = calcStreamPos(
                 trial = trial, 
@@ -574,6 +613,7 @@ def doRSVPStim(trial):
             thisStreamStimulus.pos = thisPos
 
             stimuliToDraw.append(thisStreamStimulus)
+            stimuliToDraw.append(fixatnPoint)
 
             if cueThisFrame and cueType == 'exogenousRing':
                 cue.setPos( thisPos )
@@ -585,33 +625,17 @@ def doRSVPStim(trial):
             stim = stimuliToDraw
             )
         
+        
         buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
         
-        new_size = max( #need to pad out the texture to a power of two to use it in elementArrayStim
-            [
-                int(np.power(2, np.ceil(np.log(dim_size) / np.log(2))))
-                for dim_size in buff.shape
-            ]
-        )
-
-        pad_amounts = []
-
-        for i_dim in range(2):
-
-            first_offset = int((new_size - buff.shape[i_dim]) / 2.0)
-            second_offset = new_size - buff.shape[i_dim] - first_offset
-
-            pad_amounts.append([first_offset, second_offset])
-
         buff = np.pad(
             array=buff,
-            pad_width=pad_amounts,
+            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
             mode="constant",
             constant_values=0.0
         )
-
         
-        thisFrameStimuli = visual.ElementArrayStim( #A stimulus representing this frame
+        thisFrameStimuliNormalFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
             win = myWin,
             units = 'pix',
             nElements=1,
@@ -621,7 +645,17 @@ def doRSVPStim(trial):
             elementMask = 'none'
             )
 
-        frameStimuli.append(thisFrameStimuli)
+        thisFrameStimuliDimFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at half luminance
+            win = myWin,
+            units = 'pix',
+            nElements=1,
+            xys = [[0,0]],
+            sizes=buff.shape,
+            elementTex=buff,
+            elementMask = mask
+            )        
+
+        frameStimuli.append([thisFrameStimuliNormalFix, thisFrameStimuliDimFix])
 
     ts = []
     myWin.flip(); myWin.flip() #Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
