@@ -145,8 +145,8 @@ logging.info(pixelperdegree)
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 82.35 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 60 #60
+SOAms = 600 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 500 #60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -277,7 +277,6 @@ Please tell the experimenter you have read the instructions. Be sure to ask him 
 instructions1.text = instructionText1
 instructions2.text = instructionText2
 
-<<<<<<< HEAD
 ######################################
 ### Buffered image size dimensions ###
 ######################################
@@ -318,10 +317,9 @@ mask = np.pad(
 
 centreX, centreY = [int(dimension/2) for dimension in mask.shape]
 
-mask[centreX-fixSizePix:centreX+fixSizePix, centreY-fixSizePix:centreY+fixSizePix] = 0
+mask[centreX-fixSizePix/2:centreX+fixSizePix/2, centreY-fixSizePix/2:centreY+fixSizePix/2] = -(np.round( np.random.rand(fixSizePix,fixSizePix) ,0 )   *2.0-1)
 
-=======
->>>>>>> fe86774a5829003632dd1619600d2c847f97b8bb
+
 ######################################
 ####### SETTING THE CONDITIONS #######
 ######################################
@@ -384,6 +382,7 @@ if printInOrderOfResponses:
        dataFile.write('answer'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('correct'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('whichStream'+str(i)+'\t') 
+       dataFile.write('angleOfWhichStream'+str(i)+'\t')
        dataFile.write('whichRespCue'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('responsePosRelative'+str(i)+'\t')
 for i in xrange(max(nStreamsPossibilities)):
@@ -547,10 +546,12 @@ def oneFrameOfStim(n, frameStimuli):
     thisFrame = frameStimuli[thisFrameN]
 
     if drawFrame:
-        if n % 2 == 0:
+        if n % 5 != 0:
             thisFrame[1].draw() #dimmed fixation
         else:
             thisFrame[0].draw() #Normal fixation
+    else:
+        fixatn.draw()
 
     return True
 
@@ -602,7 +603,8 @@ def doRSVPStim(trial):
         #print('For stream %(streamN)d the letters are: %(theseLetters)s' % {'streamN':thisStream, 'theseLetters':''.join(theseIdentities)})
 
     correctIdx = streamLetterIdxs[cuedStream,cuedFrame] 
-    
+    print('correctIdx')
+    print(correctIdx)
     correctLetter = alphabetHelpers.numberToLetter(correctIdx, potentialLetters) #potentialLetters is global
 
     frameStimuli = list() #A list of elementArrayStim objects, each represents a frame. Drawing one of these objects will draw the letters and the cue for that frame
@@ -611,6 +613,7 @@ def doRSVPStim(trial):
         theseStimuli = streamLetterIdxs[:,thisFrame] #The alphabetical indexes of stimuli to be shown on this frame
         
         stimuliToDraw = list() #Can pass a list to bufferimageStim!
+        stimuliToDraw.append(fixatn)
 
         for thisStream in xrange(nStreams):
             cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
@@ -629,7 +632,6 @@ def doRSVPStim(trial):
             thisStreamStimulus.pos = thisPos
 
             stimuliToDraw.append(thisStreamStimulus)
-            stimuliToDraw.append(fixatnPoint)
 
             if cueThisFrame and cueType == 'exogenousRing':
                 cue.setPos( thisPos )
@@ -674,7 +676,10 @@ def doRSVPStim(trial):
         frameStimuli.append([thisFrameStimuliNormalFix, thisFrameStimuliDimFix])
 
     ts = []
-    myWin.flip(); myWin.flip() #Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
+    myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
+    fixatn.draw()
+    myWin.flip()
+    core.wait(1)
     t0 = trialClock.getTime()
     for n in xrange(trialDurFrames):
         oneFrameOfStim(n, frameStimuli)
@@ -682,6 +687,30 @@ def doRSVPStim(trial):
         ts.append(trialClock.getTime() - t0)
 
     return streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuedFrame
+
+
+instructions1.draw()
+myWin.flip()
+waiting = True
+while waiting:
+   for key in event.getKeys():      #check if pressed abort-type key
+         if key in ['space','ESCAPE']: 
+            waiting=False
+         if key in ['ESCAPE']:
+            expStop = True
+
+instructions2.draw()
+myWin.flip()
+waiting = True
+while waiting:
+    for key in event.getKeys():
+        if key in ['m', 'ESCAPE']:
+            waiting = False
+        if key in ['Escape']:
+            expStop = True
+
+
+
 
 allBlips = list()
 expStop = False #If True, end experiment
@@ -713,6 +742,9 @@ while n < trials.nTotal and not expStop:
     print(cuedStream)
     print(SPE)
 
+    cuedStreamPos = calcStreamPos(trial, cueOffsets, cuedStream, False)
+    cuedStreamAngle = atan(cuedStreamPos[1]/cuedStreamPos[0])*(180/np.pi)
+
     timingBlips = checkTiming(ts)
     allBlips.append(timingBlips)
 
@@ -725,6 +757,7 @@ while n < trials.nTotal and not expStop:
         str(trial['targetLeftRightIfOne']) + '\t' +
         str(trial['nStreams']) + '\t' +
         str(trial['baseAngleCWfromEast']) + '\t' +
+        str(cuedStreamAngle) + '\t' +
         responses[0] + '\t' +
         str(buttons[0]) + '\t' +
         str(cuePos) + '\t' +
