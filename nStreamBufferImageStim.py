@@ -486,7 +486,7 @@ noiseFieldWidthPix = int( round( noiseFieldWidthDeg*pixelperdegree ) )
 ###############
 #### Mouse ####
 ###############
-myMouse = event.Mouse()
+myMouse = event.Mouse(visible = False)
 
 ##############
 ### Sounds ###
@@ -784,7 +784,7 @@ def doRSVPStim(trial):
         )
         
 
-        thisFrameStimuliCounterPhase = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at half luminance
+        thisFrameStimuliCounterPhase = visual.ElementArrayStim( #A stimulus representing this frame with the fixation phase reversed
             win = myWin,
             units = 'pix',
             nElements=1,
@@ -799,6 +799,7 @@ def doRSVPStim(trial):
     ts = []
     
     waiting = True
+    myMouse.setVisible(waiting)
     
     while waiting:
         startTrialStimuli.draw()
@@ -806,6 +807,8 @@ def doRSVPStim(trial):
         myWin.flip()
         if myMouse.isPressedIn(startTrialBox):
             waiting = False
+
+    myMouse.setVisible(waiting)
 
     myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
     preCueFrame.draw()
