@@ -1,6 +1,13 @@
 #Alex Holcombe alex.holcombe@sydney.edu.au
 #See the README.md for more information: https://github.com/alexholcombe/attentional-blink/blob/master/README.md
 #git remote add origin https://github.com/alexholcombe/nStream
+
+'''
+Always have 8 streams, but tell participants that the possible SPATIAL position of the cue is in one of either 2 or 8 places.
+Uses the same precue as the Goodbourn and Holcombe precue conditions. 250ms precue, but because there are more streams than possible
+cue positions, show streams with hashes during precue
+'''
+
 from __future__ import print_function, division
 from psychopy import monitors, visual, event, data, logging, core, sound, gui
 import psychopy.info
@@ -145,8 +152,8 @@ logging.info(pixelperdegree)
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 600 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 500 #60
+SOAms = 82.35 #Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -277,6 +284,11 @@ Please tell the experimenter you have read the instructions. Be sure to ask him 
 instructions1.text = instructionText1
 instructions2.text = instructionText2
 
+startTrialStimuli = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+startTrialStimuli.text = 'Click here to start the trial'
+
+startTrialBox = visual.Rect(myWin, height = .75, width = 6, units = 'deg', lineColor = 'white')
+
 ######################################
 ### Buffered image size dimensions ###
 ######################################
@@ -319,7 +331,6 @@ centreX, centreY = [int(dimension/2) for dimension in mask.shape]
 
 mask[centreX-fixSizePix/2:centreX+fixSizePix/2, centreY-fixSizePix/2:centreY+fixSizePix/2] = -(np.round( np.random.rand(fixSizePix,fixSizePix) ,0 )   *2.0-1)
 
-
 ######################################
 ####### SETTING THE CONDITIONS #######
 ######################################
@@ -331,9 +342,9 @@ stimList=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
-streamsPerRing = 7
-nStreamsPossibilities = np.arange(2,21,3) #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
-nStreamsPossibilities = np.append(nStreamsPossibilities,21)
+streamsPerRing = 8
+nStreamsPossibilities = [8] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+#Always have 8 streams, but tell participants that the possible SPATIAL position of the cue is in one of either 2 or 8 places
 for nStreams in nStreamsPossibilities:
     for task in [ tasks[4] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -350,18 +361,20 @@ for nStreams in nStreamsPossibilities:
         proportionNoise = 0
         for baseAngleCWfromEast in range(0,360,anglesMustBeMultipleOf): #cued stream will always be stream0. Its position is randomized by baseAngleCWfromEast
          for cueTemporalPos in possibleCueTemporalPositions:
-          for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
-            stimList.append(         
-                 {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
-                    'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise} 
-              )  #cue1lag = 0, meaning simultaneous targets
+            for cueSpatialPossibilities in (2,8):
+              for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
+                stimList.append(         
+                     {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
+                        'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
+                        'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise, 'cueSpatialPossibilities': cueSpatialPossibilities } 
+                  )  #cue1lag = 0, meaning simultaneous targets
 
 trialsPerCondition = 2
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
+
 
 ####################################
 #### Print header for data file ####
@@ -546,12 +559,15 @@ def oneFrameOfStim(n, frameStimuli):
     thisFrame = frameStimuli[thisFrameN]
 
     if drawFrame:
-        if n % 5 != 0:
-            thisFrame[1].draw() #dimmed fixation
+        if n % 2 != 0:
+            thisFrame[1].draw() #CounterPhase fixation
         else:
             thisFrame[0].draw() #Normal fixation
     else:
-        fixatn.draw()
+        if n % 2 != 0:
+            fixatnCounterphase.draw()
+        else:
+            fixatn.draw()
 
     return True
 
@@ -564,6 +580,7 @@ def doRSVPStim(trial):
         - Work out the temporal position of the cue(s)
         - Shuffle the order of the letters
         - Calculate the position and cortically-magnified size for each stream
+        - draw and buffer preCues
         - Capture each stream's pixels on each frame using bufferImageStim
         - Collate each frame's pixels so that all stimuli are represented by the same matrix of pixels. Put the cue in there if it's the cued frame
         - pass the matrix of pixels to elementarraystim
@@ -577,7 +594,93 @@ def doRSVPStim(trial):
     cuedFrame = trial['cue0temporalPos']
     cuedStream = np.random.choice(np.arange(nStreams), 1)
 
+    cue.pos = calcStreamPos(
+                trial = trial, 
+                cueOffsets = cueOffsets, 
+                streami = cuedStream, 
+                streamOrNoise = False
+                )
+    cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+
+    preCues = list()
+    preCues.append(cue)
+
+    if trial['cueSpatialPossibilities'] == 2:
+        preCue = visual.Circle(myWin, 
+                     radius=cueRadius,#Martini used circles with diameter of 12 deg
+                     lineColorSpace = 'rgb',
+                     lineColor=letterColor,
+                     lineWidth=2.0, #in pixels
+                     units = 'deg',
+                     fillColorSpace = 'rgb',
+                     fillColor=None, #beware, with convex shapes fill colors don't work
+                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
+                     interpolate=True,
+                     autoLog=False)#this stim changes too much for autologging to be useful
+       
+        preCue.pos = calcStreamPos(
+            trial = trial,
+            cueOffsets = cueOffsets,
+            streami = cuedStream-4,
+            streamOrNoise = False
+        )
+        
+        preCue = corticalMagnification.corticalMagnification(preCue, 0.9810000000000002, cue = True)
+        
+        preCues.append(preCue)
+
+    elif trial['cueSpatialPossibilities'] == 8:
+        for i in range(1,8):
+            preCue = visual.Circle(myWin, 
+                     radius=cueRadius,#Martini used circles with diameter of 12 deg
+                     lineColorSpace = 'rgb',
+                     lineColor=letterColor,
+                     lineWidth=2.0, #in pixels
+                     units = 'deg',
+                     fillColorSpace = 'rgb',
+                     fillColor=None, #beware, with convex shapes fill colors don't work
+                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
+                     interpolate=True,
+                     autoLog=False)#this stim changes too much for autologging to be useful
+        
+            
+            preCue.pos = (calcStreamPos(
+                trial = trial,
+                cueOffsets = cueOffsets,
+                streami = cuedStream-i,
+                streamOrNoise = False
+            ))
+            
+            preCue = corticalMagnification.corticalMagnification(preCue, 0.9810000000000002, cue = True)
+            preCues.append(preCue)            
+
     print('cueFrame = ' + str(cuedFrame))
+
+    preCueStim = preTrial[int(baseAngleCWfromEast/anglesMustBeMultipleOf)] + preCues
+
+    preCueFrame = visual.BufferImageStim(
+                    win = myWin,
+                    stim = preCueStim)
+    
+    preCueFrame = np.flipud(np.array(preCueFrame.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
+        
+    preCueFrame = np.pad(
+            array=preCueFrame,
+            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
+            mode="constant",
+            constant_values=0.0
+        )
+
+    preCueFrame =visual.ElementArrayStim(
+            win = myWin,
+            units = 'pix',
+            nElements=1,
+            xys = [[0,0]],
+            sizes=preCueFrame.shape,
+            elementTex=preCueFrame,
+            elementMask = 'none'
+        )
+
 
     streamPositions = list() #Might need to pass this to elementArrayStim as xys. Might not though
 
@@ -614,6 +717,8 @@ def doRSVPStim(trial):
         
         stimuliToDraw = list() #Can pass a list to bufferimageStim!
         stimuliToDraw.append(fixatn)
+        stimuliToDrawCounterPhase = list()
+        stimuliToDrawCounterPhase.append(fixatnCounterphase)
 
         for thisStream in xrange(nStreams):
             cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
@@ -632,11 +737,11 @@ def doRSVPStim(trial):
             thisStreamStimulus.pos = thisPos
 
             stimuliToDraw.append(thisStreamStimulus)
+            stimuliToDrawCounterPhase.append(thisStreamStimulus)
 
             if cueThisFrame and cueType == 'exogenousRing':
-                cue.setPos( thisPos )
-                cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
                 stimuliToDraw.append(cue)
+                stimuliToDrawCounterPhase.append(cue)
         
         buff = visual.BufferImageStim( #Buffer these stimuli
             win = myWin,
@@ -653,7 +758,7 @@ def doRSVPStim(trial):
             constant_values=0.0
         )
         
-        thisFrameStimuliNormalFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
+        thisFrameStimuli = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
             win = myWin,
             units = 'pix',
             nElements=1,
@@ -662,21 +767,52 @@ def doRSVPStim(trial):
             elementTex=buff,
             elementMask = 'none'
             )
+            
+        buff = visual.BufferImageStim( #Buffer these stimuli
+            win = myWin,
+            stim = stimuliToDrawCounterPhase
+            )
+        
+        
+        buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
+        
+        buff = np.pad(
+            array=buff,
+            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
+            mode="constant",
+            constant_values=0.0
+        )
+        
 
-        thisFrameStimuliDimFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at half luminance
+        thisFrameStimuliCounterPhase = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at half luminance
             win = myWin,
             units = 'pix',
             nElements=1,
             xys = [[0,0]],
             sizes=buff.shape,
             elementTex=buff,
-            elementMask = mask
+            elementMask = 'none'
             )        
 
-        frameStimuli.append([thisFrameStimuliNormalFix, thisFrameStimuliDimFix])
+        frameStimuli.append([thisFrameStimuli, thisFrameStimuliCounterPhase])
 
     ts = []
+    
+    waiting = True
+    
+    while waiting:
+        startTrialStimuli.draw()
+        startTrialBox.draw()
+        myWin.flip()
+        if myMouse.isPressedIn(startTrialBox):
+            waiting = False
+
     myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
+    preCueFrame.draw()
+    myWin.flip()
+    core.wait(.25)
+    myWin.flip
+    core.wait(.5)
     fixatn.draw()
     myWin.flip()
     core.wait(1)
@@ -687,6 +823,50 @@ def doRSVPStim(trial):
         ts.append(trialClock.getTime() - t0)
 
     return streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuedFrame
+
+
+#######################
+###Pretrial stimuli###
+#######################
+'''
+Set up a number of text objects to use as precue stimuli. To save time on each trial. I'll draw all possible baseAngleCWfromEast configurations
+
+Only doing it for 8 streams at the moment
+'''
+
+preTrial = list() #A list of lists, the index of a list corresponds to the baseAngleCWfromEast of the trial ordered from 0 to whatever the max is
+
+trial = { #Dummy trial object, calcStreamPos is set up to use real trial objects. This gives the function everything it needs
+    'nStreams': 8,
+}
+
+for baseAngleCWfromEast in range(0, 360, anglesMustBeMultipleOf):
+    trial['baseAngleCWfromEast'] = baseAngleCWfromEast
+    thisPreTrial = list()
+    for stream in range(8):
+        preTrialStimulus = visual.TextStim(
+            myWin,
+            pos=(0,0),
+            colorSpace='rgb', 
+            font = 'Arial', 
+            color=letterColor,
+            alignHoriz='center',
+            alignVert='center',
+            units='deg',
+            text = '#',
+            autoLog=autoLogging)
+        preTrialStimulus.pos = calcStreamPos(
+            trial=trial, 
+            cueOffsets=cueOffsets,
+            streami = stream,
+            streamOrNoise = False)
+        corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
+            stimulus = streamText,
+            ltrHeight = ltrHeight,
+            cue = False)
+        thisPreTrial.append(preTrialStimulus)
+    preTrial.append(thisPreTrial)
+
 
 
 instructions1.draw()
