@@ -497,6 +497,16 @@ myMouse = event.Mouse(visible = False)
 
 clickSound, badKeySound = stringResponse.setupSoundsForResponse()
 
+################
+###Eyetracker###
+################
+
+if eyetracking:
+    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+
+
 #################
 ### Functions ###
 #################
@@ -906,9 +916,17 @@ while n < trials.nTotal and not expStop:
     trial = trials.next()
     showBothSides = False #Need to modify this if doing 2 streams only, that way we can replicate the G&H lineups
     sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
+    
+    if eyetracking: 
+        tracker.startEyeTracking(nDone,True,widthPix,heightPix) #start recording with eyetracker  
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
+    
+    if eyetracking:
+        tracker.stopEyeTracking()
+    
     myMouse.setVisible(True)
+    
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
             letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
             myWin,
