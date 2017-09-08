@@ -92,7 +92,7 @@ cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 de
 if cueType is 'lowerCase':
     font = 'Arial'
 
-viewdist = 57. #cm
+viewdist = 51. #cm
 
 monitorname = 'testmonitor'
 
@@ -145,8 +145,8 @@ logging.info(pixelperdegree)
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 600 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 500 #60
+SOAms = 83.25 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 60 #60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -178,6 +178,8 @@ trialDurFrames = int( numLettersToPresent*(ISIframes+letterDurFrames) ) #trial d
 #############################################
 
 fullscr, subject = setupHelpers.setupDialogue(mon, screenValues, refreshRate, quitFinder, demo)
+
+screenValues['fullscr'] = fullscr
 
 if not fullscr:
     screenValues['widthPix'] = 800
@@ -276,6 +278,14 @@ Please tell the experimenter you have read the instructions. Be sure to ask him 
 """
 instructions1.text = instructionText1
 instructions2.text = instructionText2
+
+### Near the rest of the instruction stimuli ###
+startTrialStimuli = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+startTrialStimuli.text = 'Click here to start the trial'
+
+startTrialBox = visual.Rect(myWin, height = .75, width = 6, units = 'deg', lineColor = bgColor, lineColorSpace = 'rgb')
+
+
 
 ######################################
 ### Buffered image size dimensions ###
@@ -546,12 +556,15 @@ def oneFrameOfStim(n, frameStimuli):
     thisFrame = frameStimuli[thisFrameN]
 
     if drawFrame:
-        if n % 5 != 0:
+        if n % 2 != 0:
             thisFrame[1].draw() #dimmed fixation
         else:
             thisFrame[0].draw() #Normal fixation
     else:
-        fixatn.draw()
+        if n % 2 == 0:
+            fixatn.draw()
+        else:
+            fixatnCounterphase.draw()
 
     return True
 
@@ -612,8 +625,11 @@ def doRSVPStim(trial):
     for thisFrame in xrange(numLettersToPresent):
         theseStimuli = streamLetterIdxs[:,thisFrame] #The alphabetical indexes of stimuli to be shown on this frame
         
+        ### IN DO RSVP STIM ###
         stimuliToDraw = list() #Can pass a list to bufferimageStim!
         stimuliToDraw.append(fixatn)
+        stimuliToDrawCounterPhase = list()
+        stimuliToDrawCounterPhase.append(fixatnCounterphase)
 
         for thisStream in xrange(nStreams):
             cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
@@ -632,11 +648,13 @@ def doRSVPStim(trial):
             thisStreamStimulus.pos = thisPos
 
             stimuliToDraw.append(thisStreamStimulus)
+            stimuliToDrawCounterPhase.append(thisStreamStimulus)
 
             if cueThisFrame and cueType == 'exogenousRing':
                 cue.setPos( thisPos )
                 cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
                 stimuliToDraw.append(cue)
+                stimuliToDrawCounterPhase.append(cue)
         
         buff = visual.BufferImageStim( #Buffer these stimuli
             win = myWin,
@@ -653,7 +671,7 @@ def doRSVPStim(trial):
             constant_values=0.0
         )
         
-        thisFrameStimuliNormalFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
+        thisFrameStimuli = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
             win = myWin,
             units = 'pix',
             nElements=1,
@@ -662,19 +680,48 @@ def doRSVPStim(trial):
             elementTex=buff,
             elementMask = 'none'
             )
+            
+        buff = visual.BufferImageStim( #Buffer these stimuli
+            win = myWin,
+            stim = stimuliToDrawCounterPhase
+            )
+        
+        
+        buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
+        
+        buff = np.pad(
+            array=buff,
+            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
+            mode="constant",
+            constant_values=0.0
+        )
+        
 
-        thisFrameStimuliDimFix = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at half luminance
+        thisFrameStimuliCounterPhase = visual.ElementArrayStim( #A stimulus representing this frame with the fixation phase reversed
             win = myWin,
             units = 'pix',
             nElements=1,
             xys = [[0,0]],
             sizes=buff.shape,
             elementTex=buff,
-            elementMask = mask
+            elementMask = 'none'
             )        
 
-        frameStimuli.append([thisFrameStimuliNormalFix, thisFrameStimuliDimFix])
+        frameStimuli.append([thisFrameStimuli, thisFrameStimuliCounterPhase])
 
+    ts = []
+    
+    waiting = True
+    myMouse.setVisible(waiting)
+    
+    while waiting:
+        startTrialStimuli.draw()
+        startTrialBox.draw()
+        myWin.flip()
+        if myMouse.isPressedIn(startTrialBox):
+            waiting = False
+
+    myMouse.setVisible(waiting)
     ts = []
     myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
     fixatn.draw()
@@ -722,6 +769,7 @@ while n < trials.nTotal and not expStop:
     sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
+    myMouse.setVisible(True)
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
             letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
             myWin,
@@ -734,7 +782,7 @@ while n < trials.nTotal and not expStop:
             sideFirstLeftRightCentral,
             autopilot
             )
-    
+    myWin.flip()
     accuracy = responses[0] == correctLetter
     responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[1] #need index on where because it treats sliced streamLetterIdentities as a ndarray
     SPE = responseLetterIdx[0] - cuePos
