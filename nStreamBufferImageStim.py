@@ -99,7 +99,7 @@ cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 de
 if cueType is 'lowerCase':
     font = 'Arial'
 
-viewdist = 57. #cm
+viewdist = 51. #cm
 
 monitorname = 'testmonitor'
 
@@ -189,6 +189,8 @@ fullscr, subject = setupHelpers.setupDialogue(mon, screenValues, refreshRate, qu
 if not fullscr:
     screenValues['widthPix'] = 800
     screenValues['heightPix'] = 600
+
+screenValues['fullscr'] = fullscr
 
 myWin = setupHelpers.openMyStimWindow(mon, screenValues)
 
@@ -383,13 +385,14 @@ logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFra
 print('experimentPhase\ttrialnum\tsubject\ttask\t',file=dataFile,end='')
 print('noisePercent\t',end='',file=dataFile)
 print('targetLeftRightIfOne\t',end='',file=dataFile)
-print('nStreams\t',end='',file=dataFile)
+print('nPreCueStreams\t',end='',file=dataFile)
 print('baseAngleCWfromEast\t',end='',file=dataFile)
 printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
     for i in range(maxNumRespsWanted):
-       dataFile.write('resp'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
+       dataFile.write('cuedStreamAngle'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
+       dataFile.write('resp'+str(i)+'\t')
        dataFile.write('button'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('cuePos'+str(i)+'\t')
        dataFile.write('answer'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
@@ -905,6 +908,7 @@ while n < trials.nTotal and not expStop:
     sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
+    myMouse.setVisible(True)
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
             letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
             myWin,
@@ -917,7 +921,7 @@ while n < trials.nTotal and not expStop:
             sideFirstLeftRightCentral,
             autopilot
             )
-    
+    myWin.flip()
     accuracy = responses[0] == correctLetter
     responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[1] #need index on where because it treats sliced streamLetterIdentities as a ndarray
     SPE = responseLetterIdx[0] - cuePos
@@ -938,7 +942,7 @@ while n < trials.nTotal and not expStop:
         trial['task'] + '\t' +
         str(trial['proportionNoise']) + '\t' +
         str(trial['targetLeftRightIfOne']) + '\t' +
-        str(trial['nStreams']) + '\t' +
+        str(trial['cueSpatialPossibilities']) + '\t' +
         str(trial['baseAngleCWfromEast']) + '\t' +
         str(cuedStreamAngle) + '\t' +
         responses[0] + '\t' +
