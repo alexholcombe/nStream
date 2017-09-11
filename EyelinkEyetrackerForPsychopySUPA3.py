@@ -224,6 +224,7 @@ class Tracker_EyeLink():
         self.tracker.sendMessage(msg)
         #The following does drift correction at the begin of each trial
         if calibTrial:# Does drift correction and handles the re-do camera setup situations
+            self.tracker.enableAutoCalibration()
             while True:
                 try:
                     error = self.tracker.doDriftCorrect(widthPix/2,heightPix/2,1,1) # 0: the fixation target must be drawn by the user
@@ -235,6 +236,7 @@ class Tracker_EyeLink():
                 except:
                     print("Exception")
                     break
+        self.tracker.disableAutoCalibration()
         #self.tracker.sendCommand('start_drift_correction DATA =1 1 1 1') #CF - start drift correct??
         #self.tracker.applyDriftCorrect() #CF - added to actually correct for drift
         self.tracker.setOfflineMode() #CF adds this to stop skipping trials due to not recording
