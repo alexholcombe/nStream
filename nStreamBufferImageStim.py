@@ -21,7 +21,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = False
+eyetracking = True
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -497,14 +497,6 @@ myMouse = event.Mouse(visible = False)
 
 clickSound, badKeySound = stringResponse.setupSoundsForResponse()
 
-################
-###Eyetracker###
-################
-
-if eyetracking:
-    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
-        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
-    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
 
 
 #################
@@ -823,6 +815,9 @@ def doRSVPStim(trial):
 
     myMouse.setVisible(waiting)
 
+    if eyetracking: 
+        tracker.startEyeTracking(nDone,True,widthPix,heightPix) #start recording with eyetracker  
+
     myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
     preCueFrame.draw()
     myWin.flip()
@@ -832,12 +827,18 @@ def doRSVPStim(trial):
     fixatn.draw()
     myWin.flip()
     core.wait(1)
+    
+
+
     t0 = trialClock.getTime()
     for n in xrange(trialDurFrames):
         oneFrameOfStim(n, frameStimuli)
         myWin.flip()
         ts.append(trialClock.getTime() - t0)
-
+    
+    if eyetracking:
+        tracker.stopEyeTracking()
+        print('stopped tracking')
     return streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuedFrame
 
 
@@ -910,21 +911,27 @@ while waiting:
 
 allBlips = list()
 expStop = False #If True, end experiment
-n = 0 #Which trial?
-while n < trials.nTotal and not expStop:
+nDone = 0 #Which trial?
+while nDone < trials.nTotal and not expStop:
     trialClock = core.Clock()
     trial = trials.next()
+    
+    ################
+    ###Eyetracker###
+    ################
+
+    if eyetracking:
+        if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+            eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+
+    
     showBothSides = False #Need to modify this if doing 2 streams only, that way we can replicate the G&H lineups
     sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
     
-    if eyetracking: 
-        tracker.startEyeTracking(nDone,True,widthPix,heightPix) #start recording with eyetracker  
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
-    
-    if eyetracking:
-        tracker.stopEyeTracking()
-    
+
     myMouse.setVisible(True)
     
     expStop,passThisTrial,responses,buttons,responsesAutopilot = \
@@ -955,7 +962,7 @@ while n < trials.nTotal and not expStop:
 
     dataFile.write(
         'main\t' + 
-        str(n) + '\t' + 
+        str(nDone) + '\t' + 
         subject + '\t' + 
         trial['task'] + '\t' +
         str(trial['proportionNoise']) + '\t' +
@@ -981,7 +988,7 @@ while n < trials.nTotal and not expStop:
             
     dataFile.write(str(timingBlips) + '\n')
     dataFile.flush()
-    n += 1
+    nDone += 1
 print('Max timingBlips from 20 trials was ' + str(max(allBlips)))
 dataFile.flush()
 dataFile.close()
