@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = False
+eyetracking = True
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -342,7 +342,7 @@ possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 7
-nStreamsPossibilities = np.arange(2,21,3) #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+nStreamsPossibilities = [2,21] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
 nStreamsPossibilities = np.append(nStreamsPossibilities,21)
 for nStreams in nStreamsPossibilities:
     for task in [ tasks[4] ]:  #T1 task is just for the single-target tasks, but both streams are presented
@@ -830,13 +830,13 @@ while nDone < trials.nTotal and not expStop:
         str(trial['targetLeftRightIfOne']) + '\t' +
         str(trial['nStreams']) + '\t' +
         str(trial['baseAngleCWfromEast']) + '\t' +
-        str(cuedStreamAngle) + '\t' +
         responses[0] + '\t' +
         str(buttons[0]) + '\t' +
         str(cuePos) + '\t' +
         correctLetter + '\t' +
         str(accuracy) + '\t' +
         str(cuedStream[0]) + '\t' +
+        str(cuedStreamAngle) + '\t' +
         '0' + '\t' +
         str(SPE) + '\t'
         )
