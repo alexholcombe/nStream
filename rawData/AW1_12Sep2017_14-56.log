@@ -1,0 +1,51 @@
+19.6409 	INFO 	Successfully set darwin thread to realtime
+20.2763 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_09_12 14:57 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1505192225
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: 71e1daa80d321e79d3aeed3ac628fed150d0ef0e
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2680-10-17-73-180.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 5147.2421875
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.11.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.001995464786887169, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.006734693888574839, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Sep 12 14:28
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0057
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 101
+    systemUserProcFlagged: mdworker Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.044
+    windowRefreshTimeMedian_ms: 10.020
+    windowRefreshTimeAvg_ms: 10.019
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 51.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+21.7583 	EXP 	Set  sound=C
