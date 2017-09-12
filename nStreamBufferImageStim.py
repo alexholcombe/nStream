@@ -497,6 +497,20 @@ myMouse = event.Mouse(visible = False)
 
 clickSound, badKeySound = stringResponse.setupSoundsForResponse()
 
+#############
+### Clock ###
+#############
+
+trialClock = core.Clock()
+
+################
+###Eyetracker###
+################
+
+if eyetracking:
+    if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
+        eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
+tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
 
 
 #################
@@ -913,18 +927,7 @@ allBlips = list()
 expStop = False #If True, end experiment
 nDone = 0 #Which trial?
 while nDone < trials.nTotal and not expStop:
-    trialClock = core.Clock()
     trial = trials.next()
-    
-    ################
-    ###Eyetracker###
-    ################
-
-    if eyetracking:
-        if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
-            eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
-    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
-
     
     showBothSides = False #Need to modify this if doing 2 streams only, that way we can replicate the G&H lineups
     sideFirstLeftRightCentral=2 #default , respond to central. Charlie: I guess we need this to replicate other experiments
@@ -969,13 +972,13 @@ while nDone < trials.nTotal and not expStop:
         str(trial['targetLeftRightIfOne']) + '\t' +
         str(trial['cueSpatialPossibilities']) + '\t' +
         str(trial['baseAngleCWfromEast']) + '\t' +
-        str(cuedStreamAngle) + '\t' +
         responses[0] + '\t' +
         str(buttons[0]) + '\t' +
         str(cuePos) + '\t' +
         correctLetter + '\t' +
         str(accuracy) + '\t' +
         str(cuedStream[0]) + '\t' +
+        str(cuedStreamAngle) + '\t' +
         '0' + '\t' +
         str(SPE) + '\t'
         )
