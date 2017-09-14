@@ -269,17 +269,19 @@ instructions1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),
 instructions2 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
 
 instructionText1 = """
-This experiment is made up of 200 trials. On each trial you will fixate your eyes on a central point on the screen.Then several rapid, randomly-ordered sequences of letters will appear at two or 8 locations on the screen.You must not move your eyes from the fixation point while these sequences are playing.
+This experiment is made up of 200 trials. On each trial you will fixate your eyes on a central point on the screen. Then several rapid, randomly-ordered sequences of letters will appear at two or 8 locations on the screen. You must not move your eyes from the fixation point while these sequences are playing.
 
-One of the letters will appear with a white ring around it.Your job is to tell us which of the letters appeared within the white ring. Again, you must not move your eyes from the fixation point in the centre of the screen while the letter streams are shown.
+One of the letters will appear with a white ring around it. Your job is to tell us which of the letters appeared within the white ring. Again, you must not move your eyes from the fixation point in the centre of the screen while the letter streams are shown.
+
+At the beginning of the trial, you will see a circle of hash marks. Some of these will be surrounded by white circles. The white circles mark the possible position of the letter you must report on that trial.
+
+The white right will only every appear in one of the positions marked at the beginning of the trial.
 
 Press space to read more instructions
 """
 
 instructionText2 ="""
-At the end of each trial you will see a screen in which the whole alphabet is displayed. You should click on the letter that you saw within the circle.
-
-However, you may have been UNSURE about the letter that you saw. If you were UNSURE about the letter you saw, click the letter using the LEFT mouse button. The letter you selected will turn YELLOW. If you were SURE about  the letter that you saw, click the letter with the RIGHT mouse button. The letter you clicked will turn GREEN.\n
+At the end of each trial you will see a screen in which the whole alphabet is displayed. You should click on the letter that you saw within the white ring.
 
 Please tell the experimenter you have read the instructions. Be sure to ask him if you have any questions. 
 """
