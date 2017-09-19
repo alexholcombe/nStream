@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = True
+eyetracking = False
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -341,9 +341,8 @@ stimList=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
-streamsPerRing = 7
+streamsPerRing = 8
 nStreamsPossibilities = [2,21] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
-nStreamsPossibilities = np.append(nStreamsPossibilities,21)
 for nStreams in nStreamsPossibilities:
     for task in [ tasks[4] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
@@ -361,11 +360,12 @@ for nStreams in nStreamsPossibilities:
         for baseAngleCWfromEast in range(0,360,anglesMustBeMultipleOf): #cued stream will always be stream0. Its position is randomized by baseAngleCWfromEast
          for cueTemporalPos in possibleCueTemporalPositions:
           for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
-            stimList.append(         
-                 {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
-                    'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise} 
-              )  #cue1lag = 0, meaning simultaneous targets
+            for fill in ['out']: #['in', 'out']:
+                stimList.append(         
+                     {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
+                        'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
+                        'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise, 'fill':fill} 
+                  )  #cue1lag = 0, meaning simultaneous targets
 
 trialsPerCondition = 2
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
@@ -438,7 +438,9 @@ potentialLetters = [letter for letter in string.ascii_uppercase if letter not in
 
 streamTextObjects = list() #A text object for every stream. I'll update the text for each frame
 
-for stream in xrange(max(nStreamsPossibilities)):
+nextLargestMultiple = int(np.ceil(float(maxStreams)/streamsPerRing))*streamsPerRing #The next largest multiple of streamsPerRing after maxStreams
+
+for stream in xrange(nextLargestMultiple): #Use the nextLargestMultiple because, if flip == 'out', the program draws 8 streams in the outer ring and we get sizing errors, because with max 21 streams, it would never normally draw this many.
     thisStream = list()
     for letter in potentialLetters:
         streamText = visual.TextStim(
@@ -468,6 +470,7 @@ for stream in xrange(max(nStreamsPossibilities)):
             stimulus = streamText,
             ltrHeight = ltrHeight,
             cue = False)
+        print('For stream %(streamN)d and letter %(letter)s the heigh is %(height)s' % {'streamN':stream, 'letter':letter, 'height':streamText.height})
         thisStream.append(streamText)
 
     streamTextObjects.append( thisStream )
@@ -525,12 +528,14 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     thisRingNum =  int(streami / streamsPerRing)
 
     ringStreami = streami % streamsPerRing
-
     
     if nStreams - streamsPerRing * thisRingNum >= streamsPerRing:
         streamsThisRing = streamsPerRing
     else:
         streamsThisRing = nStreams - streamsPerRing * thisRingNum
+    
+    if trial['fill'] == 'out':
+        thisRingNum = 2 - thisRingNum #innermost ring is now the outermost ring
 
     #print('streams this ring: ',streamsThisRing)
 
@@ -649,11 +654,6 @@ def doRSVPStim(trial):
         stimuliToDrawCounterPhase.append(fixatnCounterphase)
 
         for thisStream in xrange(nStreams):
-            cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
-
-            thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
-            
-            thisStreamStimulus = streamTextObjects[thisStream,thisLetterIdx] #The text object for this stream
             
             thisPos = calcStreamPos(
                 trial = trial, 
@@ -661,8 +661,18 @@ def doRSVPStim(trial):
                 streami = thisStream, 
                 streamOrNoise = False
                 )
+            
+            cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
+            
+            thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
+            
+            if trial['fill'] == 'out':
+                thisStreamStimulus = streamTextObjects[nextLargestMultiple- 1 - thisStream,thisLetterIdx] #The text object for this stream
+            else:
+                thisStreamStimulus = streamTextObjects[thisStream,thisLetterIdx] #The text object for this stream
 
             thisStreamStimulus.pos = thisPos
+            print('For stream %(thisStream)d the height is: %(letterHeight)s' % {'thisStream':thisStream, 'letterHeight':thisStreamStimulus.height})
 
             stimuliToDraw.append(thisStreamStimulus)
             stimuliToDrawCounterPhase.append(thisStreamStimulus)
@@ -811,10 +821,7 @@ while nDone < trials.nTotal and not expStop:
     accuracy = responses[0] == correctLetter
     responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[1] #need index on where because it treats sliced streamLetterIdentities as a ndarray
     SPE = responseLetterIdx[0] - cuePos
-    print(responseLetterIdx)
-    print(cuedStream)
-    print(SPE)
-
+    
     cuedStreamPos = calcStreamPos(trial, cueOffsets, cuedStream, False)
     cuedStreamAngle = atan(cuedStreamPos[1]/cuedStreamPos[0])*(180/np.pi)
 
