@@ -677,7 +677,7 @@ def doRSVPStim(trial):
 
     print('cueFrame = ' + str(cuedFrame))
 
-    preCueStim = preTrial[int(baseAngleCWfromEast/anglesMustBeMultipleOf)] + preCues
+    preCueStim = preTrial[int(baseAngleCWfromEast/anglesMustBeMultipleOf)] + preCues + [fixatnPoint]
 
     preCueFrame = visual.BufferImageStim(
                     win = myWin,
