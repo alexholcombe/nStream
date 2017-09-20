@@ -373,8 +373,10 @@ for nStreams in nStreamsPossibilities:
                         'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise, 'cueSpatialPossibilities': cueSpatialPossibilities } 
                   )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerCondition = 2
+trialsPerCondition = 3
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
+
+print('There are ' + str(trials.nTotal) + ' trials for this expt.')
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -393,7 +395,6 @@ printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
     for i in range(maxNumRespsWanted):
-       dataFile.write('cuedStreamAngle'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('resp'+str(i)+'\t')
        dataFile.write('button'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('cuePos'+str(i)+'\t')
@@ -997,5 +998,5 @@ while nDone < trials.nTotal and not expStop:
 print('Max timingBlips from 20 trials was ' + str(max(allBlips)))
 dataFile.flush()
 dataFile.close()
-
+myWin.close()
 
