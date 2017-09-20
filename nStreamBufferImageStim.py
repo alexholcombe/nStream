@@ -99,7 +99,7 @@ cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 de
 if cueType is 'lowerCase':
     font = 'Arial'
 
-viewdist = 51. #cm
+viewdist = 59. #cm
 
 monitorname = 'testmonitor'
 
@@ -513,7 +513,7 @@ trialClock = core.Clock()
 if eyetracking:
     if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
         eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
-tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
+    tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
 
 
 #################
