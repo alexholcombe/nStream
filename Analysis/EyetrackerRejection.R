@@ -12,7 +12,7 @@ RSVPFiles <- list.files(pattern = '^[A-Z][A-Z][0-9].*\\.txt$', recursive= F) #Li
 IDs <- unlist(strsplit(RSVPFiles, split = '(?<=[A-Z][0-9]|[0-9])_(?=[0-9][0-9][A-Z])', perl = T)) #Split the file names
 IDs <- IDs[seq(1,length(IDs),2)]#Select the IDs and discard the timestamps.
 
-eyetrackerFiles <- list.files(path = 'Eyetracker/') #eyetracking files are in rawData/Eyetracker
+eyetrackerFiles <- list.files(path = 'Eyetracking/') #eyetracking files are in rawData/Eyetracker
 
 RSVPWithEyeTracking <- RSVPFiles[paste0(IDs,'.txt') %in% eyetrackerFiles] #Select RSVP files associated with eyetracking files. This works because of the ordering of the file names 
 IDsWithEyeTracking <- IDs[paste0(IDs,'.txt') %in% eyetrackerFiles] #Select Eyetracking files associated with RSVP files. 
@@ -20,7 +20,7 @@ IDsWithEyeTracking <- IDs[paste0(IDs,'.txt') %in% eyetrackerFiles] #Select Eyetr
 widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #cm
-viewingDist = 56.5 #cm
+viewingDist = 51.0 #cm
 
 pixelsPerDegree = widthPix / (atan(monitorwidth/viewingDist)/pi*180) #pixels per degree of visual angle
 
@@ -29,8 +29,15 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){ #iterate over the RSVP files wit
   thisFile <- which(RSVPWithEyeTracking == eyeTrackedDataFile) #Where in the alphabetically ranked RSVP files with eyetracking does this file fall?
   ID <- IDsWithEyeTracking[thisFile] #get its ID (the ID vector has the same order as the RSVP files)
   
-  eyeTrackedData <- read.table(paste0('Eyetracker/',ID,'.txt'), sep='\t', header =T) #read in the eyetracking data
-  RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=T) #read in the RSVP data
+  eyeTrackedData <- read.table(paste0('Eyetracking/',ID,'.txt'), sep='\t', header =T) #read in the eyetracking data
+  
+  if(ID %in% c('AM3')){
+    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=F, skip = 1) #read in the RSVP data
+    colnames(RSVPData) <- c("experimentPhase", "trialnum", "subject", "task", "noisePercent", "targetLeftRightIfOne", "nPreCueStreams", "baseAngleCWfromEast", "resp0", "button0", "cuePos0", "answer0", "correct0", "whichStream0", "angleOfWhichStream0", "whichRespCue0", "responsePosRelative0", "streamLtrSequence0", "streamLtrSequence1", "streamLtrSequence2", "streamLtrSequence3", "streamLtrSequence4", "streamLtrSequence5", "streamLtrSequence6", "streamLtrSequence7", "timingBlips")
+  } else {
+    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=T) #read in the RSVP data
+  }
+  
   
   eyeTrackedData$CURRENT_FIX_X_DEG <- eyeTrackedData$CURRENT_FIX_X/pixelsPerDegree #X coordinate of the current fixation in degrees of visual angle. The origin is the screen's bottom left corner
   eyeTrackedData$CURRENT_FIX_Y_DEG <- eyeTrackedData$CURRENT_FIX_Y/pixelsPerDegree #Y coord in degrees
@@ -43,7 +50,7 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){ #iterate over the RSVP files wit
   
   eyeTrackedData$fixationDistance <- numeric(nrow(eyeTrackedData)) #Create an empty numeric column in the eyetracking data. This will represent the distance between a fixation and the initial fixation
   
-  criterion = 1 #if any fixation falls more than one deg from the initial fixation, reject this trial
+  criterion = 2 #if any fixation falls more than one deg from the initial fixation, reject this trial
   
   for(index in unique(eyeTrackedData$TRIAL_INDEX)){ #Iterate over the unique values in the trial index column
     
