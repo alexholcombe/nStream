@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = False
+eyetracking = True
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -341,46 +341,36 @@ stimList=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
-streamsPerRing = 8
+streamsPerRing = 6
+pairAngles = range(0,180,int(360/streamsPerRing))
 nStreamsPossibilities = [2,21] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
 rings = range(int(np.ceil(float(max(nStreamsPossibilities))/streamsPerRing)))
 
-anglesMustBeMultipleOf =  int( round(360. / streamsPerRing ))
-baseAngles = range(0,180,anglesMustBeMultipleOf)
+
 
 for nStreams in nStreamsPossibilities:
-    for task in [ tasks[4] ]:  #T1 task is just for the single-target tasks, but both streams are presented
-       if task=='T1T2':
-            numResponsesWanted=2; numToCue=-999
-       elif task=='allCued':
-            numToCue = nStreams
-       elif task=='oneCued' or task is 'nStreams':
-            numToCue = 1
-       #print('task=',task)
-       #setting targetLeftRightIfOne constant because which stream randomisation taken care of by baseAngle. Stream0 will always be the one cued, but it'll be in a random position
-       for targetLeftRightIfOne in  ['right']: # ['left','right']: #If single target, should it be on the left or the right?
-        randomlyAssignCuesToStreams = False
-        proportionNoise = 0
-        for baseAngleCWfromEast in baseAngles: #cued stream will always be stream0. Its position is randomized by baseAngleCWfromEast
-            for cueTemporalPos in possibleCueTemporalPositions:
-                for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
-                    if nStreams == 2: #HAAAAAACKY
-                        for ring in rings: #['in', 'out']: 
-                            stimList.append(         
-                                 {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
-                                    'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise, 'ring':ring} 
-                              )  #cue1lag = 0, meaning simultaneous targets
+    for cueTemporalPos in possibleCueTemporalPositions: #5 or 6 temporal serial positions for  the cue
+        for ring in rings:
+            for pairAngle in pairAngles:
+                for whichInPair in [0,1]:
+                    if nStreams==2:
+                        whichStreamCuedAngle = pairAngle + whichInPair * 180
+                        stimList.append(         
+                                 {'nStreams':nStreams, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
+                                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 
+                                    'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
+                              )
                     elif nStreams == 21:
-                        baseAngleCWfromEast = 0
-                        for ring in [0]*len(rings):
-                            stimList.append(         
-                                     {'streamsPerRing':streamsPerRing, 'nStreams':nStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                                        'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
-                                        'baseAngleCWfromEast':baseAngleCWfromEast, 'proportionNoise':proportionNoise, 'ring':ring} 
-                                  )  #cue1lag = 0, meaning simultaneous targets
+                        whichStreamCuedAngle = 360/4*pairAngle
+                        whichStreamCuedAngle += whichInPair * 180  
+                        stimList.append(         
+                                 {'nStreams':nStreams, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
+                                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 
+                                    'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
+                              )
 
-trialsPerCondition = 3
+
+trialsPerCondition = 1
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 print('There are ' + str(trials.nTotal) + ' trials.')
 
@@ -547,7 +537,8 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     #streamOrNoise because noise coordinates have to be in deg, stream in pix
     #cueOffsets are in deg, for instance indicating the eccentricity of the streams/cues
     nStreams = trial['nStreams']
-    baseAngleCWfromEast = trial['baseAngleCWfromEast']
+    pairAngle = trial['pairAngle']
+    ring = trial['ring']
 
     noiseOffsetKludge = 0.9 #Because the noise coords were drawn in pixels but the cue position is specified in deg, I must convert pix to deg for noise case
 
@@ -561,8 +552,9 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
         streamsThisRing = nStreams - streamsPerRing * thisRingNum
     
     if nStreams == 2:
-        thisRingNum = trial['ring'] #innermost ring is now the outermost ring
-
+        thisRingNum = ring #innermost ring is now the outermost ring
+    else:
+        pairAngle = 0
     #print('streams this ring: ',streamsThisRing)
 
 
@@ -573,7 +565,7 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
             #assume want them evenly spaced, counterclockwise starting from directly east
             halfAngle = 360/float(streamsThisRing)/2.0
             thisRingAngleOffset = (thisRingNum % 2) * halfAngle #offset odd-numbered rings by half the angle
-            thisAngle = baseAngleCWfromEast + ringStreami/streamsThisRing * 360 + thisRingAngleOffset
+            thisAngle = pairAngle + ringStreami/streamsThisRing * 360 + thisRingAngleOffset
             x = cueOffsets[thisRingNum]*cos(thisAngle/180*pi)
             y = cueOffsets[thisRingNum]*sin(thisAngle/180*pi)
             pos = np.array([x,y])
@@ -636,22 +628,7 @@ def doRSVPStim(trial):
     numTargets = trial['numToCue']  
     
     cuedFrame = trial['cue0temporalPos']
-    cuedStream = 0 #np.random.choice(np.arange(nStreams), 1)
-    
-    maxCueCount = trials.nTotal/nStreams/2
-    
-    indexOfThisNStreams = [index for index, value in enumerate(nStreamsPossibilities) if value == nStreams][0]
-    
-    theseCueCounts = countsList[indexOfThisNStreams] #Get the counts of the number of times each position has been cued
-    theseCueCountsNotComplete = [index for index,value in enumerate(theseCueCounts) if value < maxCueCount] #Find those counts less than the max possible
-    print('theseCueCountsNotComplete')
-    print(theseCueCountsNotComplete)
-    cuedStream = np.random.choice(theseCueCountsNotComplete,1)[0] #sample a position, cue it
-    countsList[indexOfThisNStreams][cuedStream] += 1 #Increment the count
-    
-    print('cuedStream is ' + str(cuedStream))
-    
-    print(theseCueCounts)
+    cuedStream = 
     
     print('cueFrame = ' + str(cuedFrame))
 
