@@ -960,8 +960,11 @@ while nDone < trials.nTotal and not expStop:
     print(cuedStream)
     print(SPE)
 
+    print(trial['baseAngleCWfromEast'])
     cuedStreamPos = calcStreamPos(trial, cueOffsets, cuedStream, False)
-    cuedStreamAngle = atan(cuedStreamPos[1]/cuedStreamPos[0])*(180/np.pi)
+    print(cuedStreamPos)
+    cuedStreamAngle = atan2(cuedStreamPos[1],cuedStreamPos[0])*(180/np.pi)
+    print(cuedStreamAngle)
 
     timingBlips = checkTiming(ts)
     allBlips.append(timingBlips)
