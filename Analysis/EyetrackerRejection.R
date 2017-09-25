@@ -7,6 +7,14 @@ rm(list=ls()) #clear the workspace
 ####It isn't the final eyetracking code for the experiment. That's in Analysis/wrangleSONA.R####
 ################################################################################################
 
+computeStreamPos <- function(streami, baseAngleCWFromEast){
+  nStreams <- 8
+  thisAngle <- baseAngleCWFromEast+(streami/nStreams * 360)
+  thisAngle%%360
+}
+
+
+SPECheck = TRUE
 
 RSVPFiles <- list.files(pattern = '^[A-Z][A-Z][0-9].*\\.txt$', recursive= F) #List the data files that correspond to the IDs used for the sona participants. These had the form [first initial][second initial][number]
 IDs <- unlist(strsplit(RSVPFiles, split = '(?<=[A-Z][0-9]|[0-9])_(?=[0-9][0-9][A-Z])', perl = T)) #Split the file names
@@ -20,10 +28,11 @@ IDsWithEyeTracking <- IDs[paste0(IDs,'.txt') %in% eyetrackerFiles] #Select Eyetr
 widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
 monitorwidth = 40.5 #cm
-viewingDist = 51.0 #cm
+viewingDist = 59.0 #cm
 
 pixelsPerDegree = widthPix / (atan(monitorwidth/viewingDist)/pi*180) #pixels per degree of visual angle
 
+start <- 1
 
 for(eyeTrackedDataFile in RSVPWithEyeTracking){ #iterate over the RSVP files with eyetracking
   thisFile <- which(RSVPWithEyeTracking == eyeTrackedDataFile) #Where in the alphabetically ranked RSVP files with eyetracking does this file fall?
@@ -32,12 +41,24 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){ #iterate over the RSVP files wit
   eyeTrackedData <- read.table(paste0('Eyetracking/',ID,'.txt'), sep='\t', header =T) #read in the eyetracking data
   
   if(ID %in% c('AM3')){
-    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=F, skip = 1) #read in the RSVP data
+    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=F, skip = 1, stringsAsFactors = F) #read in the RSVP data
     colnames(RSVPData) <- c("experimentPhase", "trialnum", "subject", "task", "noisePercent", "targetLeftRightIfOne", "nPreCueStreams", "baseAngleCWfromEast", "resp0", "button0", "cuePos0", "answer0", "correct0", "whichStream0", "angleOfWhichStream0", "whichRespCue0", "responsePosRelative0", "streamLtrSequence0", "streamLtrSequence1", "streamLtrSequence2", "streamLtrSequence3", "streamLtrSequence4", "streamLtrSequence5", "streamLtrSequence6", "streamLtrSequence7", "timingBlips")
   } else {
-    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=T) #read in the RSVP data
+    RSVPData <- read.table(eyeTrackedDataFile, sep='\t',header=T, stringsAsFactors = F) #read in the RSVP data
   }
   
+  if(SPECheck){
+    for(row in 1:nrow(RSVPData)){
+      thisStream <- RSVPData$whichStream0[row]
+      theseLetters <- unlist(strsplit(RSVPData[row,paste0("streamLtrSequence", thisStream)],''))
+      thisSP <- which(theseLetters==RSVPData$resp0[row])
+      thisSPE <- thisSP - 1 - RSVPData$cuePos0[row] 
+      if(thisSPE!=RSVPData$responsePosRelative0[row]){
+        print(row)
+        break
+      }
+    }
+  }
   
   eyeTrackedData$CURRENT_FIX_X_DEG <- eyeTrackedData$CURRENT_FIX_X/pixelsPerDegree #X coordinate of the current fixation in degrees of visual angle. The origin is the screen's bottom left corner
   eyeTrackedData$CURRENT_FIX_Y_DEG <- eyeTrackedData$CURRENT_FIX_Y/pixelsPerDegree #Y coord in degrees
@@ -89,6 +110,23 @@ for(eyeTrackedDataFile in RSVPWithEyeTracking){ #iterate over the RSVP files wit
       }
     }
   }
+  
+  if(ID %in% c('AM3', 'HT5','EF6')){ #I was using math.atan to compute the angle, but it doesn't do quadrants
+    for(row in 1:nrow(RSVPData)){
+      RSVPData$angleOfWhichStream0[row] <- computeStreamPos(RSVPData$whichStream0[row], RSVPData$baseAngleCWfromEast[row])
+    }
+  }
+  
+  if(start==1){
+    nrows <- nrow(RSVPData)*length(IDsWithEyeTracking)
+    masterDF <- RSVPData[nrow(RSVPData)+1:nrows,]
+  }
+
+  
+  end <- start+nrow(RSVPData)-1
+  masterDF[start:end,] <- RSVPData
+  start <- end + 1
+  
   #uncomment these to save the eyetracking data for each participant to the workspace
   
   #assign(paste0(ID,'Eye'), eyeTrackedData) 
