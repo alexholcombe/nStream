@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = True
+eyetracking = False
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -42,13 +42,11 @@ except ImportError:
     print('Could not import setupHelpers.py (you need that file to be in the same directory)')
 
 
-
-
 #THINGS THAT COULD PREVENT SUCCESS ON A STRANGE MACHINE
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
 #widthPix, heightPix
 quitFinder = False #if checkRefreshEtc, quitFinder becomes True
-autopilot=False
+autopilot=True
 demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
@@ -342,8 +340,8 @@ possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 6
-pairAngles = range(0,180,int(360/streamsPerRing))
-nStreamsPossibilities = [2,21] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+pairAngles = range(0,180,int(360/streamsPerRing)) #angles of possible cued streams
+nStreamsPossibilities = [2,18] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
 rings = range(int(np.ceil(float(max(nStreamsPossibilities))/streamsPerRing)))
 
 
@@ -353,19 +351,21 @@ for nStreams in nStreamsPossibilities:
         for ring in rings:
             for pairAngle in pairAngles:
                 for whichInPair in [0,1]:
+                    halfAngle = 360/float(streamsPerRing)/2.0
+                    thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
                     if nStreams==2:
-                        whichStreamCuedAngle = pairAngle + whichInPair * 180
+                        whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
                         stimList.append(         
-                                 {'nStreams':nStreams, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 
+                                 {'nStreams':nStreams,  
+                                    'cue0temporalPos':cueTemporalPos, 
                                     'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
                               )
-                    elif nStreams == 21:
-                        whichStreamCuedAngle = 360/4*pairAngle
-                        whichStreamCuedAngle += whichInPair * 180  
+                    else:
+                        whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
+                        print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
                         stimList.append(         
-                                 {'nStreams':nStreams, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 
+                                 {'nStreams':nStreams, 
+                                    'cue0temporalPos':cueTemporalPos,
                                     'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
                               )
 
@@ -374,28 +374,49 @@ trialsPerCondition = 1
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 print('There are ' + str(trials.nTotal) + ' trials.')
 
+#################################################################
+###Print cued stream to check calculations                    ###
+###This iterates the trials object, so the main loop won't run###
+#################################################################
+
+testCuedStreams = False
+
+if testCuedStreams:
+    n = 0
+    while n < trials.nTotal:
+        trial = trials.next()
+        nStreams = trial['nStreams']
+        #print(nStreams)
+
+        ring = trial['ring']
+        thisRingAngleOffset = (ring % 2) * halfAngle 
+        
+            
+        whichStreamCuedAngle = trial['whichStreamCuedAngle']
+        
+        cuedFrame = trial['cue0temporalPos']
+        if(nStreams > 2):
+            #print(ring*streamsPerRing)
+            print((whichStreamCuedAngle))
+            cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
+            cuedStream = int(cuedStream)
+        else:
+            cuedStream = trial['whichInPair']
+        print('cuedStream = ' + str(cuedStream))
+        n+=1
+
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
 
 print('Trials computed')
-
-########################################
-###Counts for spatial position of cue###
-########################################
-countsList = list() #list of np.arrays. Index is rank order of nStream, streami
-for nStreams in nStreamsPossibilities:
-    countsList.append([0] * nStreams)
 
 
 ####################################
 #### Print header for data file ####
 ####################################
 
-print('experimentPhase\ttrialnum\tsubject\ttask\t',file=dataFile,end='')
-print('noisePercent\t',end='',file=dataFile)
-print('targetLeftRightIfOne\t',end='',file=dataFile)
+print('experimentPhase\ttrialnum\tsubject\t',file=dataFile,end='')
 print('nStreams\t',end='',file=dataFile)
-print('baseAngleCWfromEast\t',end='',file=dataFile)
 print('ring\t',end='',file=dataFile)
 printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
@@ -406,9 +427,11 @@ if printInOrderOfResponses:
        dataFile.write('cuePos'+str(i)+'\t')
        dataFile.write('answer'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
        dataFile.write('correct'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
-       dataFile.write('whichStream'+str(i)+'\t') 
-       dataFile.write('angleOfWhichStream'+str(i)+'\t')
+       dataFile.write('pairAngle'+str(i)+'\t') 
+       dataFile.write('whichStreamCuedAngle'+str(i)+'\t')
        dataFile.write('whichRespCue'+str(i)+'\t')   #have to use write to avoid ' ' between successive text, at least until Python 3
+       dataFile.write('whichInPair'+str(i)+'\t')
+       dataFile.write('cuedStream'+str(i)+'\t')
        dataFile.write('responsePosRelative'+str(i)+'\t')
 for i in xrange(max(nStreamsPossibilities)):
     dataFile.write('streamLtrSequence'+str(i)+'\t')#have to use write to avoid ' ' between successive text, at least until Python 3
@@ -554,7 +577,7 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     if nStreams == 2:
         thisRingNum = ring #innermost ring is now the outermost ring
     else:
-        pairAngle = 0
+        pairAngle = 0 #if 18 streams, no need for angular offset
     #print('streams this ring: ',streamsThisRing)
 
 
@@ -625,13 +648,23 @@ def doRSVPStim(trial):
     global tracker
     
     nStreams = trial['nStreams']
-    numTargets = trial['numToCue']  
+    print(nStreams)
+
+    ring = trial['ring']
+    thisRingAngleOffset = (ring % 2) * halfAngle 
+    
+    whichStreamCuedAngle = trial['whichStreamCuedAngle']
     
     cuedFrame = trial['cue0temporalPos']
-    cuedStream = 
+    if(nStreams > 2):
+        cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
+        cuedStream = int(cuedStream)
+    else:
+        cuedStream = trial['whichInPair']
     
     print('cueFrame = ' + str(cuedFrame))
-
+    print('cuedStream = ' + str(cuedStream))
+    print('whichinPair = ' + str(trial['whichInPair']))
     streamPositions = list() #Might need to pass this to elementArrayStim as xys. Might not though
 
 
@@ -656,7 +689,7 @@ def doRSVPStim(trial):
         streamLetterIdentities[thisStream,:] = theseIdentities
         #print('For stream %(streamN)d the letters are: %(theseLetters)s' % {'streamN':thisStream, 'theseLetters':''.join(theseIdentities)})
 
-    print(streamLetterIdentities)
+    #print(streamLetterIdentities)
 
     correctIdx = streamLetterIdxs[cuedStream,cuedFrame] 
     print('correctIdx')
@@ -763,7 +796,7 @@ def doRSVPStim(trial):
     waiting = True
     myMouse.setVisible(waiting)
     
-    while waiting:
+    while waiting and not autopilot:
         startTrialStimuli.draw()
         startTrialBox.draw()
         myWin.flip()
@@ -827,31 +860,35 @@ while nDone < trials.nTotal and not expStop:
 
     streamLetterIdxs, streamLetterIdentities, correctLetter, ts, cuedStream, cuePos = doRSVPStim(trial)
     myMouse.setVisible(True)
-    expStop,passThisTrial,responses,buttons,responsesAutopilot = \
-            letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
-            myWin,
-            bgColor,
-            myMouse,
-            clickSound,
-            badKeySound,
-            potentialLetters,
-            showBothSides,
-            sideFirstLeftRightCentral,
-            autopilot
-            )
-    myWin.flip()
+    if not autopilot:
+        expStop,passThisTrial,responses,buttons,responsesAutopilot = \
+                letterLineupResponse.doLineup( #doLineup(myWin,bgColor,myMouse,clickSound,badClickSound,possibleResps,bothSides,leftRightCentral,autopilot):
+                myWin,
+                bgColor,
+                myMouse,
+                clickSound,
+                badKeySound,
+                potentialLetters,
+                showBothSides,
+                sideFirstLeftRightCentral,
+                autopilot
+                )
+        myWin.flip()
+    else:
+        responses = ['Z']
+        buttons = [0]
     accuracy = responses[0] == correctLetter
-    print('printing accuracy vars')
-    print(streamLetterIdentities[cuedStream,:])
-    print(responses[0])
-    print(np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0][0])
+    #print('printing accuracy vars')
+    #print(streamLetterIdentities[cuedStream,:])
+    #print(responses[0])
+    #print(np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0][0])
     responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0] #need index on where because it treats sliced streamLetterIdentities as a ndarray
     SPE = responseLetterIdx[0] - cuePos
     print('SPE ' + str(SPE))
     
     cuedStreamPos = calcStreamPos(trial, cueOffsets, cuedStream, False)
     print(cuedStreamPos)
-    cuedStreamAngle = atan(cuedStreamPos[1]/cuedStreamPos[0])*(180/np.pi)
+    cuedStreamAngle = atan2(cuedStreamPos[1],cuedStreamPos[0])*(180/np.pi)
     print(cuedStreamAngle)
 
     timingBlips = checkTiming(ts)
@@ -860,21 +897,19 @@ while nDone < trials.nTotal and not expStop:
     dataFile.write(
         'main\t' + 
         str(nDone) + '\t' + 
-        subject + '\t' + 
-        trial['task'] + '\t' +
-        str(trial['proportionNoise']) + '\t' +
-        str(trial['targetLeftRightIfOne']) + '\t' +
+        subject + '\t' +
         str(trial['nStreams']) + '\t' +
-        str(trial['baseAngleCWfromEast']) + '\t' +
         str(trial['ring']) + '\t' +
         responses[0] + '\t' +
         str(buttons[0]) + '\t' +
         str(cuePos) + '\t' +
         correctLetter + '\t' +
         str(accuracy) + '\t' +
-        str(cuedStream) + '\t' +
-        str(cuedStreamAngle) + '\t' +
+        str(trial['pairAngle']) + '\t' +
+        str(trial['whichStreamCuedAngle']) + '\t' +
         '0' + '\t' +
+        str(trial['whichInPair'])+'\t'+
+        str(cuedStream)+'\t'+
         str(SPE) + '\t'
         )
 
