@@ -1,4 +1,4 @@
-#Alex Holcombe alex.holcombe@sydney.edu.au
+#Charlie Ludowici charles.ludowici@sydney.edu.au
 #See the README.md for more information: https://github.com/alexholcombe/attentional-blink/blob/master/README.md
 #git remote add origin https://github.com/alexholcombe/nStream
 
