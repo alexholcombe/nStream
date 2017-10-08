@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = True
+eyetracking = False
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -51,8 +51,8 @@ demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
 if autopilot: subject='auto'
-if os.path.isdir('.'+os.sep+'rawData'):
-    dataDir='rawData'
+if os.path.isdir('.'+os.sep+'rawData/18Streams'):
+    dataDir='rawData/18Streams'
 else:
     print('"rawData" directory does not exist, so saving data in present working directory')
     dataDir='.'
@@ -143,8 +143,8 @@ logging.info(pixelperdegree)
 #letter size 2.5 deg
 numLettersToPresent = 24
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
-SOAms = 83.25 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
-letterDurMs = 60 #60
+SOAms = 600 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
+letterDurMs = 600 #60
 
 ISIms = SOAms - letterDurMs
 letterDurFrames = int( np.floor(letterDurMs / (1000./refreshRate)) )
@@ -260,7 +260,7 @@ instructions1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),
 instructions2 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
 
 instructionText1 = """
-This experiment is made up of several trials. On each trial you will fixate your eyes on a central point on the screen. Then several rapid, randomly-ordered sequences of letters will appear at two or 8 locations on the screen. You must not move your eyes from the fixation point while these sequences are playing.
+This experiment is made up of several trials. On each trial you will fixate your eyes on a central point on the screen. Then several rapid, randomly-ordered sequences of letters will appear at two or 18 locations on the screen. You must not move your eyes from the fixation point while these sequences are playing.
 
 One of the letters will appear with a white ring around it. Your job is to tell us which of the letters appeared within the white ring. Again, you must not move your eyes from the fixation point in the centre of the screen while the letter streams are shown.
 
@@ -368,7 +368,7 @@ for nStreams in nStreamsPossibilities:
                               )
 
 
-trialsPerCondition = 1
+trialsPerCondition = 2
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 print('There are ' + str(trials.nTotal) + ' trials.')
 
