@@ -8,15 +8,15 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
-
-itemRates = [12,12,12,8.6957];
+%sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'SONA/18Streams/twoStreams', 'SONA/18Streams/eighteenStreams'};
+itemRates = [12,12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
 nParticipants = [10 10 6 4];
-nTrials = 300;
+nTrials = 360;
 nSessions = 1;
 nSamples = numel(sampleNames);
 
@@ -71,9 +71,9 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
-    splitName = strsplit(sampleNames{thisSample},'/')
-    folder = splitName{1}
-    group = splitName{2}
+    splitName = strsplit(sampleNames{thisSample},'/');
+    folder = splitName{1};
+    group = splitName{3};
     
     % Load data
     cd(dataDirectory);
