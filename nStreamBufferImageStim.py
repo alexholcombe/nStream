@@ -14,7 +14,7 @@ eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.8
 #Eyetracking stuff
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = True
+eyetracking = False
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -71,7 +71,7 @@ demo = False
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
-refreshRate = 60
+refreshRate = 100
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
@@ -115,7 +115,7 @@ screenValues = {
     'heightPix': 768, #800 #monitor height in pixels
     'monitorwidth' :40.5, #monitor width in cm
     'scrn':0, #0 to use main screen, 1 to use external screen connected to computer
-    'fullscr':False, #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
+    'fullscr':True, #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
     'allowGUI' : False,
     'bgColor' : bgColor,
     'screen' : scrn,
@@ -343,7 +343,6 @@ nStreamsPossibilities = [2,18] #np.arange(2,21,3) #this needs to be listed here 
 rings = range(int(np.ceil(float(max(nStreamsPossibilities))/streamsPerRing)))
 
 
-
 for nStreams in nStreamsPossibilities:
     for cueTemporalPos in possibleCueTemporalPositions: #5 or 6 temporal serial positions for  the cue
         for ring in rings:
@@ -359,13 +358,14 @@ for nStreams in nStreamsPossibilities:
                                     'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
                               )
                     else:
-                        whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
-                        print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
-                        stimList.append(         
-                                 {'nStreams':nStreams, 
-                                    'cue0temporalPos':cueTemporalPos,
-                                    'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                              )
+                       pass
+                       whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
+                       print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
+                       stimList.append(         
+                                {'nStreams':nStreams, 
+                                   'cue0temporalPos':cueTemporalPos,
+                                   'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
+                             )
 
 
 trialsPerCondition = 2
@@ -475,9 +475,9 @@ potentialLetters = [letter for letter in string.ascii_uppercase if letter not in
 streamTextObjects = list() #A text object for every stream. I'll update the text for each frame
 
 nextLargestMultiple = int(np.ceil(float(maxStreams)/streamsPerRing))*streamsPerRing #The next largest multiple of streamsPerRing after maxStreams
-print('nextLargestMultiple is' + str(nextLargestMultiple))
+print('nextLargestMultiple is ' + str(nextLargestMultiple))
 
-for stream in xrange(nextLargestMultiple): #Use the nextLargestMultiple because, if flip == 'out', the program draws 8 streams in the outer ring and we get sizing errors, because with max 21 streams, it would never normally draw this many.
+for stream in xrange(nextLargestMultiple): 
     thisStream = list()
     for letter in potentialLetters:
         streamText = visual.TextStim(
@@ -794,6 +794,12 @@ def doRSVPStim(trial):
     waiting = True
     myMouse.setVisible(waiting)
     
+    if nDone is not 0:
+        if  trials.nTotal/float(nDone) in [1.,1.5,2.,3.]:
+            startTrialStimuli.text = startTrialStimuli.text + '\n\rThis is trial ' + str(nDone) + ' of ' + str(trials.nTotal)    
+        else:
+            startTrialStimuli.text = 'Click here to start the trial'
+        
     while waiting and not autopilot:
         startTrialStimuli.draw()
         startTrialBox.draw()
@@ -843,7 +849,7 @@ while waiting:
             waiting = False
         if key in ['Escape']:
             expStop = True
-
+myWin.flip()
 
 
 
@@ -880,9 +886,14 @@ while nDone < trials.nTotal and not expStop:
     #print(streamLetterIdentities[cuedStream,:])
     #print(responses[0])
     #print(np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0][0])
-    responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0] #need index on where because it treats sliced streamLetterIdentities as a ndarray
-    SPE = responseLetterIdx[0] - cuePos
-    print('SPE ' + str(SPE))
+    responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0]) #need index on where because it treats sliced streamLetterIdentities as a ndarray
+    if len(responseLetterIdx) is not 0:
+        responseLetterIdx = responseLetterIdx[0]
+        SPE = responseLetterIdx[0] - cuePos
+        print('SPE ' + str(SPE))
+    else:
+        responseLetterIdx = 999
+        SPE = 999
     
     cuedStreamPos = calcStreamPos(trial, cueOffsets, cuedStream, False)
     print(cuedStreamPos)
