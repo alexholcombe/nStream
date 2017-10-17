@@ -46,7 +46,7 @@ except ImportError:
 #same screen or external screen? Set scrn=0 if one screen. scrn=1 means display stimulus on second screen.
 #widthPix, heightPix
 quitFinder = False #if checkRefreshEtc, quitFinder becomes True
-autopilot=False
+autopilot=True
 demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
@@ -83,8 +83,9 @@ cueColor = [1.,1.,1.]
 cueType = 'exogenousRing' #'lowerCase' #'exogenousRing' #'endogenous':
 if cueType == 'endogenous':
     cueColor = [1,-1,-1]
-letterColor = [1.,0.,0.]
+letterColor = [1.,1.,1.]
 cueRadius = 2.5 #6 deg, as in Martini E2    Letters should have height of 2.5 deg
+uncrowdedRadii = [2.0, 4.299850074962519, 7.387181409295352]
 
 #There's no lowercase in sloan
 if cueType is 'lowerCase':
@@ -144,6 +145,7 @@ logging.info(pixelperdegree)
 
 numLettersToPresent = 1
 numSymbolsToPresent = 23
+totalItemsToPresent = numSymbolsToPresent + numLettersToPresent
 #For AB, minimum SOAms should be 84  because any shorter, I can't always notice the second ring when lag1.   71 in Martini E2 and E1b (actually he used 66.6 but that's because he had a crazy refresh rate of 90 Hz)
 SOAms = 83.25 #82.35 Battelli, Agosta, Goodbourn, Holcombe mostly using 133
 letterDurMs = 60 #60
@@ -164,7 +166,7 @@ rateInfo+=  'ISIframes ='+str(ISIframes)+' or '+str(ISIframes*(1000./refreshRate
 
 logging.info(rateInfo); print(rateInfo)
 
-trialDurFrames = int( numLettersToPresent*(ISIframes+letterDurFrames) ) #trial duration in frames
+trialDurFrames = int( totalItemsToPresent*(ISIframes+letterDurFrames) ) #trial duration in frames
  
 
 
@@ -351,17 +353,18 @@ for nStreams in nStreamsPossibilities:
             for ring in rings:
                 for pairAngle in pairAngles:
                     for whichInPair in [0,1]:
-                        halfAngle = 360/float(streamsPerRing)/2.0
-                        thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
-                        if nStreams==2:
-                            whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
-                            stimList.append(         
-                                     {'nStreams':nStreams,  
-                                        'cue':cue, 'letterPos':letterPos,
-                                        'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                                  )
-                        else:
-                           pass
+                        for crowded in [True, False]:
+                            halfAngle = 360/float(streamsPerRing)/2.0
+                            thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
+                            if nStreams==2:
+                                whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
+                                stimList.append(         
+                                         {'nStreams':nStreams,  
+                                            'cue':cue, 'letterPos':letterPos, 'crowded' : crowded,
+                                            'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
+                                      )
+                            else:
+                               pass
                            # whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
                            # print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
                            # stimList.append(         
@@ -746,11 +749,11 @@ def doRSVPStim(trial):
     hashStimuli = list()
     
     streams = np.empty( #Letter identities for these streams
-        shape = (nStreams,numSymbolsToPresent+numLettersToPresent),
+        shape = (nStreams,totalItemsToPresent),
         dtype = str
         )
     
-    for thisFrame in xrange(numLettersToPresent + numSymbolsToPresent):
+    for thisFrame in xrange(totalItemsToPresent):
         if thisFrame == trial['letterPos']:
             theseStimuli = streamLetterIdxs[:,0] #The alphabetical indexes of stimuli to be shown on this frame
         else:
@@ -792,10 +795,15 @@ def doRSVPStim(trial):
 
             stimuliToDraw.append(thisStreamStimulus)
             stimuliToDrawCounterPhase.append(thisStreamStimulus)
+            
+            cue.setPos( thisPos )
 
-            if cueThisFrame and cueType == 'exogenousRing':
-                cue.setPos( thisPos )
+            if trial['crowded']:
                 cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+            else:
+                cue.radius = cueOffsets[trial['ring']]/2 + .2
+
+            if cueThisFrame and thisFrame == trial['letterPos']:
                 stimuliToDraw.append(cue)
                 stimuliToDrawCounterPhase.append(cue)
             
@@ -879,6 +887,11 @@ def doRSVPStim(trial):
 
     ts = []
     myWin.flip(); myWin.flip()#Make sure raster at top of screen (unless not in blocking mode), and give CPU a chance to finish other tasks
+    cue.draw()
+    myWin.flip()
+    core.wait(.25)
+    myWin.flip
+    core.wait(.5)
     fixatn.draw()
     myWin.flip()
     core.wait(1)
