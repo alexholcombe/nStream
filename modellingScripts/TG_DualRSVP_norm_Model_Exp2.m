@@ -8,9 +8,9 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'SONA/twoStreams','SONA/eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
-itemRates = [12,12,12,8.6957];
+itemRates = [12,12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
@@ -246,10 +246,12 @@ for thisSample = 1:nSamples
                 fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
                 minNegLogLikelihoodByParticipant = inf;
 
-                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:));
+                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:))
                 theseErrorsByParticipant = theseErrorsByParticipant(:);
                 theseErrorsByParticipant = theseErrorsByParticipant(~isnan(theseErrorsByParticipant));
 
+                fprintf('nTrials: %d \n\r', numel(theseErrorsByParticipant));
+                
                  % Compute negative log likelihood for uniform distribution
 
                 uniformNegLogLikelihoodByParticipant = -sum(log(pdf_uniformonly(theseErrorsByParticipant,1)));
@@ -371,7 +373,7 @@ fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        %fprintf(writeFile,'\n%d',thisSample); % Group
+        fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));

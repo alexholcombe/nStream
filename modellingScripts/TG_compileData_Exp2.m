@@ -4,7 +4,7 @@
 
 clear all; %#ok<CLSCR>
 
-allGroups = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'};
+allGroups = {'SONA/twoStreams','SONA/eightStreams'};
 baseDirectory = '~/gitCode/nStream/';
 dataDirectory = [baseDirectory 'wrangledData/'];
 saveDirectory = [baseDirectory 'modelOutput/'];
@@ -13,7 +13,7 @@ saveDirectory = [baseDirectory 'modelOutput/'];
 
 % Specifiy the format of the data in the text file.
 
-dataFormat = {'%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d'};
+dataFormat = {'%s%d%s%s%d%s%d%d%s%d%d%s%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%d%d%s%d%d%s%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s'}
 
 % For the RSVP analysis, the variables we need are:
 % compiledErrors(thisCondition,thisParticipant,thisSession,thisTrial,thisSide);
@@ -28,8 +28,8 @@ dataFormat = {'%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s
 % 6: Subject
 % 7: Cued Stream position. 0 is 12 o'clock. Increases clockwise
 
-dataColumns = {[11 16 4 9 26 3 14],[11 16 4 9 26 3 14],[20 12 4 7 21 3 10],[20 12 4 7 21 3 10]};
-streams = [2 8 6 6];
+dataColumns = {[11 17 1 9 27 3 14],[11 17 1 9 27 3 14]};
+streams = [8 8];
 % Specify the maximum number of trials (per participant, condition, etc).
 % We do this so that we can build the
 % data matrices to this size. They'll be trimmed afterwards to the actual
@@ -49,6 +49,7 @@ for thisGroup = 1:nGroups
     
     % Open file.
     cd([dataDirectory allGroups{thisGroup}]);
+    pwd
     
     allContents = dir;
     allContents = {allContents.name};
@@ -134,6 +135,7 @@ for thisGroup = 1:nGroups
         % If this is the highest number of trials per participant so far,
         % store that number.
         nTrialsMaxActual = max([nTrialsMaxActual nTrials]);
+        fprintf('%s\n', int2str(nTrials))
 
     end
     
