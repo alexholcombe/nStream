@@ -80,7 +80,7 @@ demo = False
 showRefreshMisses=True #flicker fixation at refresh rate, to visualize if frames missed
 feedback=False
 autoLogging=False
-refreshRate = 100
+refreshRate = 100.
 if demo:
     refreshRate = 60.;  #100 LN: refresh rate for previous AB and RSVP task for gamers was 60
 
@@ -924,7 +924,7 @@ while waiting:
             expStop = True
 
 
-
+myWin.flip()
 
 allBlips = list()
 expStop = False #If True, end experiment
