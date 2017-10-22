@@ -348,24 +348,25 @@ for nStreams in nStreamsPossibilities:
         for ring in rings:
             for pairAngle in pairAngles:
                 for whichInPair in [0,1]:
-                    halfAngle = 360/float(streamsPerRing)/2.0
-                    thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
-                    if nStreams==2:
-                        whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
-                        stimList.append(         
-                                 {'nStreams':nStreams,  
-                                    'cue0temporalPos':cueTemporalPos, 
-                                    'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                              )
-                    else:
-                       pass
-                       whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
-                       print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
-                       stimList.append(         
-                                {'nStreams':nStreams, 
-                                   'cue0temporalPos':cueTemporalPos,
-                                   'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                             )
+                    for crowded in [True, False]:
+                        halfAngle = 360/float(streamsPerRing)/2.0
+                        thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
+                        if nStreams==2:
+                            whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
+                            stimList.append(         
+                                     {'nStreams':nStreams,  
+                                        'cue0temporalPos':cueTemporalPos, 
+                                        'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair, 'crowded': crowded} 
+                                  )
+                        else:
+                           pass
+                           # whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
+                           # print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
+                           # stimList.append(         
+                           #          {'nStreams':nStreams, 
+                           #             'cue0temporalPos':cueTemporalPos,
+                           #         'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
+                           #   )
 
 
 trialsPerCondition = 2
@@ -416,6 +417,7 @@ print('Trials computed')
 print('experimentPhase\ttrialnum\tsubject\t',file=dataFile,end='')
 print('nStreams\t',end='',file=dataFile)
 print('ring\t',end='',file=dataFile)
+dataFile.write('crowded\t')
 printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
@@ -466,6 +468,7 @@ for cueN in xrange(maxNumRespsWanted):
 #In each stream, predraw all 26 letters
 ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
 cueOffsets = [3,7,11.5]
+uncrowdedRadii = [1.3, 1.95, 2.8] #.1E + .5ltrheight + .5
 maxStreams = max(nStreamsPossibilities)
 
 lettersToExclude = ['C','W'] #lets exclude these
@@ -550,6 +553,40 @@ if eyetracking:
 #################
 ### Functions ###
 #################
+
+def bufferPixels(stimuli):
+    '''
+    requires global:
+        myWin
+        pad_amounts (bufferImageStim needs dim that are a power of 2)
+
+    '''
+    buff = visual.BufferImageStim( #Buffer these stimuli
+            win = myWin,
+            stim = stimuli
+            )
+        
+        
+    buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
+    
+    buff = np.pad(
+        array=buff,
+        pad_width=pad_amounts, #See 'Buffered image size dimensions' section
+        mode="constant",
+        constant_values=0.0
+    )
+    
+    thisFrameStimuli = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
+        win = myWin,
+        units = 'pix',
+        nElements=1,
+        xys = [[0,0]],
+        sizes=buff.shape,
+        elementTex=buff,
+        elementMask = 'none'
+            )
+
+    return thisFrameStimuli
 
 def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     '''
@@ -732,60 +769,17 @@ def doRSVPStim(trial):
 
             if cueThisFrame and cueType == 'exogenousRing':
                 cue.setPos( thisPos )
-                cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+                if trial['crowded']:
+                    cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+                elif not trial['crowded']:
+                    cue.radius = uncrowdedRadii[ring]
                 stimuliToDraw.append(cue)
                 stimuliToDrawCounterPhase.append(cue)
-        
-        buff = visual.BufferImageStim( #Buffer these stimuli
-            win = myWin,
-            stim = stimuliToDraw
-            )
-        
-        
-        buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
-        
-        buff = np.pad(
-            array=buff,
-            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
-            mode="constant",
-            constant_values=0.0
-        )
-        
-        thisFrameStimuli = visual.ElementArrayStim( #A stimulus representing this frame with the fixation at full luminance
-            win = myWin,
-            units = 'pix',
-            nElements=1,
-            xys = [[0,0]],
-            sizes=buff.shape,
-            elementTex=buff,
-            elementMask = 'none'
-            )
-            
-        buff = visual.BufferImageStim( #Buffer these stimuli
-            win = myWin,
-            stim = stimuliToDrawCounterPhase
-            )
-        
-        
-        buff = np.flipud(np.array(buff.image)[..., 0]) / 255.0 * 2.0 - 1.0 #Via djmannion. This converts the pixel values from [0,255] to [-1,1]. I think 0 is middle grey. I'll need to change this to match the background colour eventually
-        
-        buff = np.pad(
-            array=buff,
-            pad_width=pad_amounts, #See 'Buffered image size dimensions' section
-            mode="constant",
-            constant_values=0.0
-        )
-        
 
-        thisFrameStimuliCounterPhase = visual.ElementArrayStim( #A stimulus representing this frame with the fixation phase reversed
-            win = myWin,
-            units = 'pix',
-            nElements=1,
-            xys = [[0,0]],
-            sizes=buff.shape,
-            elementTex=buff,
-            elementMask = 'none'
-            )        
+        
+        thisFrameStimuli = bufferPixels(stimuliToDraw)
+            
+        thisFrameStimuliCounterPhase = bufferPixels(stimuliToDrawCounterPhase)
 
         frameStimuli.append([thisFrameStimuli, thisFrameStimuliCounterPhase])
 
@@ -909,6 +903,7 @@ while nDone < trials.nTotal and not expStop:
         subject + '\t' +
         str(trial['nStreams']) + '\t' +
         str(trial['ring']) + '\t' +
+        str(trial['crowded']) + '\t' +
         responses[0] + '\t' +
         str(buttons[0]) + '\t' +
         str(cuePos) + '\t' +
