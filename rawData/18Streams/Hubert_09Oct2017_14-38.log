@@ -1,0 +1,2085 @@
+9.0126 	ERROR 	Frames per second ~=60.2 BUT program assumes 100which is off by more than3.0%!!
+9.0128 	ERROR 	Screen apparently NOT the desired resolution of 1024x768 pixels!!
+10.9778 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1280, 800]. Using actual size
+11.6504 	INFO 	Successfully set darwin thread to realtime
+12.7035 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_10_09 14:38 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1507520295
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: 6670c1d2880684498f056a912f49c5aa9e2dd3d8
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2680-10-17-75-129.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 2920.26171875
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.11.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.001995464786887169, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.006734693888574839, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Oct 4 15:29
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0057
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 166
+    systemUserProcFlagged: mdworker ''Google Chrome'' Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1280  800]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.179
+    windowRefreshTimeMedian_ms: 16.626
+    windowRefreshTimeAvg_ms: 16.625
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 59.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+14.1715 	EXP 	Set  sound=C
+14.1728 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+14.3365 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+14.3368 	EXP 	Set  sound=A
+14.5051 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-3.   ,  0.375],
+       [ 3.   ,  0.375],
+       [ 3.   , -0.375],
+       [-3.   , -0.375]])
+14.5074 	EXP 	Created unnamed Rect = Rect(autoDraw=False, autoLog=True, closeShape=True, contrast=1.0, depth=0, fillColor=None, fillColorSpace='rgb', fillRGB=None, interpolate=True, lineColor=array([-0.7, -0.7, -0.7]), lineColorSpace='rgb', lineRGB=array([-0.7, -0.7, -0.7]), lineWidth=1.5, name='unnamed Rect', opacity=1.0, ori=array(0.0), pos=array([ 0.,  0.]), size=array([ 1.,  1.]), units='deg', vertices=ndarray(...), win=Window(...))
+14.5299 	EXP 	Created sequence: random, trialTypes=12, nReps=2, seed=None
+14.6502 	INFO 	 each trialDurFrames=8 or 80.0 ms
+15.1104 	INFO 	Mouse: using default window
+15.1120 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+15.1124 	EXP 	Set  sound=A
+15.1144 	EXP 	window1: blendMode = 'avg'
+15.5818 	DATA 	Keypress: space
+15.5828 	EXP 	window1: blendMode = 'avg'
+15.8196 	DATA 	Keypress: m
+15.8207 	EXP 	New trial (rep=0, index=0): {'cue': False, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 0, 'whichStreamCuedAngle': 180.0}
+15.9054 	EXP 	window1: blendMode = 'avg'
+15.9091 	EXP 	window1: blendMode = 'avg'
+15.9450 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+15.9450 	EXP 	BufferImageStim None: took 44.6ms to initialize
+16.0055 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+16.0414 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+16.0427 	EXP 	window1: blendMode = 'avg'
+16.0430 	EXP 	window1: blendMode = 'avg'
+16.0940 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+16.0940 	EXP 	BufferImageStim None: took 52.6ms to initialize
+16.1324 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+16.1653 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+16.1786 	EXP 	window1: blendMode = 'avg'
+16.1826 	EXP 	window1: blendMode = 'avg'
+16.2161 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+16.2162 	EXP 	BufferImageStim None: took 50.8ms to initialize
+16.2546 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+16.2869 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+16.2875 	EXP 	window1: blendMode = 'avg'
+16.2878 	EXP 	window1: blendMode = 'avg'
+16.3372 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+16.3372 	EXP 	BufferImageStim None: took 50.2ms to initialize
+16.3755 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+16.4078 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+16.4086 	EXP 	window1: blendMode = 'avg'
+16.4198 	EXP 	window1: blendMode = 'avg'
+16.4441 	EXP 	window1: blendMode = 'avg'
+16.4608 	EXP 	window1: blendMode = 'avg'
+16.4776 	EXP 	window1: blendMode = 'avg'
+16.4942 	EXP 	window1: blendMode = 'avg'
+16.5106 	EXP 	window1: blendMode = 'avg'
+16.5277 	EXP 	window1: blendMode = 'avg'
+16.5441 	EXP 	window1: blendMode = 'avg'
+16.5606 	EXP 	window1: blendMode = 'avg'
+16.5770 	EXP 	window1: blendMode = 'avg'
+16.5940 	EXP 	window1: blendMode = 'avg'
+16.6107 	EXP 	window1: blendMode = 'avg'
+16.6270 	EXP 	window1: blendMode = 'avg'
+16.6437 	EXP 	window1: blendMode = 'avg'
+16.6607 	EXP 	window1: blendMode = 'avg'
+16.6768 	EXP 	window1: blendMode = 'avg'
+16.6934 	EXP 	window1: blendMode = 'avg'
+16.7104 	EXP 	window1: blendMode = 'avg'
+16.7272 	EXP 	window1: blendMode = 'avg'
+16.7437 	EXP 	window1: blendMode = 'avg'
+16.7601 	EXP 	window1: blendMode = 'avg'
+16.7770 	EXP 	window1: blendMode = 'avg'
+16.7935 	EXP 	window1: blendMode = 'avg'
+16.8099 	EXP 	window1: blendMode = 'avg'
+16.8266 	EXP 	window1: blendMode = 'avg'
+16.8436 	EXP 	window1: blendMode = 'avg'
+16.8600 	EXP 	window1: blendMode = 'avg'
+16.8764 	EXP 	window1: blendMode = 'avg'
+16.8933 	EXP 	window1: blendMode = 'avg'
+16.9099 	EXP 	window1: blendMode = 'avg'
+16.9264 	EXP 	window1: blendMode = 'avg'
+16.9430 	EXP 	window1: blendMode = 'avg'
+16.9595 	EXP 	window1: blendMode = 'avg'
+16.9765 	EXP 	window1: blendMode = 'avg'
+16.9927 	EXP 	window1: blendMode = 'avg'
+17.0094 	EXP 	window1: blendMode = 'avg'
+17.0264 	EXP 	window1: blendMode = 'avg'
+17.0434 	EXP 	window1: blendMode = 'avg'
+17.0601 	EXP 	window1: blendMode = 'avg'
+17.0764 	EXP 	window1: blendMode = 'avg'
+17.0930 	EXP 	window1: blendMode = 'avg'
+17.1096 	EXP 	window1: blendMode = 'avg'
+17.1260 	EXP 	window1: blendMode = 'avg'
+17.1430 	EXP 	window1: blendMode = 'avg'
+17.1595 	EXP 	window1: blendMode = 'avg'
+17.1760 	EXP 	window1: blendMode = 'avg'
+17.1926 	EXP 	window1: blendMode = 'avg'
+17.2094 	EXP 	window1: blendMode = 'avg'
+17.2257 	EXP 	window1: blendMode = 'avg'
+17.2423 	EXP 	window1: blendMode = 'avg'
+17.2592 	EXP 	window1: blendMode = 'avg'
+17.2763 	EXP 	window1: blendMode = 'avg'
+17.2926 	EXP 	window1: blendMode = 'avg'
+17.3090 	EXP 	window1: blendMode = 'avg'
+17.3256 	EXP 	window1: blendMode = 'avg'
+17.3422 	EXP 	window1: blendMode = 'avg'
+17.3587 	EXP 	window1: blendMode = 'avg'
+17.3757 	EXP 	window1: blendMode = 'avg'
+17.3922 	EXP 	window1: blendMode = 'avg'
+17.4088 	EXP 	window1: blendMode = 'avg'
+17.4251 	EXP 	window1: blendMode = 'avg'
+17.4418 	EXP 	window1: blendMode = 'avg'
+17.4585 	EXP 	window1: blendMode = 'avg'
+17.4748 	EXP 	window1: blendMode = 'avg'
+17.4913 	EXP 	window1: blendMode = 'avg'
+17.5083 	EXP 	window1: blendMode = 'avg'
+17.5247 	EXP 	window1: blendMode = 'avg'
+17.5416 	EXP 	window1: blendMode = 'avg'
+17.5582 	EXP 	window1: blendMode = 'avg'
+17.5750 	EXP 	window1: blendMode = 'avg'
+17.5916 	DATA 	Mouse: Left button down, pos=(648,394)
+17.6078 	DATA 	Mouse:  Left button up, pos=(648,394)
+18.8971 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+18.9272 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+18.9612 	EXP 	window1: blendMode = 'avg'
+18.9706 	EXP 	window1: blendMode = 'avg'
+18.9808 	EXP 	window1: blendMode = 'avg'
+18.9906 	EXP 	window1: blendMode = 'avg'
+19.0008 	EXP 	window1: blendMode = 'avg'
+19.0106 	EXP 	window1: blendMode = 'avg'
+19.0197 	EXP 	window1: blendMode = 'avg'
+19.0297 	EXP 	window1: blendMode = 'avg'
+19.0396 	EXP 	window1: blendMode = 'avg'
+19.0499 	EXP 	window1: blendMode = 'avg'
+19.0598 	EXP 	window1: blendMode = 'avg'
+19.0781 	EXP 	window1: blendMode = 'avg'
+19.0884 	EXP 	window1: blendMode = 'avg'
+19.0980 	EXP 	window1: blendMode = 'avg'
+19.1089 	EXP 	window1: blendMode = 'avg'
+19.1217 	EXP 	window1: blendMode = 'avg'
+19.1334 	EXP 	window1: blendMode = 'avg'
+19.1458 	EXP 	window1: blendMode = 'avg'
+19.1558 	EXP 	window1: blendMode = 'avg'
+19.1660 	EXP 	window1: blendMode = 'avg'
+19.1760 	EXP 	window1: blendMode = 'avg'
+19.2697 	EXP 	window1: blendMode = 'avg'
+19.2790 	EXP 	window1: blendMode = 'avg'
+19.2890 	EXP 	window1: blendMode = 'avg'
+19.2896 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+20.1280 	DATA 	Mouse: Left button down, pos=(618,392)
+20.1290 	EXP 	Sound  started
+20.1394 	EXP 	window1: blendMode = 'avg'
+20.1481 	EXP 	window1: blendMode = 'avg'
+20.1586 	EXP 	window1: blendMode = 'avg'
+20.1679 	EXP 	window1: blendMode = 'avg'
+20.1772 	EXP 	window1: blendMode = 'avg'
+20.1858 	EXP 	window1: blendMode = 'avg'
+20.1948 	EXP 	window1: blendMode = 'avg'
+20.2040 	EXP 	window1: blendMode = 'avg'
+20.2131 	EXP 	window1: blendMode = 'avg'
+20.2219 	EXP 	window1: blendMode = 'avg'
+20.2305 	EXP 	window1: blendMode = 'avg'
+20.2392 	EXP 	window1: blendMode = 'avg'
+20.2474 	EXP 	window1: blendMode = 'avg'
+20.2563 	EXP 	window1: blendMode = 'avg'
+20.2648 	EXP 	window1: blendMode = 'avg'
+20.2732 	EXP 	window1: blendMode = 'avg'
+20.2818 	EXP 	window1: blendMode = 'avg'
+20.2900 	EXP 	window1: blendMode = 'avg'
+20.2985 	EXP 	window1: blendMode = 'avg'
+20.3069 	EXP 	window1: blendMode = 'avg'
+20.3159 	EXP 	window1: blendMode = 'avg'
+20.3246 	EXP 	window1: blendMode = 'avg'
+20.3344 	EXP 	window1: blendMode = 'avg'
+20.3428 	EXP 	window1: blendMode = 'avg'
+20.3436 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+20.3602 	EXP 	window1: blendMode = 'avg'
+20.3660 	EXP 	window1: blendMode = 'avg'
+20.3672 	EXP 	window1: blendMode = 'avg'
+20.3679 	DATA 	Mouse:  Left button up, pos=(618,392)
+21.1980 	DATA 	Mouse: Left button down, pos=(631,166)
+21.2002 	EXP 	New trial (rep=0, index=1): {'cue': False, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 60, 'whichStreamCuedAngle': 240.0}
+21.2156 	EXP 	window1: blendMode = 'avg'
+21.2201 	EXP 	window1: blendMode = 'avg'
+21.2496 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+21.2496 	EXP 	BufferImageStim None: took 38.4ms to initialize
+21.2927 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+21.3166 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+21.3172 	EXP 	window1: blendMode = 'avg'
+21.3175 	EXP 	window1: blendMode = 'avg'
+21.3605 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+21.3605 	EXP 	BufferImageStim None: took 43.9ms to initialize
+21.3990 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+21.4211 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+21.4298 	EXP 	window1: blendMode = 'avg'
+21.4332 	EXP 	window1: blendMode = 'avg'
+21.4655 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+21.4655 	EXP 	BufferImageStim None: took 44.4ms to initialize
+21.5037 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+21.5259 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+21.5264 	EXP 	window1: blendMode = 'avg'
+21.5266 	EXP 	window1: blendMode = 'avg'
+21.5696 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+21.5696 	EXP 	BufferImageStim None: took 43.7ms to initialize
+21.6091 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+21.6313 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+21.6319 	EXP 	window1: blendMode = 'avg'
+21.6327 	DATA 	Mouse:  Left button up, pos=(631,166)
+21.6372 	EXP 	window1: blendMode = 'avg'
+21.6654 	EXP 	window1: blendMode = 'avg'
+21.6820 	EXP 	window1: blendMode = 'avg'
+21.6984 	EXP 	window1: blendMode = 'avg'
+21.7149 	EXP 	window1: blendMode = 'avg'
+21.7318 	EXP 	window1: blendMode = 'avg'
+21.7484 	EXP 	window1: blendMode = 'avg'
+21.7648 	EXP 	window1: blendMode = 'avg'
+21.7812 	EXP 	window1: blendMode = 'avg'
+21.7981 	EXP 	window1: blendMode = 'avg'
+21.8147 	EXP 	window1: blendMode = 'avg'
+21.8313 	EXP 	window1: blendMode = 'avg'
+21.8479 	EXP 	window1: blendMode = 'avg'
+21.8648 	EXP 	window1: blendMode = 'avg'
+21.8817 	EXP 	window1: blendMode = 'avg'
+21.8978 	EXP 	window1: blendMode = 'avg'
+21.9144 	EXP 	window1: blendMode = 'avg'
+21.9310 	EXP 	window1: blendMode = 'avg'
+21.9478 	EXP 	window1: blendMode = 'avg'
+21.9642 	EXP 	window1: blendMode = 'avg'
+21.9811 	EXP 	window1: blendMode = 'avg'
+21.9976 	EXP 	window1: blendMode = 'avg'
+22.0143 	EXP 	window1: blendMode = 'avg'
+22.0310 	EXP 	window1: blendMode = 'avg'
+22.0480 	EXP 	window1: blendMode = 'avg'
+22.0648 	EXP 	window1: blendMode = 'avg'
+22.0810 	EXP 	window1: blendMode = 'avg'
+22.0978 	EXP 	window1: blendMode = 'avg'
+22.1146 	EXP 	window1: blendMode = 'avg'
+22.1312 	EXP 	window1: blendMode = 'avg'
+22.1473 	EXP 	window1: blendMode = 'avg'
+22.1641 	EXP 	window1: blendMode = 'avg'
+22.1810 	EXP 	window1: blendMode = 'avg'
+22.1969 	EXP 	window1: blendMode = 'avg'
+22.2137 	EXP 	window1: blendMode = 'avg'
+22.2307 	EXP 	window1: blendMode = 'avg'
+22.2473 	EXP 	window1: blendMode = 'avg'
+22.2636 	EXP 	window1: blendMode = 'avg'
+22.2802 	EXP 	window1: blendMode = 'avg'
+22.2970 	EXP 	window1: blendMode = 'avg'
+22.3141 	EXP 	window1: blendMode = 'avg'
+22.3300 	EXP 	window1: blendMode = 'avg'
+22.3469 	EXP 	window1: blendMode = 'avg'
+22.3635 	EXP 	window1: blendMode = 'avg'
+22.3799 	DATA 	Mouse: Left button down, pos=(634,401)
+22.3965 	DATA 	Mouse:  Left button up, pos=(634,401)
+23.6858 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+23.7018 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+23.7280 	EXP 	window1: blendMode = 'avg'
+23.7373 	EXP 	window1: blendMode = 'avg'
+23.7467 	EXP 	window1: blendMode = 'avg'
+23.7566 	EXP 	window1: blendMode = 'avg'
+23.7658 	EXP 	window1: blendMode = 'avg'
+23.7766 	EXP 	window1: blendMode = 'avg'
+23.7849 	EXP 	window1: blendMode = 'avg'
+23.7943 	EXP 	window1: blendMode = 'avg'
+23.8036 	EXP 	window1: blendMode = 'avg'
+23.8134 	EXP 	window1: blendMode = 'avg'
+23.8232 	EXP 	window1: blendMode = 'avg'
+23.8330 	EXP 	window1: blendMode = 'avg'
+23.8430 	EXP 	window1: blendMode = 'avg'
+23.8530 	EXP 	window1: blendMode = 'avg'
+23.8624 	EXP 	window1: blendMode = 'avg'
+23.8746 	EXP 	window1: blendMode = 'avg'
+23.8853 	EXP 	window1: blendMode = 'avg'
+23.8942 	EXP 	window1: blendMode = 'avg'
+23.9037 	EXP 	window1: blendMode = 'avg'
+23.9139 	EXP 	window1: blendMode = 'avg'
+23.9238 	EXP 	window1: blendMode = 'avg'
+23.9339 	EXP 	window1: blendMode = 'avg'
+23.9442 	EXP 	window1: blendMode = 'avg'
+23.9579 	EXP 	window1: blendMode = 'avg'
+23.9584 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+24.8358 	DATA 	Mouse: Left button down, pos=(658,401)
+24.8365 	EXP 	Sound  started
+24.8464 	EXP 	window1: blendMode = 'avg'
+24.8554 	EXP 	window1: blendMode = 'avg'
+24.8664 	EXP 	window1: blendMode = 'avg'
+24.8757 	EXP 	window1: blendMode = 'avg'
+24.8843 	EXP 	window1: blendMode = 'avg'
+24.8935 	EXP 	window1: blendMode = 'avg'
+24.9019 	EXP 	window1: blendMode = 'avg'
+24.9101 	EXP 	window1: blendMode = 'avg'
+24.9191 	EXP 	window1: blendMode = 'avg'
+24.9278 	EXP 	window1: blendMode = 'avg'
+24.9360 	EXP 	window1: blendMode = 'avg'
+24.9444 	EXP 	window1: blendMode = 'avg'
+24.9531 	EXP 	window1: blendMode = 'avg'
+24.9622 	EXP 	window1: blendMode = 'avg'
+24.9706 	EXP 	window1: blendMode = 'avg'
+24.9789 	EXP 	window1: blendMode = 'avg'
+24.9874 	EXP 	window1: blendMode = 'avg'
+24.9959 	EXP 	window1: blendMode = 'avg'
+25.0046 	EXP 	window1: blendMode = 'avg'
+25.0127 	EXP 	window1: blendMode = 'avg'
+25.0216 	EXP 	window1: blendMode = 'avg'
+25.0301 	EXP 	window1: blendMode = 'avg'
+25.0388 	EXP 	window1: blendMode = 'avg'
+25.0497 	EXP 	window1: blendMode = 'avg'
+25.0504 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+25.0699 	EXP 	window1: blendMode = 'avg'
+25.0751 	EXP 	window1: blendMode = 'avg'
+25.0758 	EXP 	window1: blendMode = 'avg'
+25.0764 	DATA 	Mouse:  Left button up, pos=(658,401)
+25.6338 	DATA 	Mouse: Left button down, pos=(619,174)
+25.6361 	EXP 	New trial (rep=0, index=2): {'cue': True, 'whichInPair': 0, 'nStreams': 2, 'ring': 2, 'pairAngle': 0, 'whichStreamCuedAngle': 0.0}
+25.6509 	EXP 	window1: blendMode = 'avg'
+25.6560 	EXP 	window1: blendMode = 'avg'
+25.6853 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+25.6853 	EXP 	BufferImageStim None: took 38.8ms to initialize
+25.7273 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+25.7515 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+25.7521 	EXP 	window1: blendMode = 'avg'
+25.7526 	EXP 	window1: blendMode = 'avg'
+25.7963 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+25.7963 	EXP 	BufferImageStim None: took 44.7ms to initialize
+25.8347 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+25.8571 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+25.8659 	EXP 	window1: blendMode = 'avg'
+25.8700 	EXP 	window1: blendMode = 'avg'
+25.9017 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+25.9017 	EXP 	BufferImageStim None: took 44.6ms to initialize
+25.9403 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+25.9626 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+25.9631 	EXP 	window1: blendMode = 'avg'
+25.9634 	EXP 	window1: blendMode = 'avg'
+26.0058 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+26.0059 	EXP 	BufferImageStim None: took 43.2ms to initialize
+26.0444 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+26.0670 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+26.0675 	EXP 	window1: blendMode = 'avg'
+26.0684 	DATA 	Mouse:  Left button up, pos=(619,174)
+26.0726 	EXP 	window1: blendMode = 'avg'
+26.0879 	EXP 	window1: blendMode = 'avg'
+26.1045 	EXP 	window1: blendMode = 'avg'
+26.1212 	EXP 	window1: blendMode = 'avg'
+26.1376 	EXP 	window1: blendMode = 'avg'
+26.1542 	EXP 	window1: blendMode = 'avg'
+26.1709 	EXP 	window1: blendMode = 'avg'
+26.1879 	EXP 	window1: blendMode = 'avg'
+26.2041 	EXP 	window1: blendMode = 'avg'
+26.2210 	EXP 	window1: blendMode = 'avg'
+26.2377 	EXP 	window1: blendMode = 'avg'
+26.2538 	EXP 	window1: blendMode = 'avg'
+26.2705 	EXP 	window1: blendMode = 'avg'
+26.2874 	EXP 	window1: blendMode = 'avg'
+26.3041 	EXP 	window1: blendMode = 'avg'
+26.3205 	EXP 	window1: blendMode = 'avg'
+26.3373 	EXP 	window1: blendMode = 'avg'
+26.3538 	EXP 	window1: blendMode = 'avg'
+26.3709 	EXP 	window1: blendMode = 'avg'
+26.3871 	EXP 	window1: blendMode = 'avg'
+26.4038 	EXP 	window1: blendMode = 'avg'
+26.4202 	EXP 	window1: blendMode = 'avg'
+26.4369 	EXP 	window1: blendMode = 'avg'
+26.4536 	EXP 	window1: blendMode = 'avg'
+26.4703 	EXP 	window1: blendMode = 'avg'
+26.4871 	EXP 	window1: blendMode = 'avg'
+26.5037 	EXP 	window1: blendMode = 'avg'
+26.5202 	EXP 	window1: blendMode = 'avg'
+26.5367 	EXP 	window1: blendMode = 'avg'
+26.5534 	EXP 	window1: blendMode = 'avg'
+26.5700 	EXP 	window1: blendMode = 'avg'
+26.5871 	EXP 	window1: blendMode = 'avg'
+26.6035 	EXP 	window1: blendMode = 'avg'
+26.6202 	EXP 	window1: blendMode = 'avg'
+26.6366 	EXP 	window1: blendMode = 'avg'
+26.6530 	EXP 	window1: blendMode = 'avg'
+26.6697 	EXP 	window1: blendMode = 'avg'
+26.6865 	EXP 	window1: blendMode = 'avg'
+26.7027 	EXP 	window1: blendMode = 'avg'
+26.7197 	EXP 	window1: blendMode = 'avg'
+26.7367 	EXP 	window1: blendMode = 'avg'
+26.7532 	EXP 	window1: blendMode = 'avg'
+26.7698 	EXP 	window1: blendMode = 'avg'
+26.7865 	EXP 	window1: blendMode = 'avg'
+26.8032 	EXP 	window1: blendMode = 'avg'
+26.8200 	EXP 	window1: blendMode = 'avg'
+26.8366 	EXP 	window1: blendMode = 'avg'
+26.8534 	EXP 	window1: blendMode = 'avg'
+26.8698 	EXP 	window1: blendMode = 'avg'
+26.8864 	EXP 	window1: blendMode = 'avg'
+26.9026 	EXP 	window1: blendMode = 'avg'
+26.9193 	EXP 	window1: blendMode = 'avg'
+26.9357 	EXP 	window1: blendMode = 'avg'
+26.9525 	EXP 	window1: blendMode = 'avg'
+26.9690 	EXP 	window1: blendMode = 'avg'
+26.9856 	EXP 	window1: blendMode = 'avg'
+27.0021 	EXP 	window1: blendMode = 'avg'
+27.0188 	EXP 	window1: blendMode = 'avg'
+27.0364 	EXP 	window1: blendMode = 'avg'
+27.0525 	EXP 	window1: blendMode = 'avg'
+27.0693 	EXP 	window1: blendMode = 'avg'
+27.0861 	EXP 	window1: blendMode = 'avg'
+27.1024 	EXP 	window1: blendMode = 'avg'
+27.1189 	EXP 	window1: blendMode = 'avg'
+27.1356 	EXP 	window1: blendMode = 'avg'
+27.1524 	EXP 	window1: blendMode = 'avg'
+27.1692 	EXP 	window1: blendMode = 'avg'
+27.1856 	EXP 	window1: blendMode = 'avg'
+27.2018 	EXP 	window1: blendMode = 'avg'
+27.2189 	EXP 	window1: blendMode = 'avg'
+27.2351 	EXP 	window1: blendMode = 'avg'
+27.2517 	EXP 	window1: blendMode = 'avg'
+27.2681 	EXP 	window1: blendMode = 'avg'
+27.2850 	EXP 	window1: blendMode = 'avg'
+27.3013 	EXP 	window1: blendMode = 'avg'
+27.3180 	EXP 	window1: blendMode = 'avg'
+27.3348 	EXP 	window1: blendMode = 'avg'
+27.3515 	EXP 	window1: blendMode = 'avg'
+27.3680 	DATA 	Mouse: Left button down, pos=(642,397)
+27.3686 	DATA 	Mouse:  Left button up, pos=(642,397)
+27.3692 	EXP 	window1: blendMode = 'avg'
+27.3846 	EXP 	window1: blendMode = 'avg'
+27.4013 	EXP 	window1: blendMode = 'avg'
+27.4183 	EXP 	window1: blendMode = 'avg'
+27.4347 	EXP 	window1: blendMode = 'avg'
+27.4515 	EXP 	window1: blendMode = 'avg'
+27.4679 	EXP 	window1: blendMode = 'avg'
+27.4845 	EXP 	window1: blendMode = 'avg'
+27.5011 	EXP 	window1: blendMode = 'avg'
+27.5177 	EXP 	window1: blendMode = 'avg'
+27.5346 	EXP 	window1: blendMode = 'avg'
+27.5509 	EXP 	window1: blendMode = 'avg'
+27.5676 	EXP 	window1: blendMode = 'avg'
+27.5843 	EXP 	window1: blendMode = 'avg'
+27.6010 	EXP 	window1: blendMode = 'avg'
+27.6175 	EXP 	window1: blendMode = 'avg'
+27.6340 	EXP 	window1: blendMode = 'avg'
+27.6506 	EXP 	window1: blendMode = 'avg'
+27.6672 	EXP 	window1: blendMode = 'avg'
+27.6840 	EXP 	window1: blendMode = 'avg'
+27.7005 	EXP 	window1: blendMode = 'avg'
+27.7175 	EXP 	window1: blendMode = 'avg'
+27.7338 	EXP 	window1: blendMode = 'avg'
+27.7507 	EXP 	window1: blendMode = 'avg'
+27.7672 	EXP 	window1: blendMode = 'avg'
+27.7839 	EXP 	window1: blendMode = 'avg'
+27.8004 	EXP 	window1: blendMode = 'avg'
+27.8172 	EXP 	window1: blendMode = 'avg'
+27.8337 	EXP 	window1: blendMode = 'avg'
+27.8502 	EXP 	window1: blendMode = 'avg'
+27.8670 	EXP 	window1: blendMode = 'avg'
+27.8836 	EXP 	window1: blendMode = 'avg'
+27.9003 	EXP 	window1: blendMode = 'avg'
+27.9167 	EXP 	window1: blendMode = 'avg'
+27.9334 	EXP 	window1: blendMode = 'avg'
+27.9500 	EXP 	window1: blendMode = 'avg'
+27.9670 	EXP 	window1: blendMode = 'avg'
+27.9835 	EXP 	window1: blendMode = 'avg'
+28.0001 	EXP 	window1: blendMode = 'avg'
+28.0164 	EXP 	window1: blendMode = 'avg'
+28.0329 	EXP 	window1: blendMode = 'avg'
+28.0497 	EXP 	window1: blendMode = 'avg'
+28.0677 	EXP 	window1: blendMode = 'avg'
+28.0833 	EXP 	window1: blendMode = 'avg'
+28.0996 	EXP 	window1: blendMode = 'avg'
+28.1162 	EXP 	window1: blendMode = 'avg'
+28.1331 	EXP 	window1: blendMode = 'avg'
+28.1498 	EXP 	window1: blendMode = 'avg'
+28.1662 	EXP 	window1: blendMode = 'avg'
+28.1828 	EXP 	window1: blendMode = 'avg'
+28.1996 	EXP 	window1: blendMode = 'avg'
+28.2161 	DATA 	Mouse: Left button down, pos=(642,397)
+28.2165 	DATA 	Mouse:  Left button up, pos=(642,397)
+28.2171 	EXP 	window1: blendMode = 'avg'
+28.2331 	EXP 	window1: blendMode = 'avg'
+28.2495 	EXP 	window1: blendMode = 'avg'
+28.2660 	EXP 	window1: blendMode = 'avg'
+28.2824 	EXP 	window1: blendMode = 'avg'
+28.2992 	EXP 	window1: blendMode = 'avg'
+28.3158 	EXP 	window1: blendMode = 'avg'
+28.3327 	EXP 	window1: blendMode = 'avg'
+28.3490 	EXP 	window1: blendMode = 'avg'
+28.3658 	EXP 	window1: blendMode = 'avg'
+28.3825 	EXP 	window1: blendMode = 'avg'
+28.3991 	EXP 	window1: blendMode = 'avg'
+28.4157 	EXP 	window1: blendMode = 'avg'
+28.4322 	EXP 	window1: blendMode = 'avg'
+28.4489 	EXP 	window1: blendMode = 'avg'
+28.4655 	EXP 	window1: blendMode = 'avg'
+28.4822 	EXP 	window1: blendMode = 'avg'
+28.4990 	EXP 	window1: blendMode = 'avg'
+28.5152 	EXP 	window1: blendMode = 'avg'
+28.5319 	EXP 	window1: blendMode = 'avg'
+28.5487 	EXP 	window1: blendMode = 'avg'
+28.5653 	EXP 	window1: blendMode = 'avg'
+28.5822 	EXP 	window1: blendMode = 'avg'
+28.5992 	EXP 	window1: blendMode = 'avg'
+28.6153 	EXP 	window1: blendMode = 'avg'
+28.6322 	EXP 	window1: blendMode = 'avg'
+28.6485 	EXP 	window1: blendMode = 'avg'
+28.6652 	EXP 	window1: blendMode = 'avg'
+28.6816 	EXP 	window1: blendMode = 'avg'
+28.6982 	EXP 	window1: blendMode = 'avg'
+28.7148 	EXP 	window1: blendMode = 'avg'
+28.7316 	EXP 	window1: blendMode = 'avg'
+28.7480 	EXP 	window1: blendMode = 'avg'
+28.7649 	EXP 	window1: blendMode = 'avg'
+28.7815 	EXP 	window1: blendMode = 'avg'
+28.7980 	EXP 	window1: blendMode = 'avg'
+28.8147 	EXP 	window1: blendMode = 'avg'
+28.8314 	EXP 	window1: blendMode = 'avg'
+28.8482 	EXP 	window1: blendMode = 'avg'
+28.8643 	EXP 	window1: blendMode = 'avg'
+28.8813 	DATA 	Mouse: Left button down, pos=(627,403)
+28.8817 	DATA 	Mouse:  Left button up, pos=(627,403)
+28.8825 	EXP 	window1: blendMode = 'avg'
+28.8981 	EXP 	window1: blendMode = 'avg'
+28.9144 	EXP 	window1: blendMode = 'avg'
+28.9310 	EXP 	window1: blendMode = 'avg'
+28.9478 	EXP 	window1: blendMode = 'avg'
+28.9643 	EXP 	window1: blendMode = 'avg'
+28.9808 	EXP 	window1: blendMode = 'avg'
+28.9977 	EXP 	window1: blendMode = 'avg'
+29.0140 	EXP 	window1: blendMode = 'avg'
+29.0307 	EXP 	window1: blendMode = 'avg'
+29.0473 	EXP 	window1: blendMode = 'avg'
+29.0642 	EXP 	window1: blendMode = 'avg'
+29.0806 	EXP 	window1: blendMode = 'avg'
+29.0975 	EXP 	window1: blendMode = 'avg'
+29.1139 	EXP 	window1: blendMode = 'avg'
+29.1308 	EXP 	window1: blendMode = 'avg'
+29.1472 	EXP 	window1: blendMode = 'avg'
+29.1639 	EXP 	window1: blendMode = 'avg'
+29.1803 	EXP 	window1: blendMode = 'avg'
+29.1969 	EXP 	window1: blendMode = 'avg'
+29.2138 	EXP 	window1: blendMode = 'avg'
+29.2303 	EXP 	window1: blendMode = 'avg'
+29.2471 	EXP 	window1: blendMode = 'avg'
+29.2637 	EXP 	window1: blendMode = 'avg'
+29.2968 	EXP 	window1: blendMode = 'avg'
+29.2980 	EXP 	window1: blendMode = 'avg'
+29.3134 	EXP 	window1: blendMode = 'avg'
+29.3300 	EXP 	window1: blendMode = 'avg'
+29.3467 	EXP 	window1: blendMode = 'avg'
+29.3634 	EXP 	window1: blendMode = 'avg'
+29.3801 	EXP 	window1: blendMode = 'avg'
+29.3965 	EXP 	window1: blendMode = 'avg'
+29.4132 	EXP 	window1: blendMode = 'avg'
+29.4299 	EXP 	window1: blendMode = 'avg'
+29.4465 	EXP 	window1: blendMode = 'avg'
+29.4632 	EXP 	window1: blendMode = 'avg'
+29.4796 	DATA 	Mouse: Left button down, pos=(627,403)
+29.4967 	DATA 	Mouse:  Left button up, pos=(627,403)
+30.7855 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+30.8007 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+30.8282 	EXP 	window1: blendMode = 'avg'
+30.8379 	EXP 	window1: blendMode = 'avg'
+30.8476 	EXP 	window1: blendMode = 'avg'
+30.8572 	EXP 	window1: blendMode = 'avg'
+30.8673 	EXP 	window1: blendMode = 'avg'
+30.8806 	EXP 	window1: blendMode = 'avg'
+30.8896 	EXP 	window1: blendMode = 'avg'
+30.8995 	EXP 	window1: blendMode = 'avg'
+30.9161 	EXP 	window1: blendMode = 'avg'
+30.9257 	EXP 	window1: blendMode = 'avg'
+30.9352 	EXP 	window1: blendMode = 'avg'
+30.9460 	EXP 	window1: blendMode = 'avg'
+30.9567 	EXP 	window1: blendMode = 'avg'
+30.9680 	EXP 	window1: blendMode = 'avg'
+30.9806 	EXP 	window1: blendMode = 'avg'
+30.9922 	EXP 	window1: blendMode = 'avg'
+31.0042 	EXP 	window1: blendMode = 'avg'
+31.0137 	EXP 	window1: blendMode = 'avg'
+31.0244 	EXP 	window1: blendMode = 'avg'
+31.0340 	EXP 	window1: blendMode = 'avg'
+31.0444 	EXP 	window1: blendMode = 'avg'
+31.0543 	EXP 	window1: blendMode = 'avg'
+31.0642 	EXP 	window1: blendMode = 'avg'
+31.0744 	EXP 	window1: blendMode = 'avg'
+31.0749 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+32.3516 	DATA 	Mouse: Left button down, pos=(1044,406)
+32.3523 	EXP 	Sound  started
+32.3634 	EXP 	window1: blendMode = 'avg'
+32.3723 	EXP 	window1: blendMode = 'avg'
+32.3807 	EXP 	window1: blendMode = 'avg'
+32.3894 	EXP 	window1: blendMode = 'avg'
+32.3986 	EXP 	window1: blendMode = 'avg'
+32.4071 	EXP 	window1: blendMode = 'avg'
+32.4156 	EXP 	window1: blendMode = 'avg'
+32.4283 	EXP 	window1: blendMode = 'avg'
+32.4384 	EXP 	window1: blendMode = 'avg'
+32.4472 	EXP 	window1: blendMode = 'avg'
+32.4559 	EXP 	window1: blendMode = 'avg'
+32.4653 	EXP 	window1: blendMode = 'avg'
+32.4740 	EXP 	window1: blendMode = 'avg'
+32.4824 	EXP 	window1: blendMode = 'avg'
+32.4912 	EXP 	window1: blendMode = 'avg'
+32.5002 	EXP 	window1: blendMode = 'avg'
+32.5088 	EXP 	window1: blendMode = 'avg'
+32.5173 	EXP 	window1: blendMode = 'avg'
+32.5260 	EXP 	window1: blendMode = 'avg'
+32.5344 	EXP 	window1: blendMode = 'avg'
+32.5429 	EXP 	window1: blendMode = 'avg'
+32.5514 	EXP 	window1: blendMode = 'avg'
+32.5605 	EXP 	window1: blendMode = 'avg'
+32.5696 	EXP 	window1: blendMode = 'avg'
+32.5702 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+32.5849 	EXP 	window1: blendMode = 'avg'
+32.5896 	EXP 	window1: blendMode = 'avg'
+32.5904 	EXP 	window1: blendMode = 'avg'
+32.5910 	DATA 	Mouse:  Left button up, pos=(1044,406)
+33.3715 	DATA 	Mouse: Left button down, pos=(681,147)
+33.3741 	EXP 	New trial (rep=0, index=3): {'cue': True, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 0, 'whichStreamCuedAngle': 180.0}
+33.3913 	EXP 	window1: blendMode = 'avg'
+33.3960 	EXP 	window1: blendMode = 'avg'
+33.4237 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+33.4237 	EXP 	BufferImageStim None: took 38.2ms to initialize
+33.4677 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+33.4923 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+33.4928 	EXP 	window1: blendMode = 'avg'
+33.4933 	EXP 	window1: blendMode = 'avg'
+33.5377 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+33.5377 	EXP 	BufferImageStim None: took 45.4ms to initialize
+33.5760 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+33.5985 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+33.6072 	EXP 	window1: blendMode = 'avg'
+33.6109 	EXP 	window1: blendMode = 'avg'
+33.6422 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+33.6422 	EXP 	BufferImageStim None: took 43.7ms to initialize
+33.6808 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+33.7031 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+33.7036 	EXP 	window1: blendMode = 'avg'
+33.7040 	EXP 	window1: blendMode = 'avg'
+33.7460 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+33.7460 	EXP 	BufferImageStim None: took 42.8ms to initialize
+33.7850 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+33.8070 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+33.8076 	EXP 	window1: blendMode = 'avg'
+33.8087 	DATA 	Mouse:  Left button up, pos=(679,147)
+33.8128 	EXP 	window1: blendMode = 'avg'
+33.8372 	EXP 	window1: blendMode = 'avg'
+33.8528 	EXP 	window1: blendMode = 'avg'
+33.8693 	EXP 	window1: blendMode = 'avg'
+33.8859 	EXP 	window1: blendMode = 'avg'
+33.9028 	EXP 	window1: blendMode = 'avg'
+33.9195 	EXP 	window1: blendMode = 'avg'
+33.9365 	EXP 	window1: blendMode = 'avg'
+33.9526 	EXP 	window1: blendMode = 'avg'
+33.9692 	EXP 	window1: blendMode = 'avg'
+33.9861 	EXP 	window1: blendMode = 'avg'
+34.0019 	EXP 	window1: blendMode = 'avg'
+34.0189 	EXP 	window1: blendMode = 'avg'
+34.0355 	EXP 	window1: blendMode = 'avg'
+34.0524 	EXP 	window1: blendMode = 'avg'
+34.0687 	EXP 	window1: blendMode = 'avg'
+34.0853 	EXP 	window1: blendMode = 'avg'
+34.1021 	EXP 	window1: blendMode = 'avg'
+34.1191 	EXP 	window1: blendMode = 'avg'
+34.1355 	EXP 	window1: blendMode = 'avg'
+34.1520 	EXP 	window1: blendMode = 'avg'
+34.1688 	EXP 	window1: blendMode = 'avg'
+34.1854 	EXP 	window1: blendMode = 'avg'
+34.2017 	EXP 	window1: blendMode = 'avg'
+34.2186 	EXP 	window1: blendMode = 'avg'
+34.2355 	EXP 	window1: blendMode = 'avg'
+34.2524 	EXP 	window1: blendMode = 'avg'
+34.2684 	EXP 	window1: blendMode = 'avg'
+34.2853 	EXP 	window1: blendMode = 'avg'
+34.3018 	EXP 	window1: blendMode = 'avg'
+34.3186 	EXP 	window1: blendMode = 'avg'
+34.3346 	EXP 	window1: blendMode = 'avg'
+34.3519 	EXP 	window1: blendMode = 'avg'
+34.3690 	EXP 	window1: blendMode = 'avg'
+34.3853 	EXP 	window1: blendMode = 'avg'
+34.4019 	EXP 	window1: blendMode = 'avg'
+34.4181 	EXP 	window1: blendMode = 'avg'
+34.4347 	EXP 	window1: blendMode = 'avg'
+34.4509 	EXP 	window1: blendMode = 'avg'
+34.4676 	EXP 	window1: blendMode = 'avg'
+34.4845 	EXP 	window1: blendMode = 'avg'
+34.5013 	EXP 	window1: blendMode = 'avg'
+34.5177 	EXP 	window1: blendMode = 'avg'
+34.5343 	EXP 	window1: blendMode = 'avg'
+34.5510 	EXP 	window1: blendMode = 'avg'
+34.5673 	EXP 	window1: blendMode = 'avg'
+34.5840 	EXP 	window1: blendMode = 'avg'
+34.6010 	EXP 	window1: blendMode = 'avg'
+34.6172 	EXP 	window1: blendMode = 'avg'
+34.6339 	EXP 	window1: blendMode = 'avg'
+34.6508 	EXP 	window1: blendMode = 'avg'
+34.6674 	EXP 	window1: blendMode = 'avg'
+34.6841 	DATA 	Mouse: Left button down, pos=(624,393)
+34.6845 	DATA 	Mouse:  Left button up, pos=(624,393)
+34.6852 	EXP 	window1: blendMode = 'avg'
+34.7006 	EXP 	window1: blendMode = 'avg'
+34.7175 	EXP 	window1: blendMode = 'avg'
+34.7340 	EXP 	window1: blendMode = 'avg'
+34.7502 	EXP 	window1: blendMode = 'avg'
+34.7672 	EXP 	window1: blendMode = 'avg'
+34.7838 	EXP 	window1: blendMode = 'avg'
+34.8004 	EXP 	window1: blendMode = 'avg'
+34.8170 	EXP 	window1: blendMode = 'avg'
+34.8336 	EXP 	window1: blendMode = 'avg'
+34.8503 	EXP 	window1: blendMode = 'avg'
+34.8671 	EXP 	window1: blendMode = 'avg'
+34.8835 	EXP 	window1: blendMode = 'avg'
+34.9001 	EXP 	window1: blendMode = 'avg'
+34.9169 	EXP 	window1: blendMode = 'avg'
+34.9333 	EXP 	window1: blendMode = 'avg'
+34.9499 	EXP 	window1: blendMode = 'avg'
+34.9666 	EXP 	window1: blendMode = 'avg'
+34.9834 	EXP 	window1: blendMode = 'avg'
+34.9997 	EXP 	window1: blendMode = 'avg'
+35.0165 	EXP 	window1: blendMode = 'avg'
+35.0333 	EXP 	window1: blendMode = 'avg'
+35.0499 	EXP 	window1: blendMode = 'avg'
+35.0663 	EXP 	window1: blendMode = 'avg'
+35.0829 	EXP 	window1: blendMode = 'avg'
+35.1003 	EXP 	window1: blendMode = 'avg'
+35.1171 	EXP 	window1: blendMode = 'avg'
+35.1335 	EXP 	window1: blendMode = 'avg'
+35.1499 	EXP 	window1: blendMode = 'avg'
+35.1659 	EXP 	window1: blendMode = 'avg'
+35.1825 	EXP 	window1: blendMode = 'avg'
+35.1994 	EXP 	window1: blendMode = 'avg'
+35.2163 	EXP 	window1: blendMode = 'avg'
+35.2328 	EXP 	window1: blendMode = 'avg'
+35.2492 	EXP 	window1: blendMode = 'avg'
+35.2660 	EXP 	window1: blendMode = 'avg'
+35.2826 	EXP 	window1: blendMode = 'avg'
+35.2993 	EXP 	window1: blendMode = 'avg'
+35.3159 	EXP 	window1: blendMode = 'avg'
+35.3325 	EXP 	window1: blendMode = 'avg'
+35.3497 	DATA 	Mouse: Left button down, pos=(619,400)
+35.3656 	DATA 	Mouse:  Left button up, pos=(619,400)
+36.6546 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+36.6715 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+36.6986 	EXP 	window1: blendMode = 'avg'
+36.7093 	EXP 	window1: blendMode = 'avg'
+36.7188 	EXP 	window1: blendMode = 'avg'
+36.7288 	EXP 	window1: blendMode = 'avg'
+36.7382 	EXP 	window1: blendMode = 'avg'
+36.7488 	EXP 	window1: blendMode = 'avg'
+36.7573 	EXP 	window1: blendMode = 'avg'
+36.7671 	EXP 	window1: blendMode = 'avg'
+36.7774 	EXP 	window1: blendMode = 'avg'
+36.7865 	EXP 	window1: blendMode = 'avg'
+36.7958 	EXP 	window1: blendMode = 'avg'
+36.8063 	EXP 	window1: blendMode = 'avg'
+36.8163 	EXP 	window1: blendMode = 'avg'
+36.8259 	EXP 	window1: blendMode = 'avg'
+36.8361 	EXP 	window1: blendMode = 'avg'
+36.8533 	EXP 	window1: blendMode = 'avg'
+36.8636 	EXP 	window1: blendMode = 'avg'
+36.8731 	EXP 	window1: blendMode = 'avg'
+36.8855 	EXP 	window1: blendMode = 'avg'
+36.8954 	EXP 	window1: blendMode = 'avg'
+36.9052 	EXP 	window1: blendMode = 'avg'
+36.9152 	EXP 	window1: blendMode = 'avg'
+36.9252 	EXP 	window1: blendMode = 'avg'
+36.9350 	EXP 	window1: blendMode = 'avg'
+36.9354 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+38.0033 	DATA 	Mouse: Left button down, pos=(1251,405)
+38.0039 	EXP 	Sound  started
+38.0135 	EXP 	window1: blendMode = 'avg'
+38.0238 	EXP 	window1: blendMode = 'avg'
+38.0345 	EXP 	window1: blendMode = 'avg'
+38.0446 	EXP 	window1: blendMode = 'avg'
+38.0535 	EXP 	window1: blendMode = 'avg'
+38.0626 	EXP 	window1: blendMode = 'avg'
+38.0714 	EXP 	window1: blendMode = 'avg'
+38.0800 	EXP 	window1: blendMode = 'avg'
+38.0889 	EXP 	window1: blendMode = 'avg'
+38.0977 	EXP 	window1: blendMode = 'avg'
+38.1069 	EXP 	window1: blendMode = 'avg'
+38.1157 	EXP 	window1: blendMode = 'avg'
+38.1257 	EXP 	window1: blendMode = 'avg'
+38.1350 	EXP 	window1: blendMode = 'avg'
+38.1438 	EXP 	window1: blendMode = 'avg'
+38.1535 	EXP 	window1: blendMode = 'avg'
+38.1623 	EXP 	window1: blendMode = 'avg'
+38.1710 	EXP 	window1: blendMode = 'avg'
+38.1795 	EXP 	window1: blendMode = 'avg'
+38.1890 	EXP 	window1: blendMode = 'avg'
+38.1977 	EXP 	window1: blendMode = 'avg'
+38.2067 	EXP 	window1: blendMode = 'avg'
+38.2153 	EXP 	window1: blendMode = 'avg'
+38.2249 	EXP 	window1: blendMode = 'avg'
+38.2256 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+38.2434 	EXP 	window1: blendMode = 'avg'
+38.2487 	EXP 	window1: blendMode = 'avg'
+38.2495 	EXP 	window1: blendMode = 'avg'
+38.2502 	DATA 	Mouse:  Left button up, pos=(1251,405)
+38.9434 	DATA 	Mouse: Left button down, pos=(624,123)
+38.9455 	EXP 	New trial (rep=0, index=4): {'cue': True, 'whichInPair': 0, 'nStreams': 2, 'ring': 2, 'pairAngle': 60, 'whichStreamCuedAngle': 60.0}
+38.9622 	EXP 	window1: blendMode = 'avg'
+38.9684 	EXP 	window1: blendMode = 'avg'
+39.0018 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+39.0019 	EXP 	BufferImageStim None: took 45.4ms to initialize
+39.0447 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+39.0687 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+39.0693 	EXP 	window1: blendMode = 'avg'
+39.0700 	EXP 	window1: blendMode = 'avg'
+39.1159 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+39.1159 	EXP 	BufferImageStim None: took 47.2ms to initialize
+39.1559 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+39.1776 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+39.1866 	EXP 	window1: blendMode = 'avg'
+39.1914 	EXP 	window1: blendMode = 'avg'
+39.2224 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+39.2224 	EXP 	BufferImageStim None: took 44.8ms to initialize
+39.2615 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+39.2838 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+39.2845 	EXP 	window1: blendMode = 'avg'
+39.2850 	EXP 	window1: blendMode = 'avg'
+39.3278 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+39.3279 	EXP 	BufferImageStim None: took 44.0ms to initialize
+39.3673 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+39.3903 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+39.3909 	EXP 	window1: blendMode = 'avg'
+39.3918 	DATA 	Mouse:  Left button up, pos=(624,123)
+39.3965 	EXP 	window1: blendMode = 'avg'
+39.4230 	EXP 	window1: blendMode = 'avg'
+39.4391 	EXP 	window1: blendMode = 'avg'
+39.4559 	EXP 	window1: blendMode = 'avg'
+39.4727 	EXP 	window1: blendMode = 'avg'
+39.4893 	EXP 	window1: blendMode = 'avg'
+39.5058 	EXP 	window1: blendMode = 'avg'
+39.5222 	EXP 	window1: blendMode = 'avg'
+39.5393 	EXP 	window1: blendMode = 'avg'
+39.5555 	EXP 	window1: blendMode = 'avg'
+39.5724 	EXP 	window1: blendMode = 'avg'
+39.5889 	EXP 	window1: blendMode = 'avg'
+39.6058 	EXP 	window1: blendMode = 'avg'
+39.6221 	EXP 	window1: blendMode = 'avg'
+39.6387 	EXP 	window1: blendMode = 'avg'
+39.6555 	EXP 	window1: blendMode = 'avg'
+39.6722 	EXP 	window1: blendMode = 'avg'
+39.6889 	EXP 	window1: blendMode = 'avg'
+39.7052 	EXP 	window1: blendMode = 'avg'
+39.7218 	EXP 	window1: blendMode = 'avg'
+39.7383 	EXP 	window1: blendMode = 'avg'
+39.7551 	EXP 	window1: blendMode = 'avg'
+39.7718 	EXP 	window1: blendMode = 'avg'
+39.7885 	EXP 	window1: blendMode = 'avg'
+39.8048 	EXP 	window1: blendMode = 'avg'
+39.8217 	EXP 	window1: blendMode = 'avg'
+39.8384 	EXP 	window1: blendMode = 'avg'
+39.8554 	EXP 	window1: blendMode = 'avg'
+39.8718 	EXP 	window1: blendMode = 'avg'
+39.8885 	EXP 	window1: blendMode = 'avg'
+39.9053 	EXP 	window1: blendMode = 'avg'
+39.9215 	EXP 	window1: blendMode = 'avg'
+39.9382 	EXP 	window1: blendMode = 'avg'
+39.9550 	EXP 	window1: blendMode = 'avg'
+39.9717 	EXP 	window1: blendMode = 'avg'
+39.9888 	EXP 	window1: blendMode = 'avg'
+40.0052 	EXP 	window1: blendMode = 'avg'
+40.0212 	EXP 	window1: blendMode = 'avg'
+40.0380 	EXP 	window1: blendMode = 'avg'
+40.0543 	EXP 	window1: blendMode = 'avg'
+40.0711 	EXP 	window1: blendMode = 'avg'
+40.0876 	EXP 	window1: blendMode = 'avg'
+40.1043 	EXP 	window1: blendMode = 'avg'
+40.1211 	EXP 	window1: blendMode = 'avg'
+40.1375 	EXP 	window1: blendMode = 'avg'
+40.1540 	EXP 	window1: blendMode = 'avg'
+40.1708 	EXP 	window1: blendMode = 'avg'
+40.1875 	EXP 	window1: blendMode = 'avg'
+40.2041 	EXP 	window1: blendMode = 'avg'
+40.2207 	EXP 	window1: blendMode = 'avg'
+40.2373 	EXP 	window1: blendMode = 'avg'
+40.2540 	EXP 	window1: blendMode = 'avg'
+40.2709 	EXP 	window1: blendMode = 'avg'
+40.2874 	EXP 	window1: blendMode = 'avg'
+40.3050 	EXP 	window1: blendMode = 'avg'
+40.3215 	EXP 	window1: blendMode = 'avg'
+40.3373 	EXP 	window1: blendMode = 'avg'
+40.3538 	EXP 	window1: blendMode = 'avg'
+40.3707 	EXP 	window1: blendMode = 'avg'
+40.4068 	EXP 	window1: blendMode = 'avg'
+40.4079 	EXP 	window1: blendMode = 'avg'
+40.4201 	EXP 	window1: blendMode = 'avg'
+40.4368 	EXP 	window1: blendMode = 'avg'
+40.4536 	EXP 	window1: blendMode = 'avg'
+40.4701 	EXP 	window1: blendMode = 'avg'
+40.4866 	EXP 	window1: blendMode = 'avg'
+40.5035 	EXP 	window1: blendMode = 'avg'
+40.5202 	EXP 	window1: blendMode = 'avg'
+40.5368 	EXP 	window1: blendMode = 'avg'
+40.5532 	EXP 	window1: blendMode = 'avg'
+40.5698 	EXP 	window1: blendMode = 'avg'
+40.5865 	DATA 	Mouse: Left button down, pos=(641,397)
+40.5869 	DATA 	Mouse:  Left button up, pos=(641,397)
+40.5875 	EXP 	window1: blendMode = 'avg'
+40.6029 	EXP 	window1: blendMode = 'avg'
+40.6198 	EXP 	window1: blendMode = 'avg'
+40.6366 	EXP 	window1: blendMode = 'avg'
+40.6529 	EXP 	window1: blendMode = 'avg'
+40.6695 	EXP 	window1: blendMode = 'avg'
+40.6862 	EXP 	window1: blendMode = 'avg'
+40.7029 	EXP 	window1: blendMode = 'avg'
+40.7197 	EXP 	window1: blendMode = 'avg'
+40.7362 	EXP 	window1: blendMode = 'avg'
+40.7526 	EXP 	window1: blendMode = 'avg'
+40.7695 	EXP 	window1: blendMode = 'avg'
+40.7859 	EXP 	window1: blendMode = 'avg'
+40.8027 	EXP 	window1: blendMode = 'avg'
+40.8194 	EXP 	window1: blendMode = 'avg'
+40.8360 	EXP 	window1: blendMode = 'avg'
+40.8528 	EXP 	window1: blendMode = 'avg'
+40.8693 	EXP 	window1: blendMode = 'avg'
+40.8858 	EXP 	window1: blendMode = 'avg'
+40.9022 	EXP 	window1: blendMode = 'avg'
+40.9190 	EXP 	window1: blendMode = 'avg'
+40.9356 	EXP 	window1: blendMode = 'avg'
+40.9523 	EXP 	window1: blendMode = 'avg'
+40.9688 	EXP 	window1: blendMode = 'avg'
+40.9855 	EXP 	window1: blendMode = 'avg'
+41.0022 	EXP 	window1: blendMode = 'avg'
+41.0188 	EXP 	window1: blendMode = 'avg'
+41.0354 	EXP 	window1: blendMode = 'avg'
+41.0522 	EXP 	window1: blendMode = 'avg'
+41.0688 	EXP 	window1: blendMode = 'avg'
+41.0854 	EXP 	window1: blendMode = 'avg'
+41.1020 	EXP 	window1: blendMode = 'avg'
+41.1185 	EXP 	window1: blendMode = 'avg'
+41.1355 	EXP 	window1: blendMode = 'avg'
+41.1523 	EXP 	window1: blendMode = 'avg'
+41.1688 	EXP 	window1: blendMode = 'avg'
+41.1855 	EXP 	window1: blendMode = 'avg'
+41.2020 	EXP 	window1: blendMode = 'avg'
+41.2180 	EXP 	window1: blendMode = 'avg'
+41.2352 	EXP 	window1: blendMode = 'avg'
+41.2516 	EXP 	window1: blendMode = 'avg'
+41.2680 	EXP 	window1: blendMode = 'avg'
+41.2849 	EXP 	window1: blendMode = 'avg'
+41.3013 	EXP 	window1: blendMode = 'avg'
+41.3182 	EXP 	window1: blendMode = 'avg'
+41.3347 	EXP 	window1: blendMode = 'avg'
+41.3511 	EXP 	window1: blendMode = 'avg'
+41.3679 	EXP 	window1: blendMode = 'avg'
+41.3847 	EXP 	window1: blendMode = 'avg'
+41.4012 	EXP 	window1: blendMode = 'avg'
+41.4179 	DATA 	Mouse: Left button down, pos=(628,401)
+41.4184 	DATA 	Mouse:  Left button up, pos=(628,401)
+41.4190 	EXP 	window1: blendMode = 'avg'
+41.4345 	EXP 	window1: blendMode = 'avg'
+41.4513 	EXP 	window1: blendMode = 'avg'
+41.4676 	EXP 	window1: blendMode = 'avg'
+41.4841 	EXP 	window1: blendMode = 'avg'
+41.5010 	EXP 	window1: blendMode = 'avg'
+41.5176 	EXP 	window1: blendMode = 'avg'
+41.5345 	EXP 	window1: blendMode = 'avg'
+41.5508 	EXP 	window1: blendMode = 'avg'
+41.5677 	EXP 	window1: blendMode = 'avg'
+41.5841 	EXP 	window1: blendMode = 'avg'
+41.6011 	EXP 	window1: blendMode = 'avg'
+41.6175 	EXP 	window1: blendMode = 'avg'
+41.6341 	EXP 	window1: blendMode = 'avg'
+41.6507 	EXP 	window1: blendMode = 'avg'
+41.6673 	EXP 	window1: blendMode = 'avg'
+41.6841 	EXP 	window1: blendMode = 'avg'
+41.7005 	EXP 	window1: blendMode = 'avg'
+41.7171 	EXP 	window1: blendMode = 'avg'
+41.7337 	EXP 	window1: blendMode = 'avg'
+41.7508 	EXP 	window1: blendMode = 'avg'
+41.7671 	EXP 	window1: blendMode = 'avg'
+41.7835 	EXP 	window1: blendMode = 'avg'
+41.8002 	EXP 	window1: blendMode = 'avg'
+41.8171 	EXP 	window1: blendMode = 'avg'
+41.8334 	EXP 	window1: blendMode = 'avg'
+41.8502 	EXP 	window1: blendMode = 'avg'
+41.8668 	EXP 	window1: blendMode = 'avg'
+41.8834 	EXP 	window1: blendMode = 'avg'
+41.9002 	EXP 	window1: blendMode = 'avg'
+41.9166 	EXP 	window1: blendMode = 'avg'
+41.9332 	EXP 	window1: blendMode = 'avg'
+41.9499 	EXP 	window1: blendMode = 'avg'
+41.9667 	EXP 	window1: blendMode = 'avg'
+41.9833 	EXP 	window1: blendMode = 'avg'
+42.0000 	EXP 	window1: blendMode = 'avg'
+42.0165 	EXP 	window1: blendMode = 'avg'
+42.0330 	EXP 	window1: blendMode = 'avg'
+42.0498 	EXP 	window1: blendMode = 'avg'
+42.0664 	EXP 	window1: blendMode = 'avg'
+42.0829 	EXP 	window1: blendMode = 'avg'
+42.0995 	EXP 	window1: blendMode = 'avg'
+42.1164 	EXP 	window1: blendMode = 'avg'
+42.1328 	EXP 	window1: blendMode = 'avg'
+42.1495 	EXP 	window1: blendMode = 'avg'
+42.1661 	EXP 	window1: blendMode = 'avg'
+42.1830 	EXP 	window1: blendMode = 'avg'
+42.1995 	DATA 	Mouse: Left button down, pos=(628,401)
+42.2159 	DATA 	Mouse:  Left button up, pos=(628,401)
+43.5110 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+43.5263 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+43.5563 	EXP 	window1: blendMode = 'avg'
+43.5668 	EXP 	window1: blendMode = 'avg'
+43.5768 	EXP 	window1: blendMode = 'avg'
+43.5859 	EXP 	window1: blendMode = 'avg'
+43.5977 	EXP 	window1: blendMode = 'avg'
+43.6074 	EXP 	window1: blendMode = 'avg'
+43.6169 	EXP 	window1: blendMode = 'avg'
+43.6264 	EXP 	window1: blendMode = 'avg'
+43.6365 	EXP 	window1: blendMode = 'avg'
+43.6463 	EXP 	window1: blendMode = 'avg'
+43.6560 	EXP 	window1: blendMode = 'avg'
+43.6668 	EXP 	window1: blendMode = 'avg'
+43.6763 	EXP 	window1: blendMode = 'avg'
+43.6860 	EXP 	window1: blendMode = 'avg'
+43.6966 	EXP 	window1: blendMode = 'avg'
+43.7072 	EXP 	window1: blendMode = 'avg'
+43.7170 	EXP 	window1: blendMode = 'avg'
+43.7274 	EXP 	window1: blendMode = 'avg'
+43.7373 	EXP 	window1: blendMode = 'avg'
+43.7472 	EXP 	window1: blendMode = 'avg'
+43.7573 	EXP 	window1: blendMode = 'avg'
+43.7687 	EXP 	window1: blendMode = 'avg'
+43.7784 	EXP 	window1: blendMode = 'avg'
+43.7886 	EXP 	window1: blendMode = 'avg'
+43.7890 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+44.7131 	DATA 	Mouse: Left button down, pos=(724,384)
+44.7138 	EXP 	Sound  started
+44.7246 	EXP 	window1: blendMode = 'avg'
+44.7338 	EXP 	window1: blendMode = 'avg'
+44.7425 	EXP 	window1: blendMode = 'avg'
+44.7512 	EXP 	window1: blendMode = 'avg'
+44.7611 	EXP 	window1: blendMode = 'avg'
+44.7705 	EXP 	window1: blendMode = 'avg'
+44.7792 	EXP 	window1: blendMode = 'avg'
+44.7883 	EXP 	window1: blendMode = 'avg'
+44.7975 	EXP 	window1: blendMode = 'avg'
+44.8063 	EXP 	window1: blendMode = 'avg'
+44.8151 	EXP 	window1: blendMode = 'avg'
+44.8245 	EXP 	window1: blendMode = 'avg'
+44.8326 	EXP 	window1: blendMode = 'avg'
+44.8412 	EXP 	window1: blendMode = 'avg'
+44.8508 	EXP 	window1: blendMode = 'avg'
+44.8598 	EXP 	window1: blendMode = 'avg'
+44.8690 	EXP 	window1: blendMode = 'avg'
+44.8779 	EXP 	window1: blendMode = 'avg'
+44.8870 	EXP 	window1: blendMode = 'avg'
+44.8955 	EXP 	window1: blendMode = 'avg'
+44.9044 	EXP 	window1: blendMode = 'avg'
+44.9136 	EXP 	window1: blendMode = 'avg'
+44.9244 	EXP 	window1: blendMode = 'avg'
+44.9333 	EXP 	window1: blendMode = 'avg'
+44.9341 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+44.9485 	EXP 	window1: blendMode = 'avg'
+44.9544 	EXP 	window1: blendMode = 'avg'
+44.9552 	EXP 	window1: blendMode = 'avg'
+44.9561 	DATA 	Mouse:  Left button up, pos=(724,384)
+45.5592 	DATA 	Mouse: Left button down, pos=(630,177)
+45.5613 	EXP 	New trial (rep=0, index=5): {'cue': True, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 60, 'whichStreamCuedAngle': 240.0}
+45.5734 	EXP 	window1: blendMode = 'avg'
+45.5783 	EXP 	window1: blendMode = 'avg'
+45.6051 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+45.6051 	EXP 	BufferImageStim None: took 32.3ms to initialize
+45.6435 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+45.6657 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+45.6663 	EXP 	window1: blendMode = 'avg'
+45.6668 	EXP 	window1: blendMode = 'avg'
+45.7094 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+45.7095 	EXP 	BufferImageStim None: took 43.8ms to initialize
+45.7483 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+45.7705 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+45.7790 	EXP 	window1: blendMode = 'avg'
+45.7833 	EXP 	window1: blendMode = 'avg'
+45.8143 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+45.8143 	EXP 	BufferImageStim None: took 43.8ms to initialize
+45.8533 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+45.8760 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+45.8766 	EXP 	window1: blendMode = 'avg'
+45.8769 	EXP 	window1: blendMode = 'avg'
+45.9195 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+45.9196 	EXP 	BufferImageStim None: took 43.5ms to initialize
+45.9584 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+45.9812 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+45.9818 	EXP 	window1: blendMode = 'avg'
+45.9826 	DATA 	Mouse:  Left button up, pos=(630,177)
+45.9879 	EXP 	window1: blendMode = 'avg'
+46.0072 	EXP 	window1: blendMode = 'avg'
+46.0239 	EXP 	window1: blendMode = 'avg'
+46.0404 	EXP 	window1: blendMode = 'avg'
+46.0568 	EXP 	window1: blendMode = 'avg'
+46.0734 	EXP 	window1: blendMode = 'avg'
+46.0901 	EXP 	window1: blendMode = 'avg'
+46.1068 	EXP 	window1: blendMode = 'avg'
+46.1233 	EXP 	window1: blendMode = 'avg'
+46.1397 	EXP 	window1: blendMode = 'avg'
+46.1567 	EXP 	window1: blendMode = 'avg'
+46.1732 	EXP 	window1: blendMode = 'avg'
+46.1899 	EXP 	window1: blendMode = 'avg'
+46.2063 	EXP 	window1: blendMode = 'avg'
+46.2233 	EXP 	window1: blendMode = 'avg'
+46.2396 	EXP 	window1: blendMode = 'avg'
+46.2564 	EXP 	window1: blendMode = 'avg'
+46.2734 	EXP 	window1: blendMode = 'avg'
+46.2896 	EXP 	window1: blendMode = 'avg'
+46.3060 	EXP 	window1: blendMode = 'avg'
+46.3230 	EXP 	window1: blendMode = 'avg'
+46.3395 	EXP 	window1: blendMode = 'avg'
+46.3559 	EXP 	window1: blendMode = 'avg'
+46.3726 	EXP 	window1: blendMode = 'avg'
+46.3892 	EXP 	window1: blendMode = 'avg'
+46.4060 	EXP 	window1: blendMode = 'avg'
+46.4224 	EXP 	window1: blendMode = 'avg'
+46.4393 	EXP 	window1: blendMode = 'avg'
+46.4558 	EXP 	window1: blendMode = 'avg'
+46.4728 	EXP 	window1: blendMode = 'avg'
+46.4895 	EXP 	window1: blendMode = 'avg'
+46.5059 	EXP 	window1: blendMode = 'avg'
+46.5231 	EXP 	window1: blendMode = 'avg'
+46.5395 	EXP 	window1: blendMode = 'avg'
+46.5557 	EXP 	window1: blendMode = 'avg'
+46.5722 	EXP 	window1: blendMode = 'avg'
+46.5889 	EXP 	window1: blendMode = 'avg'
+46.6054 	EXP 	window1: blendMode = 'avg'
+46.6222 	EXP 	window1: blendMode = 'avg'
+46.6386 	EXP 	window1: blendMode = 'avg'
+46.6556 	EXP 	window1: blendMode = 'avg'
+46.6720 	EXP 	window1: blendMode = 'avg'
+46.6887 	EXP 	window1: blendMode = 'avg'
+46.7053 	EXP 	window1: blendMode = 'avg'
+46.7218 	EXP 	window1: blendMode = 'avg'
+46.7386 	EXP 	window1: blendMode = 'avg'
+46.7553 	DATA 	Mouse: Left button down, pos=(632,398)
+46.7716 	DATA 	Mouse:  Left button up, pos=(632,398)
+48.0606 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+48.0773 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+48.1040 	EXP 	window1: blendMode = 'avg'
+48.1142 	EXP 	window1: blendMode = 'avg'
+48.1243 	EXP 	window1: blendMode = 'avg'
+48.1337 	EXP 	window1: blendMode = 'avg'
+48.1432 	EXP 	window1: blendMode = 'avg'
+48.1536 	EXP 	window1: blendMode = 'avg'
+48.1625 	EXP 	window1: blendMode = 'avg'
+48.1724 	EXP 	window1: blendMode = 'avg'
+48.1831 	EXP 	window1: blendMode = 'avg'
+48.1926 	EXP 	window1: blendMode = 'avg'
+48.2027 	EXP 	window1: blendMode = 'avg'
+48.2127 	EXP 	window1: blendMode = 'avg'
+48.2227 	EXP 	window1: blendMode = 'avg'
+48.2320 	EXP 	window1: blendMode = 'avg'
+48.2421 	EXP 	window1: blendMode = 'avg'
+48.2525 	EXP 	window1: blendMode = 'avg'
+48.2624 	EXP 	window1: blendMode = 'avg'
+48.2720 	EXP 	window1: blendMode = 'avg'
+48.2885 	EXP 	window1: blendMode = 'avg'
+48.2995 	EXP 	window1: blendMode = 'avg'
+48.3097 	EXP 	window1: blendMode = 'avg'
+48.3203 	EXP 	window1: blendMode = 'avg'
+48.3311 	EXP 	window1: blendMode = 'avg'
+48.3408 	EXP 	window1: blendMode = 'avg'
+48.3412 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+49.9049 	DATA 	Mouse: Left button down, pos=(1096,398)
+49.9056 	EXP 	Sound  started
+49.9157 	EXP 	window1: blendMode = 'avg'
+49.9254 	EXP 	window1: blendMode = 'avg'
+49.9343 	EXP 	window1: blendMode = 'avg'
+49.9437 	EXP 	window1: blendMode = 'avg'
+49.9523 	EXP 	window1: blendMode = 'avg'
+49.9606 	EXP 	window1: blendMode = 'avg'
+49.9690 	EXP 	window1: blendMode = 'avg'
+49.9778 	EXP 	window1: blendMode = 'avg'
+49.9894 	EXP 	window1: blendMode = 'avg'
+49.9985 	EXP 	window1: blendMode = 'avg'
+50.0070 	EXP 	window1: blendMode = 'avg'
+50.0170 	EXP 	window1: blendMode = 'avg'
+50.0257 	EXP 	window1: blendMode = 'avg'
+50.0343 	EXP 	window1: blendMode = 'avg'
+50.0435 	EXP 	window1: blendMode = 'avg'
+50.0626 	EXP 	window1: blendMode = 'avg'
+50.0737 	EXP 	window1: blendMode = 'avg'
+50.0829 	EXP 	window1: blendMode = 'avg'
+50.0912 	EXP 	window1: blendMode = 'avg'
+50.1010 	EXP 	window1: blendMode = 'avg'
+50.1099 	EXP 	window1: blendMode = 'avg'
+50.1189 	EXP 	window1: blendMode = 'avg'
+50.1282 	EXP 	window1: blendMode = 'avg'
+50.1371 	EXP 	window1: blendMode = 'avg'
+50.1378 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+50.1557 	EXP 	window1: blendMode = 'avg'
+50.1609 	EXP 	window1: blendMode = 'avg'
+50.1618 	EXP 	window1: blendMode = 'avg'
+50.1625 	DATA 	Mouse:  Left button up, pos=(1096,398)
+50.9271 	DATA 	Mouse: Left button down, pos=(656,166)
+50.9295 	EXP 	New trial (rep=0, index=6): {'cue': False, 'whichInPair': 0, 'nStreams': 2, 'ring': 2, 'pairAngle': 120, 'whichStreamCuedAngle': 120.0}
+50.9427 	EXP 	window1: blendMode = 'avg'
+50.9431 	EXP 	window1: blendMode = 'avg'
+50.9706 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+50.9707 	EXP 	BufferImageStim None: took 32.0ms to initialize
+51.0101 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+51.0327 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+51.0332 	EXP 	window1: blendMode = 'avg'
+51.0335 	EXP 	window1: blendMode = 'avg'
+51.0755 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+51.0756 	EXP 	BufferImageStim None: took 42.8ms to initialize
+51.1135 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+51.1355 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+51.1450 	EXP 	window1: blendMode = 'avg'
+51.1503 	EXP 	window1: blendMode = 'avg'
+51.1795 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+51.1796 	EXP 	BufferImageStim None: took 44.0ms to initialize
+51.2178 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+51.2404 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+51.2410 	EXP 	window1: blendMode = 'avg'
+51.2413 	EXP 	window1: blendMode = 'avg'
+51.2834 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+51.2834 	EXP 	BufferImageStim None: took 43.0ms to initialize
+51.3215 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+51.3443 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+51.3448 	EXP 	window1: blendMode = 'avg'
+51.3457 	DATA 	Mouse:  Left button up, pos=(656,166)
+51.3503 	EXP 	window1: blendMode = 'avg'
+51.3778 	EXP 	window1: blendMode = 'avg'
+51.3944 	EXP 	window1: blendMode = 'avg'
+51.4111 	EXP 	window1: blendMode = 'avg'
+51.4281 	EXP 	window1: blendMode = 'avg'
+51.4446 	EXP 	window1: blendMode = 'avg'
+51.4608 	EXP 	window1: blendMode = 'avg'
+51.4775 	EXP 	window1: blendMode = 'avg'
+51.4940 	EXP 	window1: blendMode = 'avg'
+51.5103 	EXP 	window1: blendMode = 'avg'
+51.5272 	EXP 	window1: blendMode = 'avg'
+51.5437 	EXP 	window1: blendMode = 'avg'
+51.5606 	EXP 	window1: blendMode = 'avg'
+51.5771 	EXP 	window1: blendMode = 'avg'
+51.5935 	EXP 	window1: blendMode = 'avg'
+51.6101 	EXP 	window1: blendMode = 'avg'
+51.6269 	EXP 	window1: blendMode = 'avg'
+51.6434 	EXP 	window1: blendMode = 'avg'
+51.6598 	EXP 	window1: blendMode = 'avg'
+51.6766 	EXP 	window1: blendMode = 'avg'
+51.6932 	EXP 	window1: blendMode = 'avg'
+51.7100 	EXP 	window1: blendMode = 'avg'
+51.7264 	EXP 	window1: blendMode = 'avg'
+51.7435 	EXP 	window1: blendMode = 'avg'
+51.7598 	EXP 	window1: blendMode = 'avg'
+51.7765 	EXP 	window1: blendMode = 'avg'
+51.7935 	EXP 	window1: blendMode = 'avg'
+51.8103 	EXP 	window1: blendMode = 'avg'
+51.8271 	EXP 	window1: blendMode = 'avg'
+51.8433 	EXP 	window1: blendMode = 'avg'
+51.8598 	EXP 	window1: blendMode = 'avg'
+51.8764 	EXP 	window1: blendMode = 'avg'
+51.8933 	EXP 	window1: blendMode = 'avg'
+51.9098 	EXP 	window1: blendMode = 'avg'
+51.9267 	EXP 	window1: blendMode = 'avg'
+51.9427 	EXP 	window1: blendMode = 'avg'
+51.9593 	EXP 	window1: blendMode = 'avg'
+51.9766 	EXP 	window1: blendMode = 'avg'
+51.9925 	EXP 	window1: blendMode = 'avg'
+52.0092 	EXP 	window1: blendMode = 'avg'
+52.0259 	EXP 	window1: blendMode = 'avg'
+52.0425 	EXP 	window1: blendMode = 'avg'
+52.0591 	EXP 	window1: blendMode = 'avg'
+52.0757 	EXP 	window1: blendMode = 'avg'
+52.0921 	EXP 	window1: blendMode = 'avg'
+52.1091 	EXP 	window1: blendMode = 'avg'
+52.1256 	EXP 	window1: blendMode = 'avg'
+52.1424 	EXP 	window1: blendMode = 'avg'
+52.1587 	EXP 	window1: blendMode = 'avg'
+52.1754 	EXP 	window1: blendMode = 'avg'
+52.1923 	EXP 	window1: blendMode = 'avg'
+52.2090 	EXP 	window1: blendMode = 'avg'
+52.2253 	EXP 	window1: blendMode = 'avg'
+52.2422 	EXP 	window1: blendMode = 'avg'
+52.2588 	EXP 	window1: blendMode = 'avg'
+52.2756 	EXP 	window1: blendMode = 'avg'
+52.2925 	EXP 	window1: blendMode = 'avg'
+52.3084 	EXP 	window1: blendMode = 'avg'
+52.3251 	EXP 	window1: blendMode = 'avg'
+52.3419 	EXP 	window1: blendMode = 'avg'
+52.3585 	EXP 	window1: blendMode = 'avg'
+52.3751 	EXP 	window1: blendMode = 'avg'
+52.3917 	EXP 	window1: blendMode = 'avg'
+52.4083 	EXP 	window1: blendMode = 'avg'
+52.4251 	EXP 	window1: blendMode = 'avg'
+52.4413 	EXP 	window1: blendMode = 'avg'
+52.4581 	DATA 	Mouse: Left button down, pos=(631,396)
+52.4747 	DATA 	Mouse:  Left button up, pos=(631,396)
+53.7645 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+53.7794 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+53.8087 	EXP 	window1: blendMode = 'avg'
+53.8188 	EXP 	window1: blendMode = 'avg'
+53.8289 	EXP 	window1: blendMode = 'avg'
+53.8387 	EXP 	window1: blendMode = 'avg'
+53.8485 	EXP 	window1: blendMode = 'avg'
+53.8586 	EXP 	window1: blendMode = 'avg'
+53.8677 	EXP 	window1: blendMode = 'avg'
+53.8779 	EXP 	window1: blendMode = 'avg'
+53.8877 	EXP 	window1: blendMode = 'avg'
+53.8983 	EXP 	window1: blendMode = 'avg'
+53.9084 	EXP 	window1: blendMode = 'avg'
+53.9211 	EXP 	window1: blendMode = 'avg'
+53.9317 	EXP 	window1: blendMode = 'avg'
+53.9425 	EXP 	window1: blendMode = 'avg'
+53.9529 	EXP 	window1: blendMode = 'avg'
+53.9658 	EXP 	window1: blendMode = 'avg'
+53.9769 	EXP 	window1: blendMode = 'avg'
+53.9873 	EXP 	window1: blendMode = 'avg'
+54.0002 	EXP 	window1: blendMode = 'avg'
+54.0106 	EXP 	window1: blendMode = 'avg'
+54.0208 	EXP 	window1: blendMode = 'avg'
+54.0312 	EXP 	window1: blendMode = 'avg'
+54.0420 	EXP 	window1: blendMode = 'avg'
+54.0514 	EXP 	window1: blendMode = 'avg'
+54.0519 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+54.8789 	DATA 	Mouse: Left button down, pos=(546,394)
+54.8795 	EXP 	Sound  started
+54.8893 	EXP 	window1: blendMode = 'avg'
+54.8999 	EXP 	window1: blendMode = 'avg'
+54.9090 	EXP 	window1: blendMode = 'avg'
+54.9179 	EXP 	window1: blendMode = 'avg'
+54.9266 	EXP 	window1: blendMode = 'avg'
+54.9359 	EXP 	window1: blendMode = 'avg'
+54.9447 	EXP 	window1: blendMode = 'avg'
+54.9529 	EXP 	window1: blendMode = 'avg'
+54.9617 	EXP 	window1: blendMode = 'avg'
+54.9703 	EXP 	window1: blendMode = 'avg'
+54.9789 	EXP 	window1: blendMode = 'avg'
+54.9880 	EXP 	window1: blendMode = 'avg'
+54.9970 	EXP 	window1: blendMode = 'avg'
+55.0050 	EXP 	window1: blendMode = 'avg'
+55.0143 	EXP 	window1: blendMode = 'avg'
+55.0227 	EXP 	window1: blendMode = 'avg'
+55.0316 	EXP 	window1: blendMode = 'avg'
+55.0403 	EXP 	window1: blendMode = 'avg'
+55.0486 	EXP 	window1: blendMode = 'avg'
+55.0586 	EXP 	window1: blendMode = 'avg'
+55.0677 	EXP 	window1: blendMode = 'avg'
+55.0768 	EXP 	window1: blendMode = 'avg'
+55.0856 	EXP 	window1: blendMode = 'avg'
+55.0941 	EXP 	window1: blendMode = 'avg'
+55.0948 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+55.1098 	EXP 	window1: blendMode = 'avg'
+55.1149 	EXP 	window1: blendMode = 'avg'
+55.1159 	EXP 	window1: blendMode = 'avg'
+55.1167 	DATA 	Mouse:  Left button up, pos=(546,394)
+55.8449 	DATA 	Mouse: Left button down, pos=(644,165)
+55.8471 	EXP 	New trial (rep=0, index=7): {'cue': False, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 120, 'whichStreamCuedAngle': 300.0}
+55.8628 	EXP 	window1: blendMode = 'avg'
+55.8673 	EXP 	window1: blendMode = 'avg'
+55.8945 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+55.8945 	EXP 	BufferImageStim None: took 36.3ms to initialize
+55.9343 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+55.9567 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+55.9573 	EXP 	window1: blendMode = 'avg'
+55.9576 	EXP 	window1: blendMode = 'avg'
+55.9997 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+55.9998 	EXP 	BufferImageStim None: took 43.0ms to initialize
+56.0384 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+56.0608 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+56.0705 	EXP 	window1: blendMode = 'avg'
+56.0759 	EXP 	window1: blendMode = 'avg'
+56.1037 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+56.1037 	EXP 	BufferImageStim None: took 42.9ms to initialize
+56.1452 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+56.1680 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+56.1685 	EXP 	window1: blendMode = 'avg'
+56.1687 	EXP 	window1: blendMode = 'avg'
+56.2117 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+56.2117 	EXP 	BufferImageStim None: took 43.7ms to initialize
+56.2506 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+56.2728 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+56.2733 	EXP 	window1: blendMode = 'avg'
+56.2744 	DATA 	Mouse:  Left button up, pos=(644,165)
+56.2787 	EXP 	window1: blendMode = 'avg'
+56.2995 	EXP 	window1: blendMode = 'avg'
+56.3158 	EXP 	window1: blendMode = 'avg'
+56.3323 	EXP 	window1: blendMode = 'avg'
+56.3492 	EXP 	window1: blendMode = 'avg'
+56.3662 	EXP 	window1: blendMode = 'avg'
+56.3821 	EXP 	window1: blendMode = 'avg'
+56.3991 	EXP 	window1: blendMode = 'avg'
+56.4153 	EXP 	window1: blendMode = 'avg'
+56.4322 	EXP 	window1: blendMode = 'avg'
+56.4485 	EXP 	window1: blendMode = 'avg'
+56.4652 	EXP 	window1: blendMode = 'avg'
+56.4820 	EXP 	window1: blendMode = 'avg'
+56.4985 	EXP 	window1: blendMode = 'avg'
+56.5151 	EXP 	window1: blendMode = 'avg'
+56.5316 	EXP 	window1: blendMode = 'avg'
+56.5484 	EXP 	window1: blendMode = 'avg'
+56.5649 	EXP 	window1: blendMode = 'avg'
+56.5819 	EXP 	window1: blendMode = 'avg'
+56.5982 	EXP 	window1: blendMode = 'avg'
+56.6148 	EXP 	window1: blendMode = 'avg'
+56.6316 	EXP 	window1: blendMode = 'avg'
+56.6482 	EXP 	window1: blendMode = 'avg'
+56.6648 	EXP 	window1: blendMode = 'avg'
+56.6814 	EXP 	window1: blendMode = 'avg'
+56.6980 	EXP 	window1: blendMode = 'avg'
+56.7147 	EXP 	window1: blendMode = 'avg'
+56.7314 	EXP 	window1: blendMode = 'avg'
+56.7482 	EXP 	window1: blendMode = 'avg'
+56.7649 	EXP 	window1: blendMode = 'avg'
+56.7812 	EXP 	window1: blendMode = 'avg'
+56.7979 	EXP 	window1: blendMode = 'avg'
+56.8145 	EXP 	window1: blendMode = 'avg'
+56.8311 	EXP 	window1: blendMode = 'avg'
+56.8481 	EXP 	window1: blendMode = 'avg'
+56.8652 	EXP 	window1: blendMode = 'avg'
+56.8817 	EXP 	window1: blendMode = 'avg'
+56.8977 	EXP 	window1: blendMode = 'avg'
+56.9142 	EXP 	window1: blendMode = 'avg'
+56.9305 	EXP 	window1: blendMode = 'avg'
+56.9478 	EXP 	window1: blendMode = 'avg'
+56.9639 	EXP 	window1: blendMode = 'avg'
+56.9808 	EXP 	window1: blendMode = 'avg'
+56.9973 	EXP 	window1: blendMode = 'avg'
+57.0142 	EXP 	window1: blendMode = 'avg'
+57.0305 	EXP 	window1: blendMode = 'avg'
+57.0471 	EXP 	window1: blendMode = 'avg'
+57.0637 	EXP 	window1: blendMode = 'avg'
+57.0802 	DATA 	Mouse: Left button down, pos=(634,400)
+57.0806 	DATA 	Mouse:  Left button up, pos=(634,400)
+57.0812 	EXP 	window1: blendMode = 'avg'
+57.0971 	EXP 	window1: blendMode = 'avg'
+57.1136 	EXP 	window1: blendMode = 'avg'
+57.1305 	EXP 	window1: blendMode = 'avg'
+57.1469 	EXP 	window1: blendMode = 'avg'
+57.1636 	EXP 	window1: blendMode = 'avg'
+57.1804 	EXP 	window1: blendMode = 'avg'
+57.1969 	EXP 	window1: blendMode = 'avg'
+57.2132 	EXP 	window1: blendMode = 'avg'
+57.2299 	EXP 	window1: blendMode = 'avg'
+57.2466 	EXP 	window1: blendMode = 'avg'
+57.2633 	EXP 	window1: blendMode = 'avg'
+57.2799 	EXP 	window1: blendMode = 'avg'
+57.2967 	EXP 	window1: blendMode = 'avg'
+57.3132 	EXP 	window1: blendMode = 'avg'
+57.3299 	EXP 	window1: blendMode = 'avg'
+57.3465 	EXP 	window1: blendMode = 'avg'
+57.3631 	EXP 	window1: blendMode = 'avg'
+57.3796 	EXP 	window1: blendMode = 'avg'
+57.3965 	EXP 	window1: blendMode = 'avg'
+57.4130 	EXP 	window1: blendMode = 'avg'
+57.4296 	EXP 	window1: blendMode = 'avg'
+57.4462 	EXP 	window1: blendMode = 'avg'
+57.4629 	EXP 	window1: blendMode = 'avg'
+57.4796 	EXP 	window1: blendMode = 'avg'
+57.4963 	EXP 	window1: blendMode = 'avg'
+57.5128 	EXP 	window1: blendMode = 'avg'
+57.5294 	EXP 	window1: blendMode = 'avg'
+57.5461 	EXP 	window1: blendMode = 'avg'
+57.5628 	EXP 	window1: blendMode = 'avg'
+57.5792 	EXP 	window1: blendMode = 'avg'
+57.5959 	EXP 	window1: blendMode = 'avg'
+57.6126 	EXP 	window1: blendMode = 'avg'
+57.6291 	EXP 	window1: blendMode = 'avg'
+57.6456 	EXP 	window1: blendMode = 'avg'
+57.6625 	EXP 	window1: blendMode = 'avg'
+57.6791 	EXP 	window1: blendMode = 'avg'
+57.6957 	EXP 	window1: blendMode = 'avg'
+57.7125 	DATA 	Mouse: Left button down, pos=(634,400)
+57.7287 	DATA 	Mouse:  Left button up, pos=(634,400)
+59.0183 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+59.0345 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+59.0612 	EXP 	window1: blendMode = 'avg'
+59.0705 	EXP 	window1: blendMode = 'avg'
+59.0805 	EXP 	window1: blendMode = 'avg'
+59.0898 	EXP 	window1: blendMode = 'avg'
+59.0996 	EXP 	window1: blendMode = 'avg'
+59.1118 	EXP 	window1: blendMode = 'avg'
+59.1213 	EXP 	window1: blendMode = 'avg'
+59.1305 	EXP 	window1: blendMode = 'avg'
+59.1403 	EXP 	window1: blendMode = 'avg'
+59.1502 	EXP 	window1: blendMode = 'avg'
+59.1599 	EXP 	window1: blendMode = 'avg'
+59.1693 	EXP 	window1: blendMode = 'avg'
+59.1796 	EXP 	window1: blendMode = 'avg'
+59.1896 	EXP 	window1: blendMode = 'avg'
+59.2074 	EXP 	window1: blendMode = 'avg'
+59.2185 	EXP 	window1: blendMode = 'avg'
+59.2286 	EXP 	window1: blendMode = 'avg'
+59.2384 	EXP 	window1: blendMode = 'avg'
+59.2488 	EXP 	window1: blendMode = 'avg'
+59.2590 	EXP 	window1: blendMode = 'avg'
+59.2688 	EXP 	window1: blendMode = 'avg'
+59.2789 	EXP 	window1: blendMode = 'avg'
+59.2894 	EXP 	window1: blendMode = 'avg'
+59.2992 	EXP 	window1: blendMode = 'avg'
+59.2997 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+60.0428 	DATA 	Mouse: Left button down, pos=(613,400)
+60.0434 	EXP 	Sound  started
+60.0534 	EXP 	window1: blendMode = 'avg'
+60.0627 	EXP 	window1: blendMode = 'avg'
+60.0725 	EXP 	window1: blendMode = 'avg'
+60.0817 	EXP 	window1: blendMode = 'avg'
+60.0905 	EXP 	window1: blendMode = 'avg'
+60.0998 	EXP 	window1: blendMode = 'avg'
+60.1079 	EXP 	window1: blendMode = 'avg'
+60.1166 	EXP 	window1: blendMode = 'avg'
+60.1253 	EXP 	window1: blendMode = 'avg'
+60.1346 	EXP 	window1: blendMode = 'avg'
+60.1432 	EXP 	window1: blendMode = 'avg'
+60.1522 	EXP 	window1: blendMode = 'avg'
+60.1606 	EXP 	window1: blendMode = 'avg'
+60.1705 	EXP 	window1: blendMode = 'avg'
+60.1793 	EXP 	window1: blendMode = 'avg'
+60.1879 	EXP 	window1: blendMode = 'avg'
+60.1968 	EXP 	window1: blendMode = 'avg'
+60.2056 	EXP 	window1: blendMode = 'avg'
+60.2146 	EXP 	window1: blendMode = 'avg'
+60.2233 	EXP 	window1: blendMode = 'avg'
+60.2330 	EXP 	window1: blendMode = 'avg'
+60.2412 	EXP 	window1: blendMode = 'avg'
+60.2497 	EXP 	window1: blendMode = 'avg'
+60.2608 	EXP 	window1: blendMode = 'avg'
+60.2615 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+60.2794 	EXP 	window1: blendMode = 'avg'
+60.2843 	EXP 	window1: blendMode = 'avg'
+60.2852 	EXP 	window1: blendMode = 'avg'
+60.2860 	DATA 	Mouse:  Left button up, pos=(613,400)
+60.7447 	DATA 	Mouse: Left button down, pos=(627,157)
+60.7468 	EXP 	New trial (rep=0, index=8): {'cue': True, 'whichInPair': 1, 'nStreams': 2, 'ring': 2, 'pairAngle': 120, 'whichStreamCuedAngle': 300.0}
+60.7610 	EXP 	window1: blendMode = 'avg'
+60.7649 	EXP 	window1: blendMode = 'avg'
+60.7920 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+60.7920 	EXP 	BufferImageStim None: took 35.2ms to initialize
+60.8310 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+60.8536 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+60.8541 	EXP 	window1: blendMode = 'avg'
+60.8546 	EXP 	window1: blendMode = 'avg'
+60.8968 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+60.8968 	EXP 	BufferImageStim None: took 43.2ms to initialize
+60.9350 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+60.9571 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+60.9672 	EXP 	window1: blendMode = 'avg'
+60.9717 	EXP 	window1: blendMode = 'avg'
+61.0020 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+61.0020 	EXP 	BufferImageStim None: took 44.8ms to initialize
+61.0420 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+61.0646 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+61.0651 	EXP 	window1: blendMode = 'avg'
+61.0654 	EXP 	window1: blendMode = 'avg'
+61.1082 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+61.1082 	EXP 	BufferImageStim None: took 43.6ms to initialize
+61.1474 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+61.1693 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+61.1932 	EXP 	window1: blendMode = 'avg'
+61.1942 	DATA 	Mouse:  Left button up, pos=(627,157)
+61.1957 	EXP 	window1: blendMode = 'avg'
+61.2039 	EXP 	window1: blendMode = 'avg'
+61.2205 	EXP 	window1: blendMode = 'avg'
+61.2375 	EXP 	window1: blendMode = 'avg'
+61.2537 	EXP 	window1: blendMode = 'avg'
+61.2703 	EXP 	window1: blendMode = 'avg'
+61.2871 	EXP 	window1: blendMode = 'avg'
+61.3037 	EXP 	window1: blendMode = 'avg'
+61.3204 	EXP 	window1: blendMode = 'avg'
+61.3370 	EXP 	window1: blendMode = 'avg'
+61.3535 	EXP 	window1: blendMode = 'avg'
+61.3701 	EXP 	window1: blendMode = 'avg'
+61.3869 	EXP 	window1: blendMode = 'avg'
+61.4033 	EXP 	window1: blendMode = 'avg'
+61.4205 	EXP 	window1: blendMode = 'avg'
+61.4366 	EXP 	window1: blendMode = 'avg'
+61.4531 	EXP 	window1: blendMode = 'avg'
+61.4708 	EXP 	window1: blendMode = 'avg'
+61.4868 	EXP 	window1: blendMode = 'avg'
+61.5033 	EXP 	window1: blendMode = 'avg'
+61.5197 	EXP 	window1: blendMode = 'avg'
+61.5366 	EXP 	window1: blendMode = 'avg'
+61.5536 	EXP 	window1: blendMode = 'avg'
+61.5703 	EXP 	window1: blendMode = 'avg'
+61.5867 	EXP 	window1: blendMode = 'avg'
+61.6037 	EXP 	window1: blendMode = 'avg'
+61.6202 	EXP 	window1: blendMode = 'avg'
+61.6369 	EXP 	window1: blendMode = 'avg'
+61.6529 	EXP 	window1: blendMode = 'avg'
+61.6695 	EXP 	window1: blendMode = 'avg'
+61.6861 	EXP 	window1: blendMode = 'avg'
+61.7027 	EXP 	window1: blendMode = 'avg'
+61.7198 	EXP 	window1: blendMode = 'avg'
+61.7361 	EXP 	window1: blendMode = 'avg'
+61.7529 	EXP 	window1: blendMode = 'avg'
+61.7692 	EXP 	window1: blendMode = 'avg'
+61.7859 	EXP 	window1: blendMode = 'avg'
+61.8025 	EXP 	window1: blendMode = 'avg'
+61.8191 	EXP 	window1: blendMode = 'avg'
+61.8358 	EXP 	window1: blendMode = 'avg'
+61.8526 	EXP 	window1: blendMode = 'avg'
+61.8689 	EXP 	window1: blendMode = 'avg'
+61.8856 	EXP 	window1: blendMode = 'avg'
+61.9024 	EXP 	window1: blendMode = 'avg'
+61.9189 	EXP 	window1: blendMode = 'avg'
+61.9357 	EXP 	window1: blendMode = 'avg'
+61.9522 	EXP 	window1: blendMode = 'avg'
+61.9688 	EXP 	window1: blendMode = 'avg'
+61.9854 	EXP 	window1: blendMode = 'avg'
+62.0022 	EXP 	window1: blendMode = 'avg'
+62.0187 	EXP 	window1: blendMode = 'avg'
+62.0354 	EXP 	window1: blendMode = 'avg'
+62.0518 	EXP 	window1: blendMode = 'avg'
+62.0688 	EXP 	window1: blendMode = 'avg'
+62.0851 	EXP 	window1: blendMode = 'avg'
+62.1021 	EXP 	window1: blendMode = 'avg'
+62.1185 	EXP 	window1: blendMode = 'avg'
+62.1347 	EXP 	window1: blendMode = 'avg'
+62.1516 	EXP 	window1: blendMode = 'avg'
+62.1681 	EXP 	window1: blendMode = 'avg'
+62.1849 	EXP 	window1: blendMode = 'avg'
+62.2014 	EXP 	window1: blendMode = 'avg'
+62.2184 	EXP 	window1: blendMode = 'avg'
+62.2345 	EXP 	window1: blendMode = 'avg'
+62.2513 	EXP 	window1: blendMode = 'avg'
+62.2680 	EXP 	window1: blendMode = 'avg'
+62.2848 	EXP 	window1: blendMode = 'avg'
+62.3013 	EXP 	window1: blendMode = 'avg'
+62.3183 	EXP 	window1: blendMode = 'avg'
+62.3350 	EXP 	window1: blendMode = 'avg'
+62.3516 	EXP 	window1: blendMode = 'avg'
+62.3683 	EXP 	window1: blendMode = 'avg'
+62.3847 	EXP 	window1: blendMode = 'avg'
+62.4014 	EXP 	window1: blendMode = 'avg'
+62.4180 	EXP 	window1: blendMode = 'avg'
+62.4347 	EXP 	window1: blendMode = 'avg'
+62.4512 	EXP 	window1: blendMode = 'avg'
+62.4680 	EXP 	window1: blendMode = 'avg'
+62.4845 	EXP 	window1: blendMode = 'avg'
+62.5011 	EXP 	window1: blendMode = 'avg'
+62.5179 	EXP 	window1: blendMode = 'avg'
+62.5339 	EXP 	window1: blendMode = 'avg'
+62.5509 	EXP 	window1: blendMode = 'avg'
+62.5671 	EXP 	window1: blendMode = 'avg'
+62.5840 	EXP 	window1: blendMode = 'avg'
+62.6006 	EXP 	window1: blendMode = 'avg'
+62.6172 	EXP 	window1: blendMode = 'avg'
+62.6338 	EXP 	window1: blendMode = 'avg'
+62.6506 	EXP 	window1: blendMode = 'avg'
+62.6671 	EXP 	window1: blendMode = 'avg'
+62.6836 	EXP 	window1: blendMode = 'avg'
+62.7003 	EXP 	window1: blendMode = 'avg'
+62.7169 	EXP 	window1: blendMode = 'avg'
+62.7338 	EXP 	window1: blendMode = 'avg'
+62.7349 	DATA 	Mouse: Left button down, pos=(636,388)
+62.7504 	DATA 	Mouse:  Left button up, pos=(636,388)
+62.7511 	EXP 	window1: blendMode = 'avg'
+62.7670 	EXP 	window1: blendMode = 'avg'
+62.7833 	EXP 	window1: blendMode = 'avg'
+62.8001 	EXP 	window1: blendMode = 'avg'
+62.8165 	EXP 	window1: blendMode = 'avg'
+62.8336 	EXP 	window1: blendMode = 'avg'
+62.8500 	EXP 	window1: blendMode = 'avg'
+62.8665 	EXP 	window1: blendMode = 'avg'
+62.8833 	EXP 	window1: blendMode = 'avg'
+62.9000 	EXP 	window1: blendMode = 'avg'
+62.9167 	EXP 	window1: blendMode = 'avg'
+62.9329 	EXP 	window1: blendMode = 'avg'
+62.9498 	EXP 	window1: blendMode = 'avg'
+62.9661 	EXP 	window1: blendMode = 'avg'
+62.9830 	EXP 	window1: blendMode = 'avg'
+62.9996 	EXP 	window1: blendMode = 'avg'
+63.0166 	EXP 	window1: blendMode = 'avg'
+63.0328 	EXP 	window1: blendMode = 'avg'
+63.0495 	EXP 	window1: blendMode = 'avg'
+63.0664 	EXP 	window1: blendMode = 'avg'
+63.0827 	EXP 	window1: blendMode = 'avg'
+63.0992 	EXP 	window1: blendMode = 'avg'
+63.1161 	EXP 	window1: blendMode = 'avg'
+63.1328 	EXP 	window1: blendMode = 'avg'
+63.1493 	EXP 	window1: blendMode = 'avg'
+63.1660 	EXP 	window1: blendMode = 'avg'
+63.1825 	EXP 	window1: blendMode = 'avg'
+63.1994 	EXP 	window1: blendMode = 'avg'
+63.2155 	EXP 	window1: blendMode = 'avg'
+63.2326 	EXP 	window1: blendMode = 'avg'
+63.2491 	EXP 	window1: blendMode = 'avg'
+63.2656 	EXP 	window1: blendMode = 'avg'
+63.2824 	EXP 	window1: blendMode = 'avg'
+63.2990 	EXP 	window1: blendMode = 'avg'
+63.3155 	EXP 	window1: blendMode = 'avg'
+63.3322 	EXP 	window1: blendMode = 'avg'
+63.3488 	EXP 	window1: blendMode = 'avg'
+63.3653 	EXP 	window1: blendMode = 'avg'
+63.3821 	EXP 	window1: blendMode = 'avg'
+63.3985 	EXP 	window1: blendMode = 'avg'
+63.4153 	EXP 	window1: blendMode = 'avg'
+63.4320 	EXP 	window1: blendMode = 'avg'
+63.4488 	EXP 	window1: blendMode = 'avg'
+63.4652 	EXP 	window1: blendMode = 'avg'
+63.4825 	EXP 	window1: blendMode = 'avg'
+63.4986 	EXP 	window1: blendMode = 'avg'
+63.5149 	EXP 	window1: blendMode = 'avg'
+63.5318 	EXP 	window1: blendMode = 'avg'
+63.5487 	EXP 	window1: blendMode = 'avg'
+63.5654 	EXP 	window1: blendMode = 'avg'
+63.5820 	EXP 	window1: blendMode = 'avg'
+63.5988 	EXP 	window1: blendMode = 'avg'
+63.6148 	EXP 	window1: blendMode = 'avg'
+63.6318 	EXP 	window1: blendMode = 'avg'
+63.6482 	EXP 	window1: blendMode = 'avg'
+63.6647 	EXP 	window1: blendMode = 'avg'
+63.6812 	EXP 	window1: blendMode = 'avg'
+63.6978 	EXP 	window1: blendMode = 'avg'
+63.7147 	EXP 	window1: blendMode = 'avg'
+63.7311 	EXP 	window1: blendMode = 'avg'
+63.7480 	EXP 	window1: blendMode = 'avg'
+63.7643 	EXP 	window1: blendMode = 'avg'
+63.7813 	EXP 	window1: blendMode = 'avg'
+63.7979 	DATA 	Mouse: Left button down, pos=(635,400)
+63.7987 	DATA 	Mouse:  Left button up, pos=(635,400)
+63.7993 	EXP 	window1: blendMode = 'avg'
+63.8144 	EXP 	window1: blendMode = 'avg'
+63.8309 	EXP 	window1: blendMode = 'avg'
+63.8475 	EXP 	window1: blendMode = 'avg'
+63.8642 	EXP 	window1: blendMode = 'avg'
+63.8809 	EXP 	window1: blendMode = 'avg'
+63.8976 	EXP 	window1: blendMode = 'avg'
+63.9141 	EXP 	window1: blendMode = 'avg'
+63.9307 	EXP 	window1: blendMode = 'avg'
+63.9470 	EXP 	window1: blendMode = 'avg'
+63.9641 	EXP 	window1: blendMode = 'avg'
+63.9806 	EXP 	window1: blendMode = 'avg'
+63.9972 	EXP 	window1: blendMode = 'avg'
+64.0139 	EXP 	window1: blendMode = 'avg'
+64.0305 	EXP 	window1: blendMode = 'avg'
+64.0471 	EXP 	window1: blendMode = 'avg'
+64.0637 	EXP 	window1: blendMode = 'avg'
+64.0805 	EXP 	window1: blendMode = 'avg'
+64.0970 	EXP 	window1: blendMode = 'avg'
+64.1137 	EXP 	window1: blendMode = 'avg'
+64.1303 	EXP 	window1: blendMode = 'avg'
+64.1470 	EXP 	window1: blendMode = 'avg'
+64.1634 	EXP 	window1: blendMode = 'avg'
+64.1804 	EXP 	window1: blendMode = 'avg'
+64.1967 	EXP 	window1: blendMode = 'avg'
+64.2133 	EXP 	window1: blendMode = 'avg'
+64.2304 	DATA 	Mouse: Left button down, pos=(635,400)
+65.0804 	DATA 	Mouse:  Left button up, pos=(635,400)
+65.5355 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+65.5497 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+65.5804 	EXP 	window1: blendMode = 'avg'
+65.5904 	EXP 	window1: blendMode = 'avg'
+65.6004 	EXP 	window1: blendMode = 'avg'
+65.6105 	EXP 	window1: blendMode = 'avg'
+65.6203 	EXP 	window1: blendMode = 'avg'
+65.6308 	EXP 	window1: blendMode = 'avg'
+65.6398 	EXP 	window1: blendMode = 'avg'
+65.6497 	EXP 	window1: blendMode = 'avg'
+65.6597 	EXP 	window1: blendMode = 'avg'
+65.6709 	EXP 	window1: blendMode = 'avg'
+65.6821 	EXP 	window1: blendMode = 'avg'
+65.6922 	EXP 	window1: blendMode = 'avg'
+65.7023 	EXP 	window1: blendMode = 'avg'
+65.7132 	EXP 	window1: blendMode = 'avg'
+65.7236 	EXP 	window1: blendMode = 'avg'
+65.7341 	EXP 	window1: blendMode = 'avg'
+65.7523 	EXP 	window1: blendMode = 'avg'
+65.7632 	EXP 	window1: blendMode = 'avg'
+65.7739 	EXP 	window1: blendMode = 'avg'
+65.7844 	EXP 	window1: blendMode = 'avg'
+65.7949 	EXP 	window1: blendMode = 'avg'
+65.8047 	EXP 	window1: blendMode = 'avg'
+65.8159 	EXP 	window1: blendMode = 'avg'
+65.8260 	EXP 	window1: blendMode = 'avg'
+65.8265 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+67.3326 	DATA 	Mouse: Left button down, pos=(134,399)
+67.3332 	EXP 	Sound  started
+67.3433 	EXP 	window1: blendMode = 'avg'
+67.3524 	EXP 	window1: blendMode = 'avg'
+67.3606 	EXP 	window1: blendMode = 'avg'
+67.3694 	EXP 	window1: blendMode = 'avg'
+67.3783 	EXP 	window1: blendMode = 'avg'
+67.3911 	EXP 	window1: blendMode = 'avg'
+67.3998 	EXP 	window1: blendMode = 'avg'
+67.4084 	EXP 	window1: blendMode = 'avg'
+67.4175 	EXP 	window1: blendMode = 'avg'
+67.4265 	EXP 	window1: blendMode = 'avg'
+67.4356 	EXP 	window1: blendMode = 'avg'
+67.4441 	EXP 	window1: blendMode = 'avg'
+67.4535 	EXP 	window1: blendMode = 'avg'
+67.4634 	EXP 	window1: blendMode = 'avg'
+67.4723 	EXP 	window1: blendMode = 'avg'
+67.4809 	EXP 	window1: blendMode = 'avg'
+67.4903 	EXP 	window1: blendMode = 'avg'
+67.4995 	EXP 	window1: blendMode = 'avg'
+67.5083 	EXP 	window1: blendMode = 'avg'
+67.5176 	EXP 	window1: blendMode = 'avg'
+67.5266 	EXP 	window1: blendMode = 'avg'
+67.5350 	EXP 	window1: blendMode = 'avg'
+67.5434 	EXP 	window1: blendMode = 'avg'
+67.5531 	EXP 	window1: blendMode = 'avg'
+67.5538 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+67.5680 	EXP 	window1: blendMode = 'avg'
+67.5732 	EXP 	window1: blendMode = 'avg'
+67.5741 	EXP 	window1: blendMode = 'avg'
+67.5747 	DATA 	Mouse:  Left button up, pos=(134,399)
+69.1087 	DATA 	Mouse: Left button down, pos=(655,150)
+69.1110 	EXP 	New trial (rep=0, index=9): {'cue': False, 'whichInPair': 0, 'nStreams': 2, 'ring': 2, 'pairAngle': 60, 'whichStreamCuedAngle': 60.0}
+69.1255 	EXP 	window1: blendMode = 'avg'
+69.1299 	EXP 	window1: blendMode = 'avg'
+69.1568 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+69.1568 	EXP 	BufferImageStim None: took 35.8ms to initialize
+69.1971 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+69.2193 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+69.2200 	EXP 	window1: blendMode = 'avg'
+69.2203 	EXP 	window1: blendMode = 'avg'
+69.2628 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+69.2629 	EXP 	BufferImageStim None: took 43.5ms to initialize
+69.3030 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+69.3249 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+69.3347 	EXP 	window1: blendMode = 'avg'
+69.3388 	EXP 	window1: blendMode = 'avg'
+69.3693 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+69.3693 	EXP 	BufferImageStim None: took 44.4ms to initialize
+69.4083 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+69.4300 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+69.4305 	EXP 	window1: blendMode = 'avg'
+69.4308 	EXP 	window1: blendMode = 'avg'
+69.4734 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1280.,   800.]), texRes=128, units='pix', win=Window(...))
+69.4734 	EXP 	BufferImageStim None: took 43.3ms to initialize
+69.5118 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+69.5337 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1056.,  1280.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+69.5519 	EXP 	window1: blendMode = 'avg'
+69.5527 	DATA 	Mouse:  Left button up, pos=(655,150)
+69.5537 	EXP 	window1: blendMode = 'avg'
+69.5671 	EXP 	window1: blendMode = 'avg'
+69.5837 	EXP 	window1: blendMode = 'avg'
+69.6007 	EXP 	window1: blendMode = 'avg'
+69.6173 	EXP 	window1: blendMode = 'avg'
+69.6338 	EXP 	window1: blendMode = 'avg'
+69.6503 	EXP 	window1: blendMode = 'avg'
+69.6671 	EXP 	window1: blendMode = 'avg'
+69.6836 	EXP 	window1: blendMode = 'avg'
+69.7002 	EXP 	window1: blendMode = 'avg'
+69.7170 	EXP 	window1: blendMode = 'avg'
+69.7336 	EXP 	window1: blendMode = 'avg'
+69.7502 	EXP 	window1: blendMode = 'avg'
+69.7668 	EXP 	window1: blendMode = 'avg'
+69.7844 	EXP 	window1: blendMode = 'avg'
+69.8012 	EXP 	window1: blendMode = 'avg'
+69.8178 	EXP 	window1: blendMode = 'avg'
+69.8343 	EXP 	window1: blendMode = 'avg'
+69.8508 	EXP 	window1: blendMode = 'avg'
+69.8682 	EXP 	window1: blendMode = 'avg'
+69.8837 	EXP 	window1: blendMode = 'avg'
+69.9000 	EXP 	window1: blendMode = 'avg'
+69.9168 	EXP 	window1: blendMode = 'avg'
+69.9334 	EXP 	window1: blendMode = 'avg'
+69.9500 	EXP 	window1: blendMode = 'avg'
+69.9671 	EXP 	window1: blendMode = 'avg'
+69.9838 	EXP 	window1: blendMode = 'avg'
+70.0001 	EXP 	window1: blendMode = 'avg'
+70.0167 	EXP 	window1: blendMode = 'avg'
+70.0331 	EXP 	window1: blendMode = 'avg'
+70.0496 	EXP 	window1: blendMode = 'avg'
+70.0663 	EXP 	window1: blendMode = 'avg'
+70.0829 	EXP 	window1: blendMode = 'avg'
+70.0996 	EXP 	window1: blendMode = 'avg'
+70.1160 	EXP 	window1: blendMode = 'avg'
+70.1327 	EXP 	window1: blendMode = 'avg'
+70.1497 	EXP 	window1: blendMode = 'avg'
+70.1664 	EXP 	window1: blendMode = 'avg'
+70.1829 	EXP 	window1: blendMode = 'avg'
+70.1990 	EXP 	window1: blendMode = 'avg'
+70.2158 	EXP 	window1: blendMode = 'avg'
+70.2322 	EXP 	window1: blendMode = 'avg'
+70.2490 	EXP 	window1: blendMode = 'avg'
+70.2656 	EXP 	window1: blendMode = 'avg'
+70.2821 	EXP 	window1: blendMode = 'avg'
+70.2987 	EXP 	window1: blendMode = 'avg'
+70.3156 	EXP 	window1: blendMode = 'avg'
+70.3322 	EXP 	window1: blendMode = 'avg'
+70.3487 	EXP 	window1: blendMode = 'avg'
+70.3652 	EXP 	window1: blendMode = 'avg'
+70.4000 	EXP 	window1: blendMode = 'avg'
+70.4010 	EXP 	window1: blendMode = 'avg'
+70.4150 	DATA 	Mouse: Left button down, pos=(636,390)
+70.4157 	EXP 	window1: blendMode = 'avg'
+70.4317 	DATA 	Mouse:  Left button up, pos=(636,390)
+70.4323 	EXP 	window1: blendMode = 'avg'
+70.4486 	EXP 	window1: blendMode = 'avg'
+70.4653 	EXP 	window1: blendMode = 'avg'
+70.4816 	EXP 	window1: blendMode = 'avg'
+70.4984 	EXP 	window1: blendMode = 'avg'
+70.5151 	EXP 	window1: blendMode = 'avg'
+70.5320 	EXP 	window1: blendMode = 'avg'
+70.5482 	EXP 	window1: blendMode = 'avg'
+70.5648 	EXP 	window1: blendMode = 'avg'
+70.5817 	EXP 	window1: blendMode = 'avg'
+70.5982 	EXP 	window1: blendMode = 'avg'
+70.6147 	EXP 	window1: blendMode = 'avg'
+70.6314 	EXP 	window1: blendMode = 'avg'
+70.6482 	EXP 	window1: blendMode = 'avg'
+70.6646 	EXP 	window1: blendMode = 'avg'
+70.6812 	EXP 	window1: blendMode = 'avg'
+70.6981 	EXP 	window1: blendMode = 'avg'
+70.7146 	EXP 	window1: blendMode = 'avg'
+70.7312 	EXP 	window1: blendMode = 'avg'
+70.7478 	EXP 	window1: blendMode = 'avg'
+70.7647 	EXP 	window1: blendMode = 'avg'
+70.7809 	EXP 	window1: blendMode = 'avg'
+70.7975 	EXP 	window1: blendMode = 'avg'
+70.8147 	EXP 	window1: blendMode = 'avg'
+70.8317 	EXP 	window1: blendMode = 'avg'
+70.8477 	EXP 	window1: blendMode = 'avg'
+70.8647 	EXP 	window1: blendMode = 'avg'
+70.8814 	EXP 	window1: blendMode = 'avg'
+70.8980 	EXP 	window1: blendMode = 'avg'
+70.9138 	EXP 	window1: blendMode = 'avg'
+70.9307 	EXP 	window1: blendMode = 'avg'
+70.9472 	EXP 	window1: blendMode = 'avg'
+70.9640 	EXP 	window1: blendMode = 'avg'
+70.9805 	EXP 	window1: blendMode = 'avg'
+70.9972 	EXP 	window1: blendMode = 'avg'
+71.0139 	EXP 	window1: blendMode = 'avg'
+71.0304 	EXP 	window1: blendMode = 'avg'
+71.0469 	EXP 	window1: blendMode = 'avg'
+71.0637 	EXP 	window1: blendMode = 'avg'
+71.0804 	EXP 	window1: blendMode = 'avg'
+71.0970 	DATA 	Mouse: Left button down, pos=(635,404)
+71.0977 	DATA 	Mouse:  Left button up, pos=(635,404)
+71.0984 	EXP 	window1: blendMode = 'avg'
+71.1137 	EXP 	window1: blendMode = 'avg'
+71.1304 	EXP 	window1: blendMode = 'avg'
+71.1468 	EXP 	window1: blendMode = 'avg'
+71.1633 	EXP 	window1: blendMode = 'avg'
+71.1803 	EXP 	window1: blendMode = 'avg'
+71.1969 	EXP 	window1: blendMode = 'avg'
+71.2136 	EXP 	window1: blendMode = 'avg'
+71.2300 	EXP 	window1: blendMode = 'avg'
+71.2468 	EXP 	window1: blendMode = 'avg'
+71.2635 	EXP 	window1: blendMode = 'avg'
+71.2800 	EXP 	window1: blendMode = 'avg'
+71.2965 	EXP 	window1: blendMode = 'avg'
+71.3129 	EXP 	window1: blendMode = 'avg'
+71.3299 	EXP 	window1: blendMode = 'avg'
+71.3462 	EXP 	window1: blendMode = 'avg'
+71.3632 	EXP 	window1: blendMode = 'avg'
+71.3798 	EXP 	window1: blendMode = 'avg'
+71.3962 	EXP 	window1: blendMode = 'avg'
+71.4129 	EXP 	window1: blendMode = 'avg'
+71.4296 	EXP 	window1: blendMode = 'avg'
+71.4465 	EXP 	window1: blendMode = 'avg'
+71.4626 	EXP 	window1: blendMode = 'avg'
+71.4795 	EXP 	window1: blendMode = 'avg'
+71.4962 	EXP 	window1: blendMode = 'avg'
+71.5128 	EXP 	window1: blendMode = 'avg'
+71.5291 	EXP 	window1: blendMode = 'avg'
+71.5459 	EXP 	window1: blendMode = 'avg'
+71.5628 	EXP 	window1: blendMode = 'avg'
+71.5792 	EXP 	window1: blendMode = 'avg'
+71.5956 	EXP 	window1: blendMode = 'avg'
+71.6125 	DATA 	Mouse: Left button down, pos=(635,404)
+71.6289 	DATA 	Mouse:  Left button up, pos=(635,404)
+72.9256 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+72.9414 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10c207d50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+72.9690 	EXP 	window1: blendMode = 'avg'
+72.9807 	EXP 	window1: blendMode = 'avg'
+72.9900 	EXP 	window1: blendMode = 'avg'
+73.0004 	EXP 	window1: blendMode = 'avg'
+73.0111 	EXP 	window1: blendMode = 'avg'
+73.0207 	EXP 	window1: blendMode = 'avg'
+73.0299 	EXP 	window1: blendMode = 'avg'
+73.0402 	EXP 	window1: blendMode = 'avg'
+73.0503 	EXP 	window1: blendMode = 'avg'
+73.0601 	EXP 	window1: blendMode = 'avg'
+73.0703 	EXP 	window1: blendMode = 'avg'
+73.0810 	EXP 	window1: blendMode = 'avg'
+73.0914 	EXP 	window1: blendMode = 'avg'
+73.1006 	EXP 	window1: blendMode = 'avg'
+73.1140 	EXP 	window1: blendMode = 'avg'
+73.1238 	EXP 	window1: blendMode = 'avg'
+73.1337 	EXP 	window1: blendMode = 'avg'
+73.1436 	EXP 	window1: blendMode = 'avg'
+73.1545 	EXP 	window1: blendMode = 'avg'
+73.1643 	EXP 	window1: blendMode = 'avg'
+73.1748 	EXP 	window1: blendMode = 'avg'
+73.1853 	EXP 	window1: blendMode = 'avg'
+73.1957 	EXP 	window1: blendMode = 'avg'
+73.2056 	EXP 	window1: blendMode = 'avg'
+73.2060 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+73.6098 	DATA 	Keypress: escape
+73.9822 	DATA 	Mouse: Left button down, pos=(635,404)
+73.9829 	EXP 	Sound  started
+73.9847 	EXP 	window1: mouseVisible = True

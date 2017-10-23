@@ -1,0 +1,3 @@
+experimentPhase	trialnum	subject	nStreams	ring	resp0	button0	cuePos0	answer0	correct0	pairAngle0	whichStreamCuedAngle0	whichRespCue0	whichInPair0	cuedStream0	responsePosRelative0	streamLtrSequence0	streamLtrSequence1	timingBlips
+main	0	CharlieEccentricity	2	1	P	0	7	G	False	60	270.0	0	1	1	3	BDOJNSLEKQVMIZGPHXTYAFRU	QHKAUEBGSMPTXNDJLYZOIRFV	23
+main	1	CharlieEccentricity	2	2	M	0	9	T	False	0	180.0	0	1	1	7	NRPIFQVMEKGLOTJUYAHZSBXD	EGFAVZLYKTQXRSBPMUJDNOHI	4

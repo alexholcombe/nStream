@@ -1,0 +1,11 @@
+experimentPhase	trialnum	subject	nStreams	ring	resp0	button0	cue0	answer0	correct0	pairAngle0	whichStreamCuedAngle0	whichRespCue0	whichInPair0	cuedStream0	responsePosRelative0	streamLtrSequence0	streamLtrSequence1	timingBlips
+main	0	Hubert	2	2	M	0	False	A	True	0	180.0	0	1	1	NA	R	X	6
+main	1	Hubert	2	2	N	0	False	A	True	60	240.0	0	1	1	NA	G	S	6
+main	2	Hubert	2	2	U	0	True	A	True	0	0.0	0	0	0	NA	V	M	7
+main	3	Hubert	2	2	Z	0	True	A	True	0	180.0	0	1	1	NA	Q	Z	6
+main	4	Hubert	2	2	O	0	True	A	True	60	60.0	0	0	0	NA	Y	P	7
+main	5	Hubert	2	2	V	0	True	A	True	60	240.0	0	1	1	NA	V	L	6
+main	6	Hubert	2	2	L	0	False	A	True	120	120.0	0	0	0	NA	L	S	6
+main	7	Hubert	2	2	M	0	False	A	True	120	300.0	0	1	1	NA	B	U	6
+main	8	Hubert	2	2	D	0	True	A	True	120	300.0	0	1	1	NA	Z	R	6
+main	9	Hubert	2	2	M	0	False	A	True	60	60.0	0	0	0	NA	D	O	6

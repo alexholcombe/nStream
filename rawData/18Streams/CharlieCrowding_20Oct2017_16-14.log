@@ -1,0 +1,51 @@
+94.7796 	INFO 	Successfully set darwin thread to realtime
+95.4217 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_10_20 16:15 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1508476527
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: 436307ca626e88bb1e798f929e3b9ec22a75dd16
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: False (proxies not attempted)
+    systemHostName: Charlies-Work-Laptop.local
+    systemLocale: C
+    systemMemFreeRAM: 5510.04296875
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.11.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.001995464786887169, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.006734693888574839, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Oct 11 21:08
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0060
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 110
+    systemUserProcFlagged: mdworker Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.035
+    windowRefreshTimeMedian_ms: 10.022
+    windowRefreshTimeAvg_ms: 10.020
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 59.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+97.0205 	EXP 	Set  sound=C

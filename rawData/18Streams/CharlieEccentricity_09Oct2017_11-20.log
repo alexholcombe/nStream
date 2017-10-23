@@ -1,0 +1,796 @@
+136.2250 	INFO 	Successfully set darwin thread to realtime
+136.8674 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_10_09 11:22 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1507508565
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: 81f8cd244e650013e254e184130c76808a14bd14
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: False (proxies not attempted)
+    systemHostName: Charlies-Work-Laptop.local
+    systemLocale: C
+    systemMemFreeRAM: 2441.47265625
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.11.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.001995464786887169, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.006734693888574839, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Oct 4 15:29
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0061
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 170
+    systemUserProcFlagged: mdworker ''Google Chrome'' Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.060
+    windowRefreshTimeMedian_ms: 10.024
+    windowRefreshTimeAvg_ms: 10.025
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 59.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+138.8218 	EXP 	Set  sound=C
+138.8528 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+139.1377 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+139.1380 	EXP 	Set  sound=A
+139.3316 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10b6dbe50>: vertices = array([[-3.   ,  0.375],
+       [ 3.   ,  0.375],
+       [ 3.   , -0.375],
+       [-3.   , -0.375]])
+139.3345 	EXP 	Created unnamed Rect = Rect(autoDraw=False, autoLog=True, closeShape=True, contrast=1.0, depth=0, fillColor=None, fillColorSpace='rgb', fillRGB=None, interpolate=True, lineColor=array([-0.7, -0.7, -0.7]), lineColorSpace='rgb', lineRGB=array([-0.7, -0.7, -0.7]), lineWidth=1.5, name='unnamed Rect', opacity=1.0, ori=array(0.0), pos=array([ 0.,  0.]), size=array([ 1.,  1.]), units='deg', vertices=ndarray(...), win=Window(...))
+139.3576 	EXP 	Created sequence: random, trialTypes=90, nReps=3, seed=None
+139.4975 	INFO 	 each trialDurFrames=96 or 1600.0 ms
+139.9307 	INFO 	Mouse: using default window
+139.9771 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+139.9774 	EXP 	Set  sound=A
+139.9798 	EXP 	window1: blendMode = 'avg'
+168.5070 	DATA 	Keypress: space
+168.5082 	EXP 	window1: blendMode = 'avg'
+173.4486 	DATA 	Keypress: m
+173.4494 	EXP 	New trial (rep=0, index=0): {'whichInPair': 1, 'nStreams': 2, 'cue0temporalPos': 7, 'pairAngle': 60, 'ring': 1, 'whichStreamCuedAngle': 270.0}
+173.4978 	EXP 	window1: blendMode = 'avg'
+173.5014 	EXP 	window1: blendMode = 'avg'
+173.5331 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+173.5331 	EXP 	BufferImageStim None: took 40.5ms to initialize
+173.6003 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+173.6015 	EXP 	window1: blendMode = 'avg'
+173.6018 	EXP 	window1: blendMode = 'avg'
+173.6379 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+173.6379 	EXP 	BufferImageStim None: took 37.6ms to initialize
+173.6966 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+173.7085 	EXP 	window1: blendMode = 'avg'
+173.7144 	EXP 	window1: blendMode = 'avg'
+173.7342 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+173.7343 	EXP 	BufferImageStim None: took 37.5ms to initialize
+173.7922 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+173.7928 	EXP 	window1: blendMode = 'avg'
+173.7931 	EXP 	window1: blendMode = 'avg'
+173.8290 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+173.8290 	EXP 	BufferImageStim None: took 36.8ms to initialize
+173.8864 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+173.8984 	EXP 	window1: blendMode = 'avg'
+173.9029 	EXP 	window1: blendMode = 'avg'
+173.9234 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+173.9234 	EXP 	BufferImageStim None: took 36.8ms to initialize
+173.9810 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+173.9816 	EXP 	window1: blendMode = 'avg'
+173.9818 	EXP 	window1: blendMode = 'avg'
+174.0485 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.0485 	EXP 	BufferImageStim None: took 67.5ms to initialize
+174.1323 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.1523 	EXP 	window1: blendMode = 'avg'
+174.1620 	EXP 	window1: blendMode = 'avg'
+174.1862 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.1862 	EXP 	BufferImageStim None: took 53.6ms to initialize
+174.2466 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.2472 	EXP 	window1: blendMode = 'avg'
+174.2475 	EXP 	window1: blendMode = 'avg'
+174.2833 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.2833 	EXP 	BufferImageStim None: took 36.7ms to initialize
+174.3426 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.3539 	EXP 	window1: blendMode = 'avg'
+174.3588 	EXP 	window1: blendMode = 'avg'
+174.3798 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.3798 	EXP 	BufferImageStim None: took 37.1ms to initialize
+174.4390 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.4395 	EXP 	window1: blendMode = 'avg'
+174.4398 	EXP 	window1: blendMode = 'avg'
+174.4852 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.4852 	EXP 	BufferImageStim None: took 46.2ms to initialize
+174.5434 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.5590 	EXP 	window1: blendMode = 'avg'
+174.5645 	EXP 	window1: blendMode = 'avg'
+174.5841 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.5841 	EXP 	BufferImageStim None: took 40.5ms to initialize
+174.6430 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.6436 	EXP 	window1: blendMode = 'avg'
+174.6438 	EXP 	window1: blendMode = 'avg'
+174.6844 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.6844 	EXP 	BufferImageStim None: took 41.4ms to initialize
+174.7426 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.7581 	EXP 	window1: blendMode = 'avg'
+174.7794 	EXP 	window1: blendMode = 'avg'
+174.7986 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.7986 	EXP 	BufferImageStim None: took 55.7ms to initialize
+174.8606 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.8611 	EXP 	window1: blendMode = 'avg'
+174.8614 	EXP 	window1: blendMode = 'avg'
+174.8988 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+174.8988 	EXP 	BufferImageStim None: took 38.2ms to initialize
+174.9585 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+174.9630 	EXP 	window1: blendMode = 'avg'
+174.9992 	EXP 	window1: blendMode = 'avg'
+175.0228 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.0228 	EXP 	BufferImageStim None: took 63.6ms to initialize
+175.1016 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.1025 	EXP 	window1: blendMode = 'avg'
+175.1031 	EXP 	window1: blendMode = 'avg'
+175.1488 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.1488 	EXP 	BufferImageStim None: took 47.1ms to initialize
+175.2342 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.2381 	EXP 	window1: blendMode = 'avg'
+175.2411 	EXP 	window1: blendMode = 'avg'
+175.2895 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.2895 	EXP 	BufferImageStim None: took 55.1ms to initialize
+175.3822 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.3830 	EXP 	window1: blendMode = 'avg'
+175.3833 	EXP 	window1: blendMode = 'avg'
+175.4507 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.4507 	EXP 	BufferImageStim None: took 68.5ms to initialize
+175.5200 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.5239 	EXP 	window1: blendMode = 'avg'
+175.5516 	EXP 	window1: blendMode = 'avg'
+175.5785 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.5786 	EXP 	BufferImageStim None: took 58.2ms to initialize
+175.6515 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.6520 	EXP 	window1: blendMode = 'avg'
+175.6522 	EXP 	window1: blendMode = 'avg'
+175.7056 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.7056 	EXP 	BufferImageStim None: took 54.1ms to initialize
+175.7731 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.7957 	EXP 	window1: blendMode = 'avg'
+175.8027 	EXP 	window1: blendMode = 'avg'
+175.8241 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.8242 	EXP 	BufferImageStim None: took 50.8ms to initialize
+175.8953 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+175.8959 	EXP 	window1: blendMode = 'avg'
+175.8961 	EXP 	window1: blendMode = 'avg'
+175.9413 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+175.9414 	EXP 	BufferImageStim None: took 46.0ms to initialize
+176.0102 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.0139 	EXP 	window1: blendMode = 'avg'
+176.0397 	EXP 	window1: blendMode = 'avg'
+176.0595 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.0595 	EXP 	BufferImageStim None: took 49.1ms to initialize
+176.1291 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.1297 	EXP 	window1: blendMode = 'avg'
+176.1299 	EXP 	window1: blendMode = 'avg'
+176.1776 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.1776 	EXP 	BufferImageStim None: took 48.5ms to initialize
+176.2441 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.2700 	EXP 	window1: blendMode = 'avg'
+176.2743 	EXP 	window1: blendMode = 'avg'
+176.2939 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.2939 	EXP 	BufferImageStim None: took 49.6ms to initialize
+176.3968 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.3976 	EXP 	window1: blendMode = 'avg'
+176.3979 	EXP 	window1: blendMode = 'avg'
+176.4376 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.4376 	EXP 	BufferImageStim None: took 40.7ms to initialize
+176.4999 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.5196 	EXP 	window1: blendMode = 'avg'
+176.5254 	EXP 	window1: blendMode = 'avg'
+176.5449 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.5449 	EXP 	BufferImageStim None: took 44.8ms to initialize
+176.6102 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.6107 	EXP 	window1: blendMode = 'avg'
+176.6110 	EXP 	window1: blendMode = 'avg'
+176.6545 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.6545 	EXP 	BufferImageStim None: took 44.3ms to initialize
+176.7186 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.7232 	EXP 	window1: blendMode = 'avg'
+176.7264 	EXP 	window1: blendMode = 'avg'
+176.7724 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.7724 	EXP 	BufferImageStim None: took 53.6ms to initialize
+176.8526 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.8532 	EXP 	window1: blendMode = 'avg'
+176.8534 	EXP 	window1: blendMode = 'avg'
+176.8961 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+176.8961 	EXP 	BufferImageStim None: took 43.5ms to initialize
+176.9731 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+176.9785 	EXP 	window1: blendMode = 'avg'
+176.9823 	EXP 	window1: blendMode = 'avg'
+177.0340 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.0340 	EXP 	BufferImageStim None: took 60.5ms to initialize
+177.1104 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.1116 	EXP 	window1: blendMode = 'avg'
+177.1123 	EXP 	window1: blendMode = 'avg'
+177.1801 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.1801 	EXP 	BufferImageStim None: took 69.7ms to initialize
+177.2484 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.2526 	EXP 	window1: blendMode = 'avg'
+177.2559 	EXP 	window1: blendMode = 'avg'
+177.3043 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.3043 	EXP 	BufferImageStim None: took 55.8ms to initialize
+177.3693 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.3699 	EXP 	window1: blendMode = 'avg'
+177.3702 	EXP 	window1: blendMode = 'avg'
+177.4130 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.4130 	EXP 	BufferImageStim None: took 43.7ms to initialize
+177.4860 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.4900 	EXP 	window1: blendMode = 'avg'
+177.5156 	EXP 	window1: blendMode = 'avg'
+177.5363 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.5363 	EXP 	BufferImageStim None: took 50.0ms to initialize
+177.6022 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.6028 	EXP 	window1: blendMode = 'avg'
+177.6030 	EXP 	window1: blendMode = 'avg'
+177.6466 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.6466 	EXP 	BufferImageStim None: took 44.4ms to initialize
+177.7110 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.7150 	EXP 	window1: blendMode = 'avg'
+177.7240 	EXP 	window1: blendMode = 'avg'
+177.7694 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.7695 	EXP 	BufferImageStim None: took 58.2ms to initialize
+177.8431 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.8438 	EXP 	window1: blendMode = 'avg'
+177.8442 	EXP 	window1: blendMode = 'avg'
+177.9064 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+177.9064 	EXP 	BufferImageStim None: took 63.3ms to initialize
+177.9754 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+177.9793 	EXP 	window1: blendMode = 'avg'
+177.9825 	EXP 	window1: blendMode = 'avg'
+178.0247 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.0247 	EXP 	BufferImageStim None: took 49.1ms to initialize
+178.0917 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.0923 	EXP 	window1: blendMode = 'avg'
+178.0926 	EXP 	window1: blendMode = 'avg'
+178.1372 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.1372 	EXP 	BufferImageStim None: took 45.5ms to initialize
+178.2003 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.2043 	EXP 	window1: blendMode = 'avg'
+178.2075 	EXP 	window1: blendMode = 'avg'
+178.2517 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.2517 	EXP 	BufferImageStim None: took 51.3ms to initialize
+178.3166 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.3172 	EXP 	window1: blendMode = 'avg'
+178.3175 	EXP 	window1: blendMode = 'avg'
+178.3615 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.3615 	EXP 	BufferImageStim None: took 44.8ms to initialize
+178.4253 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.4472 	EXP 	window1: blendMode = 'avg'
+178.6951 	EXP 	window1: blendMode = 'avg'
+178.7147 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.7147 	EXP 	BufferImageStim None: took 289.2ms to initialize
+178.7906 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.7911 	EXP 	window1: blendMode = 'avg'
+178.7914 	EXP 	window1: blendMode = 'avg'
+178.8331 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.8331 	EXP 	BufferImageStim None: took 42.4ms to initialize
+178.9044 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+178.9087 	EXP 	window1: blendMode = 'avg'
+178.9121 	EXP 	window1: blendMode = 'avg'
+178.9656 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+178.9656 	EXP 	BufferImageStim None: took 61.0ms to initialize
+179.0352 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+179.0362 	EXP 	window1: blendMode = 'avg'
+179.0367 	EXP 	window1: blendMode = 'avg'
+179.1011 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+179.1011 	EXP 	BufferImageStim None: took 65.8ms to initialize
+179.1698 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+179.1750 	EXP 	window1: blendMode = 'avg'
+179.1785 	EXP 	window1: blendMode = 'avg'
+179.2282 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+179.2283 	EXP 	BufferImageStim None: took 58.2ms to initialize
+179.3030 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+179.3036 	EXP 	window1: blendMode = 'avg'
+179.3039 	EXP 	window1: blendMode = 'avg'
+179.3515 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+179.3515 	EXP 	BufferImageStim None: took 48.5ms to initialize
+179.4162 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+179.4171 	EXP 	window1: blendMode = 'avg'
+179.4407 	EXP 	window1: blendMode = 'avg'
+179.4561 	EXP 	window1: blendMode = 'avg'
+179.4660 	EXP 	window1: blendMode = 'avg'
+179.4763 	EXP 	window1: blendMode = 'avg'
+179.4867 	EXP 	window1: blendMode = 'avg'
+179.4958 	EXP 	window1: blendMode = 'avg'
+179.5061 	EXP 	window1: blendMode = 'avg'
+179.5164 	EXP 	window1: blendMode = 'avg'
+179.5262 	EXP 	window1: blendMode = 'avg'
+179.5364 	EXP 	window1: blendMode = 'avg'
+179.5467 	EXP 	window1: blendMode = 'avg'
+179.5561 	EXP 	window1: blendMode = 'avg'
+179.5671 	EXP 	window1: blendMode = 'avg'
+179.5759 	EXP 	window1: blendMode = 'avg'
+179.5864 	EXP 	window1: blendMode = 'avg'
+179.5962 	EXP 	window1: blendMode = 'avg'
+179.6061 	EXP 	window1: blendMode = 'avg'
+179.6327 	EXP 	window1: blendMode = 'avg'
+179.6341 	EXP 	window1: blendMode = 'avg'
+179.6359 	EXP 	window1: blendMode = 'avg'
+179.6462 	EXP 	window1: blendMode = 'avg'
+179.6563 	EXP 	window1: blendMode = 'avg'
+179.6664 	EXP 	window1: blendMode = 'avg'
+179.6766 	EXP 	window1: blendMode = 'avg'
+179.6864 	EXP 	window1: blendMode = 'avg'
+179.6967 	EXP 	window1: blendMode = 'avg'
+179.7063 	EXP 	window1: blendMode = 'avg'
+179.7163 	EXP 	window1: blendMode = 'avg'
+179.7266 	EXP 	window1: blendMode = 'avg'
+179.7363 	EXP 	window1: blendMode = 'avg'
+179.7465 	EXP 	window1: blendMode = 'avg'
+179.7565 	EXP 	window1: blendMode = 'avg'
+179.7668 	EXP 	window1: blendMode = 'avg'
+179.7768 	EXP 	window1: blendMode = 'avg'
+179.7868 	EXP 	window1: blendMode = 'avg'
+179.7966 	EXP 	window1: blendMode = 'avg'
+179.8068 	EXP 	window1: blendMode = 'avg'
+179.8166 	EXP 	window1: blendMode = 'avg'
+179.8268 	EXP 	window1: blendMode = 'avg'
+179.8368 	EXP 	window1: blendMode = 'avg'
+179.8466 	EXP 	window1: blendMode = 'avg'
+179.8572 	EXP 	window1: blendMode = 'avg'
+179.8668 	EXP 	window1: blendMode = 'avg'
+179.8768 	EXP 	window1: blendMode = 'avg'
+179.8869 	EXP 	window1: blendMode = 'avg'
+179.8968 	EXP 	window1: blendMode = 'avg'
+179.9070 	EXP 	window1: blendMode = 'avg'
+179.9171 	EXP 	window1: blendMode = 'avg'
+179.9274 	EXP 	window1: blendMode = 'avg'
+179.9373 	EXP 	window1: blendMode = 'avg'
+179.9474 	EXP 	window1: blendMode = 'avg'
+179.9576 	EXP 	window1: blendMode = 'avg'
+179.9670 	EXP 	window1: blendMode = 'avg'
+179.9768 	EXP 	window1: blendMode = 'avg'
+179.9873 	EXP 	window1: blendMode = 'avg'
+179.9972 	EXP 	window1: blendMode = 'avg'
+180.0071 	EXP 	window1: blendMode = 'avg'
+180.0171 	EXP 	window1: blendMode = 'avg'
+180.0273 	EXP 	window1: blendMode = 'avg'
+180.0373 	EXP 	window1: blendMode = 'avg'
+180.0473 	EXP 	window1: blendMode = 'avg'
+180.0572 	EXP 	window1: blendMode = 'avg'
+180.0671 	EXP 	window1: blendMode = 'avg'
+180.0776 	EXP 	window1: blendMode = 'avg'
+180.0873 	EXP 	window1: blendMode = 'avg'
+180.0975 	EXP 	window1: blendMode = 'avg'
+180.1074 	EXP 	window1: blendMode = 'avg'
+180.1173 	EXP 	window1: blendMode = 'avg'
+180.1274 	EXP 	window1: blendMode = 'avg'
+180.1372 	EXP 	window1: blendMode = 'avg'
+180.1474 	EXP 	window1: blendMode = 'avg'
+180.1574 	EXP 	window1: blendMode = 'avg'
+180.1678 	DATA 	Mouse: Left button down, pos=(500,380)
+180.2236 	DATA 	Mouse:  Left button up, pos=(500,380)
+182.6270 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+182.7826 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10b6dbe50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+182.8101 	EXP 	window1: blendMode = 'avg'
+182.8205 	EXP 	window1: blendMode = 'avg'
+182.8294 	EXP 	window1: blendMode = 'avg'
+182.8391 	EXP 	window1: blendMode = 'avg'
+182.8481 	EXP 	window1: blendMode = 'avg'
+182.8570 	EXP 	window1: blendMode = 'avg'
+182.8658 	EXP 	window1: blendMode = 'avg'
+182.8750 	EXP 	window1: blendMode = 'avg'
+182.8841 	EXP 	window1: blendMode = 'avg'
+182.8941 	EXP 	window1: blendMode = 'avg'
+182.9033 	EXP 	window1: blendMode = 'avg'
+182.9125 	EXP 	window1: blendMode = 'avg'
+182.9217 	EXP 	window1: blendMode = 'avg'
+182.9312 	EXP 	window1: blendMode = 'avg'
+182.9402 	EXP 	window1: blendMode = 'avg'
+182.9493 	EXP 	window1: blendMode = 'avg'
+182.9590 	EXP 	window1: blendMode = 'avg'
+182.9683 	EXP 	window1: blendMode = 'avg'
+182.9815 	EXP 	window1: blendMode = 'avg'
+182.9941 	EXP 	window1: blendMode = 'avg'
+183.0052 	EXP 	window1: blendMode = 'avg'
+183.0161 	EXP 	window1: blendMode = 'avg'
+183.0252 	EXP 	window1: blendMode = 'avg'
+183.0352 	EXP 	window1: blendMode = 'avg'
+183.0356 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+184.1598 	DATA 	Mouse: Left button down, pos=(605,389)
+184.1606 	EXP 	Sound  started
+184.1972 	EXP 	window1: blendMode = 'avg'
+184.2066 	EXP 	window1: blendMode = 'avg'
+184.2158 	EXP 	window1: blendMode = 'avg'
+184.2248 	EXP 	window1: blendMode = 'avg'
+184.2341 	EXP 	window1: blendMode = 'avg'
+184.2436 	EXP 	window1: blendMode = 'avg'
+184.2524 	EXP 	window1: blendMode = 'avg'
+184.2616 	EXP 	window1: blendMode = 'avg'
+184.2701 	EXP 	window1: blendMode = 'avg'
+184.2823 	EXP 	window1: blendMode = 'avg'
+184.2917 	EXP 	window1: blendMode = 'avg'
+184.3031 	EXP 	window1: blendMode = 'avg'
+184.3125 	EXP 	window1: blendMode = 'avg'
+184.3214 	EXP 	window1: blendMode = 'avg'
+184.3309 	EXP 	window1: blendMode = 'avg'
+184.3392 	EXP 	window1: blendMode = 'avg'
+184.3480 	EXP 	window1: blendMode = 'avg'
+184.3565 	EXP 	window1: blendMode = 'avg'
+184.3655 	EXP 	window1: blendMode = 'avg'
+184.3748 	EXP 	window1: blendMode = 'avg'
+184.3844 	EXP 	window1: blendMode = 'avg'
+184.3937 	EXP 	window1: blendMode = 'avg'
+184.4033 	EXP 	window1: blendMode = 'avg'
+184.4135 	EXP 	window1: blendMode = 'avg'
+184.4143 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10b6dbe50>: vertices = array([[-0.04166667,  0.04166667],
+       [ 0.04166667,  0.04166667],
+       [ 0.04166667, -0.04166667],
+       [-0.04166667, -0.04166667]])
+184.4328 	EXP 	window1: blendMode = 'avg'
+184.4382 	EXP 	window1: blendMode = 'avg'
+184.4390 	EXP 	window1: blendMode = 'avg'
+184.4397 	DATA 	Mouse:  Left button up, pos=(605,389)
+185.1994 	DATA 	Mouse: Left button down, pos=(527,143)
+185.2019 	EXP 	New trial (rep=0, index=1): {'whichInPair': 1, 'nStreams': 2, 'cue0temporalPos': 9, 'pairAngle': 0, 'ring': 2, 'whichStreamCuedAngle': 180.0}
+185.2026 	EXP 	window1: blendMode = 'avg'
+185.2029 	EXP 	window1: blendMode = 'avg'
+185.2341 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.2341 	EXP 	BufferImageStim None: took 31.9ms to initialize
+185.2930 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.2937 	EXP 	window1: blendMode = 'avg'
+185.2939 	EXP 	window1: blendMode = 'avg'
+185.3234 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.3234 	EXP 	BufferImageStim None: took 30.2ms to initialize
+185.3719 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.3727 	EXP 	window1: blendMode = 'avg'
+185.3730 	EXP 	window1: blendMode = 'avg'
+185.4044 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.4045 	EXP 	BufferImageStim None: took 32.3ms to initialize
+185.4811 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.4816 	EXP 	window1: blendMode = 'avg'
+185.4820 	EXP 	window1: blendMode = 'avg'
+185.5147 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.5147 	EXP 	BufferImageStim None: took 33.6ms to initialize
+185.5876 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.5882 	EXP 	window1: blendMode = 'avg'
+185.5885 	EXP 	window1: blendMode = 'avg'
+185.6223 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.6224 	EXP 	BufferImageStim None: took 34.7ms to initialize
+185.6947 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.6952 	EXP 	window1: blendMode = 'avg'
+185.6955 	EXP 	window1: blendMode = 'avg'
+185.7274 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.7274 	EXP 	BufferImageStim None: took 32.7ms to initialize
+185.7987 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.7994 	EXP 	window1: blendMode = 'avg'
+185.7997 	EXP 	window1: blendMode = 'avg'
+185.8327 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.8328 	EXP 	BufferImageStim None: took 33.9ms to initialize
+185.9023 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+185.9029 	EXP 	window1: blendMode = 'avg'
+185.9032 	EXP 	window1: blendMode = 'avg'
+185.9359 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+185.9359 	EXP 	BufferImageStim None: took 33.5ms to initialize
+186.0065 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.0073 	EXP 	window1: blendMode = 'avg'
+186.0076 	EXP 	window1: blendMode = 'avg'
+186.0409 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.0409 	EXP 	BufferImageStim None: took 34.3ms to initialize
+186.1131 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.1136 	EXP 	window1: blendMode = 'avg'
+186.1139 	EXP 	window1: blendMode = 'avg'
+186.1459 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.1459 	EXP 	BufferImageStim None: took 32.8ms to initialize
+186.2161 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.2170 	EXP 	window1: blendMode = 'avg'
+186.2174 	EXP 	window1: blendMode = 'avg'
+186.2513 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.2513 	EXP 	BufferImageStim None: took 35.0ms to initialize
+186.3238 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.3244 	EXP 	window1: blendMode = 'avg'
+186.3247 	EXP 	window1: blendMode = 'avg'
+186.3567 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.3568 	EXP 	BufferImageStim None: took 32.9ms to initialize
+186.4274 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.4282 	EXP 	window1: blendMode = 'avg'
+186.4285 	EXP 	window1: blendMode = 'avg'
+186.4611 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.4612 	EXP 	BufferImageStim None: took 33.6ms to initialize
+186.5329 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.5334 	EXP 	window1: blendMode = 'avg'
+186.5337 	EXP 	window1: blendMode = 'avg'
+186.5656 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.5656 	EXP 	BufferImageStim None: took 32.7ms to initialize
+186.6451 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.6462 	EXP 	window1: blendMode = 'avg'
+186.6467 	EXP 	window1: blendMode = 'avg'
+186.6884 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.6884 	EXP 	BufferImageStim None: took 43.0ms to initialize
+186.7621 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.7626 	EXP 	window1: blendMode = 'avg'
+186.7628 	EXP 	window1: blendMode = 'avg'
+186.7975 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.7975 	EXP 	BufferImageStim None: took 35.3ms to initialize
+186.8483 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.8491 	EXP 	window1: blendMode = 'avg'
+186.8495 	EXP 	window1: blendMode = 'avg'
+186.8812 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.8812 	EXP 	BufferImageStim None: took 32.7ms to initialize
+186.9324 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+186.9329 	EXP 	window1: blendMode = 'avg'
+186.9333 	EXP 	window1: blendMode = 'avg'
+186.9753 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+186.9753 	EXP 	BufferImageStim None: took 42.9ms to initialize
+187.0346 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.0357 	EXP 	window1: blendMode = 'avg'
+187.0360 	EXP 	window1: blendMode = 'avg'
+187.0672 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.0672 	EXP 	BufferImageStim None: took 32.0ms to initialize
+187.1180 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.1186 	EXP 	window1: blendMode = 'avg'
+187.1190 	EXP 	window1: blendMode = 'avg'
+187.1484 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.1484 	EXP 	BufferImageStim None: took 30.3ms to initialize
+187.2009 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.2016 	EXP 	window1: blendMode = 'avg'
+187.2019 	EXP 	window1: blendMode = 'avg'
+187.2330 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.2331 	EXP 	BufferImageStim None: took 32.0ms to initialize
+187.2854 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.2859 	EXP 	window1: blendMode = 'avg'
+187.2861 	EXP 	window1: blendMode = 'avg'
+187.3174 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.3174 	EXP 	BufferImageStim None: took 32.0ms to initialize
+187.3676 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.3683 	EXP 	window1: blendMode = 'avg'
+187.3687 	EXP 	window1: blendMode = 'avg'
+187.4005 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.4005 	EXP 	BufferImageStim None: took 32.8ms to initialize
+187.4518 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.4524 	EXP 	window1: blendMode = 'avg'
+187.4527 	EXP 	window1: blendMode = 'avg'
+187.4825 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.4826 	EXP 	BufferImageStim None: took 30.7ms to initialize
+187.5371 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.5378 	EXP 	window1: blendMode = 'avg'
+187.5381 	EXP 	window1: blendMode = 'avg'
+187.5739 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.5739 	EXP 	BufferImageStim None: took 36.6ms to initialize
+187.6447 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.6455 	EXP 	window1: blendMode = 'avg'
+187.6459 	EXP 	window1: blendMode = 'avg'
+187.6831 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.6832 	EXP 	BufferImageStim None: took 38.4ms to initialize
+187.7460 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.7470 	EXP 	window1: blendMode = 'avg'
+187.7475 	EXP 	window1: blendMode = 'avg'
+187.7861 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.7861 	EXP 	BufferImageStim None: took 39.8ms to initialize
+187.8482 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.8490 	EXP 	window1: blendMode = 'avg'
+187.8494 	EXP 	window1: blendMode = 'avg'
+187.8852 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.8852 	EXP 	BufferImageStim None: took 37.0ms to initialize
+187.9407 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+187.9413 	EXP 	window1: blendMode = 'avg'
+187.9416 	EXP 	window1: blendMode = 'avg'
+187.9869 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+187.9869 	EXP 	BufferImageStim None: took 46.1ms to initialize
+188.0493 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.0499 	EXP 	window1: blendMode = 'avg'
+188.0502 	EXP 	window1: blendMode = 'avg'
+188.0863 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.0863 	EXP 	BufferImageStim None: took 36.9ms to initialize
+188.1466 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.1476 	EXP 	window1: blendMode = 'avg'
+188.1480 	EXP 	window1: blendMode = 'avg'
+188.1840 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.1840 	EXP 	BufferImageStim None: took 37.2ms to initialize
+188.2422 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.2430 	EXP 	window1: blendMode = 'avg'
+188.2435 	EXP 	window1: blendMode = 'avg'
+188.2788 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.2788 	EXP 	BufferImageStim None: took 36.5ms to initialize
+188.3373 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.3385 	EXP 	window1: blendMode = 'avg'
+188.3390 	EXP 	window1: blendMode = 'avg'
+188.3741 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.3741 	EXP 	BufferImageStim None: took 36.6ms to initialize
+188.4340 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.4346 	EXP 	window1: blendMode = 'avg'
+188.4350 	EXP 	window1: blendMode = 'avg'
+188.4704 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.4705 	EXP 	BufferImageStim None: took 36.4ms to initialize
+188.5289 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.5300 	EXP 	window1: blendMode = 'avg'
+188.5305 	EXP 	window1: blendMode = 'avg'
+188.5651 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.5651 	EXP 	BufferImageStim None: took 36.0ms to initialize
+188.6252 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.6258 	EXP 	window1: blendMode = 'avg'
+188.6263 	EXP 	window1: blendMode = 'avg'
+188.6599 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.6600 	EXP 	BufferImageStim None: took 34.7ms to initialize
+188.7186 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.7193 	EXP 	window1: blendMode = 'avg'
+188.7196 	EXP 	window1: blendMode = 'avg'
+188.7538 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.7538 	EXP 	BufferImageStim None: took 35.1ms to initialize
+188.8139 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.8146 	EXP 	window1: blendMode = 'avg'
+188.8149 	EXP 	window1: blendMode = 'avg'
+188.8528 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+188.8528 	EXP 	BufferImageStim None: took 38.8ms to initialize
+188.9274 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+188.9297 	EXP 	window1: blendMode = 'avg'
+188.9303 	EXP 	window1: blendMode = 'avg'
+189.0011 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.0011 	EXP 	BufferImageStim None: took 73.4ms to initialize
+189.0831 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.0837 	EXP 	window1: blendMode = 'avg'
+189.0840 	EXP 	window1: blendMode = 'avg'
+189.1247 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.1247 	EXP 	BufferImageStim None: took 41.5ms to initialize
+189.1882 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.1889 	EXP 	window1: blendMode = 'avg'
+189.1893 	EXP 	window1: blendMode = 'avg'
+189.2328 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.2328 	EXP 	BufferImageStim None: took 44.4ms to initialize
+189.3015 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.3021 	EXP 	window1: blendMode = 'avg'
+189.3026 	EXP 	window1: blendMode = 'avg'
+189.3462 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.3462 	EXP 	BufferImageStim None: took 44.6ms to initialize
+189.4077 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.4084 	EXP 	window1: blendMode = 'avg'
+189.4089 	EXP 	window1: blendMode = 'avg'
+189.4540 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.4541 	EXP 	BufferImageStim None: took 46.2ms to initialize
+189.5180 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.5185 	EXP 	window1: blendMode = 'avg'
+189.5188 	EXP 	window1: blendMode = 'avg'
+189.5680 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.5680 	EXP 	BufferImageStim None: took 50.0ms to initialize
+189.6424 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.6431 	EXP 	window1: blendMode = 'avg'
+189.6434 	EXP 	window1: blendMode = 'avg'
+189.6868 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.6868 	EXP 	BufferImageStim None: took 44.2ms to initialize
+189.7510 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.7516 	EXP 	window1: blendMode = 'avg'
+189.7519 	EXP 	window1: blendMode = 'avg'
+189.7969 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.7969 	EXP 	BufferImageStim None: took 45.9ms to initialize
+189.8589 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.8597 	EXP 	window1: blendMode = 'avg'
+189.8600 	EXP 	window1: blendMode = 'avg'
+189.9040 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+189.9040 	EXP 	BufferImageStim None: took 44.9ms to initialize
+189.9722 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+189.9728 	EXP 	window1: blendMode = 'avg'
+189.9730 	EXP 	window1: blendMode = 'avg'
+190.0135 	EXP 	Created unnamed BufferImageStim = BufferImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, flipHoriz=False, flipVert=False, image=Image(...), interpolate=True, mask='None', maskParams=None, name='unnamed BufferImageStim', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1024.,   768.]), texRes=128, units='pix', win=Window(...))
+190.0136 	EXP 	BufferImageStim None: took 41.3ms to initialize
+190.0817 	EXP 	Created unnamed ElementArrayStim = ElementArrayStim(autoLog=True, colorSpace='rgb', colors=array([ 1.,  1.,  1.]), contrs=array([ 1.]), depths=0, elementMask=method-wrapper(...), elementTex=method-wrapper(...), fieldDepth=0, fieldPos=array([ 0.,  0.]), fieldShape='circle', fieldSize=array([ 1.,  1.]), interpolate=True, maskParams=None, nElements=1, name='unnamed ElementArrayStim', opacities=array([ 1.]), oris=array([ 0.]), phases=array([[ 0.,  0.]]), rgbs=array([[ 1.,  1.,  1.]]), sfs=array([[ 1.,  1.]]), sizes=array([[ 1024.,  1024.]]), texRes=48, units='pix', win=Window(...), xys=array([[ 0.,  0.]]))
+190.0823 	EXP 	window1: blendMode = 'avg'
+190.0834 	DATA 	Mouse:  Left button up, pos=(527,143)
+190.1090 	EXP 	window1: blendMode = 'avg'
+190.1179 	EXP 	window1: blendMode = 'avg'
+190.1282 	EXP 	window1: blendMode = 'avg'
+190.1382 	EXP 	window1: blendMode = 'avg'
+190.1485 	EXP 	window1: blendMode = 'avg'
+190.1581 	EXP 	window1: blendMode = 'avg'
+190.1686 	EXP 	window1: blendMode = 'avg'
+190.1783 	EXP 	window1: blendMode = 'avg'
+190.1881 	EXP 	window1: blendMode = 'avg'
+190.1983 	EXP 	window1: blendMode = 'avg'
+190.2082 	EXP 	window1: blendMode = 'avg'
+190.2184 	EXP 	window1: blendMode = 'avg'
+190.2282 	EXP 	window1: blendMode = 'avg'
+190.2385 	EXP 	window1: blendMode = 'avg'
+190.2484 	EXP 	window1: blendMode = 'avg'
+190.2586 	EXP 	window1: blendMode = 'avg'
+190.2683 	EXP 	window1: blendMode = 'avg'
+190.2789 	EXP 	window1: blendMode = 'avg'
+190.2884 	EXP 	window1: blendMode = 'avg'
+190.2985 	EXP 	window1: blendMode = 'avg'
+190.3085 	EXP 	window1: blendMode = 'avg'
+190.3185 	EXP 	window1: blendMode = 'avg'
+190.3286 	EXP 	window1: blendMode = 'avg'
+190.3386 	EXP 	window1: blendMode = 'avg'
+190.3490 	EXP 	window1: blendMode = 'avg'
+190.3587 	EXP 	window1: blendMode = 'avg'
+190.3688 	EXP 	window1: blendMode = 'avg'
+190.3788 	EXP 	window1: blendMode = 'avg'
+190.3890 	EXP 	window1: blendMode = 'avg'
+190.3987 	EXP 	window1: blendMode = 'avg'
+190.4085 	EXP 	window1: blendMode = 'avg'
+190.4189 	EXP 	window1: blendMode = 'avg'
+190.4287 	EXP 	window1: blendMode = 'avg'
+190.4392 	EXP 	window1: blendMode = 'avg'
+190.4488 	EXP 	window1: blendMode = 'avg'
+190.4591 	EXP 	window1: blendMode = 'avg'
+190.4688 	EXP 	window1: blendMode = 'avg'
+190.4791 	EXP 	window1: blendMode = 'avg'
+190.4889 	EXP 	window1: blendMode = 'avg'
+190.4991 	EXP 	window1: blendMode = 'avg'
+190.5089 	EXP 	window1: blendMode = 'avg'
+190.5190 	EXP 	window1: blendMode = 'avg'
+190.5290 	EXP 	window1: blendMode = 'avg'
+190.5389 	EXP 	window1: blendMode = 'avg'
+190.5491 	EXP 	window1: blendMode = 'avg'
+190.5594 	EXP 	window1: blendMode = 'avg'
+190.5697 	EXP 	window1: blendMode = 'avg'
+190.5794 	EXP 	window1: blendMode = 'avg'
+190.5896 	EXP 	window1: blendMode = 'avg'
+190.5994 	EXP 	window1: blendMode = 'avg'
+190.6094 	EXP 	window1: blendMode = 'avg'
+190.6195 	EXP 	window1: blendMode = 'avg'
+190.6294 	EXP 	window1: blendMode = 'avg'
+190.6396 	EXP 	window1: blendMode = 'avg'
+190.6494 	EXP 	window1: blendMode = 'avg'
+190.6593 	EXP 	window1: blendMode = 'avg'
+190.6693 	EXP 	window1: blendMode = 'avg'
+190.6794 	EXP 	window1: blendMode = 'avg'
+190.6891 	EXP 	window1: blendMode = 'avg'
+190.6996 	EXP 	window1: blendMode = 'avg'
+190.7091 	EXP 	window1: blendMode = 'avg'
+190.7194 	EXP 	window1: blendMode = 'avg'
+190.7294 	EXP 	window1: blendMode = 'avg'
+190.7393 	EXP 	window1: blendMode = 'avg'
+190.7498 	EXP 	window1: blendMode = 'avg'
+190.7594 	EXP 	window1: blendMode = 'avg'
+190.7698 	EXP 	window1: blendMode = 'avg'
+190.7796 	DATA 	Mouse: Left button down, pos=(492,379)
+191.6097 	DATA 	Mouse:  Left button up, pos=(492,379)
+192.9481 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+192.9634 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10b6dbe50>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+192.9915 	EXP 	window1: blendMode = 'avg'
+193.0014 	EXP 	window1: blendMode = 'avg'
+193.0116 	EXP 	window1: blendMode = 'avg'
+193.0210 	EXP 	window1: blendMode = 'avg'
+193.0305 	EXP 	window1: blendMode = 'avg'
+193.0668 	EXP 	window1: blendMode = 'avg'
+193.0761 	EXP 	window1: blendMode = 'avg'
+193.0865 	EXP 	window1: blendMode = 'avg'
+193.0966 	EXP 	window1: blendMode = 'avg'
+193.1067 	EXP 	window1: blendMode = 'avg'
+193.1163 	EXP 	window1: blendMode = 'avg'
+193.1262 	EXP 	window1: blendMode = 'avg'
+193.1357 	EXP 	window1: blendMode = 'avg'
+193.1458 	EXP 	window1: blendMode = 'avg'
+193.1555 	EXP 	window1: blendMode = 'avg'
+193.1658 	EXP 	window1: blendMode = 'avg'
+193.1765 	EXP 	window1: blendMode = 'avg'
+193.1873 	EXP 	window1: blendMode = 'avg'
+193.1975 	EXP 	window1: blendMode = 'avg'
+193.2101 	EXP 	window1: blendMode = 'avg'
+193.2202 	EXP 	window1: blendMode = 'avg'
+193.2301 	EXP 	window1: blendMode = 'avg'
+193.2399 	EXP 	window1: blendMode = 'avg'
+193.2500 	EXP 	window1: blendMode = 'avg'
+193.2504 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+194.3279 	DATA 	Keypress: escape
+194.5033 	DATA 	Keypress: escape
+194.7031 	DATA 	Mouse: Left button down, pos=(492,379)
+194.7037 	EXP 	Sound  started
+194.7056 	EXP 	window1: mouseVisible = True

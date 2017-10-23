@@ -1,0 +1,3 @@
+21.8329 	ERROR 	Frames per second ~=60.2 BUT program assumes 100which is off by more than3.0%!!
+21.8331 	ERROR 	Screen apparently NOT the desired resolution of 1024x768 pixels!!
+27.8935 	EXP 	Set  sound=C

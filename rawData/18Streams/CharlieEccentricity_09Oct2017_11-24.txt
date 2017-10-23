@@ -1,0 +1,7 @@
+experimentPhase	trialnum	subject	nStreams	ring	resp0	button0	cuePos0	answer0	correct0	pairAngle0	whichStreamCuedAngle0	whichRespCue0	whichInPair0	cuedStream0	responsePosRelative0	streamLtrSequence0	streamLtrSequence1	timingBlips
+main	0	CharlieEccentricity	2	1	P	0	10	Q	False	60	270.0	0	1	1	5	TMXIZKQGDFVYUOAPHRELBNSJ	USBGIRKOMHQYLVTPEZFANJDX	0
+main	1	CharlieEccentricity	2	1	X	0	6	K	False	60	90.0	0	0	0	6	BFQZNMKSTIHJXAEYROVDLUGP	XEKLZIMSRTOGHNUQYAFPVDJB	0
+main	2	CharlieEccentricity	2	1	P	0	6	P	True	60	270.0	0	1	1	0	SPYHDFNOBEKGIAMXJRZTQULV	ZOXRYDPAKQTNFSMUVLHIBJGE	0
+main	3	CharlieEccentricity	2	0	P	0	10	P	True	120	300.0	0	1	1	0	ZMOJAIEGBNKLFHTQDPXUYSRV	EUTNMGHBJZPLISAQDFKYXVRO	0
+main	4	CharlieEccentricity	2	1	P	0	6	S	False	120	150.0	0	0	0	13	MRYABISNDOUTFJLGEQXPVZKH	TPEROFDGYSKXLNUQJBHMVIZA	0
+main	5	CharlieEccentricity	2	0	N	2	6	X	False	0	0.0	0	0	0	1	LBDEYGXNZKQFMHOTASURJPIV	MKIGESRPANTBUXVHFDZOQYLJ	0

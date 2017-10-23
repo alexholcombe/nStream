@@ -13,7 +13,7 @@ if(plots){
   savePlots <- F #save plots?
 }
 
-saveIndividualTSV <- F #Save data files?
+saveIndividualTSV <- T #Save data files?
 saveAllErrorsTSV <- T
 
 bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
@@ -63,7 +63,7 @@ maxTrials <- 321 #one participant had the eyetracker crash and ended up doing ~3
 #incomplete and bugged attempts, drop these
 #MH1 ran the experiment on a bugged version of the code
 #OS3, EG11 and PC13 didn't complete the experiment because the eyetracker wasn't detecting their eyes
-dropThese <- c( 'MH1','OS3','EG11','PC13')
+dropThese <- c('AW1', 'DY1', 'AM3', 'YW2', 'FY4')
 
 #groups <- c('2vs8','End6Strm82msSOA','Ex6Strm82msSOA')
 
@@ -104,7 +104,7 @@ monitorwidth = 40.5 #cm
 viewingDist = 56.5 #cm
 pixelsPerDegree = widthPix / (atan(monitorwidth/viewingDist)/pi*180)
 
-eyetrackerFiles <- list.files(path = 'rawData/Eyetracker',full.names = T)
+eyetrackerFiles <- list.files(path = 'rawData/Eyetracking',full.names = T)
 
 criterion = 1 #fixation reject criterion
 
@@ -242,8 +242,8 @@ for(group in names(dataSets)){
         
         
         if(bootstrapPredictions){
-          nEight <- length(which(temp$streamsPerRing==8))
-          nTwo <- length(which(temp$streamsPerRing==2))
+          nEight <- length(which(temp$nPreCueStreams==8))
+          nTwo <- length(which(temp$nPreCueStreams==2))
           
           eightB <- data.frame(bootStrappedPredictions = numeric(nEight*nRepetitions))
           twoB <- data.frame(bootStrappedPredictions = numeric(nTwo*nRepetitions))
@@ -259,9 +259,9 @@ for(group in names(dataSets)){
             twoB$bootStrappedPredictions[twoRows] <- two
           }
           bootstrapResults <- rbind(eightB, twoB)
-          bootstrapResults$streamsPerRing <- 0
-          bootstrapResults$streamsPerRing[1:nrow(twoB)] <- 2
-          bootstrapResults$streamsPerRing[nrow(twoB)+1:nrow(eightB)] <- 8
+          bootstrapResults$nPreCueStreams <- 0
+          bootstrapResults$nPreCueStreams[1:nrow(twoB)] <- 2
+          bootstrapResults$nPreCueStreams[nrow(twoB)+1:nrow(eightB)] <- 8
         }
 
           
@@ -271,7 +271,7 @@ for(group in names(dataSets)){
           #geom_text(x = 4, y=30, label=paste0('skew =', round(tempSkewTotal,2)))+
           geom_vline(xintercept = 0, linetype = 'dashed')+
           #stat_summary(data=bootstrapResults, aes(x=bootstrapPredictions), fun.y=mean, geom='line')+
-          facet_wrap(~streamsPerRing)+
+          facet_wrap(~nPreCueStreams)+
           labs(x = 'Serial Position Error',
                y='Count',
                title = paste0('participant: ', participant, ' Exp: ', group))
@@ -298,8 +298,8 @@ for(group in names(dataSets)){
       
       streamColumns <- grep('streamLtrSequence', colnames(temp))
       
-      twoStreams <- temp[temp$streamsPerRing==2,]
-      eightStreams <- temp[temp$streamsPerRing==8,]
+      twoStreams <- temp[temp$nPreCueStreams==2,]
+      eightStreams <- temp[temp$nPreCueStreams==8,]
       
       
       endRow <- startRow + nrow(twoStreams) -1
