@@ -161,6 +161,8 @@ latencyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
+
+show(latencyBayesPlot)
 ```
 
 #Precision Analysis
@@ -239,6 +241,8 @@ precisionBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Precision Effect Size')
 
+show(precisionBayesPlot)
+
 
 ```
 
@@ -314,6 +318,7 @@ efficacyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Efficacy Effect Size')
 
+show(efficacyBayesPlot)
 
 ```
 

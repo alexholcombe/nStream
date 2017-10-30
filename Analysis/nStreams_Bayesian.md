@@ -184,7 +184,11 @@ latencyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
+
+show(latencyBayesPlot)
 ```
+
+![](nStreams_Bayesian_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-3.png)
 
 Precision Analysis
 ==================
@@ -279,7 +283,11 @@ precisionBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Precision Effect Size')
+
+show(precisionBayesPlot)
 ```
+
+![](nStreams_Bayesian_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-3.png)
 
 Efficacy Analysis
 =================
@@ -370,7 +378,11 @@ efficacyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Efficacy Effect Size')
+
+show(efficacyBayesPlot)
 ```
+
+![](nStreams_Bayesian_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-3.png)
 
 ``` r
 efficacy$Parameter <- as.character('Efficacy')
