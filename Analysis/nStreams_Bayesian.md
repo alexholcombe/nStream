@@ -10,7 +10,7 @@ library(papaja)
 theme_set(theme_apa(base_size = 15) ) 
 
 savePlots <- T
-nParticipants = 9
+nParticipants = 13
 
 horizErrorBars <- function(data, var.name){
   SPEs <- data[,var.name]
@@ -87,13 +87,13 @@ frequentistTestLatency
     ##  Paired t-test
     ## 
     ## data:  latency$eightStreams and latency$twoStreams
-    ## t = 2.8587, df = 8, p-value = 0.02119
+    ## t = 3.9875, df = 12, p-value = 0.001802
     ## alternative hypothesis: true difference in means is not equal to 0
     ## 95 percent confidence interval:
-    ##   4.658103 43.526142
+    ##  10.55607 35.98837
     ## sample estimates:
     ## mean of the differences 
-    ##                24.09212
+    ##                23.27222
 
 Latency Analyses
 ================
@@ -121,13 +121,13 @@ BFplus = ( 2 * dcauchy(null,priorMean,priorSD) ) / posterior(tLatency, N1, delta
 BF10
 ```
 
-    ## [1] 3.522473
+    ## [1] 24.05731
 
 ``` r
 BFplus
 ```
 
-    ## [1] 6.924326
+    ## [1] 48.03092
 
 ``` r
 delta  <- seq(-2, 4, .01)
@@ -220,13 +220,13 @@ BFplus = ( 2 * dcauchy(0,priorMean,priorSD) ) / posterior(tPrecision, N1, delta=
 BF10
 ```
 
-    ## [1] 0.6695735
+    ## [1] 0.3467804
 
 ``` r
 BFplus
 ```
 
-    ## [1] 0.1618299
+    ## [1] 0.1791612
 
 ``` r
 delta  <- seq(-4, 2, .01)
@@ -318,13 +318,13 @@ BFplus = ( 2 * dcauchy(0,priorMean,priorSD) ) / posterior(tEfficacy, N1, delta=0
 BF10
 ```
 
-    ## [1] 0.6255015
+    ## [1] 0.7606536
 
 ``` r
 BFplus
 ```
 
-    ## [1] 0.1656486
+    ## [1] 0.1260706
 
 ``` r
 delta  <- seq(-2, 4, .01)
@@ -443,3 +443,33 @@ if(savePlots){
     ggsave(precisionBayesPlot, file = 'precisionEffectSize.png', height=15, width=20,units='cm')
 }
 ```
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 4 rows containing missing values (geom_point).
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 4 rows containing missing values (geom_point).
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 4 rows containing missing values (geom_point).
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 2 rows containing missing values (geom_point).
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 2 rows containing missing values (geom_point).
+
+    ## Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Spectral is 11
+    ## Returning the palette you asked for with that many colors
+
+    ## Warning: Removed 2 rows containing missing values (geom_point).

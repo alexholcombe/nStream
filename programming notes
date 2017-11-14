@@ -1,0 +1,28 @@
+- At the start of each trial
+	- Use the experimental setup from the previous experiments
+	- Draw each frame of nStreams streams for that trial
+		- Shuffle letters for each stream
+			- Return the streams (embedded list) from the function
+		- Determine cued stream
+			- Grab correct item here. Return it from the function
+		- Calculate position and sizing for cue and streams
+		- Draw and buffer streams
+		- Draw and buffer cue
+		- Grab pixels for the buffered items
+		- Merged the cue's image with the cued stream on the cued frame
+			- The location of the cue in the matrix of letter pixels should have background colour pixels, set these to the cue values
+				- streamImage[np.where(cueImage != bgcolor)] = cueImage[np.where(cueImage != bgcolor)]
+		- Join inner and outer rings somehow
+		- Pass the pixels to elementArrayStim
+		- If I draw the frame as a circle, do I need to worry about xys in elementArrayStim?
+			- The calcStreamPos function always returns xy coords. If I need to pass a matrix of xy coords to elementArrayStim, then I should just append the output to a list
+		- Using the number of monitor refreshes for the trial, pass the frames to a function that draws the stimuli
+- oneFrameOfStim
+	- Using the number of the monitor refresh
+		- which frame are we up to
+			- numLetters/n
+		- draw that frame
+	- return True
+- LineupResponse from Alex's code
+- Write all the relevant info (streams, response, correct item, accuracy, SPE etc.) to the data file
+- next trial

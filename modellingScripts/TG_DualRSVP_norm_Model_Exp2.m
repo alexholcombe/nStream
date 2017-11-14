@@ -15,7 +15,7 @@ itemRates = [12,12];
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [10 10 6 4];
+nParticipants = [13 13 6 4];
 nTrials = 300;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -246,7 +246,7 @@ for thisSample = 1:nSamples
                 fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
                 minNegLogLikelihoodByParticipant = inf;
 
-                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:))
+                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:));
                 theseErrorsByParticipant = theseErrorsByParticipant(:);
                 theseErrorsByParticipant = theseErrorsByParticipant(~isnan(theseErrorsByParticipant));
 

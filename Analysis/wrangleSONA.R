@@ -63,7 +63,7 @@ maxTrials <- 321 #one participant had the eyetracker crash and ended up doing ~3
 #incomplete and bugged attempts, drop these
 #MH1 ran the experiment on a bugged version of the code
 #OS3, EG11 and PC13 didn't complete the experiment because the eyetracker wasn't detecting their eyes
-dropThese <- c('AW1', 'DY1', 'AM3', 'YW2', 'FY4')
+dropThese <- c('AW1', 'DY1', 'AM3', 'YW2', 'FY4', 'AF16', 'LL15')
 
 #groups <- c('2vs8','End6Strm82msSOA','Ex6Strm82msSOA')
 

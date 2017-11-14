@@ -12,7 +12,7 @@ library(papaja)
 theme_set(theme_apa(base_size = 15) ) 
 
 savePlots <- T
-nParticipants = 9
+nParticipants = 13
 
 horizErrorBars <- function(data, var.name){
   SPEs <- data[,var.name]
