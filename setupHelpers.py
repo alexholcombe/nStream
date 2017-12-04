@@ -18,7 +18,7 @@ def setupDialogue(mon, screenValues, refreshRate = 60, quitFinder = True, demo =
     
     fullscr = screenValues['fullscr']
     
-    infoFirst = { 'Check refresh etc':True, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+    infoFirst = { 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
     OK = gui.DlgFromDict(dictionary=infoFirst, 
         title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
         order=['Check refresh etc', 'Fullscreen (timing errors if not)'], 
