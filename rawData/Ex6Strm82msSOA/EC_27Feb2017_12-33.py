@@ -199,8 +199,8 @@ if checkRefreshEtc and (not demo) and (myWinRes != [widthPix,heightPix]).any():
     logging.error(msgWrongResolution)
     print(msgWrongResolution)
 dimGreyForDlgBox = 'DimGrey'
-if psychopy.__version__ != '1.84.2': #really want to cover multiple versions, but would need to import distutils.version for that
-    dimGreyForDlgBox = [-1.,1.,-1.] #color names stopped working along the way, for unknown reason
+#if psychopy.__version__ != '1.84.2': #really want to cover multiple versions, but would need to import distutils.version for that
+#    dimGreyForDlgBox = [-1.,1.,-1.] #color names stopped working along the way, for unknown reason
 myDlg.addText('Note: to abort press ESC at a trials response screen', color=dimGreyForDlgBox) 
 myDlg.show()
 
