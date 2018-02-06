@@ -4,7 +4,7 @@
 
 clear all; %#ok<CLSCR>
 
-allGroups = {'SONA/18Streams/twoStreams','SONA/18Streams/eighteenStreams'};
+allGroups = {'crowdingTest/Eleven','crowdingTest/Seven','crowdingTest/Three'};
 baseDirectory = '~/gitCode/nStream/';
 dataDirectory = [baseDirectory 'wrangledData/'];
 saveDirectory = [baseDirectory 'modelOutput/'];
@@ -15,7 +15,8 @@ saveDirectory = [baseDirectory 'modelOutput/'];
 %
 %dataFormat = {'%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d'};
 
-dataFormat = {'%s%d%s%d%d%s%d%d%s%s%d%d%d%d%d%d%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%d%d%s%d%d%s%s%d%d%d%d%d%d%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%d%d%s'};
+dataFormat = {'%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d'};
+              
 
 % For the RSVP analysis, the variables we need are:
 % compiledErrors(thisCondition,thisParticipant,thisSession,thisTrial,thisSide);
@@ -32,9 +33,9 @@ dataFormat = {'%s%d%s%d%d%s%d%d%s%s%d%d%d%d%d%d%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%
 
 %dataColumns = {[11 16 4 9 26 3 14],[11 16 4 9 26 3 14],[20 12 4 7 21 3 10],[20 12 4 7 21 3 10]};
 
-dataColumns = {[8 16 1 6 36 3 15] [8 16 1 6 36 3 15]}
+dataColumns = {[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15]};
 
-streams = [2 18];
+streams = [2];
 % Specify the maximum number of trials (per participant, condition, etc).
 % We do this so that we can build the
 % data matrices to this size. They'll be trimmed afterwards to the actual
@@ -43,7 +44,7 @@ streams = [2 18];
 % zeros. So make sure this is definitely higher than the actual maximum
 % number of trials.
 
-nTrialsMaxEstimate = 280;
+nTrialsMaxEstimate = 180;
 
 % Calculate the number of groups.            
 nGroups = numel(allGroups);
@@ -148,7 +149,8 @@ for thisGroup = 1:nGroups
     
     splitName = strsplit(allGroups{thisGroup},'/') %use the string before the / as a folder, the string after as a group
     folder = splitName{1}
-    group = splitName{3}
+    group = splitName{2}
+
     
     squeeze(compiledErrors)
     

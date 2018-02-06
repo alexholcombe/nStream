@@ -9,6 +9,7 @@ source('ggplotElements.R')
 theme_set(theme_apa(base_size = 20)) 
 
 checkPositions = F
+eyetracking = F
 
 plots <- T #if true, create plots
 if(plots){
@@ -21,11 +22,11 @@ saveAllErrorsTSV <- F
 bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
 nRepetitions <- 1000 #number of bootstrap repetitions
 
-dataPath <- 'rawData/18Streams' #'rawData/' for 2 vs 8
+dataPath <- 'rawData/' #'rawData/' for 2 vs 8
 
 
-pracTrials <- 1:20
-maxTrials <- 360 #one participant had the eyetracker crash and ended up doing ~325 trials
+pracTrials <- 0
+maxTrials <- 180 #one participant had the eyetracker crash and ended up doing ~325 trials
 
 #incomplete and bugged attempts, drop these
 #JH2 couldn't be eyetracked, blinked 3-4 times per trial
@@ -34,7 +35,7 @@ dropThese <- c('JH2')
 
 #groups <- c('2vs8','End6Strm82msSOA','Ex6Strm82msSOA')
 
-group = 'SONA/18Streams'
+group = 'crowdingTest'
 
 if(plots){
   if(savePlots){
@@ -48,33 +49,15 @@ if(plots){
 }
 
 if(saveIndividualTSV){
-  if(!'18Streams' %in% list.dirs('wrangledData/')){
-    dir.create('wrangledData/SONA/18Streams')
-    dir.create('wrangledData/SONA/18Streams/twoStreams')
-    dir.create('wrangledData/SONA/18Streams/eighteenStreams')
+  if(!group %in% list.dirs('wrangledData/', full.names=F)){
+    dir.create(paste0('wrangledData/',group))
   }
 }
 
-efficacy <- read.csv('modelOutput/CSV/Efficacy.csv')
-latency <- read.csv('modelOutput/CSV/Latency.csv')
-precision <- read.csv('modelOutput/CSV/Precision.csv')
 
-
-files <- list.files(pattern = '^18[A-Z][A-Z].*\\.txt$', path = dataPath, full.names = T)
+files <- list.files(pattern = '.txt$', path = dataPath, full.names = T)
 print(files)
 
-#############################
-###Concatenate Split Files###
-#############################
-
-# AW1 <- read.table('rawData/18Streams/18AW1_03Oct2017_09-22.txt', sep = '\t', header = T)
-# AW12 <- read.table('rawData/18Streams/18AW12_03Oct2017_10-11.txt', sep = '\t', header = T)
-# AW1 <- rbind(AW1,AW12)
-# write.table(file = 'rawData/18Streams/18AW1_03Oct2017_09-16CONCATENATED.txt',x= AW1, row.names = F, col.names = T, sep='\t')
-eyeAW1 <- read.table('rawData/18Streams/Eyetracker/18AW1.txt', sep = '\t', header = T)
-eyeAW12 <- read.table('rawData/18Streams/Eyetracker/18AW12.txt', sep = '\t', header = T)
-eyeAW1 <- rbind(eyeAW1, eyeAW12)
-write.table(eyeAW1, file = 'rawData/18Streams/Eyetracker/18AW1CONCATENATED.txt', sep = '\t',col.names = T, row.names = F)
 
 widthPix= 1024 #monitor width in pixels of Agosta
 heightPix= 768 #800 #monitor height in pixels
@@ -82,7 +65,9 @@ monitorwidth = 40.5 #cm
 viewingDist = 59 #cm
 pixelsPerDegree = widthPix / (atan(monitorwidth/viewingDist)/pi*180)
 
-eyetrackerFiles <- list.files(path = 'rawData/18Streams/Eyetracker',full.names = T)
+if(eyetracking){
+  eyetrackerFiles <- list.files(path = 'rawData/18Streams/Eyetracker',full.names = T)  
+}
 
 criterion = 1 #fixation reject criterion
 
@@ -106,7 +91,7 @@ IDs <- character()
 
 
 for(dataset in files){
-  ID <- strsplit(dataset, '(?<=s/)18|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
+  ID <- strsplit(dataset, '(?<=ata)//|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
   if(!ID %in% dropThese){
     #group <- strsplit(dataset,'/')[[1]][2]
     print(group)
@@ -137,7 +122,12 @@ for(dataset in files){
   }
 }
 
-allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), fixationReject = logical(totalRows), button = numeric(totalRows), ring = numeric(totalRows), stringsAsFactors = F)
+allErrors <- data.frame(exp = character(totalRows), 
+                        crowded = character(totalRows), 
+                        error = numeric(totalRows), 
+                        ID = character(totalRows),
+                        ring = numeric(totalRows), 
+                        stringsAsFactors = F)
 
 startRow <- 1
 
@@ -153,14 +143,6 @@ for(group in names(dataSets)){
       
       temp$responsePos <- temp$cuePos0+temp$responsePosRelative0
       
-      thisEyetrackerFile <- eyetrackerFiles[grep(paste0('.*',participant,'.*'), eyetrackerFiles)]
-      theseFixations <- read.table(thisEyetrackerFile, sep='\t', stringsAsFactors = F, header = T)
-      
-      theseFixations$CURRENT_FIX_X_DEG <- theseFixations$CURRENT_FIX_X/pixelsPerDegree
-      theseFixations$CURRENT_FIX_Y_DEG <- theseFixations$CURRENT_FIX_Y/pixelsPerDegree
-      
-      temp$fixationReject <- FALSE
-      theseFixations$fixationDistance <- numeric(nrow(theseFixations))
       
       if(checkPositions){
         matchCue <- c()
@@ -178,47 +160,57 @@ for(group in names(dataSets)){
         print(all(matchCue))
       }
       
-
+      if(eyetracking){
+        thisEyetrackerFile <- eyetrackerFiles[grep(paste0('.*',participant,'.*'), eyetrackerFiles)]
+        theseFixations <- read.table(thisEyetrackerFile, sep='\t', stringsAsFactors = F, header = T)
       
-      for(index in unique(theseFixations$TRIAL_INDEX)){ #If the trial has multiple fixations, compare each fixation to the initial fixation and reject that trial if it falls outside of a 1º radius circle centered on the initial fix
+        theseFixations$CURRENT_FIX_X_DEG <- theseFixations$CURRENT_FIX_X/pixelsPerDegree
+        theseFixations$CURRENT_FIX_Y_DEG <- theseFixations$CURRENT_FIX_Y/pixelsPerDegree
         
-        theseFixationsThisTrial = which(theseFixations$TRIAL_INDEX==index)
-        nFixationsThisTrial <- length(theseFixationsThisTrial)
+        temp$fixationReject <- FALSE
+        theseFixations$fixationDistance <- numeric(nrow(theseFixations))
         
-        if(nFixationsThisTrial>1){
+        for(index in unique(theseFixations$TRIAL_INDEX)){ #If the trial has multiple fixations, compare each fixation to the initial fixation and reject that trial if it falls outside of a 1º radius circle centered on the initial fix
           
-          initialFixationX = theseFixations$CURRENT_FIX_X_DEG[theseFixationsThisTrial[1]]
-          initialFixationY = theseFixations$CURRENT_FIX_Y_DEG[theseFixationsThisTrial[1]]
+          theseFixationsThisTrial = which(theseFixations$TRIAL_INDEX==index)
+          nFixationsThisTrial <- length(theseFixationsThisTrial)
           
-          for(thisFixationRow in theseFixationsThisTrial){ #iterate over DF rows rather than fixations
-            if(thisFixationRow == theseFixationsThisTrial[1]){
-              #skip the first fixation,
-            } else {
-              
-              xVector <- theseFixations$CURRENT_FIX_X_DEG[thisFixationRow] - initialFixationX
-              yVector <- theseFixations$CURRENT_FIX_Y_DEG[thisFixationRow] - initialFixationY
-              
-              fixationDistance <- sqrt(xVector^2 + yVector^2)
-              
-              theseFixations$fixationDistance[thisFixationRow] <- fixationDistance
-              
-              if(fixationDistance>=criterion){
-                if(!theseFixations$CURRENT_FIX_BLINK_AROUND[thisFixationRow] %in% c('BEFORE','AFTER') ){
-                  if(index<=220){
-                    temp$fixationReject[index] <- TRUE
-                    #print(fixationDistance)
-                    #print(index)
+          if(nFixationsThisTrial>1){
+            
+            initialFixationX = theseFixations$CURRENT_FIX_X_DEG[theseFixationsThisTrial[1]]
+            initialFixationY = theseFixations$CURRENT_FIX_Y_DEG[theseFixationsThisTrial[1]]
+            
+            for(thisFixationRow in theseFixationsThisTrial){ #iterate over DF rows rather than fixations
+              if(thisFixationRow == theseFixationsThisTrial[1]){
+                #skip the first fixation,
+              } else {
+                
+                xVector <- theseFixations$CURRENT_FIX_X_DEG[thisFixationRow] - initialFixationX
+                yVector <- theseFixations$CURRENT_FIX_Y_DEG[thisFixationRow] - initialFixationY
+                
+                fixationDistance <- sqrt(xVector^2 + yVector^2)
+                
+                theseFixations$fixationDistance[thisFixationRow] <- fixationDistance
+                
+                if(fixationDistance>=criterion){
+                  if(!theseFixations$CURRENT_FIX_BLINK_AROUND[thisFixationRow] %in% c('BEFORE','AFTER') ){
+                    if(index<=220){
+                      temp$fixationReject[index] <- TRUE
+                      #print(fixationDistance)
+                      #print(index)
+                    }
                   }
                 }
               }
             }
           }
         }
+        
+        if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
+          next
+        }
       }
       
-      if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
-        next
-      }
       
       tempSkewNStreams <- aggregate(responsePosRelative0~cuedStream0, temp, skew)
       
@@ -251,20 +243,42 @@ for(group in names(dataSets)){
           bootstrapResults$nStreams[1:nrow(twoB)] <- 2
           bootstrapResults$nStreams[nrow(twoB)+1:nrow(eightB)] <- 8
         }
-
-          
-        tempPlot <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
+        
+        cueOffsets = c(3,7,11.5)
+        
+        temp$eccentricity <- cueOffsets[temp$ring+1]  
+        
+        tempPlot <- ggplot(temp, aes(x=responsePosRelative0))+
           geom_histogram(binwidth = 1)+
           scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),4))+
           #geom_text(x = 4, y=30, label=paste0('skew =', round(tempSkewTotal,2)))+
           geom_vline(xintercept = 0, linetype = 'dashed')+
           #stat_summary(data=bootstrapResults, aes(x=bootstrapPredictions), fun.y=mean, geom='line')+
-          facet_wrap(~nStreams)+
+          facet_wrap(~eccentricity)+
           labs(x = 'Serial Position Error',
                y='Count',
                title = paste0('participant: ', participant, ' Exp: ', group))
         
         show(tempPlot)
+        
+        three <- temp[temp$ring==0,]
+        seven <- temp[temp$ring==1,]
+        eleven <- temp[temp$ring==2,]
+        
+        endRow <- startRow + nrow(temp) -1
+        
+        print(startRow)
+        print(endRow)
+        
+        allErrors$exp[startRow:endRow] <- temp$experimentPhase
+        allErrors$ring[startRow:endRow] <- temp$ring
+        allErrors$ID[startRow:endRow] <- participant
+        allErrors$error[startRow:endRow] <- temp$responsePosRelative0
+        allErrors$crowded[startRow:endRow] <- temp$crowded
+        
+        if(eyetracking){
+          allErrors$fixationReject[startRow:endRow] <- twoStreams$fixationReject
+        }
         
         # plotByStream <- ggplot(temp[!temp$fixationReject,], aes(x=responsePosRelative0))+
         #   geom_histogram(binwidth = 1)+
@@ -284,45 +298,20 @@ for(group in names(dataSets)){
         #dataSets[[group]][[participant]][[dateString]][['plotByStreams']] <- plotByStream
       }
       
-      streamColumns <- grep('streamLtrSequence', colnames(temp))
-      
-      twoStreams <- temp[temp$nStreams==2,]
-      eighteenStreams <- temp[temp$nStreams==18,]
-      
-      
-      endRow <- startRow + nrow(twoStreams) -1
-      
-      print(startRow)
-      print(endRow)
-      
-      allErrors$condition[startRow:endRow] <- 'twoStreams'
-      allErrors$ID[startRow:endRow] <- participant
-      allErrors$error[startRow:endRow] <- twoStreams$responsePosRelative0
-      allErrors$fixationReject[startRow:endRow] <- twoStreams$fixationReject
-      allErrors$button[startRow:endRow] <- twoStreams$button0
-      allErrors$ring[startRow:endRow] <- twoStreams$ring
-      
-      startRow <- endRow+1
-      
-      endRow <- startRow + nrow(eighteenStreams)-1
-      
-      allErrors$condition[startRow:endRow] <- 'eighteenStreams'
-      allErrors$ID[startRow:endRow] <- participant
-      allErrors$error[startRow:endRow] <- eighteenStreams$responsePosRelative0
-      allErrors$fixationReject[startRow:endRow] <- eighteenStreams$fixationReject
-      allErrors$button[startRow:endRow] <- eighteenStreams$button0
-      allErrors$ring[startRow:endRow] <- eighteenStreams$ring
-      
-      startRow <- endRow + 1
       
       if(saveIndividualTSV){
-        write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-        write.table(eighteenStreams[!eighteenStreams$fixationReject,], paste0('wrangledData/',group,'/eighteenStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        if(eyetracking){
+          write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+          write.table(eighteenStreams[!eighteenStreams$fixationReject,], paste0('wrangledData/',group,'/eighteenStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        } else {
+          write.table(three, paste0('wrangledData/', group,'/Three/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+          write.table(seven, paste0('wrangledData/', group,'/Seven/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+          write.table(eleven, paste0('wrangledData/', group,'/Eleven/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        }  
       }
       dataSets[[group]][[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
       dataSets[[group]][[participant]][[dateString]][['skew']] <- tempSkewTotal 
     }
-    print(mean(temp$fixationReject))
   }
 }
 

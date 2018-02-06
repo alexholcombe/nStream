@@ -17,11 +17,12 @@ def setupDialogue(mon, screenValues, refreshRate = 60, quitFinder = True, demo =
     heightPix = screenValues['heightPix']
     
     fullscr = screenValues['fullscr']
+    singleShot = screenValues['singleShot']
     
-    infoFirst = { 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate }
+    infoFirst = { 'Check refresh etc':False, 'Fullscreen (timing errors if not)': fullscr, 'Screen refresh rate': refreshRate, 'Single Shot': singleShot}
     OK = gui.DlgFromDict(dictionary=infoFirst, 
         title='AB or dualstream experiment OR staircase to find thresh noise level for T1 performance criterion', 
-        order=['Check refresh etc', 'Fullscreen (timing errors if not)'], 
+        order=['Check refresh etc', 'Fullscreen (timing errors if not)', 'Single Shot'], 
         tip={'Check refresh etc': 'To confirm refresh rate and that can keep up, at least when drawing a grating'},
         #fixed=['Check refresh etc'])#this attribute can't be changed by the user
         )
@@ -33,6 +34,8 @@ def setupDialogue(mon, screenValues, refreshRate = 60, quitFinder = True, demo =
     fullscr = infoFirst['Fullscreen (timing errors if not)']
 
     refreshRate = infoFirst['Screen refresh rate']
+    
+    singleShot = infoFirst['Single Shot']
 
     if checkRefreshEtc:
         quitFinder = True 
@@ -150,4 +153,4 @@ def setupDialogue(mon, screenValues, refreshRate = 60, quitFinder = True, demo =
        core.quit()
     if not demo: 
         allowGUI=False
-    return fullscr, name
+    return fullscr, name, singleShot

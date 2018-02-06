@@ -51,8 +51,8 @@ demo=False #False
 exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
 if autopilot: subject='auto'
-if os.path.isdir('.'+os.sep+'rawData/18Streams'):
-    dataDir='rawData/18Streams'
+if os.path.isdir('.'+os.sep+'rawData'):
+    dataDir='rawData'
 else:
     print('"rawData" directory does not exist, so saving data in present working directory')
     dataDir='.'
@@ -109,6 +109,7 @@ units='deg' #'cm'
 scrn = 1
 
 doStaircase = False
+singleShot = False
 
 screenValues = {
     'widthPix': 1024, #monitor width in pixels of Agosta
@@ -120,7 +121,8 @@ screenValues = {
     'bgColor' : bgColor,
     'screen' : scrn,
     'units' : units,
-    'waitBlank':waitBlank
+    'waitBlank':waitBlank,
+    'singleShot': singleShot
 }
 
 if demo: monitorwidth = 23#18.0
@@ -161,8 +163,6 @@ rateInfo = 'total SOA=' + str(round(  (ISIframes + letterDurFrames)*1000./refres
 rateInfo+=  'ISIframes ='+str(ISIframes)+' or '+str(ISIframes*(1000./refreshRate))+' ms and letterDurFrames ='+str(letterDurFrames)+' or '+str(round( letterDurFrames*(1000./refreshRate), 2))+'ms'
 
 logging.info(rateInfo); print(rateInfo)
-
-trialDurFrames = int( numLettersToPresent*(ISIframes+letterDurFrames) ) #trial duration in frames
  
 
 
@@ -175,7 +175,16 @@ trialDurFrames = int( numLettersToPresent*(ISIframes+letterDurFrames) ) #trial d
 #############################################
 #############################################
 
-fullscr, subject = setupHelpers.setupDialogue(mon, screenValues, refreshRate, quitFinder, demo)
+fullscr, subject, singleShot = setupHelpers.setupDialogue(mon, screenValues, refreshRate, quitFinder, demo)
+print('SingleShot = ' + str(singleShot))
+
+if singleShot:
+    numLettersToPresent = 5
+    font = 'Arial'
+    
+    
+trialDurFrames = int( numLettersToPresent*(ISIframes+letterDurFrames) ) #trial duration in frames
+
 
 screenValues['fullscr'] = fullscr
 
@@ -334,7 +343,10 @@ mask[centreX-fixSizePix/2:centreX+fixSizePix/2, centreY-fixSizePix/2:centreY+fix
     
 #For the dual-stream simultaneous target
 stimList=[]
-possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
+if not singleShot:
+    possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
+else:
+    possibleCueTemporalPositions = np.array([2,2,2,2,2])
 tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 6
@@ -348,7 +360,7 @@ for nStreams in nStreamsPossibilities:
         for ring in rings:
             for pairAngle in pairAngles:
                 for whichInPair in [0,1]:
-                    for crowded in [True, False]:
+                    for crowded in ['Yes', 'Bouma']:#['Yes','Edge-to-Edge','Bouma']:
                         halfAngle = 360/float(streamsPerRing)/2.0
                         thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
                         if nStreams==2:
@@ -369,7 +381,7 @@ for nStreams in nStreamsPossibilities:
                            #   )
 
 
-trialsPerCondition = 2
+trialsPerCondition = 1
 trials = data.TrialHandler(stimList,trialsPerCondition) #constant stimuli method
 print('There are ' + str(trials.nTotal) + ' trials.')
 
@@ -443,7 +455,7 @@ print('timingBlips',file=dataFile)
 ################################
 
 for cueN in xrange(maxNumRespsWanted):
-    if cueType == 'exogenousRing':
+    if cueType == 'exogenousRing' and not singleShot:
         cue = visual.Circle(myWin, 
                      radius=cueRadius,#Martini used circles with diameter of 12 deg
                      lineColorSpace = 'rgb',
@@ -455,7 +467,19 @@ for cueN in xrange(maxNumRespsWanted):
                      pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
                      interpolate=True,
                      autoLog=False)#this stim changes too much for autologging to be useful
-    elif cueType =='endogenous':  #tiny dot at fixation point
+    elif cueType == 'exogenousRing' and singleShot:
+        cue = visual.Circle(myWin, 
+                     radius=cueRadius,#Martini used circles with diameter of 12 deg
+                     lineColorSpace = 'rgb',
+                     lineColor=bgColor,
+                     lineWidth=2.0, #in pixels
+                     units = 'deg',
+                     fillColorSpace = 'rgb',
+                     fillColor=None, #beware, with convex shapes fill colors don't work
+                     pos= [-5,-5], #the anchor (rotation and vertices are position with respect to this)
+                     interpolate=True,
+                     autoLog=False)#this stim changes too much for autologging to be useful    
+    if cueType =='endogenous' and not singleShot:  #tiny dot at fixation point
         cue = visual.Circle(myWin,
                 units='pix',
                 radius=1, #4
@@ -468,12 +492,16 @@ for cueN in xrange(maxNumRespsWanted):
 #In each stream, predraw all 26 letters
 ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
 cueOffsets = [3,7,11.5]
-uncrowdedRadii = [1.3, 1.95, 2.8] #.1E + .5ltrheight + .5
+edgeRadii = [1.3, 1.95, 2.8] #.1E + .5ltrheight + .5
+scaledLtrHeights = [1.0, 1.5997001499250376, 2.2743628185907045]
+boumaRadii = [cueOffsets[i]*.5+.5*scaledLtrHeights[i]+1 for i in range(3)]
 maxStreams = max(nStreamsPossibilities)
 
 lettersToExclude = ['C','W'] #lets exclude these
 
 potentialLetters = [letter for letter in string.ascii_uppercase if letter not in lettersToExclude]
+if singleShot:
+    potentialLetters.append('#')
 
 streamTextObjects = list() #A text object for every stream. I'll update the text for each frame
 
@@ -483,17 +511,30 @@ print('nextLargestMultiple is ' + str(nextLargestMultiple))
 for stream in xrange(nextLargestMultiple): 
     thisStream = list()
     for letter in potentialLetters:
-        streamText = visual.TextStim(
-            myWin,
-            pos=(0,0),
-            colorSpace='rgb', 
-            font = font, 
-            color=letterColor,
-            alignHoriz='center',
-            alignVert='center',
-            units='deg',
-            text = letter,
-            autoLog=autoLogging)
+        if letter is not '#':
+            streamText = visual.TextStim(
+                myWin,
+                pos=(0,0),
+                colorSpace='rgb', 
+                font = font, 
+                color=letterColor,
+                alignHoriz='center',
+                alignVert='center',
+                units='deg',
+                text = letter,
+                autoLog=autoLogging)
+        else:
+            streamText = visual.TextStim(
+                myWin,
+                pos=(0,0),
+                colorSpace='rgb', 
+                font = 'Arial', 
+                color=letterColor,
+                alignHoriz='center',
+                alignVert='center',
+                units='deg',
+                text = letter,
+                autoLog=autoLogging)            
         '''
         Because each stream has a different angular offset from the x axis, I can't use set pos here. 
         In order to scale the object according to magnification - which I'm doing here to save doing it on every trial -
@@ -683,7 +724,7 @@ def doRSVPStim(trial):
     global tracker
     
     nStreams = trial['nStreams']
-    print(nStreams)
+#    print(nStreams)
 
     ring = trial['ring']
     thisRingAngleOffset = (ring % 2) * halfAngle 
@@ -697,9 +738,9 @@ def doRSVPStim(trial):
     else:
         cuedStream = trial['whichInPair']
     
-    print('cueFrame = ' + str(cuedFrame))
-    print('cuedStream = ' + str(cuedStream))
-    print('whichinPair = ' + str(trial['whichInPair']))
+#    print('cueFrame = ' + str(cuedFrame))
+#    print('cuedStream = ' + str(cuedStream))
+#    print('whichinPair = ' + str(trial['whichInPair']))
     streamPositions = list() #Might need to pass this to elementArrayStim as xys. Might not though
 
 
@@ -716,19 +757,27 @@ def doRSVPStim(trial):
         )
        
 
-    for thisStream in xrange(nStreams):
-        thisSequence = np.arange(24)
-        np.random.shuffle(thisSequence)
-        theseIdentities = [potentialLetters[idx] for idx in thisSequence]
-        streamLetterIdxs[thisStream,:] = thisSequence
-        streamLetterIdentities[thisStream,:] = theseIdentities
-        #print('For stream %(streamN)d the letters are: %(theseLetters)s' % {'streamN':thisStream, 'theseLetters':''.join(theseIdentities)})
-
-    #print(streamLetterIdentities)
-
+    if not singleShot:
+        for thisStream in xrange(nStreams):
+            thisSequence = np.arange(24)
+            np.random.shuffle(thisSequence)
+            theseIdentities = [potentialLetters[idx] for idx in thisSequence]
+            streamLetterIdxs[thisStream,:] = thisSequence
+            streamLetterIdentities[thisStream,:] = theseIdentities
+            #print('For stream %(streamN)d the letters are: %(theseLetters)s' % {'streamN':thisStream, 'theseLetters':''.join(theseIdentities)})
+    else:
+        for thisStream in xrange(nStreams):
+            thisSequence = [24,24] #pre-mask
+            thisLetter = np.random.choice([i for i in range(24)], size = 1)
+            thisSequence.append(thisLetter)
+            thisSequence += [24, 24] #post-mask
+            theseIdentities = [potentialLetters[idx] for idx in thisSequence]
+            streamLetterIdxs[thisStream,:] = thisSequence
+            streamLetterIdentities[thisStream,:] = theseIdentities
+            
     correctIdx = streamLetterIdxs[cuedStream,cuedFrame] 
-    print('correctIdx')
-    print(correctIdx)
+#    print('correctIdx')
+#    print(correctIdx)
     correctLetter = alphabetHelpers.numberToLetter(correctIdx, potentialLetters) #potentialLetters is global
 
     frameStimuli = list() #A list of elementArrayStim objects, each represents a frame. Drawing one of these objects will draw the letters and the cue for that frame
@@ -743,38 +792,40 @@ def doRSVPStim(trial):
         stimuliToDrawCounterPhase.append(fixatnCounterphase)
 
         for thisStream in xrange(nStreams):
-            
-            thisPos = calcStreamPos(
-                trial = trial, 
-                cueOffsets = cueOffsets, 
-                streami = thisStream, 
-                streamOrNoise = False
-                )
-            
-            cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
-            
-            thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
-            
-            if nStreams == 2 and max(nStreamsPossibilities)>2:
-                #print('Stream was' + str(thisStream) +', but is now' + str(trial['ring']*streamsPerRing+thisStream))
-                thisStreamStimulus = streamTextObjects[trial['ring']*streamsPerRing+thisStream, thisLetterIdx]
-            else:
-                thisStreamStimulus = streamTextObjects[thisStream, thisLetterIdx]
+            if thisStream == cuedStream or not singleShot:
+                thisPos = calcStreamPos(
+                    trial = trial, 
+                    cueOffsets = cueOffsets, 
+                    streami = thisStream, 
+                    streamOrNoise = False
+                    )
+                
+                cueThisFrame = thisStream == cuedStream and thisFrame == cuedFrame #If true, draw the cue and capture that too
+                
+                thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
+                
+                if nStreams == 2 and max(nStreamsPossibilities)>2:
+                    #print('Stream was' + str(thisStream) +', but is now' + str(trial['ring']*streamsPerRing+thisStream))
+                    thisStreamStimulus = streamTextObjects[trial['ring']*streamsPerRing+thisStream, thisLetterIdx]
+                else:
+                    thisStreamStimulus = streamTextObjects[thisStream, thisLetterIdx]
 
-            thisStreamStimulus.pos = thisPos
-            #print('For stream %(thisStream)d the height is: %(letterHeight)s' % {'thisStream':thisStream, 'letterHeight':thisStreamStimulus.height})
+                thisStreamStimulus.pos = thisPos
+                #print('For stream %(thisStream)d the height is: %(letterHeight)s' % {'thisStream':thisStream, 'letterHeight':thisStreamStimulus.height}) 
 
-            stimuliToDraw.append(thisStreamStimulus)
-            stimuliToDrawCounterPhase.append(thisStreamStimulus)
+                stimuliToDraw.append(thisStreamStimulus)
+                stimuliToDrawCounterPhase.append(thisStreamStimulus)
 
-            if cueThisFrame and cueType == 'exogenousRing':
-                cue.setPos( thisPos )
-                if trial['crowded']:
-                    cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
-                elif not trial['crowded']:
-                    cue.radius = uncrowdedRadii[ring]
-                stimuliToDraw.append(cue)
-                stimuliToDrawCounterPhase.append(cue)
+                if cueThisFrame and cueType == 'exogenousRing':
+                    cue.setPos( thisPos )
+                    if trial['crowded'] == 'Yes':
+                        cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+                    elif trial['crowded'] == 'Edge-to-Edge':
+                        cue.radius = edgeRadii[ring]
+                    elif trial['crowded'] == 'Bouma':
+                        cue.radius = boumaRadii[ring]
+                    stimuliToDraw.append(cue)
+                    stimuliToDrawCounterPhase.append(cue)
 
         
         thisFrameStimuli = bufferPixels(stimuliToDraw)
@@ -881,7 +932,7 @@ while nDone < trials.nTotal and not expStop:
     #print(responses[0])
     #print(np.where(streamLetterIdentities[cuedStream,:]==responses[0])[0][0])
     responseLetterIdx = np.where(streamLetterIdentities[cuedStream,:]==responses[0]) #need index on where because it treats sliced streamLetterIdentities as a ndarray
-    if len(responseLetterIdx) is not 0:
+    if responseLetterIdx[0].size is not 0:
         responseLetterIdx = responseLetterIdx[0]
         SPE = responseLetterIdx[0] - cuePos
         print('SPE ' + str(SPE))

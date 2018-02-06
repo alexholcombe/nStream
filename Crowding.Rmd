@@ -1,0 +1,47 @@
+---
+title: "Crowding experiments"
+author: "Charlie Ludowici"
+date: "1/23/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+library(papaja)
+library(ggplot2)
+theme_set(theme_apa())
+```
+
+I've noticed that efficacy seems inversely related to eccentricity. This could be a function of crowding. To test this, I've run a 2-streams experiment where streams can appear at 3, 7 or 11.5 degrees of eccentricity - the same as the rings of the incipient 18-streams experiment. Only one stream is cued on each trial. The letter sizes are scaled with eccentricity. I used Bouma's law to create uncrowded rings with radii $.5(eccentricity) + .5(letter height)+.5$ degrees. Stimulus sizing was thus:
+
+```{r echo=FALSE}
+stimuli <- data.frame(eccentricity = c(3,7,11.5), letterHeight = c(1.0, 1.5997001499250376, 2.2743628185907045), radii = numeric(3))
+
+for(i in 1:3){
+  stimuli$radii[i] <- .5*stimuli$eccentricity[i] + .5*stimuli$letterHeight[i] + .5
+}
+
+knitr::kable(stimuli,digits = 2, align = 'c')
+```
+
+Data from one observer (me) look like this.
+
+```{r echo = FALSE}
+me <- read.table('wrangledData/crowdingTest/CharlieBouma.txt',sep = '\t', header = T)
+me$eccentricity <- stimuli$eccentricity[me$ring+1]
+
+ggplot(me, aes(x = responsePosRelative0))+
+  geom_histogram(binwidth = 1)+
+  facet_wrap(~eccentricity, labeller = 'label_both')
+```
+The histograms become more diffuse and the probability of responding with the target decreases as eccentricity increases. The latter is a signature of masking and crowding. I believe that the former is due to an increase in guessing in response to crowding. However, I shouldn't be observing crowding here. So what's going on? I'll increase the rings' radii by another half degree, just to be sure. 
+
+```{r echo = FALSE}
+me <- read.table('wrangledData/crowdingTest/CharlieWiderBouma.txt',sep = '\t', header = T)
+me$eccentricity <- stimuli$eccentricity[me$ring+1]
+
+ggplot(me, aes(x = responsePosRelative0))+
+  geom_histogram(binwidth = 1)+
+  facet_wrap(~eccentricity, labeller = 'label_both')+
+  geom_vline(xintercept = 0)
+```

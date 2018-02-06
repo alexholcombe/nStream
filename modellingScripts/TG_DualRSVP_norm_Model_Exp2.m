@@ -9,13 +9,13 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
 %sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
-sampleNames = {'SONA/18Streams/twoStreams', 'SONA/18Streams/eighteenStreams'};
-itemRates = [12,12];
+sampleNames = {'crowdingTest/Three', 'crowdingTest/Seven','crowdingTest/Eleven'};
+itemRates = [12 12 12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [10 10 6 4];
+nParticipants = [2 2 2];
 nTrials = 360;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -71,12 +71,13 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
-    splitName = strsplit(sampleNames{thisSample},'/');
-    folder = splitName{1};
-    group = splitName{3};
+    group = sampleNames{thisSample};
     
     % Load data
     cd(dataDirectory);
+    splitName = strsplit(sampleNames{thisSample},'/') %use the string before the / as a folder, the string after as a group
+    folder = splitName{1}
+    group = splitName{2}
     load([folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
     
     
@@ -189,7 +190,7 @@ for thisSample = 1:nSamples
     
     % Load data
     cd(dataDirectory);
-    load( [folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
+    load( ['CompiledData_TGRSVP_Exp2_' group '.mat']);
    
     
     
@@ -371,7 +372,7 @@ fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        %fprintf(writeFile,'\n%d',thisSample); % Group
+        fprintf(writeFile,'\n%d',thisSample); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
                 fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
