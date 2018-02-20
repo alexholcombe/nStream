@@ -92,7 +92,7 @@ IDs <- character()
 
 for(dataset in files){
   ID <- strsplit(dataset, '(?<=ata)//|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
-  if(!ID %in% dropThese){
+  if(ID == 'PB'){
     #group <- strsplit(dataset,'/')[[1]][2]
     print(group)
     print(ID)
