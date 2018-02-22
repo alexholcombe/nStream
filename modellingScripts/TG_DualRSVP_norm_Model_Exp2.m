@@ -9,13 +9,26 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
 %sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
-sampleNames = {'crowdingTest/Three', 'crowdingTest/Seven','crowdingTest/Eleven'};
-itemRates = [12 12 12];
+sampleNames = {};
+
+crowding = {'crowded','bouma'};
+rings = {'one', 'two','three'};
+
+for cond = crowding
+    for ring = rings
+        thisGroup = strcat(cond, '/', ring);
+        sampleNames{end+1} = thisGroup{1};
+    end
+end
+
+sampleNames
+
+itemRates = [12 12 12 12 12 12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [2 2 2];
+nParticipants = [3 3 3 3 3 3];
 nTrials = 360;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -70,14 +83,13 @@ allNTrials_Combined = NaN(1,nSamples);
 for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
-    
-    group = sampleNames{thisSample};
+ 
+    splitName = strsplit(sampleNames{thisSample},'/');
+    folder = splitName{1}
+    group = splitName{2}
     
     % Load data
     cd(dataDirectory);
-    splitName = strsplit(sampleNames{thisSample},'/') %use the string before the / as a folder, the string after as a group
-    folder = splitName{1}
-    group = splitName{2}
     load([folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
     
     
@@ -133,7 +145,7 @@ for thisSample = 1:nSamples
     theseErrorsCombined = squeeze(compiledErrors);
     theseErrorsCombined = theseErrorsCombined(:);
     theseErrorsCombined = theseErrorsCombined(~isnan(theseErrorsCombined));
-
+    
      % Compute negative log likelihood for uniform distribution
 
     uniformNegLogLikelihoodCombined = -sum(log(pdf_uniformonly(theseErrorsCombined,1)));
@@ -186,11 +198,6 @@ for thisSample = 1:nSamples
         allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
 
     end
-
-    
-    % Load data
-    cd(dataDirectory);
-    load( ['CompiledData_TGRSVP_Exp2_' group '.mat']);
    
     
     
@@ -244,13 +251,13 @@ for thisSample = 1:nSamples
 
             for thisParticipant = 1:thisNParticipants
                 
-                fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
+                %fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
                 minNegLogLikelihoodByParticipant = inf;
 
                 theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:));
                 theseErrorsByParticipant = theseErrorsByParticipant(:);
                 theseErrorsByParticipant = theseErrorsByParticipant(~isnan(theseErrorsByParticipant));
-
+                theseErrorsByParticipant(1:5)
                  % Compute negative log likelihood for uniform distribution
 
                 uniformNegLogLikelihoodByParticipant = -sum(log(pdf_uniformonly(theseErrorsByParticipant,1)));

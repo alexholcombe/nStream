@@ -4,7 +4,18 @@
 
 clear all; %#ok<CLSCR>
 
-allGroups = {'crowdingTest/Eleven','crowdingTest/Seven','crowdingTest/Three'};
+allGroups = {};
+
+crowding = {'crowded','bouma'};
+rings = {'one', 'two','three'};
+
+for cond = crowding
+    for ring = rings
+        thisGroup = strcat(cond, '/', ring);
+        allGroups{end+1} = thisGroup{1};
+    end
+end
+
 baseDirectory = '~/gitCode/nStream/';
 dataDirectory = [baseDirectory 'wrangledData/'];
 saveDirectory = [baseDirectory 'modelOutput/'];
@@ -15,7 +26,7 @@ saveDirectory = [baseDirectory 'modelOutput/'];
 %
 %dataFormat = {'%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%d%d%s%d%d%s%d%d%d%d%s%s%s%s%s%s%s%s%d%d%s','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d','%s%d%s%s%d%s%s%s%d%d%d%d%s%s%s%s%s%s%d%d%d'};
 
-dataFormat = {'%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d'};
+dataFormat = {'%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d','%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d'};
               
 
 % For the RSVP analysis, the variables we need are:
@@ -33,7 +44,7 @@ dataFormat = {'%s%d%s%d%d%s%s%d%d%s%s%d%d%d%d%d%d%s%s%d%d%d%d%d%d%d%d%d%d%d%d%d%
 
 %dataColumns = {[11 16 4 9 26 3 14],[11 16 4 9 26 3 14],[20 12 4 7 21 3 10],[20 12 4 7 21 3 10]};
 
-dataColumns = {[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15]};
+dataColumns = {[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15],[9 17 1 7 37 3 15]};
 
 streams = [2];
 % Specify the maximum number of trials (per participant, condition, etc).
@@ -55,7 +66,7 @@ for thisGroup = 1:nGroups
     
     % Open file.
     cd([dataDirectory allGroups{thisGroup}]);
-    
+    [dataDirectory allGroups{thisGroup}]
     allContents = dir;
     allContents = {allContents.name};
     removeThese = strncmp('.',allContents,1);    % Find invalid entries (beginning with '.')
@@ -147,12 +158,12 @@ for thisGroup = 1:nGroups
     compiledErrors = compiledErrors(:,:,1:nTrialsMaxActual);
     compiledTargets = compiledTargets(:,:,1:nTrialsMaxActual);
     
-    splitName = strsplit(allGroups{thisGroup},'/') %use the string before the / as a folder, the string after as a group
-    folder = splitName{1}
-    group = splitName{2}
-
+    squeeze(compiledErrors);
     
-    squeeze(compiledErrors)
+    
+    splitName = strsplit(allGroups{thisGroup},'/'); %use the string before the / as a folder, the string after as a group
+    folder = splitName{1};
+    group = splitName{2};
     
     % Save
     cd([saveDirectory 'compiled/']);
