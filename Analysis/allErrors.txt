@@ -1,181 +1,1081 @@
-"exp"	"condition"	"error"	"response"	"cuePos"	"stream"	"ID"	"fixationReject"	"button"
-""	"crowded"	0	"M"	"8"	"QAZILGDUMNPEBHTJRXOVFYKS"	"PB"	FALSE	0
-""	"crowded"	0	"X"	"10"	"BQSPIKHORNXVFLZEUYTJADMG"	"PB"	FALSE	0
-""	"crowded"	0	"D"	"8"	"SOEKHTZJDLQGMVIXFANYRBPU"	"PB"	FALSE	0
-""	"crowded"	1	"X"	"10"	"PJAQEFSGMHDXOBITUKVLYZNR"	"PB"	FALSE	0
-""	"crowded"	1	"P"	"10"	"VXOBRZUFMTYPISGHNQEDLJKA"	"PB"	FALSE	0
-""	"crowded"	-2	"P"	"9"	"BLKIXDTPYUEOZJRNHSGAMFQV"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"10"	"ELAUBTORMGQSVFKNDXJZPYIH"	"PB"	FALSE	0
-""	"crowded"	1	"D"	"7"	"KVQLPRIYDZGHSUFEOJTXNMAB"	"PB"	FALSE	0
-""	"crowded"	1	"R"	"9"	"GSOBITUNYJRKFEQXHAVZLMDP"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"6"	"UVNZIHASQMPORDKYLJGXTBFE"	"PB"	FALSE	0
-""	"crowded"	2	"N"	"10"	"JQRKALEZTBHMNGDYIOVSXPUF"	"PB"	FALSE	0
-""	"crowded"	1	"Z"	"10"	"BHDKPXFNTLUZYAOQVGMSIJRE"	"PB"	FALSE	0
-""	"crowded"	2	"A"	"7"	"SKNQTYMIBAJGRPFOXUELZVDH"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"6"	"KYHIRUGSQBNPDTEFMJXOALVZ"	"PB"	FALSE	0
-""	"crowded"	-1	"N"	"7"	"ZQEJXVNHIRMDYTLKABFUOGPS"	"PB"	FALSE	0
-""	"crowded"	1	"D"	"6"	"ZSRYMVPDQBUTOLXNJHGFIEKA"	"PB"	FALSE	0
-""	"crowded"	0	"X"	"6"	"RHBDLVXKOUZEJNQTASFIMYPG"	"PB"	FALSE	0
-""	"crowded"	-1	"G"	"9"	"VEPUXTHNGJOQYRSIMZDAFLKB"	"PB"	FALSE	0
-""	"crowded"	3	"A"	"10"	"LGNYRFUXODZVQABMTISJHEPK"	"PB"	FALSE	0
-""	"crowded"	-1	"H"	"8"	"RBQVAZYHJFSXLUGENKTMDPIO"	"PB"	FALSE	0
-""	"crowded"	0	"R"	"10"	"XBJTYVDOAPRQGSUKLIEFNMHZ"	"PB"	FALSE	0
-""	"crowded"	0	"K"	"10"	"JYOGLZXHURKMNDVAFETQBISP"	"PB"	FALSE	0
-""	"crowded"	-1	"B"	"7"	"XNAEZYBRMSIUQHFJPKDVTLOG"	"PB"	FALSE	0
-""	"crowded"	0	"R"	"6"	"XLHENFRDYBGTQSJAKUOIZVPM"	"PB"	FALSE	0
-""	"crowded"	1	"T"	"8"	"AGSBNLFIYTEMKHUVJQPORZXD"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"10"	"DTMOHFQLXAUSBIKZGVERYNJP"	"PB"	FALSE	0
-""	"crowded"	5	"G"	"8"	"JIULYDMESQFXTGBAVPNROHZK"	"PB"	FALSE	0
-""	"crowded"	1	"A"	"8"	"XPYENDZSGAKFRHVTILJUOMBQ"	"PB"	FALSE	0
-""	"crowded"	10	"X"	"9"	"OESHTYUMPBQVKGFDJRNXALIZ"	"PB"	FALSE	0
-""	"crowded"	-4	"D"	"7"	"JAMDENHOQUSGRYLFPIXZVTBK"	"PB"	FALSE	0
-""	"crowded"	1	"K"	"8"	"IZPBMQTYSKHNAFLDRJOGXVEU"	"PB"	FALSE	0
-""	"crowded"	10	"Z"	"6"	"ADYMJINROSEHBQXTZGKFPUVL"	"PB"	FALSE	0
-""	"crowded"	-2	"R"	"9"	"BDPYGXORTHMISQKJFEZLNAVU"	"PB"	FALSE	0
-""	"crowded"	1	"M"	"7"	"BZAOXVSYMNPJLQFDGKEIRHTU"	"PB"	FALSE	0
-""	"crowded"	1	"G"	"9"	"FYBUOJLPQTGDVNIEKSZMRHAX"	"PB"	FALSE	0
-""	"crowded"	2	"A"	"7"	"YRZKXLVOHAQTFSPGBMIJENUD"	"PB"	FALSE	0
-""	"crowded"	0	"Z"	"7"	"ORQEKTGZPBHSVXMIADNFUJYL"	"PB"	FALSE	0
-""	"crowded"	0	"M"	"8"	"DHLOSPBYMXEVGTZKUANIQJFR"	"PB"	FALSE	0
-""	"crowded"	1	"P"	"10"	"QEDYVXOZBNRPUKMHFTJGISAL"	"PB"	FALSE	0
-""	"crowded"	1	"R"	"7"	"BDAIEKUTRGPQLHZNMFJYOSVX"	"PB"	FALSE	0
-""	"crowded"	-2	"P"	"7"	"UALXVPFTQRSKIGEDOYZHNJBM"	"PB"	FALSE	0
-""	"crowded"	0	"R"	"7"	"EUGQSXVRPJHTYABFZKLDONIM"	"PB"	FALSE	0
-""	"crowded"	0	"M"	"9"	"LRZOTQPSBMDFKXNJAGYHIEUV"	"PB"	FALSE	0
-""	"crowded"	14	"M"	"7"	"BJRAPUNIVTEHOXQFGYZSLMKD"	"PB"	FALSE	0
-""	"crowded"	0	"I"	"7"	"HZDSBNRITLOEMGFQYJVAUXKP"	"PB"	FALSE	0
-""	"crowded"	-2	"D"	"6"	"XGFTDJOINVEQZLYPMHURKABS"	"PB"	FALSE	0
-""	"crowded"	1	"G"	"9"	"DZKAMIJFEBGQHXRYLUNVSTPO"	"PB"	FALSE	0
-""	"crowded"	2	"Z"	"8"	"DOFRGNUPIEZVXJYLQMHTASBK"	"PB"	FALSE	0
-""	"crowded"	1	"X"	"6"	"ZSILYATXMNOPVRDQBJKEHGUF"	"PB"	FALSE	0
-""	"crowded"	2	"T"	"9"	"FMUXYBRSAHJTZPVNLQOIKEDG"	"PB"	FALSE	0
-""	"crowded"	-4	"A"	"6"	"MIAUDZYOSQXJPRGLEKVNFTBH"	"PB"	FALSE	0
-""	"crowded"	-2	"K"	"6"	"QUOVKLYMFXTSNHJEBIPZDAGR"	"PB"	FALSE	0
-""	"crowded"	-7	"B"	"8"	"JBULDRXHQNOTSYGVPMAIZKFE"	"PB"	FALSE	0
-""	"crowded"	2	"U"	"9"	"ARFJPNEHKSLUYDMZTVGQIBXO"	"PB"	FALSE	0
-""	"crowded"	11	"R"	"8"	"YUQOMBKLTFPGSHVNZJARXIED"	"PB"	FALSE	0
-""	"crowded"	14	"K"	"8"	"ODXSPHEFVGUJMRNZQITYLBKA"	"PB"	FALSE	0
-""	"crowded"	1	"X"	"7"	"PBLUQFOYXSDTIVENJHGKZMAR"	"PB"	FALSE	0
-""	"crowded"	0	"B"	"10"	"YEKOJMARLNBUXDPITZQHFGVS"	"PB"	FALSE	0
-""	"crowded"	3	"S"	"9"	"RVMZEFNXKGJQSILBDAUPTYOH"	"PB"	FALSE	0
-""	"crowded"	-4	"S"	"10"	"UIHPKASROQDJGELMZYXBNVFT"	"PB"	FALSE	0
-""	"crowded"	2	"P"	"9"	"EILJZABXQOKPFYMSUVTRNDHG"	"PB"	FALSE	0
-""	"crowded"	1	"R"	"10"	"BIVZJLKFDTXRQUEMAYGHNOSP"	"PB"	FALSE	0
-""	"crowded"	-1	"X"	"9"	"NAHFGLTUXMZIKQSRYPEVJOBD"	"PB"	FALSE	0
-""	"crowded"	0	"S"	"8"	"DGOTFRYPSXUMVQJAIHZBKNEL"	"PB"	FALSE	0
-""	"crowded"	0	"O"	"8"	"MBLVUKJEOQIPRGTNXYZHDSFA"	"PB"	FALSE	0
-""	"crowded"	1	"X"	"6"	"GFIBYLZXJDVOENPSKUMQHRAT"	"PB"	FALSE	0
-""	"crowded"	0	"X"	"8"	"ZFHLYTNRXKIAESPUJBOGVQMD"	"PB"	FALSE	0
-""	"crowded"	6	"X"	"9"	"PBTKNJAGDYZMUSEXHQRLFIOV"	"PB"	FALSE	0
-""	"crowded"	-2	"P"	"7"	"ZUNOVPQFLJKDXHMYBRSGEITA"	"PB"	FALSE	0
-""	"crowded"	1	"Z"	"6"	"OVLXSEDZGPTMIQJYHRKBUANF"	"PB"	FALSE	0
-""	"crowded"	4	"D"	"6"	"MAVKGUIORJDZNXYSBQTPEHFL"	"PB"	FALSE	0
-""	"crowded"	9	"B"	"6"	"YQHJAVSRGOPUTLDBINEMZKFX"	"PB"	FALSE	0
-""	"crowded"	0	"E"	"7"	"KBTDGJFEZHXNIRQSVMPYALOU"	"PB"	FALSE	0
-""	"crowded"	-10	"X"	"10"	"XNIRFZBAKVTYOMPQJEDSHLUG"	"PB"	FALSE	0
-""	"crowded"	1	"X"	"10"	"GTISOQZMAJVXERFHKLNBPDUY"	"PB"	FALSE	0
-""	"crowded"	9	"D"	"9"	"ZVGLYXPKSMBUOFQEHNDRTJAI"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"9"	"QUIEVMXLKTSDYGOBJPZFNHAR"	"PB"	FALSE	0
-""	"crowded"	4	"R"	"6"	"ZGNTKBSPAVRHMUILXDYJOQFE"	"PB"	FALSE	0
-""	"crowded"	11	"U"	"8"	"VAIEBRNJHTQXGPKDLFMUYOSZ"	"PB"	FALSE	0
-""	"crowded"	2	"K"	"9"	"GUNDAMEBXRVKQYHFSZJOTLPI"	"PB"	FALSE	0
-""	"crowded"	1	"S"	"10"	"JQAVGNBFEOTSRUDPHLMKXYZI"	"PB"	FALSE	0
-""	"crowded"	0	"M"	"7"	"XLPFAKUMJHDTNQROEIYBGZSV"	"PB"	FALSE	0
-""	"crowded"	-3	"M"	"6"	"QIUMKXEYGZLHNDJVAPRTSBOF"	"PB"	FALSE	0
-""	"crowded"	-4	"B"	"8"	"AIHDBLFXPTVREGUJYZSONQKM"	"PB"	FALSE	0
-""	"crowded"	0	"V"	"8"	"LPHQEOJSVUFRYTBAINGDZXKM"	"PB"	FALSE	0
-""	"crowded"	0	"T"	"6"	"GMKENJTYDIOXSHBAFVZLUPRQ"	"PB"	FALSE	0
-""	"crowded"	1	"G"	"7"	"XNUHDIFBGVQKOPLEMJZAYSRT"	"PB"	FALSE	0
-""	"crowded"	1	"D"	"9"	"LXAFUJSHOQDVKRTGMNZBEIYP"	"PB"	FALSE	0
-""	"crowded"	1	"R"	"10"	"XFJENPDIYLGRTHAVZMKUQSOB"	"PB"	FALSE	0
-""	"crowded"	0	"U"	"6"	"IHRVSJUGQNDLZBAPYFKMTEOX"	"PB"	FALSE	0
-""	"bouma"	2	"A"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-5	"M"	"7"	""	"PB"	FALSE	0
-""	"bouma"	2	"U"	"9"	""	"PB"	FALSE	0
-""	"bouma"	2	"A"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-7	"B"	"8"	""	"PB"	FALSE	0
-""	"bouma"	1	"F"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-1	"K"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-2	"F"	"10"	""	"PB"	FALSE	0
-""	"bouma"	0	"U"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-7	"B"	"8"	""	"PB"	FALSE	0
-""	"bouma"	2	"X"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-2	"I"	"7"	""	"PB"	FALSE	0
-""	"bouma"	1	"K"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-2	"K"	"8"	""	"PB"	FALSE	0
-""	"bouma"	1	"A"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-3	"B"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-1	"F"	"9"	""	"PB"	FALSE	0
-""	"bouma"	8	"I"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-1	"H"	"7"	""	"PB"	FALSE	0
-""	"bouma"	3	"N"	"8"	""	"PB"	FALSE	0
-""	"bouma"	12	"K"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-4	"T"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-1	"K"	"7"	""	"PB"	FALSE	0
-""	"bouma"	1	"Z"	"10"	""	"PB"	FALSE	0
-""	"bouma"	7	"B"	"6"	""	"PB"	FALSE	0
-""	"bouma"	0	"G"	"9"	""	"PB"	FALSE	0
-""	"bouma"	2	"K"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-1	"S"	"7"	""	"PB"	FALSE	0
-""	"bouma"	0	"A"	"9"	""	"PB"	FALSE	0
-""	"bouma"	0	"J"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-5	"G"	"10"	""	"PB"	FALSE	0
-""	"bouma"	4	"K"	"6"	""	"PB"	FALSE	0
-""	"bouma"	1	"X"	"7"	""	"PB"	FALSE	0
-""	"bouma"	4	"K"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-6	"R"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-2	"E"	"9"	""	"PB"	FALSE	0
-""	"bouma"	2	"M"	"6"	""	"PB"	FALSE	0
-""	"bouma"	1	"L"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-1	"X"	"7"	""	"PB"	FALSE	0
-""	"bouma"	10	"P"	"10"	""	"PB"	FALSE	0
-""	"bouma"	1	"K"	"9"	""	"PB"	FALSE	0
-""	"bouma"	1	"J"	"8"	""	"PB"	FALSE	0
-""	"bouma"	0	"F"	"8"	""	"PB"	FALSE	0
-""	"bouma"	0	"H"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-2	"S"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-5	"A"	"7"	""	"PB"	FALSE	0
-""	"bouma"	0	"M"	"6"	""	"PB"	FALSE	0
-""	"bouma"	2	"Z"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-2	"P"	"8"	""	"PB"	FALSE	0
-""	"bouma"	0	"K"	"7"	""	"PB"	FALSE	0
-""	"bouma"	12	"P"	"10"	""	"PB"	FALSE	0
-""	"bouma"	0	"S"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-1	"Z"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-1	"M"	"6"	""	"PB"	FALSE	0
-""	"bouma"	2	"X"	"9"	""	"PB"	FALSE	0
-""	"bouma"	8	"R"	"10"	""	"PB"	FALSE	0
-""	"bouma"	5	"X"	"9"	""	"PB"	FALSE	0
-""	"bouma"	0	"S"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-6	"S"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-2	"M"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-4	"X"	"6"	""	"PB"	FALSE	0
-""	"bouma"	4	"T"	"10"	""	"PB"	FALSE	0
-""	"bouma"	7	"X"	"8"	""	"PB"	FALSE	0
-""	"bouma"	7	"J"	"6"	""	"PB"	FALSE	0
-""	"bouma"	0	"S"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-1	"M"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-1	"A"	"10"	""	"PB"	FALSE	0
-""	"bouma"	1	"G"	"6"	""	"PB"	FALSE	0
-""	"bouma"	1	"A"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-3	"K"	"6"	""	"PB"	FALSE	0
-""	"bouma"	1	"B"	"7"	""	"PB"	FALSE	0
-""	"bouma"	11	"X"	"6"	""	"PB"	FALSE	0
-""	"bouma"	0	"B"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-1	"X"	"9"	""	"PB"	FALSE	0
-""	"bouma"	-1	"R"	"6"	""	"PB"	FALSE	0
-""	"bouma"	2	"P"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-3	"X"	"7"	""	"PB"	FALSE	0
-""	"bouma"	1	"V"	"10"	""	"PB"	FALSE	0
-""	"bouma"	1	"J"	"8"	""	"PB"	FALSE	0
-""	"bouma"	0	"F"	"7"	""	"PB"	FALSE	0
-""	"bouma"	-8	"J"	"8"	""	"PB"	FALSE	0
-""	"bouma"	1	"A"	"10"	""	"PB"	FALSE	0
-""	"bouma"	-5	"K"	"9"	""	"PB"	FALSE	0
-""	"bouma"	2	"A"	"8"	""	"PB"	FALSE	0
-""	"bouma"	1	"H"	"6"	""	"PB"	FALSE	0
-""	"bouma"	2	"V"	"9"	""	"PB"	FALSE	0
-""	"bouma"	14	"K"	"8"	""	"PB"	FALSE	0
-""	"bouma"	-4	"N"	"9"	""	"PB"	FALSE	0
-""	"bouma"	2	"I"	"6"	""	"PB"	FALSE	0
-""	"bouma"	-1	"S"	"10"	""	"PB"	FALSE	0
+"exp"	"crowded"	"SPE"	"targetSP"	"ID"	"ring"
+""	"Bouma"	3	8	"CB"	1
+""	"Yes"	1	9	"CB"	2
+""	"Bouma"	4	6	"CB"	1
+""	"Yes"	-6	6	"CB"	0
+""	"Yes"	1	6	"CB"	2
+""	"Yes"	1	10	"CB"	0
+""	"Yes"	0	6	"CB"	0
+""	"Bouma"	1	6	"CB"	2
+""	"Yes"	1	7	"CB"	0
+""	"Yes"	2	8	"CB"	1
+""	"Yes"	0	10	"CB"	2
+""	"Yes"	2	9	"CB"	2
+""	"Yes"	1	6	"CB"	2
+""	"Bouma"	2	10	"CB"	1
+""	"Yes"	1	6	"CB"	2
+""	"Yes"	1	7	"CB"	2
+""	"Yes"	1	7	"CB"	1
+""	"Bouma"	2	10	"CB"	2
+""	"Yes"	15	8	"CB"	1
+""	"Yes"	1	9	"CB"	2
+""	"Yes"	1	7	"CB"	0
+""	"Bouma"	0	7	"CB"	0
+""	"Yes"	0	8	"CB"	0
+""	"Yes"	1	7	"CB"	1
+""	"Yes"	1	10	"CB"	1
+""	"Yes"	0	6	"CB"	0
+""	"Bouma"	10	7	"CB"	1
+""	"Bouma"	14	8	"CB"	2
+""	"Bouma"	1	9	"CB"	1
+""	"Bouma"	2	9	"CB"	0
+""	"Bouma"	1	7	"CB"	1
+""	"Yes"	1	10	"CB"	0
+""	"Yes"	0	7	"CB"	0
+""	"Yes"	0	6	"CB"	1
+""	"Yes"	-1	6	"CB"	1
+""	"Yes"	0	8	"CB"	1
+""	"Bouma"	0	8	"CB"	2
+""	"Bouma"	5	6	"CB"	2
+""	"Yes"	0	8	"CB"	1
+""	"Yes"	1	7	"CB"	0
+""	"Bouma"	0	6	"CB"	2
+""	"Bouma"	-5	6	"CB"	1
+""	"Bouma"	7	7	"CB"	2
+""	"Bouma"	1	6	"CB"	0
+""	"Bouma"	1	7	"CB"	2
+""	"Bouma"	0	7	"CB"	1
+""	"Yes"	-3	8	"CB"	2
+""	"Yes"	1	9	"CB"	2
+""	"Yes"	-4	9	"CB"	1
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	1	9	"CB"	1
+""	"Yes"	1	8	"CB"	0
+""	"Bouma"	1	8	"CB"	2
+""	"Bouma"	1	6	"CB"	0
+""	"Bouma"	2	10	"CB"	0
+""	"Bouma"	2	10	"CB"	0
+""	"Bouma"	2	6	"CB"	1
+""	"Yes"	1	7	"CB"	0
+""	"Bouma"	1	10	"CB"	0
+""	"Bouma"	2	9	"CB"	2
+""	"Yes"	0	10	"CB"	1
+""	"Yes"	4	7	"CB"	1
+""	"Bouma"	-4	8	"CB"	0
+""	"Bouma"	4	9	"CB"	0
+""	"Bouma"	-4	9	"CB"	1
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	1	10	"CB"	2
+""	"Yes"	0	9	"CB"	1
+""	"Bouma"	1	7	"CB"	2
+""	"Yes"	1	8	"CB"	2
+""	"Yes"	2	9	"CB"	0
+""	"Yes"	7	8	"CB"	2
+""	"Yes"	2	7	"CB"	2
+""	"Yes"	3	6	"CB"	2
+""	"Yes"	-3	9	"CB"	1
+""	"Yes"	1	6	"CB"	1
+""	"Yes"	0	10	"CB"	0
+""	"Yes"	2	9	"CB"	0
+""	"Bouma"	1	10	"CB"	0
+""	"Bouma"	1	10	"CB"	0
+""	"Bouma"	1	9	"CB"	2
+""	"Yes"	-1	8	"CB"	1
+""	"Bouma"	-5	8	"CB"	2
+""	"Bouma"	2	7	"CB"	1
+""	"Bouma"	2	9	"CB"	0
+""	"Bouma"	-4	7	"CB"	2
+""	"Yes"	0	8	"CB"	0
+""	"Yes"	1	10	"CB"	0
+""	"Yes"	0	8	"CB"	1
+""	"Yes"	2	10	"CB"	2
+""	"Bouma"	-9	10	"CB"	1
+""	"Yes"	1	6	"CB"	2
+""	"Yes"	2	6	"CB"	1
+""	"Bouma"	13	6	"CB"	0
+""	"Yes"	-6	7	"CB"	2
+""	"Bouma"	1	7	"CB"	0
+""	"Bouma"	15	6	"CB"	1
+""	"Yes"	2	9	"CB"	1
+""	"Bouma"	4	7	"CB"	1
+""	"Bouma"	1	6	"CB"	2
+""	"Bouma"	-1	10	"CB"	1
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	0	7	"CB"	1
+""	"Yes"	1	10	"CB"	1
+""	"Bouma"	2	7	"CB"	0
+""	"Yes"	0	10	"CB"	2
+""	"Yes"	0	10	"CB"	0
+""	"Yes"	1	8	"CB"	0
+""	"Bouma"	1	8	"CB"	1
+""	"Yes"	1	6	"CB"	0
+""	"Bouma"	1	7	"CB"	0
+""	"Bouma"	4	6	"CB"	2
+""	"Yes"	2	9	"CB"	0
+""	"Bouma"	1	9	"CB"	0
+""	"Yes"	-1	8	"CB"	2
+""	"Bouma"	-4	9	"CB"	1
+""	"Bouma"	3	10	"CB"	2
+""	"Bouma"	9	9	"CB"	2
+""	"Bouma"	-1	7	"CB"	2
+""	"Bouma"	1	6	"CB"	0
+""	"Bouma"	1	8	"CB"	2
+""	"Bouma"	-4	9	"CB"	2
+""	"Bouma"	-2	9	"CB"	2
+""	"Yes"	-6	9	"CB"	0
+""	"Bouma"	1	9	"CB"	0
+""	"Bouma"	1	9	"CB"	1
+""	"Yes"	1	8	"CB"	0
+""	"Bouma"	-1	9	"CB"	1
+""	"Yes"	0	7	"CB"	2
+""	"Yes"	0	10	"CB"	2
+""	"Yes"	1	10	"CB"	2
+""	"Bouma"	2	6	"CB"	2
+""	"Bouma"	0	10	"CB"	0
+""	"Bouma"	6	6	"CB"	0
+""	"Bouma"	7	7	"CB"	0
+""	"Bouma"	2	9	"CB"	2
+""	"Yes"	2	6	"CB"	1
+""	"Bouma"	0	9	"CB"	0
+""	"Bouma"	5	6	"CB"	1
+""	"Bouma"	0	6	"CB"	0
+""	"Bouma"	-2	10	"CB"	2
+""	"Bouma"	0	8	"CB"	1
+""	"Yes"	1	6	"CB"	0
+""	"Bouma"	5	8	"CB"	2
+""	"Yes"	0	8	"CB"	0
+""	"Yes"	-1	7	"CB"	1
+""	"Yes"	-5	7	"CB"	2
+""	"Yes"	10	6	"CB"	2
+""	"Yes"	1	7	"CB"	1
+""	"Yes"	1	9	"CB"	0
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	1	9	"CB"	2
+""	"Yes"	0	6	"CB"	1
+""	"Bouma"	0	10	"CB"	1
+""	"Yes"	-1	10	"CB"	1
+""	"Bouma"	2	8	"CB"	1
+""	"Yes"	1	8	"CB"	2
+""	"Bouma"	0	7	"CB"	2
+""	"Yes"	-1	10	"CB"	1
+""	"Bouma"	3	10	"CB"	2
+""	"Bouma"	1	7	"CB"	1
+""	"Yes"	-1	6	"CB"	0
+""	"Yes"	0	7	"CB"	0
+""	"Yes"	1	10	"CB"	1
+""	"Bouma"	0	7	"CB"	0
+""	"Bouma"	1	8	"CB"	1
+""	"Bouma"	1	10	"CB"	1
+""	"Yes"	11	7	"CB"	2
+""	"Bouma"	-1	9	"CB"	1
+""	"Yes"	4	8	"CB"	2
+""	"Bouma"	-7	10	"CB"	2
+""	"Bouma"	2	6	"CB"	1
+""	"Yes"	0	10	"CB"	0
+""	"Bouma"	0	8	"CB"	0
+""	"Bouma"	-2	10	"CB"	1
+""	"Bouma"	0	10	"CB"	2
+""	"Yes"	1	9	"CB"	0
+""	"Bouma"	2	8	"CB"	1
+""	"Yes"	1	9	"CB"	2
+""	"Yes"	0	9	"CB"	1
+""	"Bouma"	1	10	"CB"	0
+""	"Yes"	1	8	"CB"	2
+""	"Yes"	1	7	"CB"	1
+""	"Yes"	1	10	"CB"	1
+""	"Bouma"	1	9	"CB"	0
+""	"Bouma"	-4	7	"CB"	2
+""	"Bouma"	2	9	"CB"	2
+""	"Yes"	0	6	"CB"	0
+""	"Bouma"	0	10	"CB"	1
+""	"Bouma"	-1	8	"CB"	2
+""	"Bouma"	0	10	"CB"	1
+""	"Yes"	1	7	"CB"	0
+""	"Yes"	3	6	"CB"	2
+""	"Yes"	4	10	"CB"	2
+""	"Bouma"	1	9	"CB"	0
+""	"Bouma"	4	7	"CB"	1
+""	"Yes"	1	6	"CB"	1
+""	"Bouma"	1	9	"CB"	2
+""	"Bouma"	1	6	"CB"	0
+""	"Yes"	2	10	"CB"	2
+""	"Bouma"	0	8	"CB"	1
+""	"Bouma"	0	9	"CB"	1
+""	"Yes"	-1	7	"CB"	1
+""	"Yes"	-6	7	"CB"	0
+""	"Bouma"	-1	7	"CB"	0
+""	"Yes"	-2	7	"CB"	2
+""	"Yes"	-1	8	"CB"	2
+""	"Bouma"	-1	9	"CB"	0
+""	"Yes"	-6	7	"CB"	2
+""	"Yes"	1	8	"CB"	0
+""	"Yes"	2	6	"CB"	2
+""	"Yes"	0	8	"CB"	2
+""	"Bouma"	0	6	"CB"	2
+""	"Bouma"	0	10	"CB"	0
+""	"Yes"	0	9	"CB"	1
+""	"Yes"	2	10	"CB"	0
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	1	10	"CB"	1
+""	"Bouma"	1	7	"CB"	2
+""	"Bouma"	1	7	"CB"	0
+""	"Yes"	-2	9	"CB"	2
+""	"Yes"	7	6	"CB"	2
+""	"Yes"	1	6	"CB"	0
+""	"Yes"	-1	7	"CB"	1
+""	"Bouma"	1	8	"CB"	0
+""	"Bouma"	6	7	"CB"	1
+""	"Bouma"	2	6	"CB"	2
+""	"Bouma"	-2	7	"CB"	0
+""	"Bouma"	0	9	"CB"	1
+""	"Bouma"	2	10	"CB"	2
+""	"Yes"	16	6	"CB"	0
+""	"Yes"	2	9	"CB"	0
+""	"Yes"	0	10	"CB"	2
+""	"Yes"	2	10	"CB"	2
+""	"Bouma"	1	10	"CB"	2
+""	"Yes"	-1	10	"CB"	2
+""	"Yes"	0	10	"CB"	2
+""	"Yes"	1	7	"CB"	2
+""	"Bouma"	0	8	"CB"	1
+""	"Bouma"	1	8	"CB"	0
+""	"Bouma"	-3	8	"CB"	2
+""	"Yes"	-4	6	"CB"	2
+""	"Yes"	1	8	"CB"	0
+""	"Yes"	0	8	"CB"	0
+""	"Yes"	1	10	"CB"	0
+""	"Bouma"	0	7	"CB"	0
+""	"Bouma"	0	10	"CB"	0
+""	"Bouma"	0	8	"CB"	0
+""	"Bouma"	16	7	"CB"	1
+""	"Bouma"	0	6	"CB"	2
+""	"Bouma"	-1	6	"CB"	2
+""	"Yes"	-3	6	"CB"	1
+""	"Bouma"	-5	10	"CB"	1
+""	"Bouma"	-1	10	"CB"	2
+""	"Bouma"	1	7	"CB"	0
+""	"Yes"	0	10	"CB"	0
+""	"Yes"	1	9	"CB"	0
+""	"Bouma"	3	7	"CB"	0
+""	"Yes"	5	6	"CB"	1
+""	"Yes"	0	9	"CB"	1
+""	"Bouma"	1	6	"CB"	0
+""	"Bouma"	2	7	"CB"	1
+""	"Bouma"	-2	9	"CB"	2
+""	"Bouma"	1	6	"CB"	1
+""	"Yes"	2	9	"CB"	2
+""	"Bouma"	1	8	"CB"	0
+""	"Yes"	0	9	"CB"	1
+""	"Yes"	1	8	"CB"	0
+""	"Yes"	1	7	"CB"	0
+""	"Yes"	1	9	"CB"	1
+""	"Yes"	1	9	"CB"	2
+""	"Bouma"	1	9	"CB"	0
+""	"Bouma"	-4	9	"CB"	2
+""	"Bouma"	0	10	"CB"	1
+""	"Yes"	0	9	"CB"	0
+""	"Bouma"	7	6	"CB"	1
+""	"Bouma"	-1	6	"CB"	0
+""	"Yes"	0	9	"CB"	0
+""	"Bouma"	1	6	"CB"	1
+""	"Bouma"	1	7	"CB"	2
+""	"Yes"	9	8	"CB"	1
+""	"Bouma"	-2	6	"CB"	2
+""	"Yes"	0	6	"CB"	2
+""	"Bouma"	11	6	"CB"	2
+""	"Yes"	0	10	"CB"	0
+""	"Bouma"	1	10	"CB"	0
+""	"Yes"	1	7	"CB"	1
+""	"Bouma"	0	8	"CB"	1
+""	"Yes"	4	7	"CB"	1
+""	"Bouma"	0	7	"CB"	2
+""	"Yes"	9	9	"CB"	0
+""	"Bouma"	1	6	"CB"	0
+""	"Yes"	-3	6	"CB"	2
+""	"Yes"	-2	8	"CB"	1
+""	"Bouma"	0	8	"CB"	0
+""	"Yes"	1	8	"CB"	2
+""	"Bouma"	2	9	"CB"	1
+""	"Yes"	-2	7	"CB"	2
+""	"Yes"	-1	10	"CB"	0
+""	"Yes"	1	10	"CB"	1
+""	"Yes"	-3	8	"CB"	2
+""	"Yes"	-1	10	"CB"	0
+""	"Bouma"	2	10	"CB"	1
+""	"Bouma"	2	7	"CB"	1
+""	"Yes"	-2	7	"CB"	0
+""	"Bouma"	-4	9	"CB"	1
+""	"Yes"	1	7	"CB"	0
+""	"Bouma"	2	9	"CB"	1
+""	"Bouma"	1	8	"CB"	1
+""	"Bouma"	8	8	"CB"	2
+""	"Bouma"	-3	9	"CB"	2
+""	"Yes"	1	10	"CB"	1
+""	"Yes"	-1	9	"CB"	1
+""	"Bouma"	1	6	"CB"	1
+""	"Bouma"	1	9	"CB"	0
+""	"Yes"	1	6	"CB"	1
+""	"Bouma"	0	6	"CB"	0
+""	"Yes"	10	9	"CB"	2
+""	"Bouma"	-2	7	"CB"	2
+""	"Bouma"	-4	8	"CB"	2
+""	"Bouma"	2	9	"CB"	2
+""	"Yes"	1	6	"CB"	0
+""	"Yes"	2	7	"CB"	1
+""	"Bouma"	2	8	"CB"	2
+""	"Bouma"	0	6	"CB"	1
+""	"Bouma"	2	9	"CB"	0
+""	"Yes"	0	10	"CB"	1
+""	"Yes"	1	9	"CB"	2
+""	"Bouma"	-4	10	"CB"	2
+""	"Yes"	1	9	"CB"	0
+""	"Bouma"	-9	10	"CB"	0
+""	"Bouma"	6	9	"CB"	1
+""	"Yes"	1	6	"CB"	0
+""	"Bouma"	-1	10	"CB"	1
+""	"Yes"	1	10	"CB"	1
+""	"Yes"	1	8	"CB"	0
+""	"Bouma"	7	10	"CB"	2
+""	"Yes"	9	9	"CB"	2
+""	"Yes"	1	8	"CB"	1
+""	"Bouma"	-1	8	"CB"	2
+""	"Yes"	0	8	"CB"	0
+""	"Yes"	1	7	"CB"	2
+""	"Yes"	0	9	"CB"	1
+""	"Bouma"	-2	8	"CB"	1
+""	"Yes"	1	6	"CB"	0
+""	"Bouma"	1	7	"CB"	2
+""	"Bouma"	-2	6	"CB"	0
+""	"Yes"	-4	6	"CB"	1
+""	"Bouma"	0	10	"CB"	0
+""	"Yes"	7	8	"CB"	2
+""	"Yes"	-4	7	"CB"	2
+""	"Bouma"	1	10	"CB"	2
+""	"Yes"	2	6	"CB"	1
+""	"Yes"	1	8	"CB"	1
+""	"Bouma"	0	7	"CB"	1
+""	"Bouma"	1	8	"CB"	1
+""	"Yes"	-2	7	"CB"	0
+""	"Yes"	1	8	"CB"	1
+""	"Bouma"	14	6	"CB"	1
+""	"Yes"	3	8	"CB"	1
+""	"Yes"	-8	10	"PB"	2
+""	"Bouma"	1	9	"PB"	2
+""	"Yes"	-7	9	"PB"	0
+""	"Bouma"	9	10	"PB"	0
+""	"Bouma"	2	8	"PB"	1
+""	"Bouma"	1	8	"PB"	0
+""	"Yes"	6	9	"PB"	1
+""	"Yes"	9	8	"PB"	1
+""	"Yes"	8	8	"PB"	2
+""	"Bouma"	14	6	"PB"	1
+""	"Bouma"	1	9	"PB"	0
+""	"Yes"	7	10	"PB"	2
+""	"Bouma"	0	9	"PB"	0
+""	"Bouma"	-2	6	"PB"	1
+""	"Bouma"	13	9	"PB"	1
+""	"Bouma"	-6	10	"PB"	1
+""	"Yes"	1	10	"PB"	1
+""	"Bouma"	1	8	"PB"	0
+""	"Yes"	2	10	"PB"	1
+""	"Yes"	0	6	"PB"	1
+""	"Yes"	1	9	"PB"	0
+""	"Yes"	1	7	"PB"	2
+""	"Yes"	0	6	"PB"	0
+""	"Bouma"	-3	6	"PB"	0
+""	"Yes"	0	6	"PB"	0
+""	"Yes"	-5	7	"PB"	1
+""	"Bouma"	-10	10	"PB"	0
+""	"Bouma"	-1	9	"PB"	2
+""	"Yes"	0	9	"PB"	1
+""	"Bouma"	3	10	"PB"	2
+""	"Yes"	3	6	"PB"	2
+""	"Bouma"	-1	9	"PB"	2
+""	"Yes"	1	8	"PB"	0
+""	"Yes"	-7	8	"PB"	1
+""	"Yes"	0	8	"PB"	2
+""	"Yes"	-1	7	"PB"	0
+""	"Yes"	-8	9	"PB"	0
+""	"Yes"	1	9	"PB"	1
+""	"Yes"	0	6	"PB"	1
+""	"Bouma"	4	7	"PB"	2
+""	"Yes"	12	9	"PB"	0
+""	"Bouma"	0	8	"PB"	2
+""	"Bouma"	10	8	"PB"	1
+""	"Yes"	-1	9	"PB"	2
+""	"Yes"	1	6	"PB"	2
+""	"Yes"	15	7	"PB"	2
+""	"Bouma"	0	9	"PB"	1
+""	"Bouma"	2	7	"PB"	1
+""	"Bouma"	-3	10	"PB"	0
+""	"Bouma"	4	7	"PB"	0
+""	"Bouma"	13	9	"PB"	0
+""	"Bouma"	2	10	"PB"	1
+""	"Yes"	-5	7	"PB"	1
+""	"Bouma"	-2	10	"PB"	0
+""	"Bouma"	-5	7	"PB"	2
+""	"Yes"	10	7	"PB"	0
+""	"Bouma"	-3	6	"PB"	1
+""	"Bouma"	-2	6	"PB"	0
+""	"Yes"	-7	9	"PB"	2
+""	"Yes"	1	8	"PB"	2
+""	"Bouma"	-4	6	"PB"	2
+""	"Yes"	1	7	"PB"	1
+""	"Yes"	1	7	"PB"	1
+""	"Yes"	7	10	"PB"	2
+""	"Bouma"	1	7	"PB"	1
+""	"Yes"	1	7	"PB"	0
+""	"Yes"	2	10	"PB"	1
+""	"Bouma"	2	9	"PB"	1
+""	"Bouma"	3	6	"PB"	0
+""	"Yes"	0	9	"PB"	0
+""	"Yes"	-1	10	"PB"	2
+""	"Bouma"	1	7	"PB"	0
+""	"Yes"	-9	10	"PB"	0
+""	"Bouma"	4	6	"PB"	2
+""	"Bouma"	-1	6	"PB"	2
+""	"Bouma"	-2	7	"PB"	1
+""	"Yes"	-8	8	"PB"	1
+""	"Yes"	5	9	"PB"	2
+""	"Yes"	-3	10	"PB"	2
+""	"Bouma"	-2	9	"PB"	2
+""	"Yes"	0	6	"PB"	2
+""	"Bouma"	11	10	"PB"	1
+""	"Yes"	-1	7	"PB"	1
+""	"Bouma"	-4	8	"PB"	1
+""	"Bouma"	0	8	"PB"	1
+""	"Bouma"	-10	10	"PB"	1
+""	"Yes"	0	6	"PB"	0
+""	"Bouma"	-1	8	"PB"	0
+""	"Bouma"	-3	8	"PB"	2
+""	"Yes"	-3	9	"PB"	2
+""	"Bouma"	6	7	"PB"	1
+""	"Bouma"	-2	6	"PB"	2
+""	"Bouma"	1	8	"PB"	2
+""	"Yes"	1	9	"PB"	0
+""	"Yes"	1	6	"PB"	2
+""	"Yes"	5	10	"PB"	0
+""	"Bouma"	0	10	"PB"	2
+""	"Bouma"	-2	8	"PB"	2
+""	"Bouma"	0	9	"PB"	0
+""	"Bouma"	1	10	"PB"	1
+""	"Yes"	13	6	"PB"	1
+""	"Bouma"	-5	8	"PB"	1
+""	"Bouma"	-3	7	"PB"	0
+""	"Bouma"	-1	6	"PB"	0
+""	"Bouma"	1	8	"PB"	0
+""	"Yes"	2	7	"PB"	0
+""	"Yes"	1	8	"PB"	0
+""	"Bouma"	0	7	"PB"	0
+""	"Bouma"	-8	10	"PB"	2
+""	"Yes"	4	7	"PB"	2
+""	"Bouma"	3	7	"PB"	0
+""	"Bouma"	-1	9	"PB"	1
+""	"Yes"	-4	10	"PB"	2
+""	"Bouma"	-1	10	"PB"	2
+""	"Bouma"	-1	6	"PB"	0
+""	"Yes"	13	8	"PB"	1
+""	"Bouma"	1	7	"PB"	0
+""	"Bouma"	-5	9	"PB"	1
+""	"Yes"	13	10	"PB"	0
+""	"Yes"	1	7	"PB"	0
+""	"Bouma"	0	8	"PB"	0
+""	"Yes"	-3	10	"PB"	1
+""	"Yes"	1	8	"PB"	0
+""	"Bouma"	2	9	"PB"	0
+""	"Bouma"	-3	7	"PB"	1
+""	"Yes"	2	10	"PB"	0
+""	"Bouma"	0	6	"PB"	2
+""	"Bouma"	9	7	"PB"	2
+""	"Bouma"	0	10	"PB"	0
+""	"Bouma"	-1	10	"PB"	2
+""	"Yes"	0	6	"PB"	1
+""	"Yes"	2	6	"PB"	2
+""	"Yes"	-3	8	"PB"	1
+""	"Yes"	2	6	"PB"	2
+""	"Bouma"	10	6	"PB"	2
+""	"Bouma"	-5	8	"PB"	0
+""	"Yes"	1	7	"PB"	0
+""	"Bouma"	-6	9	"PB"	1
+""	"Bouma"	-1	7	"PB"	2
+""	"Bouma"	0	10	"PB"	0
+""	"Yes"	1	10	"PB"	1
+""	"Yes"	-2	6	"PB"	1
+""	"Yes"	0	9	"PB"	1
+""	"Bouma"	-3	9	"PB"	2
+""	"Yes"	-2	7	"PB"	2
+""	"Yes"	0	6	"PB"	0
+""	"Yes"	8	8	"PB"	2
+""	"Bouma"	9	8	"PB"	1
+""	"Yes"	2	9	"PB"	1
+""	"Bouma"	-1	8	"PB"	2
+""	"Bouma"	1	6	"PB"	0
+""	"Yes"	-1	8	"PB"	2
+""	"Bouma"	3	6	"PB"	1
+""	"Bouma"	-2	10	"PB"	1
+""	"Yes"	0	8	"PB"	0
+""	"Yes"	0	8	"PB"	0
+""	"Yes"	-7	9	"PB"	2
+""	"Bouma"	-2	7	"PB"	2
+""	"Bouma"	-4	9	"PB"	0
+""	"Yes"	-4	10	"PB"	1
+""	"Yes"	12	7	"PB"	1
+""	"Bouma"	8	9	"PB"	2
+""	"Bouma"	-5	8	"PB"	2
+""	"Bouma"	-1	10	"PB"	2
+""	"Yes"	0	8	"PB"	0
+""	"Yes"	-1	9	"PB"	2
+""	"Yes"	0	10	"PB"	0
+""	"Yes"	1	8	"PB"	1
+""	"Yes"	0	6	"PB"	0
+""	"Bouma"	2	7	"PB"	1
+""	"Yes"	1	6	"PB"	0
+""	"Bouma"	1	6	"PB"	1
+""	"Bouma"	0	6	"PB"	1
+""	"Yes"	-5	7	"PB"	2
+""	"Yes"	3	9	"PB"	1
+""	"Yes"	-3	7	"PB"	2
+""	"Bouma"	15	7	"PB"	2
+""	"Yes"	12	10	"PB"	0
+""	"Yes"	-1	6	"PB"	1
+""	"Yes"	-6	8	"PB"	2
+""	"Bouma"	-1	10	"PB"	2
+""	"Yes"	-1	9	"PB"	2
+""	"Bouma"	2	10	"PB"	0
+""	"Yes"	0	10	"PB"	0
+""	"Yes"	0	9	"PB"	2
+""	"Yes"	-2	10	"PB"	0
+""	"Yes"	1	9	"PB"	0
+""	"Bouma"	0	9	"PB"	1
+""	"Yes"	1	10	"PB"	2
+""	"Yes"	-7	7	"PB"	1
+""	"Yes"	1	8	"PB"	0
+""	"Bouma"	-1	8	"PB"	1
+""	"Bouma"	-1	9	"PB"	1
+""	"Yes"	0	7	"PB"	1
+""	"Bouma"	-1	9	"PB"	0
+""	"Bouma"	-1	10	"PB"	1
+""	"Bouma"	-1	9	"PB"	2
+""	"Yes"	-3	7	"PB"	0
+""	"Bouma"	1	10	"PB"	1
+""	"Yes"	-2	9	"PB"	1
+""	"Bouma"	-1	7	"PB"	0
+""	"Bouma"	1	9	"PB"	0
+""	"Yes"	14	9	"PB"	1
+""	"Yes"	1	6	"PB"	1
+""	"Yes"	1	6	"PB"	0
+""	"Bouma"	8	8	"PB"	2
+""	"Yes"	-1	10	"PB"	2
+""	"Yes"	1	8	"PB"	1
+""	"Bouma"	0	6	"PB"	0
+""	"Bouma"	2	10	"PB"	2
+""	"Yes"	0	6	"PB"	1
+""	"Bouma"	0	6	"PB"	0
+""	"Yes"	1	6	"PB"	0
+""	"Yes"	-2	9	"PB"	2
+""	"Bouma"	-1	8	"PB"	0
+""	"Yes"	-2	10	"PB"	1
+""	"Bouma"	-3	8	"PB"	2
+""	"Bouma"	-1	9	"PB"	2
+""	"Bouma"	9	6	"PB"	0
+""	"Yes"	-1	6	"PB"	1
+""	"Bouma"	-5	6	"PB"	1
+""	"Bouma"	-1	6	"PB"	2
+""	"Bouma"	-8	8	"PB"	1
+""	"Bouma"	2	7	"PB"	0
+""	"Bouma"	9	9	"PB"	1
+""	"Bouma"	1	10	"PB"	1
+""	"Yes"	1	6	"PB"	1
+""	"Yes"	-6	6	"PB"	0
+""	"Yes"	9	7	"PB"	2
+""	"Yes"	11	9	"PB"	1
+""	"Bouma"	2	7	"PB"	2
+""	"Bouma"	0	7	"PB"	0
+""	"Yes"	1	7	"PB"	2
+""	"Yes"	0	7	"PB"	0
+""	"Yes"	4	10	"PB"	1
+""	"Bouma"	1	10	"PB"	0
+""	"Yes"	5	7	"PB"	0
+""	"Yes"	0	7	"PB"	1
+""	"Bouma"	-1	6	"PB"	1
+""	"Bouma"	-1	6	"PB"	1
+""	"Yes"	9	7	"PB"	2
+""	"Bouma"	1	7	"PB"	1
+""	"Yes"	0	8	"PB"	1
+""	"Yes"	1	8	"PB"	2
+""	"Bouma"	-3	10	"PB"	1
+""	"Bouma"	0	9	"PB"	0
+""	"Bouma"	-1	7	"PB"	1
+""	"Yes"	1	10	"PB"	1
+""	"Yes"	11	9	"PB"	1
+""	"Yes"	16	6	"PB"	0
+""	"Bouma"	1	9	"PB"	2
+""	"Yes"	-1	8	"PB"	1
+""	"Bouma"	-3	8	"PB"	0
+""	"Bouma"	1	9	"PB"	0
+""	"Yes"	-5	9	"PB"	0
+""	"Bouma"	2	7	"PB"	2
+""	"Yes"	10	6	"PB"	1
+""	"Bouma"	14	9	"PB"	2
+""	"Bouma"	-3	6	"PB"	2
+""	"Yes"	2	8	"PB"	2
+""	"Yes"	-5	6	"PB"	2
+""	"Yes"	0	7	"PB"	0
+""	"Bouma"	14	6	"PB"	0
+""	"Bouma"	11	7	"PB"	2
+""	"Yes"	0	7	"PB"	0
+""	"Yes"	-2	8	"PB"	0
+""	"Yes"	1	8	"PB"	0
+""	"Yes"	-9	10	"PB"	1
+""	"Bouma"	12	8	"PB"	0
+""	"Bouma"	-1	6	"PB"	2
+""	"Yes"	2	10	"PB"	0
+""	"Bouma"	-5	6	"PB"	2
+""	"Yes"	10	9	"PB"	2
+""	"Yes"	3	8	"PB"	2
+""	"Yes"	3	6	"PB"	2
+""	"Bouma"	2	8	"PB"	1
+""	"Yes"	9	7	"PB"	2
+""	"Yes"	2	9	"PB"	1
+""	"Bouma"	1	7	"PB"	0
+""	"Yes"	0	8	"PB"	1
+""	"Bouma"	-5	6	"PB"	1
+""	"Bouma"	0	8	"PB"	0
+""	"Bouma"	0	9	"PB"	1
+""	"Bouma"	-1	6	"PB"	2
+""	"Bouma"	7	8	"PB"	2
+""	"Yes"	1	9	"PB"	0
+""	"Yes"	2	6	"PB"	2
+""	"Yes"	0	10	"PB"	0
+""	"Yes"	0	10	"PB"	1
+""	"Yes"	-2	6	"PB"	2
+""	"Bouma"	-1	10	"PB"	1
+""	"Bouma"	-2	6	"PB"	0
+""	"Yes"	1	8	"PB"	0
+""	"Bouma"	4	6	"PB"	2
+""	"Yes"	0	6	"PB"	1
+""	"Yes"	-5	6	"PB"	0
+""	"Bouma"	-1	8	"PB"	1
+""	"Bouma"	-2	7	"PB"	0
+""	"Yes"	0	8	"PB"	0
+""	"Yes"	1	7	"PB"	2
+""	"Yes"	10	8	"PB"	2
+""	"Bouma"	8	8	"PB"	2
+""	"Bouma"	-2	9	"PB"	2
+""	"Yes"	2	8	"PB"	2
+""	"Yes"	1	8	"PB"	0
+""	"Bouma"	-7	10	"PB"	2
+""	"Yes"	2	7	"PB"	1
+""	"Yes"	1	7	"PB"	1
+""	"Yes"	17	6	"PB"	2
+""	"Yes"	-4	10	"PB"	0
+""	"Yes"	0	10	"PB"	1
+""	"Bouma"	-1	7	"PB"	1
+""	"Bouma"	13	9	"PB"	2
+""	"Bouma"	-1	9	"PB"	0
+""	"Yes"	2	10	"PB"	2
+""	"Bouma"	-5	7	"PB"	1
+""	"Bouma"	-1	6	"PB"	1
+""	"Bouma"	-6	10	"PB"	2
+""	"Bouma"	9	7	"PB"	2
+""	"Bouma"	-1	6	"PB"	1
+""	"Bouma"	11	7	"PB"	1
+""	"Bouma"	-3	8	"PB"	1
+""	"Bouma"	1	7	"PB"	1
+""	"Bouma"	-2	8	"PB"	2
+""	"Bouma"	5	10	"PB"	2
+""	"Yes"	2	10	"PB"	2
+""	"Bouma"	2	9	"PB"	0
+""	"Yes"	14	9	"PB"	1
+""	"Yes"	1	10	"PB"	0
+""	"Bouma"	-1	10	"PB"	0
+""	"Yes"	-8	8	"PB"	1
+""	"Yes"	-6	9	"PB"	0
+""	"Yes"	2	7	"PB"	2
+""	"Bouma"	0	10	"PB"	0
+""	"Bouma"	1	8	"PB"	2
+""	"Yes"	1	9	"PB"	0
+""	"Bouma"	1	8	"PB"	0
+""	"Yes"	10	8	"PB"	1
+""	"Yes"	0	10	"PB"	2
+""	"Bouma"	1	7	"PB"	0
+""	"Yes"	2	9	"PB"	2
+""	"Bouma"	1	6	"PB"	0
+""	"Yes"	-7	9	"PB"	2
+""	"Bouma"	0	10	"PB"	1
+""	"Bouma"	-5	8	"PB"	1
+""	"Bouma"	1	10	"PB"	0
+""	"Yes"	-1	8	"PB"	2
+""	"Yes"	1	6	"PB"	0
+""	"Bouma"	0	9	"PB"	1
+""	"Bouma"	0	8	"PB"	0
+""	"Yes"	2	7	"PB"	1
+""	"Bouma"	-7	10	"PB"	2
+""	"Yes"	0	7	"PB"	0
+""	"Yes"	-1	6	"PB"	2
+""	"Yes"	3	10	"PB"	2
+""	"Bouma"	3	7	"PB"	2
+""	"Yes"	0	9	"PB"	0
+""	"Bouma"	-1	9	"PB"	1
+""	"Bouma"	-5	10	"PB"	0
+""	"Bouma"	-3	7	"PB"	2
+""	"Yes"	-1	8	"WN"	2
+""	"Yes"	1	10	"WN"	1
+""	"Bouma"	1	6	"WN"	0
+""	"Yes"	-2	7	"WN"	1
+""	"Bouma"	1	7	"WN"	0
+""	"Bouma"	-1	6	"WN"	0
+""	"Yes"	1	9	"WN"	1
+""	"Bouma"	-2	10	"WN"	2
+""	"Bouma"	-3	9	"WN"	0
+""	"Yes"	1	9	"WN"	0
+""	"Yes"	-1	10	"WN"	1
+""	"Yes"	5	9	"WN"	2
+""	"Yes"	1	7	"WN"	2
+""	"Yes"	0	6	"WN"	0
+""	"Bouma"	1	8	"WN"	2
+""	"Yes"	1	7	"WN"	1
+""	"Yes"	2	6	"WN"	2
+""	"Yes"	1	7	"WN"	0
+""	"Bouma"	0	10	"WN"	1
+""	"Bouma"	0	8	"WN"	1
+""	"Yes"	0	8	"WN"	0
+""	"Yes"	-7	10	"WN"	0
+""	"Bouma"	2	7	"WN"	0
+""	"Bouma"	-1	9	"WN"	1
+""	"Bouma"	-2	10	"WN"	1
+""	"Bouma"	1	6	"WN"	1
+""	"Bouma"	1	10	"WN"	2
+""	"Yes"	1	7	"WN"	1
+""	"Yes"	1	6	"WN"	1
+""	"Bouma"	-3	8	"WN"	0
+""	"Yes"	1	7	"WN"	1
+""	"Bouma"	0	9	"WN"	1
+""	"Yes"	0	8	"WN"	1
+""	"Bouma"	1	8	"WN"	0
+""	"Yes"	-2	8	"WN"	1
+""	"Yes"	1	7	"WN"	1
+""	"Bouma"	-1	7	"WN"	1
+""	"Yes"	1	10	"WN"	2
+""	"Bouma"	0	8	"WN"	1
+""	"Yes"	1	8	"WN"	0
+""	"Bouma"	1	10	"WN"	2
+""	"Yes"	0	9	"WN"	1
+""	"Bouma"	1	9	"WN"	1
+""	"Yes"	0	10	"WN"	1
+""	"Yes"	8	6	"WN"	0
+""	"Yes"	1	8	"WN"	0
+""	"Yes"	-1	9	"WN"	2
+""	"Bouma"	1	10	"WN"	2
+""	"Bouma"	-2	9	"WN"	2
+""	"Yes"	0	6	"WN"	0
+""	"Yes"	1	6	"WN"	1
+""	"Bouma"	-1	10	"WN"	0
+""	"Yes"	0	10	"WN"	0
+""	"Bouma"	-3	10	"WN"	2
+""	"Bouma"	1	6	"WN"	1
+""	"Bouma"	-2	8	"WN"	1
+""	"Bouma"	-1	7	"WN"	0
+""	"Yes"	-3	7	"WN"	1
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	0	8	"WN"	1
+""	"Bouma"	-1	8	"WN"	2
+""	"Yes"	-1	7	"WN"	0
+""	"Yes"	0	10	"WN"	2
+""	"Bouma"	1	10	"WN"	0
+""	"Yes"	-2	7	"WN"	2
+""	"Yes"	0	9	"WN"	1
+""	"Bouma"	1	7	"WN"	2
+""	"Yes"	1	7	"WN"	2
+""	"Bouma"	14	7	"WN"	2
+""	"Yes"	-2	10	"WN"	1
+""	"Yes"	1	6	"WN"	0
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	1	10	"WN"	2
+""	"Yes"	0	6	"WN"	2
+""	"Bouma"	13	9	"WN"	2
+""	"Yes"	-1	8	"WN"	1
+""	"Yes"	-1	6	"WN"	2
+""	"Bouma"	1	9	"WN"	2
+""	"Yes"	0	10	"WN"	2
+""	"Bouma"	-6	7	"WN"	1
+""	"Yes"	1	10	"WN"	0
+""	"Bouma"	1	10	"WN"	0
+""	"Bouma"	1	7	"WN"	0
+""	"Yes"	0	9	"WN"	0
+""	"Bouma"	1	10	"WN"	1
+""	"Yes"	1	6	"WN"	0
+""	"Yes"	-1	9	"WN"	1
+""	"Yes"	2	7	"WN"	0
+""	"Bouma"	-1	9	"WN"	0
+""	"Yes"	1	9	"WN"	0
+""	"Bouma"	1	8	"WN"	0
+""	"Yes"	-1	10	"WN"	1
+""	"Bouma"	1	9	"WN"	2
+""	"Bouma"	1	8	"WN"	1
+""	"Yes"	0	9	"WN"	0
+""	"Yes"	1	8	"WN"	2
+""	"Bouma"	1	8	"WN"	1
+""	"Yes"	0	8	"WN"	0
+""	"Yes"	0	8	"WN"	0
+""	"Bouma"	-1	6	"WN"	1
+""	"Bouma"	-1	7	"WN"	1
+""	"Yes"	0	8	"WN"	1
+""	"Bouma"	2	9	"WN"	1
+""	"Yes"	-2	7	"WN"	2
+""	"Bouma"	-1	7	"WN"	2
+""	"Yes"	-2	6	"WN"	2
+""	"Bouma"	1	10	"WN"	2
+""	"Yes"	1	9	"WN"	2
+""	"Bouma"	-1	10	"WN"	1
+""	"Bouma"	-1	7	"WN"	1
+""	"Yes"	0	9	"WN"	1
+""	"Yes"	0	10	"WN"	0
+""	"Bouma"	0	6	"WN"	2
+""	"Yes"	0	9	"WN"	1
+""	"Bouma"	-1	9	"WN"	1
+""	"Yes"	0	6	"WN"	0
+""	"Bouma"	-1	6	"WN"	0
+""	"Yes"	1	7	"WN"	0
+""	"Yes"	1	6	"WN"	1
+""	"Bouma"	-2	8	"WN"	2
+""	"Bouma"	1	8	"WN"	2
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	2	7	"WN"	2
+""	"Bouma"	1	6	"WN"	0
+""	"Bouma"	-5	6	"WN"	2
+""	"Bouma"	0	6	"WN"	1
+""	"Bouma"	0	6	"WN"	2
+""	"Bouma"	1	9	"WN"	2
+""	"Bouma"	1	7	"WN"	2
+""	"Bouma"	0	7	"WN"	2
+""	"Bouma"	-2	8	"WN"	2
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	1	6	"WN"	2
+""	"Yes"	1	8	"WN"	2
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	1	7	"WN"	0
+""	"Bouma"	1	10	"WN"	0
+""	"Yes"	1	9	"WN"	0
+""	"Yes"	1	9	"WN"	2
+""	"Bouma"	0	8	"WN"	0
+""	"Yes"	1	10	"WN"	2
+""	"Bouma"	0	7	"WN"	0
+""	"Bouma"	-1	6	"WN"	2
+""	"Yes"	-9	9	"WN"	2
+""	"Yes"	-2	6	"WN"	1
+""	"Bouma"	0	9	"WN"	2
+""	"Bouma"	-2	8	"WN"	1
+""	"Bouma"	-1	10	"WN"	1
+""	"Bouma"	-2	7	"WN"	2
+""	"Yes"	-2	9	"WN"	2
+""	"Yes"	-2	8	"WN"	2
+""	"Bouma"	1	7	"WN"	0
+""	"Bouma"	1	8	"WN"	0
+""	"Yes"	1	8	"WN"	2
+""	"Bouma"	2	6	"WN"	2
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	0	8	"WN"	0
+""	"Bouma"	0	7	"WN"	1
+""	"Yes"	2	8	"WN"	2
+""	"Bouma"	-3	7	"WN"	1
+""	"Yes"	-7	8	"WN"	1
+""	"Yes"	0	9	"WN"	0
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	-1	10	"WN"	1
+""	"Bouma"	0	6	"WN"	2
+""	"Bouma"	0	10	"WN"	0
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	15	6	"WN"	1
+""	"Bouma"	1	9	"WN"	1
+""	"Bouma"	1	10	"WN"	0
+""	"Yes"	0	7	"WN"	0
+""	"Bouma"	-3	8	"WN"	2
+""	"Bouma"	3	8	"WN"	0
+""	"Bouma"	1	10	"WN"	1
+""	"Yes"	1	10	"WN"	0
+""	"Yes"	0	6	"WN"	2
+""	"Yes"	0	10	"WN"	2
+""	"Yes"	2	10	"WN"	0
+""	"Yes"	0	6	"WN"	1
+""	"Yes"	-2	7	"WN"	2
+""	"Bouma"	1	6	"WN"	2
+""	"Yes"	1	10	"WN"	2
+""	"Bouma"	-2	8	"WN"	2
+""	"Bouma"	0	7	"WN"	0
+""	"Yes"	0	9	"WN"	0
+""	"Bouma"	0	10	"WN"	2
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	-1	6	"WN"	0
+""	"Bouma"	-1	10	"WN"	1
+""	"Bouma"	0	10	"WN"	0
+""	"Bouma"	-1	7	"WN"	0
+""	"Bouma"	0	8	"WN"	1
+""	"Yes"	0	10	"WN"	0
+""	"Yes"	10	6	"WN"	2
+""	"Yes"	-1	8	"WN"	1
+""	"Yes"	0	9	"WN"	0
+""	"Yes"	-1	10	"WN"	2
+""	"Yes"	1	7	"WN"	2
+""	"Bouma"	1	7	"WN"	1
+""	"Yes"	1	10	"WN"	1
+""	"Bouma"	1	8	"WN"	2
+""	"Bouma"	0	8	"WN"	0
+""	"Yes"	-1	6	"WN"	1
+""	"Bouma"	2	8	"WN"	0
+""	"Bouma"	-2	8	"WN"	1
+""	"Yes"	-1	10	"WN"	0
+""	"Yes"	1	6	"WN"	1
+""	"Yes"	-2	6	"WN"	2
+""	"Yes"	-1	7	"WN"	0
+""	"Bouma"	1	9	"WN"	1
+""	"Bouma"	-5	9	"WN"	2
+""	"Yes"	0	6	"WN"	0
+""	"Yes"	-2	9	"WN"	1
+""	"Yes"	0	7	"WN"	2
+""	"Yes"	-4	6	"WN"	2
+""	"Bouma"	1	7	"WN"	0
+""	"Yes"	0	9	"WN"	1
+""	"Bouma"	-1	9	"WN"	2
+""	"Bouma"	1	10	"WN"	0
+""	"Bouma"	0	7	"WN"	0
+""	"Bouma"	-1	10	"WN"	2
+""	"Bouma"	0	7	"WN"	1
+""	"Bouma"	2	8	"WN"	1
+""	"Yes"	6	9	"WN"	0
+""	"Yes"	3	7	"WN"	1
+""	"Yes"	-1	9	"WN"	2
+""	"Bouma"	1	7	"WN"	1
+""	"Bouma"	1	9	"WN"	1
+""	"Yes"	0	7	"WN"	1
+""	"Yes"	2	10	"WN"	1
+""	"Yes"	-1	7	"WN"	1
+""	"Yes"	0	9	"WN"	0
+""	"Yes"	0	10	"WN"	1
+""	"Yes"	0	6	"WN"	2
+""	"Yes"	-1	8	"WN"	1
+""	"Bouma"	-2	6	"WN"	2
+""	"Yes"	0	6	"WN"	0
+""	"Bouma"	1	8	"WN"	1
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	0	6	"WN"	1
+""	"Bouma"	2	9	"WN"	0
+""	"Bouma"	-1	7	"WN"	0
+""	"Bouma"	-1	6	"WN"	2
+""	"Bouma"	1	9	"WN"	2
+""	"Yes"	1	10	"WN"	1
+""	"Bouma"	11	9	"WN"	1
+""	"Bouma"	0	10	"WN"	1
+""	"Bouma"	-2	9	"WN"	1
+""	"Bouma"	0	8	"WN"	0
+""	"Bouma"	1	6	"WN"	2
+""	"Yes"	0	10	"WN"	2
+""	"Bouma"	-1	7	"WN"	1
+""	"Bouma"	9	9	"WN"	2
+""	"Yes"	2	7	"WN"	2
+""	"Yes"	1	9	"WN"	1
+""	"Bouma"	-2	7	"WN"	2
+""	"Yes"	-1	6	"WN"	2
+""	"Yes"	1	8	"WN"	2
+""	"Bouma"	1	10	"WN"	0
+""	"Yes"	0	7	"WN"	1
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	-1	8	"WN"	1
+""	"Bouma"	0	8	"WN"	0
+""	"Bouma"	-1	6	"WN"	1
+""	"Yes"	0	10	"WN"	1
+""	"Bouma"	-2	8	"WN"	2
+""	"Bouma"	-5	7	"WN"	1
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	-4	8	"WN"	2
+""	"Bouma"	-6	9	"WN"	2
+""	"Bouma"	0	6	"WN"	0
+""	"Yes"	1	10	"WN"	2
+""	"Bouma"	0	7	"WN"	1
+""	"Yes"	0	6	"WN"	0
+""	"Yes"	0	7	"WN"	0
+""	"Yes"	-5	8	"WN"	2
+""	"Yes"	0	10	"WN"	0
+""	"Bouma"	-7	10	"WN"	2
+""	"Yes"	0	6	"WN"	0
+""	"Yes"	1	6	"WN"	0
+""	"Yes"	0	9	"WN"	2
+""	"Yes"	-2	8	"WN"	2
+""	"Bouma"	16	7	"WN"	2
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	-1	9	"WN"	1
+""	"Bouma"	0	9	"WN"	0
+""	"Bouma"	-1	8	"WN"	0
+""	"Yes"	13	9	"WN"	2
+""	"Yes"	-1	10	"WN"	2
+""	"Yes"	-1	9	"WN"	2
+""	"Yes"	1	8	"WN"	1
+""	"Bouma"	-1	10	"WN"	1
+""	"Yes"	-7	7	"WN"	1
+""	"Yes"	3	6	"WN"	1
+""	"Bouma"	11	9	"WN"	1
+""	"Yes"	-2	9	"WN"	1
+""	"Bouma"	-3	7	"WN"	2
+""	"Yes"	0	7	"WN"	0
+""	"Bouma"	-2	8	"WN"	2
+""	"Yes"	0	9	"WN"	1
+""	"Yes"	0	8	"WN"	1
+""	"Yes"	-6	8	"WN"	2
+""	"Bouma"	1	7	"WN"	2
+""	"Bouma"	-1	6	"WN"	0
+""	"Yes"	0	7	"WN"	0
+""	"Bouma"	-8	9	"WN"	1
+""	"Bouma"	2	6	"WN"	1
+""	"Yes"	0	6	"WN"	1
+""	"Yes"	0	8	"WN"	0
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	-1	10	"WN"	2
+""	"Bouma"	0	10	"WN"	2
+""	"Bouma"	1	9	"WN"	0
+""	"Yes"	4	6	"WN"	2
+""	"Yes"	-2	8	"WN"	2
+""	"Yes"	0	8	"WN"	0
+""	"Bouma"	1	7	"WN"	2
+""	"Yes"	-5	6	"WN"	1
+""	"Yes"	-2	8	"WN"	1
+""	"Yes"	-1	8	"WN"	0
+""	"Bouma"	17	6	"WN"	2
+""	"Bouma"	2	10	"WN"	2
+""	"Bouma"	0	10	"WN"	2
+""	"Bouma"	1	10	"WN"	1
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	-1	9	"WN"	0
+""	"Bouma"	2	10	"WN"	1
+""	"Yes"	0	10	"WN"	0
+""	"Bouma"	0	10	"WN"	0
+""	"Yes"	0	8	"WN"	0
+""	"Yes"	-1	9	"WN"	2
+""	"Yes"	-2	8	"WN"	0
+""	"Bouma"	0	6	"WN"	0
+""	"Bouma"	1	8	"WN"	0
+""	"Bouma"	-1	8	"WN"	2
+""	"Bouma"	10	10	"WN"	1
+""	"Yes"	0	9	"WN"	0
+""	"Bouma"	-1	7	"WN"	0
+""	"Yes"	1	10	"WN"	0
+""	"Yes"	-3	7	"WN"	2
+""	"Yes"	-1	7	"WN"	2
+""	"Bouma"	-1	10	"WN"	0
+""	"Bouma"	0	9	"WN"	0
+""	"Bouma"	0	10	"WN"	0
+""	"Bouma"	3	7	"WN"	2
+""	"Yes"	-4	7	"WN"	2
+""	"Yes"	0	10	"WN"	0
+""	"Bouma"	0	9	"WN"	0
+""	"Yes"	0	7	"WN"	1
+""	"Bouma"	0	9	"WN"	2
+""	"Bouma"	0	8	"WN"	2
+""	"Yes"	0	8	"WN"	0
+""	"Yes"	0	7	"WN"	0
+""	"Bouma"	-3	6	"WN"	2
+""	"Yes"	0	7	"WN"	0
+""	"Yes"	-3	9	"WN"	2
+""	"Bouma"	1	8	"WN"	1
+""	"Bouma"	0	6	"WN"	1
+""	"Yes"	-1	10	"WN"	1
+""	"Bouma"	8	8	"WN"	1
