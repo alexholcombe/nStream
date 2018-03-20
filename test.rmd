@@ -1,0 +1,114 @@
+---
+title: "Introduction to reading"
+output:
+  revealjs::revealjs_presentation:
+  self_contained: false
+reveal_plugins: ["notes", "search"]
+---
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(BayesFactor)
+library(magrittr)
+
+inclusionBF <- function(priorProbs, variable){
+  
+  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
+  
+  
+  if(typeof(priorProbs) == 'S4') priorProbs <- as.vector(priorProbs)
+  
+  
+  theseNames <- names(priorProbs)
+  nProbs <- 1:length(priorProbs)
+  variableMatches <- grep(variable, theseNames)
+  
+  if(grepl(':', variable)){
+    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
+
+    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
+    
+    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
+    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
+    
+    
+    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
+  } else {
+    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
+    
+    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
+    
+    
+    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
+    
+    
+    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
+  }
+}
+
+params <- read.csv('modelOutput/parameterEstimates.csv')
+
+params$ring %<>% as.factor
+```
+
+#Rmarkdown
+##What is RMarkdown?
+
+```{r eval=FALSE, tidy=TRUE}
+efficacyBF <- anovaBF(efficacy ~ ring * crowded + ID, 
+                      data=params,
+                      whichRandom = 'ID'
+                      ) 
+
+#extract P(M|Data) from BF object
+efficacyPriorProbs <- efficacyBF %>% newPriorOdds() %>% `*`(efficacyBF) %>% as.BFprobability() %>% as.vector()
+
+efficacyInclusionBFs <- rep(-999, times = 3)
+
+names(efficacyInclusionBFs) <- c('crowded','ring','crowded:ring')
+
+#calculate inclusion BFs for main effects and interactions
+for(name in names(efficacyInclusionBFs)){ 
+  thisInclusionBF <- inclusionBF(efficacyPriorProbs, name)
+  efficacyInclusionBFs[name] <- thisInclusionBF
+}
+
+print(efficacyInclusionBFs)
+
+#We only observe evidence for an effect of ring. The effect of crowding and the interaction yield equivocal evidence
+
+efficacyPlot <- ggplot(params, aes(x=crowded, y = efficacy))+
+  geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
+  stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+#show(efficacyPlot)
+```
+
+##Second Slide
+- RMD lets us turn our 
+```{r out.width='50%',tidy=TRUE}
+efficacyBF <- anovaBF(efficacy ~ ring * crowded + ID, 
+                      data=params,
+                      whichRandom = 'ID'
+                      ) 
+
+efficacyPriorProbs <- efficacyBF %>% newPriorOdds() %>% `*`(efficacyBF) %>% as.BFprobability() %>% as.vector() #extract P(M|Data) from BF object
+
+efficacyInclusionBFs <- rep(-999, times = 3)
+
+names(efficacyInclusionBFs) <- c('crowded','ring','crowded:ring')
+
+for(name in names(efficacyInclusionBFs)){ #calculate inclusion BFs for main effects and interactions
+  thisInclusionBF <- inclusionBF(efficacyPriorProbs, name)
+  efficacyInclusionBFs[name] <- thisInclusionBF
+}
+
+print(efficacyInclusionBFs)
+```
+We only really observe evidence for an effect of ring
+```{r}
+efficacyPlot <- ggplot(params, aes(x=crowded, y = efficacy))+
+  geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
+  stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+show(efficacyPlot)
+```
