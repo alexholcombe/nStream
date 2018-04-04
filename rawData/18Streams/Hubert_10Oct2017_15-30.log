@@ -1,0 +1,50 @@
+8.3848 	ERROR 	Frames per second ~=59.9 BUT program assumes 100which is off by more than3.0%!!
+8.3858 	ERROR 	Screen apparently NOT the desired resolution of 1024x768 pixels!!
+9.9003 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1280, 800]. Using actual size
+10.6211 	INFO 	Successfully set darwin thread to realtime
+11.6908 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.83.04
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_10_10 15:30 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1507609811
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: e33a48691aa1f6fd204278668c2f3a920eceb894
+    experimentScript.directory: /Users/charlieludowici/gitcode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: Charless-MBP
+    systemLocale: en_AU.ISO8859-1
+    systemMemFreeRAM: 550.27734375
+    systemMemTotalRAM: 4096.0
+    systemPlatform: darwin 10.12.6 x86_64
+    systemRebooted: Oct 3 20:33
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0095
+    systemUser: charlieludowici
+    systemUserID: 501
+    systemUserProcCount: 133
+    systemUserProcFlagged: iTunes mdworker ''Google Chrome'' Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1280  800]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.593
+    windowRefreshTimeMedian_ms: 16.674
+    windowRefreshTimeAvg_ms: 16.683
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 59.0
+    windowMonitor.currentCalibName: 2015_02_16 14:45
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.10
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
