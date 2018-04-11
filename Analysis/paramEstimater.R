@@ -1,8 +1,6 @@
 library(mixRSVP)
 library(dplyr)
 library(magrittr)
-library(reshape2)
-library(BayesFactor)
 
 data.files <- list.files('../wrangledData/SONA/', full.names = T, recursive = T)
 
@@ -52,28 +50,4 @@ if(!file.exists('../../modelOutput/CSV/2v8mixRSVPParams.csv')){
 } else {
   nStreamParameterEst <- read.csv('../../modelOutput/CSV/2v8mixRSVPParams.csv', header = T)
 }
-
-nStreamParameterEst %>% 
-  dcast(participant~nStreams, value.var = 'efficacy') %>% 
-  ggplot(aes(x=twoStreams, y = eightStreams))+
-  geom_point(aes(color = participant), size = 4)+
-  scale_color_brewer(palette = 'Spectral') + 
-  geom_abline(intercept = 0, slope = 1, linetype = 'dashed') + 
-  lims(x=c(0,1), y=c(0,1))
-
-nStreamParameterEst %>% 
-  dcast(participant~nStreams, value.var = 'latency') %>% 
-  ggplot(aes(x=twoStreams, y = eightStreams))+
-  geom_point(aes(color = participant), size = 4)+
-  scale_color_brewer(palette = 'Spectral') + 
-  geom_abline(intercept = 0, slope = 1, linetype = 'dashed') + 
-  lims(x=c(20,120), y=c(20,120))
-
-nStreamParameterEst %>% 
-  dcast(participant~nStreams, value.var = 'precision') %>% 
-  ggplot(aes(x=twoStreams, y = eightStreams))+
-  geom_point(aes(color = participant), size = 4)+
-  scale_color_brewer(palette = 'Spectral') + 
-  geom_abline(intercept = 0, slope = 1, linetype = 'dashed') + 
-  lims(x=c(40,100), y=c(40,100))
 
