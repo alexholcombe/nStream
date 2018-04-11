@@ -81,13 +81,13 @@ MMlatency <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
 MMprecision <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_precisionNorm.csv')
 MMefficacy <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_efficacyNorm.csv')
 
-latency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
+nStreamLatency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
 
-precision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
+nStreamPrecision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
 
-efficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
+nStreamEfficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
 
-frequentistTestLatency = t.test(x = latency$eightStreams, y=latency$twoStreams, paired = T)
+frequentistTestLatency = t.test(x = nStreamLatency$eightStreams, y=nStreamLatency$twoStreams, paired = T)
 tLatency <- frequentistTestLatency$statistic[[1]]
 frequentistTestLatency
 ```
@@ -96,7 +96,7 @@ frequentistTestLatency
 ##Latency Analyses
 
 ```{r warning=FALSE}
-latencyForPlot <- melt(latency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+latencyForPlot <- melt(nStreamLatency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
 latencyForPlot$Participant <- ordered(rep(1:10, times = 2))
 
 t  <- tLatency
@@ -125,8 +125,8 @@ posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=d
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
 
-latencyHorizSE <- horizErrorBars(latency, 'twoStreams')
-latencyVertSE <- vertErrorBars(latency, 'eightStreams')
+latencyHorizSE <- horizErrorBars(nStreamLatency, 'twoStreams')
+latencyVertSE <- vertErrorBars(nStreamLatency, 'eightStreams')
 
 latencyPlot <- ggplot(latencyForPlot,aes(x=Condition, y=Estimate))+
   geom_violin()+
@@ -139,9 +139,8 @@ latencyPlot <- ggplot(latencyForPlot,aes(x=Condition, y=Estimate))+
   theme(plot.title = element_text(hjust=.5))
 
 
-latencyScatter <- ggplot(latency, aes(x=twoStreams, y=eightStreams))+
-  geom_point(size = 4, aes(colour=ordered(1:10)))+
-  scale_color_brewer(palette='Spectral', name='Participant')+
+latencyScatter <- ggplot(nStreamLatency, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, colour = '#FCAD68')+
   lims(x=c(20,120), y=c(20,120))+
   labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   geom_errorbarh(data = latencyHorizSE, aes(x=x, xmin=xmin, xmax = xmax, y=y),inherit.aes = F, height=5)+
@@ -163,7 +162,7 @@ latencyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
 ```
 
-BF~10~ is `r round(BF10, 2)`. There is strong evidence for a difference in mean latency between the two- and eight-streams conditions. Mean latency for the two-streams condition (M = `r latency %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r latency %>% pull(twoStreams) %>% sd %>% round(2)`) is less than the mean latency for the eight-streams condition (M = `r latency %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r latency %>% pull(eightStreams) %>% sd %>% round(2)`).
+BF~10~ is `r round(BF10, 2)`. There is strong evidence for a difference in mean latency between the two- and eight-streams conditions. Mean latency for the two-streams condition (M = `r nStreamLatency %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r nStreamLatency %>% pull(twoStreams) %>% sd %>% round(2)`) is less than the mean latency for the eight-streams condition (M = `r nStreamLatency %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r nStreamLatency %>% pull(eightStreams) %>% sd %>% round(2)`).
 
 
 The nonguessing distribution is delayed in the eight-streams relative to the two-streams condition. There appears to be some cost for increasing the number of streams. Two possible reasons for this are: an attentional cost for distributing attention over more visual space, or a cost of interference due to the increased number of items. These possibilities are theories used in the visual search literature to explain set-size effects [i.e. @palmer_set-size_1994]. This literature distinguished between perceptual effects and those that were due to attention. These theories were tested by holding the number of items constant - thus controling any perceptual effects - but cueing a number of positions as potential target locations. Support for an attentional effect is manifest whenever the effect of set size is similar to that of the pre-cueing manipulation. 
@@ -171,11 +170,11 @@ The nonguessing distribution is delayed in the eight-streams relative to the two
 ##Precision Analysis
 
 ```{r warning=FALSE}
-precisionForPlot <- melt(precision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+precisionForPlot <- melt(nStreamPrecision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
 precisionForPlot$Participant <- ordered(rep(1:10, times = 2))
 
 
-frequentistTestPrecision <- t.test(x = precision$eightStreams, y = precision$twoStreams, paired = T)
+frequentistTestPrecision <- t.test(x = nStreamPrecision$eightStreams, y = nStreamPrecision$twoStreams, paired = T)
 tPrecision <- frequentistTestPrecision$statistic[[1]]
 
 t  <- tPrecision
@@ -217,12 +216,11 @@ precisionPlot <- ggplot(precisionForPlot,aes(x=Condition, y=Estimate))+
 
 show(precisionPlot)
 
-precisionHorizSE <- horizErrorBars(precision, 'twoStreams')
-precisionVertSE <- vertErrorBars(precision, 'eightStreams')
+precisionHorizSE <- horizErrorBars(nStreamPrecision, 'twoStreams')
+precisionVertSE <- vertErrorBars(nStreamPrecision, 'eightStreams')
 
-precisionScatter <- ggplot(precision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
+precisionScatter <- ggplot(nStreamPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+  geom_point(size = 4, colour = '#FCAD68')+
   geom_errorbarh(data = precisionHorizSE, aes(x=x, xmin=xmin, xmax = xmax, y=y),inherit.aes = F, height=3)+
   geom_errorbar(data=precisionVertSE, aes(x=x, ymin=ymin,ymax=ymax, y=y), inherit.aes = F, width = 3)+
   lims(x=c(40,100), y=c(40,100))+
@@ -244,15 +242,15 @@ precisionBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 
 ```
 
-Strangely, the precision of the nonguessing distribution decreases as the number of streams increases. The two-streams condition (M = `r precision %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r precision %>% pull(twoStreams) %>% sd %>% round(2)`) has more variance in the nonguessing distributions than the eight-streams conditions (M = `r precision %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r precision %>% pull(eightStreams) %>% sd %>% round(2)`; BF~10~ = `r round(BF10,2)`). In a buffering account this could be because as the number of simultaneous items increases there is less capacity to store non-simultaneous items. In an attention shift account this is harder to account for. One possible reason could be that an inability to spread attention over eight streams causes participants to rely on only exogenous attention - rather than an endo-exo mix - and the precision we're seeing here reflects the variability in arrival times for exogenous attention (check the ERP and behavioural literature for exogenous attention estimates). 
+Strangely, the precision of the nonguessing distribution decreases as the number of streams increases. The two-streams condition (M = `r nStreamPrecision %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r nStreamPrecision %>% pull(twoStreams) %>% sd %>% round(2)`) has more variance in the nonguessing distributions than the eight-streams conditions (M = `r nStreamPrecision %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r nStreamPrecision %>% pull(eightStreams) %>% sd %>% round(2)`; BF~10~ = `r round(BF10,2)`). In a buffering account this could be because as the number of simultaneous items increases there is less capacity to store non-simultaneous items. In an attention shift account this is harder to account for. One possible reason could be that an inability to spread attention over eight streams causes participants to rely on only exogenous attention - rather than an endo-exo mix - and the precision we're seeing here reflects the variability in arrival times for exogenous attention (check the ERP and behavioural literature for exogenous attention estimates). Again, a pre-cuing manipulation is a method for testing this hypothesis.
 
 ##Efficacy Analysis
 
 ```{r warning=FALSE}
-frequentistTestEfficacy <- t.test(x = efficacy$eightStreams, y = efficacy$twoStreams, paired = T)
+frequentistTestEfficacy <- t.test(x = nStreamEfficacy$eightStreams, y = nStreamEfficacy$twoStreams, paired = T)
 tEfficacy <- frequentistTestEfficacy$statistic[[1]]
 
-efficacyForPlot <- melt(efficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
+efficacyForPlot <- melt(nStreamEfficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
 efficacyForPlot$Participant <- ordered(rep(1:10, times = 2))
 
 t  <- tEfficacy
@@ -290,9 +288,8 @@ efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
   theme(plot.title = element_text(hjust=.5))+
   scale_colour_brewer(palette = 'Spectral')
 
-efficacyScatter <- ggplot(efficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
+efficacyScatter <- ggplot(nStreamEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+  geom_point(size = 4, colour = '#FCAD68')+
   lims(x=c(0,1), y=c(0,1))+
   labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
@@ -310,18 +307,18 @@ efficacyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 
 
 ```
-The Bayesian analysis for the efficacy data shows weak evidence for a lack of an effect (BF~10~ = `r round(BF10,2)`). The mean for the two-streams condition is `r efficacy %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r efficacy %>% pull(twoStreams) %>% sd %>% round(2)`). The mean for the eight-streams condition is `r efficacy %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r efficacy %>% pull(eightStreams) %>% sd %>% round(2)`).
+The Bayesian analysis for the efficacy data shows weak evidence for a lack of an effect (BF~10~ = `r round(BF10,2)`). The mean for the two-streams condition is `r nStreamEfficacy %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r nStreamEfficacy %>% pull(twoStreams) %>% sd %>% round(2)`). The mean for the eight-streams condition is `r nStreamEfficacy %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r nStreamEfficacy %>% pull(eightStreams) %>% sd %>% round(2)`).
 ```{r}
 
-predictions <- data.frame(twoStreams = rnorm(1000, latency$twoStreams[7], precision$twoStreams[7]), eightStreams = rnorm(1000, latency$eightStreams[7], precision$eightStreams[7]))
+predictions <- data.frame(twoStreams = rnorm(1000, nStreamLatency$twoStreams[7], nStreamPrecision$twoStreams[7]), eightStreams = rnorm(1000, nStreamLatency$eightStreams[7], nStreamPrecision$eightStreams[7]))
 
 predictions <- melt(predictions, measure.vars = c('twoStreams', 'eightStreams'), variable.name = 'Condition', value.name = 'response')
 
-meanLatencyTwo <- mean(latency$twoStreams)
-meanLatencyEight <- mean(latency$eightStreams)
+meanLatencyTwo <- mean(nStreamLatency$twoStreams)
+meanLatencyEight <- mean(nStreamLatency$eightStreams)
 
-meanPrecisionTwo <- mean(precision$twoStreams)
-meanPrecisionEight <- mean(precision$eightStreams)
+meanPrecisionTwo <- mean(nStreamPrecision$twoStreams)
+meanPrecisionEight <- mean(nStreamPrecision$eightStreams)
 
 
 predictionPlot <- ggplot()+
@@ -361,23 +358,23 @@ MMlatency <- read.csv('../../modelOutput/precueCSV/TGRSVP_Exp2_LatencyNorm.csv')
 MMprecision <- read.csv('../../modelOutput/precueCSV/TGRSVP_Exp2_precisionNorm.csv')
 MMefficacy <- read.csv('../../modelOutput/precueCSV/TGRSVP_Exp2_efficacyNorm.csv')
 
-latency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
+preCueLatency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
 
-precision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
+preCuePrecision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
 
-efficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
+preCueEfficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
 
-frequentistTestLatency = t.test(x = latency$eightStreams, y=latency$twoStreams, paired = T)
+frequentistTestLatency = t.test(x = preCueLatency$eightStreams, y=preCueLatency$twoStreams, paired = T)
 tLatency <- frequentistTestLatency$statistic[[1]]
 frequentistTestLatency
 ```
 
-In this experiment, the program presented 8 streams on each trial. Prior to the onset of a trial, participants saw a circular array of hashmarks for 250ms [@goodbourn_pseudoextinction]. The possible position of the cue on that trial was indicated by white rings around either two or eight streams. These mimicked the position of the streams in the first experiment's conditions. This experiment tests whether any differences between the two or eight streams conditions are due to increasing interference that scales with the number of streams - this theory predicts no difference between conditions in this experiment - or due to a cost involved in spreading attention over a larger area of visual space - this theory predicts a replication of the initial experiment's effects. 
+In this experiment, the program presented 8 streams on each trial. Prior to the onset of a trial, participants saw a circular array of hashmarks for 250ms, as in  @goodbourn_pseudoextinction, this was followed by a blank screen for 500ms, a fixation point for 1000ms and then the RSVP streams. The possible position of the cue on that trial was indicated by white rings around either two or eight streams. These mimicked the position of the streams in the first experiment's conditions. This experiment tests whether any differences between the two or eight streams conditions are due to increasing interference that scales with the number of streams - this theory predicts no difference between conditions in this experiment - or due to a cost involved in spreading attention over a larger area of visual space - this theory predicts a replication of the initial experiment's effects. 
 
 ##Latency Analyses
 
 ```{r warning=FALSE}
-latencyForPlot <- melt(latency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+latencyForPlot <- melt(preCueLatency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
 latencyForPlot$Participant <- ordered(rep(1:nParticipants, times = 2))
 
 t  <- tLatency
@@ -416,10 +413,9 @@ latencyPlot <- ggplot(latencyForPlot,aes(x=Condition, y=Estimate))+
   theme(plot.title = element_text(hjust=.5))
 
 
-latencyScatter <- ggplot(latency, aes(x=twoStreams, y=eightStreams))+
-  geom_point(size = 4, aes(colour=ordered(1:nParticipants)))+
-  scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(20,120), y=c(20,120))+
+latencyScatter <- ggplot(preCueLatency, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, colour = '#FCAD68')+
+  lims(x=c(20,220), y=c(20,220))+
   labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
@@ -437,16 +433,16 @@ latencyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
 ```
 
-The latency for the two-precues condition (M = `r latency %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r latency %>% pull(twoStreams) %>% sd %>% round(2)`) is less than that of the eight-precues condition (M = `r latency %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r latency %>% pull(eightStreams) %>% sd %>% round(2)`; BF~10~ = `r round(BF10,2)`). 
+The latency for the two-precues condition (M = `r preCueLatency %>% pull(twoStreams) %>% mean %>% round(2)`, SD = `r preCueLatency %>% pull(twoStreams) %>% sd %>% round(2)`) is less than that of the eight-precues condition (M = `r preCueLatency %>% pull(eightStreams) %>% mean %>% round(2)`, SD = `r preCueLatency %>% pull(eightStreams) %>% sd %>% round(2)`; BF~10~ = `r round(BF10,2)`). 
 
 #Precision Analysis
 
 ```{r warning=FALSE}
-precisionForPlot <- melt(precision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+precisionForPlot <- melt(preCuePrecision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
 precisionForPlot$Participant <- ordered(rep(1:nParticipants, times = 2))
 
 
-frequentistTestPrecision <- t.test(x = precision$eightStreams, y = precision$twoStreams, paired = T)
+frequentistTestPrecision <- t.test(x = preCuePrecision$eightStreams, y = preCuePrecision$twoStreams, paired = T)
 tPrecision <- frequentistTestPrecision$statistic[[1]]
 
 t  <- tPrecision
@@ -488,10 +484,9 @@ precisionPlot <- ggplot(precisionForPlot,aes(x=Condition, y=Estimate))+
 
 
 
-precisionScatter <- ggplot(precision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(40,100), y=c(40,100))+
+precisionScatter <- ggplot(preCuePrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
+  geom_point(size = 4, colour = '#FCAD68')+
+  lims(x=c(40,200), y=c(40,200))+
   labs(title='Precision Estimates (ms)')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
@@ -509,15 +504,15 @@ precisionBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 
 ```
 
-There is weak evidence for no difference between the two conditions, BF~10~ = `r round(BF10,2)`. The two-precues condition has a mean of `r precision %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r precision %>% pull(twoStreams) %>% sd %>% round(2)`). The eight-precues condition has a mean of `r precision %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r precision %>% pull(eightStreams) %>% sd %>% round(2)`).
+There is weak evidence for no difference between the two conditions, BF~10~ = `r round(BF10,2)`. The two-precues condition has a mean of `r preCuePrecision %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r preCuePrecision %>% pull(twoStreams) %>% sd %>% round(2)`). The eight-precues condition has a mean of `r preCuePrecision %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r preCuePrecision %>% pull(eightStreams) %>% sd %>% round(2)`).
 
 #Efficacy Analysis
 
 ```{r warning=FALSE}
-frequentistTestEfficacy <- t.test(x = efficacy$eightStreams, y = efficacy$twoStreams, paired = T)
+frequentistTestEfficacy <- t.test(x = preCueEfficacy$eightStreams, y = preCueEfficacy$twoStreams, paired = T)
 tEfficacy <- frequentistTestEfficacy$statistic[[1]]
 
-efficacyForPlot <- melt(efficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
+efficacyForPlot <- melt(preCueEfficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
 efficacyForPlot$Participant <- ordered(rep(1:nParticipants, times = 2))
 
 t  <- tEfficacy
@@ -556,9 +551,8 @@ efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
   scale_colour_brewer(palette = 'Spectral')
 
 
-efficacyScatter <- ggplot(efficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
+efficacyScatter <- ggplot(preCueEfficacy, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, colour = '#FCAD68')+
   lims(x=c(0,1), y=c(0,1))+
   labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
@@ -577,15 +571,15 @@ efficacyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 
 ```
 
-There is weak evidence for no difference between the two conditions, BF~10~ = `r round(BF10,2)`. The two-precues condition has a mean of `r efficacy %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r efficacy %>% pull(twoStreams) %>% sd %>% round(2)`). The eight-precues condition has a mean of `r efficacy %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r efficacy %>% pull(eightStreams) %>% sd %>% round(2)`).
+There is weak evidence for no difference between the two conditions, BF~10~ = `r round(BF10,2)`. The two-precues condition has a mean of `r preCueEfficacy %>% pull(twoStreams) %>% mean %>% round(2)` (SD = `r preCueEfficacy %>% pull(twoStreams) %>% sd %>% round(2)`). The eight-precues condition has a mean of `r preCueEfficacy %>% pull(eightStreams) %>% mean %>% round(2)` (SD = `r preCueEfficacy %>% pull(eightStreams) %>% sd %>% round(2)`).
 
 ```{r}
 
-efficacy$Parameter <- as.character('Efficacy')
-latency$Parameter <- as.character('Latency')
-precision$Parameter <- as.character('Precision')
+preCueEfficacy$Parameter <- as.character('Efficacy')
+preCueLatency$Parameter <- as.character('Latency')
+preCuePrecision$Parameter <- as.character('Precision')
 
-allParams <- rbind(efficacy,latency,precision)
+allParams <- rbind(preCueEfficacy,preCueLatency,preCuePrecision)
 
 allParams <- melt(allParams, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
 
@@ -596,15 +590,15 @@ paramBar <- ggplot(allParams[!allParams$Parameter=='Efficacy',], aes(x=Parameter
 
 paramBar
 
-predictions <- data.frame(twoStreams = rnorm(1000, latency$twoStreams[7], precision$twoStreams[7]), eightStreams = rnorm(1000, latency$eightStreams[7], precision$eightStreams[7]))
+predictions <- data.frame(twoStreams = rnorm(1000, preCueLatency$twoStreams[7], preCuePrecision$twoStreams[7]), eightStreams = rnorm(1000, preCueLatency$eightStreams[7], preCuePrecision$eightStreams[7]))
 
 predictions <- melt(predictions, measure.vars = c('twoStreams', 'eightStreams'), variable.name = 'Condition', value.name = 'response')
 
-meanLatencyTwo <- mean(latency$twoStreams)
-meanLatencyEight <- mean(latency$eightStreams)
+meanLatencyTwo <- mean(preCueLatency$twoStreams)
+meanLatencyEight <- mean(preCueLatency$eightStreams)
 
-meanPrecisionTwo <- mean(precision$twoStreams)
-meanPrecisionEight <- mean(precision$eightStreams)
+meanPrecisionTwo <- mean(preCuePrecision$twoStreams)
+meanPrecisionEight <- mean(preCuePrecision$eightStreams)
 
 
 predictionPlot <- ggplot()+
