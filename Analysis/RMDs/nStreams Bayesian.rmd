@@ -13,6 +13,7 @@ library(reshape2)
 library(papaja)
 library(magrittr)
 library(dplyr)
+library(BayesFactor)
 
 theme_set(theme_apa(base_size = 15) ) 
 
@@ -369,7 +370,7 @@ tLatency <- frequentistTestLatency$statistic[[1]]
 frequentistTestLatency
 ```
 
-In this experiment, the program presented 8 streams on each trial. Prior to the onset of a trial, participants saw a circular array of hashmarks for 250ms, as in  @goodbourn_pseudoextinction, this was followed by a blank screen for 500ms, a fixation point for 1000ms and then the RSVP streams. The possible position of the cue on that trial was indicated by white rings around either two or eight streams. These mimicked the position of the streams in the first experiment's conditions. This experiment tests whether any differences between the two or eight streams conditions are due to increasing interference that scales with the number of streams - this theory predicts no difference between conditions in this experiment - or due to a cost involved in spreading attention over a larger area of visual space - this theory predicts a replication of the initial experiment's effects. 
+In this experiment, the program presented 8 streams on each trial. Prior to the onset of a trial, participants saw a circular array of hashmarks for 250ms, as in  @goodbourn_pseudoextinction, this was followed by a blank screen for 500ms, a fixation point for 1000ms and then the RSVP streams. The possible position of the cue on a trial was indicated by white rings around either two or eight streams. These mimicked the position of the streams in the first experiment's conditions. This experiment tests whether any differences between the two or eight streams conditions are due to increasing interference that scales with the number of streams - this theory predicts no difference between conditions in this experiment - or due to a cost involved in spreading attention over a larger area of visual space - this theory predicts a replication of the initial experiment's effects. 
 
 ##Latency Analyses
 
@@ -628,4 +629,11 @@ if(savePlots){
 ```
 
 ##Summary
-We replicated the effect of the number of streams on latency, but not precision, in this experiment. The delayed latency in the eight-precue condition relative to the two-precue condition cannot be because of crowding-like interference due to the number of streams displayed because the number of streams is constant across conditions. What changes is the number of potential cue positions, and thus the number of streams that must be monitored. Our latency results are then consistent with the idea that monitoring several locations for a target is taxing for the visual system and either the detection of the target or the selection of items contingent on the target lag because of this.  
+We replicated the effect of the number of streams on latency but not precision in this experiment. The delayed latency in the eight-precue condition relative to the two-precue condition cannot be because of crowding-like interference due to the number of streams displayed because the number of streams is constant across conditions. What changes is the number of potential cue positions, and thus the number of streams that must be monitored. Our latency results are then consistent with the idea that monitoring several locations for a target is taxing for the visual system and either the detection of the target or the selection of items contingent on the target lag because of this. 
+
+```{r}
+twovEightStreamsCrossExp <- ttestBF(preCueLatency$twoStreams, nStreamLatency$eightStreams, paired = F)
+twovEightStreamsCrossExp
+```
+
+@palmer_set-size_1994 argues that pre-cueing components of a visual array while holding the stimuli constant gives a measure of attentional contributions to an effect. The results of our pre-cue experiment thus suggest that the latency effect is due to an attentional effect. One candidate is a cost associated with monitoring multiple stream locations. In @hogendoorn_timing_2010 (and Huang & Pashler, which I haven't yet read), the authors distinguish between attention's ability to optimise - i.e. speed up - processing at attended sites and its ability to select features and bind them into an object. Precuing a stimulus manipulates monitoring - processing of the cue should be sped up. However a bayesian t-test of the difference in latencies between experiments in the two streams conditions yields only weak evidence, and this evidence is in favour of the null (`r twovEightStreamsCrossExp %>% .@bayesFactor %>% .$bf %>% exp %>% round(2)`).
