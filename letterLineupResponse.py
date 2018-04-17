@@ -63,7 +63,9 @@ def drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,bothSides,l
         if leftRightCentral == 0:
             lightnessLR = (1,dimRGB) #lightness on left and right sides
         elif leftRightCentral ==1:
-            lightnessLR = (dimRGB,1) 
+            lightnessLR = (dimRGB,1)
+        elif leftRightCentral ==2:
+            lightnessLR = (dimRGB,1)
         drawArray(myWin,bgColor,possibleResps,horizVert, xOffset*-1, lightnessLR[0],drawBoundingBox)
         drawArray(myWin,bgColor,possibleResps,horizVert, xOffset, lightnessLR[1],drawBoundingBox)
     else: #only draw one side

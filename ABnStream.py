@@ -1193,7 +1193,6 @@ else: #not staircase
         lineupResponse = True
         myWin.setMouseVisible(True)
         if lineupResponse:
-            
             if len(whichStreamEachResp) != thisTrial['numRespsWanted']:
                 print("len(whichStreamEachResp) does not match numRespsWanted")
             sideFirstLeftRightCentral = random.randint(0,2)
@@ -1202,13 +1201,12 @@ else: #not staircase
                 if numRings==1 and  streamsPerRing == 2:
                     showBothSides = False
                     sideFirstLeftRightCentral= not whichStreamEachResp[0]  #have to flip it because 0 means East, right       # thisTrial['targetLeftRightIfOne']
-            else: #numRespsWanted >1
+            elif thisTrial['numRespsWanted'] > 1:
                 if numRings==1 and streamsPerRing >=2:
                     showBothSides = True
-                    sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
+                    #sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
                 else: #numStreams must be greater than 2. Probably only want to do lineup for 1. As stopgap measure, can put the lineup centrally on every trial
                     showBothSides = False
-            print('SIDEFIRSTLEFTRIGHTCENTRAL = ',sideFirstLeftRightCentral) #debugON
             print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral) #debugON
             alphabet = list(string.ascii_uppercase)
             possibleResps = alphabet 
