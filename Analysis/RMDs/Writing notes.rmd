@@ -1,0 +1,20 @@
+---
+author: "Charlie Ludowici"
+date: "5/18/2017"
+output: html_document
+bibliography: Bibtex/nStreams Bayesian.bib
+csl: Bibtex/apa.csl
+---
+
+##Writing notes
+* One explanation of the gaussian non-guessing dist might be that participants start selecting items from the cued stream prior to the onset of the cue because they learned its timing. The 8 streams condition is evidence against this claim, because it would require participants to distribute attention across 8 positions and select multiple, non-simultaneous items from all those streams. This is too big a task for the visual system, given the costs associated with distributing attention over multiple positions (G&H as well as many many other studies) and the memory demand imposed by such a task. This strategy would cause a drop in efficacy as participants failed to select the right stream or forgot the stimuli. We find no evidence for an efficacy drop in our task
+
+##Structure
+
+* Research program: How does the visual system select items in time?
+* Literature review
+    * Attention Shifts
+        * Carrasco review, Nakayama and Mackeben, Muller and Rabbit etc
+* Goodbourn and Holcombe review
+* Discussion of attention shift account
+* Experiment question: What is the capacity of the buffer and what happens when it is exceeded

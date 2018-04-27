@@ -125,6 +125,7 @@ $(document).ready(function () {
 </div>
 
 
+<p>How does the visual system select events in time? To answer this question, <span class="citation">Goodbourn &amp; Holcombe (2015)</span> presented participants with 2 RSVP streams in which either one or two simultaneous items were cued for a report. Each response participants gave was mapped to a particular point in time relative to the cued item on the relevant trial and the resulting distribution of serial position errors (SPEs) were analysed. Before discussing their results it is worth considering the sort of distribution we might expect if items are selected using at attention shift to the cue. The cue was a white circle with a rapid onset, exactly the sort of stimulus we would expect to elicit an exogenous attention shift <span class="citation">(Carrasco, 2011; Müller &amp; Rabbitt, 1989; Nakayama &amp; Mackeben, 1989)</span>. All RSVP distributions will contain trials where participants guessed because they did not detect the cue. These trials will contribute a uniform component to the distribution. If participants select items from the cued stream using an attention shift, the SPE distribution will have a positively skewed component as well. This component represents those responses that were not guesses, but were informed by the cue. An attention shift is an entirely post-stimulus effect. It will not trigger until the cue is detected. Thus, we expect the non-guessing component to not include any responses from at the cue or before.</p>
 <pre><code>## 
 ##  Paired t-test
 ## 
@@ -193,13 +194,30 @@ $(document).ready(function () {
 <div id="summary" class="section level2">
 <h2>Summary</h2>
 <p>We replicated the effect of the number of streams on latency but not precision in this experiment. The delayed latency in the eight-precue condition relative to the two-precue condition cannot be because of crowding-like interference due to the number of streams displayed because the number of streams is constant across conditions. What changes is the number of potential cue positions, and thus the number of streams that must be monitored. Our latency results are then consistent with the idea that monitoring several locations for a target is taxing for the visual system and either the detection of the target or the selection of items contingent on the target lag because of this.</p>
-<p><span class="citation">Palmer (1994)</span> argues that pre-cueing components of a visual array while holding the stimuli constant gives a measure of attentional contributions to an effect. The results of our pre-cue experiment thus suggest that the latency effect is due to an attentional effect. One candidate is a cost associated with monitoring multiple stream locations. In <span class="citation">Hogendoorn, Carlson, Vanrullen, &amp; Verstraten (2010)</span> (and Huang &amp; Pashler, which I haven’t yet read), the authors distinguish between attention’s ability to optimise - i.e. speed up - processing at attended sites and its ability to select features and bind them into an object. Precuing a stimulus manipulates monitoring - processing of the cue should be sped up. However a bayesian t-test of the difference in latencies between experiments in the two streams conditions yields ambiguous evidence (0.82)</p>
+<pre><code>## Bayes factor analysis
+## --------------
+## [1] Alt., r=0.707 : 0.3893135 ±0%
+## 
+## Against denominator:
+##   Null, mu1-mu2 = 0 
+## ---
+## Bayes factor type: BFindepSample, JZS</code></pre>
+<p><span class="citation">Palmer (1994)</span> argues that pre-cueing components of a visual array while holding the stimuli constant gives a measure of attentional contributions to an effect. The results of our pre-cue experiment thus suggest that the latency effect is due to an attentional effect. One candidate is a cost associated with monitoring multiple stream locations. In <span class="citation">Hogendoorn, Carlson, Vanrullen, &amp; Verstraten (2010)</span> (and Huang &amp; Pashler, which I haven’t yet read), the authors distinguish between attention’s ability to optimise - i.e. speed up - processing at attended sites and its ability to select features and bind them into an object. Precuing a stimulus manipulates monitoring - processing of the cue should be sped up. However a bayesian t-test of the difference in latencies between experiments in the two streams conditions yields only weak evidence, and this evidence is in favour of the null (0.39).</p>
 <div id="refs" class="references">
+<div id="ref-carrasco_visual_2011">
+<p>Carrasco, M. (2011). Visual attention: The past 25 years. <em>Vision Research</em>, <em>51</em>(13), 1484–1525. <a href="https://doi.org/10.1016/j.visres.2011.04.012" class="uri">https://doi.org/10.1016/j.visres.2011.04.012</a></p>
+</div>
 <div id="ref-goodbourn_pseudoextinction">
 <p>Goodbourn, P. T., &amp; Holcombe, A. O. (2015). “Pseudoextinction”: Asymmetries in simultaneous attentional selection. <em>Journal of Experimental Psychology: Human Perception and Performance</em>, <em>41</em>(2), 364. Retrieved from <a href="http://psycnet.apa.org/journals/xhp/41/2/364/" class="uri">http://psycnet.apa.org/journals/xhp/41/2/364/</a></p>
 </div>
 <div id="ref-hogendoorn_timing_2010">
 <p>Hogendoorn, H., Carlson, T. A., Vanrullen, R., &amp; Verstraten, F. A. (2010). Timing divided attention. <em>Attention, Perception, &amp; Psychophysics</em>, <em>72</em>(8), 2059–2068.</p>
+</div>
+<div id="ref-muller_reflexive_1989">
+<p>Müller, H. J., &amp; Rabbitt, P. M. (1989). Reflexive and voluntary orienting of visual attention: Time course of activation and resistance to interruption. <em>Journal of Experimental Psychology: Human Perception and Performance</em>, <em>15</em>(2), 315. Retrieved from <a href="http://psycnet.apa.org/journals/xhp/15/2/315/" class="uri">http://psycnet.apa.org/journals/xhp/15/2/315/</a></p>
+</div>
+<div id="ref-nakayama_sustained_1989">
+<p>Nakayama, K., &amp; Mackeben, M. (1989). Sustained and transient components of focal visual attention. <em>Vision Research</em>, <em>29</em>(11), 1631–1647. Retrieved from <a href="http://www.sciencedirect.com/science/article/pii/0042698989901442" class="uri">http://www.sciencedirect.com/science/article/pii/0042698989901442</a></p>
 </div>
 <div id="ref-palmer_set-size_1994">
 <p>Palmer, J. (1994). Set-size effects in visual search: The effect of attention is independent of the stimulus for simple tasks. <em>Vision Research</em>, <em>34</em>(13), 1703–1721. <a href="https://doi.org/10.1016/0042-6989(94)90128-7" class="uri">https://doi.org/10.1016/0042-6989(94)90128-7</a></p>
