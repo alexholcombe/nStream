@@ -7,14 +7,47 @@ csl: Bibtex/apa.csl
 ---
 
 ##Writing notes
-* One explanation of the gaussian non-guessing dist might be that participants start selecting items from the cued stream prior to the onset of the cue because they learned its timing. The 8 streams condition is evidence against this claim, because it would require participants to distribute attention across 8 positions and select multiple, non-simultaneous items from all those streams. This is too big a task for the visual system, given the costs associated with distributing attention over multiple positions (G&H as well as many many other studies) and the memory demand imposed by such a task. This strategy would cause a drop in efficacy as participants failed to select the right stream or forgot the stimuli. We find no evidence for an efficacy drop in our task
+* One explanation of the Gaussian non-guessing dist might be that participants start selecting items from the cued stream prior to the onset of the cue because they learned its timing. The 8 streams condition is evidence against this claim, because it would require participants to distribute attention across 8 positions and select multiple, non-simultaneous items from all those streams. This is too big a task for the visual system, given the costs associated with distributing attention over multiple positions (G&H as well as many many other studies) and the memory demand imposed by such a task. This strategy would cause a drop in efficacy as participants failed to select the right stream or forgot the stimuli. We find no evidence for an efficacy drop in our task
+
+* Precision and eccentricity are inversely related even when the ring is within the crowding region defined by Bouma's law. This is a mystery, but perhaps the reading literature holds some clues. The perceptual span and parafoveal preview literature shows peripheral letter information extraction inconsistent with crowding
+
+* Participants can anticipate the cue. In Martini (2008) expt 1a and b, the means of the non-guessing distributions are negative with a fixed cue position in time. 
 
 ##Structure
 
+* How does the visual system select items in time?
+
+* Attention Shifts
+    * Must select an instance out of a dynamic display for report (RSVP and H&C)
+        * Not the case in visual search, but that tells us about the timing of the systems
+    * Temporal individuation (Motion-Colour binding) requires attention
+      * Must select an instance out of a dynamic display for a report
+          * Although H&C had participants respond when they percieved a particular pairing, so maybe not the same?
+      * It tells us the upper limits on the speed of the system
+      * It tells us that transients are important (H&C 2008)
+      * It tells us that exogenous (and not endogenous) attention is important. 
+      * References:
+          * Holcombe and Cavanagh (2008)
+          * Holcombe (2009): Temporal limits review (TiCS?)[@wagenmakers_practical_2007]
+    * Exogenous attention
+        * Timing, makes it seem more important for this research. More likely to yield accurate percept (WRT coincidence)
+        * Conditions
+    * Endogenous attention
+* G&H Buffer
+    * Why isn't it
+        * Fragile memory
+        * Iconic memory
+
+
 * Research program: How does the visual system select items in time?
+* Temporal binding
+    * Requires selecting an instance out of a dynamic display
+        * Why this and not binding? Martini says low level explanations (motion detection or cells coding for orentation and colour at different places in the visual field)
+    * motion-colour binding (Holcombe, 2009; Holcombe & Cavanagh, 2008)
 * Literature review
     * Attention Shifts
         * Carrasco review, Nakayama and Mackeben, Muller and Rabbit etc
 * Goodbourn and Holcombe review
 * Discussion of attention shift account
+* Buffer and attention shift account both rely on limited resources
 * Experiment question: What is the capacity of the buffer and what happens when it is exceeded
