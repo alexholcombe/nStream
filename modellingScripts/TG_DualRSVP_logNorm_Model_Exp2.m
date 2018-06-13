@@ -6,7 +6,7 @@ usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams','End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+sampleNames = {'End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
 
 itemRate = 12;
 
