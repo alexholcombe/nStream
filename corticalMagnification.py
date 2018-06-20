@@ -1,24 +1,18 @@
 from math import sqrt
 
 def corticalMagnification(stimulus, ltrHeight, cue=False):
-	#####Function and parameters from: Robert F. Dougherty, Volker M. Koch, Alyssa A. Brewer, Bernd Fischer, 
- 	#								   Jan Modersitzki, Brian A. Wandell; Visual field representations and locations of visual areas V1/2/3 
-	# 							       in human visual cortex. Journal of Vision 2003;3(10):1. doi: 10.1167/3.10.1.
-	A = 29.2 #Cortical scaling factor
-	e2 = 3.67 #degrees
-
-	####The Magnification factor is the cortical area associated with processing the stimulus
-	####Magnification Factor = A/(eccentricity+e2)
+	e2 = 2
+	####S  = (1+E/E_2)S_0
 
 	###The 2 vs 8 experiment had .9 degree letters at 3 degrees of eccentricity
 
-	###The scaling from the fovea to 3degrees is
-
-	#foveaToThree = (3+e2)/e2
-
 	###Foveated letters would have to be this large to get a ltrHeight degree high letter at 3 degrees of eccentricity
 
-	foveatedSize= (ltrHeight*e2)/(3+e2)
+	#print(str(ltrHeight))
+	#print(str(1+3./e2))
+
+	foveatedSize = float(ltrHeight)/(1.+3./e2)
+	print('Foveated size = ' + str(foveatedSize))
 
 	ltrHeight = foveatedSize #ltrHeight is now the letter height at fixation (never really happens)
 
@@ -29,13 +23,13 @@ def corticalMagnification(stimulus, ltrHeight, cue=False):
 
 	#stimulusMagnification = A/(stimulusEccentricity+e2)
 
-	scaling = (stimulusEccentricity+e2)/e2 #Scaled from foveated size.
+	scaledSize = (1+stimulusEccentricity/e2)*foveatedSize #Scaled from foveated size.
 
 	if not cue:
-		stimulus.height = ltrHeight*scaling
+		stimulus.height = scaledSize
 		stimulus.text = stimulus.text #Speeds up draw(), see http://www.psychopy.org/api/visual/textstim.html
-	else:
-		stimulus.radius = ltrHeight*scaling
+	else: #If it's a circle cue
+		stimulus.radius = scaledSize
 
 	#print('Eccentricity: ' + str(stimulusEccentricity))
 	#print('Height: ', str(stimulus.height))
@@ -55,7 +49,7 @@ if __name__ == '__main__':
 	testStimuli = list()
 	sizes = list()
 
-	ltrHeight = 1
+	ltrHeight = 3
 
 	for ecc in xrange(11):
 		stimulus = testStimulus()
