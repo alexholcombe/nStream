@@ -51,7 +51,7 @@ def drawArray(myWin,bgColor,possibleResps,horizVert,constCoord,lightness,drawBou
 
 def drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,bothSides,leftRightCentral):
     '''If bothSides, draw array on both sides, with one side dimmed
-    If leftRight=0, collect response from left side, and draw other side dim. Otherwise if =1, from right side.
+    If leftRight=0, collect response from left side, and draw other side dim. If =1, from right side. 2= central array.
     possibleResps is usually an array of all the letters to populate the array with.
     xOffset is offset of center of response array relative to center of screen, in norm units
     '''
@@ -63,7 +63,9 @@ def drawResponseArrays(myWin,bgColor,horizVert,xOffset,possibleResps,bothSides,l
         if leftRightCentral == 0:
             lightnessLR = (1,dimRGB) #lightness on left and right sides
         elif leftRightCentral ==1:
-            lightnessLR = (dimRGB,1) 
+            lightnessLR = (dimRGB,1)
+        elif leftRightCentral ==2:
+            lightnessLR = (dimRGB,1)
         drawArray(myWin,bgColor,possibleResps,horizVert, xOffset*-1, lightnessLR[0],drawBoundingBox)
         drawArray(myWin,bgColor,possibleResps,horizVert, xOffset, lightnessLR[1],drawBoundingBox)
     else: #only draw one side
