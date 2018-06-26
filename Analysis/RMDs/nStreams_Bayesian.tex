@@ -294,11 +294,18 @@ the cue is detected. Thus, we expect the non-guessing component to not
 include any responses from before the cue and to have positive skew. To
 model this, we use the log-normal distribution as the non-guessing
 distribution. The log-normal is a positively-skewed distribution that is
-only defined for values greater than 0.\footnote{My initial reasoning
-  was that our items would be too brief for the correct item to be
-  selected by an attention shift, but I no longer think this is the
-  case. The lognormal might not be the best distribution for our
-  purposes here.}
+only defined for values greater than 0.\footnote{Update: My initial
+  reasoning was that our items would be too brief for the correct item
+  to be selected by an attention shift, but I no longer think this is
+  the case. The lognormal might not be the best distribution for our
+  purposes here.} This distribution thus has the skew and domain
+associated with an attention shift.
+
+We fit both these models and compared them using Bayes factors. Each
+participant produced a distribution of SPEs in each condition and we fit
+the models to each of these distributions. We computed Bayes factors
+from the Bayesian Information Criterion for each model fit (Wagenmakers,
+2007). These Bayes factors are used to select the best fitting model.
 
 \section{Methods}\label{methods}
 
@@ -591,6 +598,12 @@ Sperling, G. (1960). The information available in brief visual
 presentations. \emph{Psychological Monographs: General and Applied},
 \emph{74}(11), 1. Retrieved from
 \url{http://psycnet.apa.org/journals/mon/74/11/1/}
+
+\hypertarget{ref-wagenmakers_practical_2007}{}
+Wagenmakers, E.-J. (2007). A practical solution to the pervasive
+problems ofp values. \emph{Psychonomic Bulletin \& Review},
+\emph{14}(5), 779--804.
+doi:\href{https://doi.org/10.3758/BF03194105}{10.3758/BF03194105}
 
 
 \end{document}

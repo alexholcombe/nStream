@@ -133,7 +133,7 @@ This article is about temporal processing, so it is worth describing the tempora
 ```{r attentionShift, echo = FALSE, fig.cap="\\label{attentionShift:figs}The predicted distribution of times for an attention shift."}
 attentionShiftExample <- data.frame(
   x = (-200):500,
-  y = dlnorm(x = (-200):500, meanlog = 5, sdlog = .5)
+  y = dlnorm(x = (-200):500, meanlog = 4, sdlog = 1)
 )
 
 ggplot(attentionShiftExample, aes(x=x,y=y))+

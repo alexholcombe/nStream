@@ -302,7 +302,8 @@ precisionScatter <- ggplot(nStreamPrecision, aes(x=twoStreams, y=eightStreams, c
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
   annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
-  geom_abline(intercept = 0, slope = 1,linetype='dashed')
+  geom_abline(intercept = 0, slope = 1,linetype='dashed')+
+  labs(title = 'Precision (ms)', x = 'Two Streams', y = 'Eight Streams')
 
 show(precisionScatter)
 
@@ -353,6 +354,9 @@ posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delt
 posteriorModeEfficacy <- optimize(function(delta) posterior(tEfficacy, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
 
+efficacyHorizSE <- horizErrorBars(nStreamEfficacy, 'twoStreams')
+efficacyVertSE <- vertErrorBars(nStreamEfficacy, 'eightStreams')
+
 efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
@@ -364,7 +368,9 @@ efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
 efficacyScatter <- ggplot(nStreamEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
   geom_point(size = 4, colour = '#FCAD68')+
   lims(x=c(0,1), y=c(0,1))+
-  labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
+  labs(title='Efficacy Estimates [1 - P(Guess)]', x = 'Two Streams', y='Eight Streams')+
+  geom_errorbarh(data = efficacyHorizSE, aes(x=x, xmin=xmin, xmax = xmax, y=y),inherit.aes = F, height=.02)+
+  geom_errorbar(data=efficacyVertSE, aes(x=x, ymin=ymin,ymax=ymax, y=y), inherit.aes = F, width = .02)+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=.8, y=.45, label = paste0('BF10 = ', round(BF10,2)))+
   annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
