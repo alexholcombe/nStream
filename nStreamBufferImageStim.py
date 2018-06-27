@@ -493,7 +493,23 @@ for cueN in xrange(maxNumRespsWanted):
 ltrHeight = .9 #This is the cortically-scaled height at 3 degrees of eccentricity. This is what we used in 2vs8
 cueOffsets = [3,7,11.5]
 edgeRadii = [1.3, 1.95, 2.8] #.1E + .5ltrheight + .5
-scaledLtrHeights = [1.0, 1.5997001499250376, 2.2743628185907045]
+scaledLtrHeights = list()
+for thisEccentricity in cueOffsets:
+	dummyStimulus = streamText = visual.TextStim(
+                myWin,
+                pos=(0,thisEccentricity),
+                colorSpace='rgb', 
+                font = font, 
+                color=letterColor,
+                alignHoriz='center',
+                alignVert='center',
+                units='deg',
+                text = 'X',
+                autoLog=autoLogging)
+	dummySize = corticalMagnification.corticalMagnification(dummyStimulus, ltrHeight, cue = False, sizeOut = True)
+	scaledLtrHeights.append(dummySize)
+print('scaledLtrHeights')
+print(scaledLtrHeights)
 boumaRadii = [cueOffsets[i]*.5+.5*scaledLtrHeights[i]+1 for i in range(3)]
 maxStreams = max(nStreamsPossibilities)
 
@@ -550,7 +566,8 @@ for stream in xrange(nextLargestMultiple):
         streamText = corticalMagnification.corticalMagnification( #Scale the height (and thus the width for a monospaced font like Sloan) based on cortical magnification estimate. This function returns the stimulus, not its size
             stimulus = streamText,
             ltrHeight = ltrHeight,
-            cue = False)
+            cue = False,
+            sizeOut = False)
         #print('For stream %(streamN)d and letter %(letter)s the height is %(height)s' % {'streamN':stream, 'letter':letter, 'height':streamText.height})
         thisStream.append(streamText)
 
@@ -819,7 +836,7 @@ def doRSVPStim(trial):
                 if cueThisFrame and cueType == 'exogenousRing':
                     cue.setPos( thisPos )
                     if trial['crowded'] == 'Yes':
-                        cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True) #this is the cuesize from the original experiment
+                        cue = corticalMagnification.corticalMagnification(cue, 0.9810000000000002, cue = True, sizeOut = False) #this is the cuesize from the original experiment
                     elif trial['crowded'] == 'Edge-to-Edge':
                         cue.radius = edgeRadii[ring]
                     elif trial['crowded'] == 'Bouma':

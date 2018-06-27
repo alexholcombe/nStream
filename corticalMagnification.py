@@ -1,7 +1,13 @@
 from math import sqrt
 
-def corticalMagnification(stimulus, ltrHeight, cue=False):
-	e2 = 2
+def corticalMagnification(stimulus, ltrHeight, cue=False, sizeOut = False):
+	'''
+	stimulus is stimulus object
+	ltrHeight is height at 3 deg eccentricity (size and eccentricity of 2v8 study)
+	cue if stimulus is ring cue
+	sizeOut if you want function to return the size , otherwise the function returns a stimulus object
+	'''
+	e2 = 2.
 	####S  = (1+E/E_2)S_0
 
 	###The 2 vs 8 experiment had .9 degree letters at 3 degrees of eccentricity
@@ -11,19 +17,16 @@ def corticalMagnification(stimulus, ltrHeight, cue=False):
 	#print(str(ltrHeight))
 	#print(str(1+3./e2))
 
+	stimulusEccentricity = float(sqrt(stimulus.pos[0]**2 + stimulus.pos[1]**2)) #Eccentricity
+
 	foveatedSize = float(ltrHeight)/(1.+3./e2)
-	print('Foveated size = ' + str(foveatedSize))
 
 	ltrHeight = foveatedSize #ltrHeight is now the letter height at fixation (never really happens)
 
-	#baseMagnification = A/(e2) #when E = 0
-
-	stimulusEccentricity = sqrt(stimulus.pos[0]**2 + stimulus.pos[1]**2) #Eccentricity
-
-
-	#stimulusMagnification = A/(stimulusEccentricity+e2)
 
 	scaledSize = (1+stimulusEccentricity/e2)*foveatedSize #Scaled from foveated size.
+
+	scaledSize = round(scaledSize,2)
 
 	if not cue:
 		stimulus.height = scaledSize
@@ -35,8 +38,10 @@ def corticalMagnification(stimulus, ltrHeight, cue=False):
 	#print('Height: ', str(stimulus.height))
 	#print('Scaling factor: ' + str(scaling))
 	#print('Stimulus height: ' + str(stimulus.height))
-
-	return stimulus
+	if sizeOut:
+		return scaledSize
+	else:
+		return stimulus
 
 if __name__ == '__main__':
 	###Some tests
@@ -49,7 +54,7 @@ if __name__ == '__main__':
 	testStimuli = list()
 	sizes = list()
 
-	ltrHeight = 3
+	ltrHeight = .9
 
 	for ecc in xrange(11):
 		stimulus = testStimulus()
