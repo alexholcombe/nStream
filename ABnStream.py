@@ -345,14 +345,16 @@ def roundToNearestY(x,y): #round x to nearest y, e.g. rounding 65 to nearest 30 
 #For the dual-stream simultaneous target
 stimListDualStream=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
-tasks=['T1','T1T2','allCued','oneCued']
-numResponsesWanted=1; maxNumRespsWanted=1
+tasks=['T1','T1T2','T1T2T3','allCued','oneCued']
+numResponsesWanted=1; maxNumRespsWanted=2
 numRings = 1 # 3
-streamsPerRingPossibilities = np.array([2,8]) #this needs to be listed here so when print header can work out the maximum value
+streamsPerRingPossibilities = np.array([3]) #this needs to be listed here so when print header can work out the maximum value
 for streamsPerRing in streamsPerRingPossibilities:
-    for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
+    for task in [ tasks[1] ]:  #T1 task is just for the single-target tasks, but both streams are presented
        if task=='T1T2':
             numResponsesWanted=2; numToCue=-999
+       elif task=='T1T2T3':
+            numResponsesWanted=3; numToCue=3
        elif task=='allCued':
             numToCue = streamsPerRing
        elif task=='oneCued':
@@ -372,6 +374,7 @@ for streamsPerRing in streamsPerRingPossibilities:
 #                #round baseAngle to the nearest multiple of 360/max(streamsPerRingPossibilities)
 #                anglesMustBeMultipleOf = 360/max(streamsPerRingPossibilities)
 #                baseAngleCWfromEast = roundToNearestY(baseAngleCWfromEast, anglesMustBeMultipleOf)
+            #Don't even try to counterbalance response order in Jen's experiment, because 3 possible first values for 3 targets and 6 orders and also two for two targets
             stimListDualStream.append(         
                  {'numRings':numRings, 'streamsPerRing':streamsPerRing, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
                     'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue,
@@ -379,7 +382,7 @@ for streamsPerRing in streamsPerRingPossibilities:
               )  #cue1lag = 0, meaning simultaneous targets
 
 trialsPerConditionDualStream = 2
-trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
+trials = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -398,7 +401,7 @@ def numberToLetter(number): #0 = A, 25 = Z
 
 def letterToNumber(letter): #A = 0, Z = 25
     #if it's not really a letter, return -999
-    #HOW CAN I GENERICALLY TEST FOR LENGTH. EVEN IN CASE OF A NUMBER THAT' SNOT PART OF AN ARRAY?
+    #HOW CAN I GENERICALLY TEST FOR LENGTH. EVEN IN CASE OF A NUMBER THAT'S NOT PART OF AN ARRAY?
     alpha = [i for i in string.ascii_uppercase]
     alpha.remove('C')
     alpha.remove('W')
@@ -654,15 +657,15 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
     
     #set up which temporal positions are cued
     cuesTemporalPos = [] #will contain the positions of all the cues (targets)
-    if task=='T1T2': #AB
+    if task =='T1': #target on only one side will be task 'T1' so only one cue
+        numTargets = 1
+        cuesTemporalPos.append(trial['cue0temporalPos'])
+    elif task=='T1T2': #AB
         cuesTemporalPos.append(trial['cue0temporalPos'])
         cuesTemporalPos.append(trial['cue0temporalPos']+thisTrial['cue1lag'])
         numTargets = 2
-    elif task =='T1': #target on only one side will be task 'T1' so only one cue
-        numTargets = 1
-        cuesTemporalPos.append(trial['cue0temporalPos'])
-    else: #generic task
-        numTargets = trial['numToCue']  #numToCue is global variable
+    else: #generic task, assume cues are all simultaneous
+        numTargets = trial['numToCue']  
         for streami in xrange(trial['numToCue']):
             cuesTemporalPos.append(trial['cue0temporalPos']) #all cues at the same time
           
@@ -704,7 +707,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         else: 
             print("UNEXPECTED targetLeftRightIfOne value!")
     elif trial['task'] =='T1T2': #attentional blink
-        if streamsPerRing==1 and numRings==1:
+        if streamsPerRing==1 and numRings==1:  
             corrAnsEachResp.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   )
             whichStreamEachCue.append(0)
             whichStreamEachResp.append(0)
@@ -717,6 +720,7 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
                 print("WARNING: Expected only 2 temporal positions for cues with T1T2 task, but have ", len(cuesTemporalPos))
             cues[0].setPos([0,0])
             cues[1].setPos([0,0])
+            print('whichStreamEachCue=',whichStreamEachCue)
         elif numRings==1 and streamsPerRing==2:  #2 streams with targets in different streams
             print("ERROR: Not set up for 2-stream AB currently, but seems like that's what you are asking for")
             #stream=1
@@ -725,6 +729,21 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
             #cues[1].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0)  )
             whichRespEachCue.append(0)
             whichRespEachCue.append(1)
+        elif trial['task'] =='T1T2' and streamsPerRing==3:  #HUMBY HONOURS, add T1T2T3 next
+            corrAnsEachResp.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   )
+            whichStreamEachCue.append(0)
+            whichStreamEachCue.append(1)
+            whichStreamEachResp.append(0)
+            whichStreamEachResp.append(1)
+            whichRespEachCue.append(0)
+            whichRespEachCue.append(1)
+            corrAnsEachResp.append( np.array( streamLtrSequences[0][cuesTemporalPos[0]] )   )
+            corrAnsEachResp.append( np.array( streamLtrSequences[1][cuesTemporalPos[1]] )   ) #I don't know whether streamLtrSequences[1] means what I want it to mean, the second stream
+            if len(cuesTemporalPos) > 1:
+                print("WARNING: Expected only 1 temporal position for cues with T1T2T3 task, but have ", len(cuesTemporalPos))
+            cues[0].setPos([0,0])
+            cues[1].setPos([1,0])
+            print('whichStreamEachCue=',whichStreamEachCue)
     else: #assume all len(cuesTemporalPos) streams cued at same time, with numRespsWanted to be reported, in random order.
         #For instance, if numRespsWanted = 1, then a random one is queried.
         if len(set(cuesTemporalPos)) > 1:
@@ -856,6 +875,8 @@ def do_RSVP_stim(numRings,streamsPerRing, trial, proportnNoise,trialN):
         respPromptStim.setText('Which letter was circled?',log=False)
     elif task=='T1T2':
         respPromptStim.setText('Which two letters were circled?',log=False)
+    elif task=='T1T2T3':
+        respPromptStim.setText('Which three letters were circled?',log=False)
     else: respPromptStim.setText('Error: unexpected task',log=False)
     postCueNumBlobsAway=-999 #doesn't apply to non-tracking and click tracking task
     return streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  
@@ -1147,34 +1168,16 @@ if doStaircase:
 else: #not staircase
     noisePercent = defaultNoiseLevel
     
-    ABfirst = False
     nDone =0
     totalTrials = 0
-    if ABfirst and trialsAB != None:
-        msg='Starting AB part of experiment'
-        trials = trialsAB
-        totalTrials += trialsAB.nTotal
-        logging.info(msg); print(msg)
-    else:
-        msg = "Starting dual stream part of experiment"
-        trials = trialsDualStream
-        logging.info(msg); print(msg)
-        totalTrials += trialsDualStream.nTotal
+
+    msg = "Starting dual stream part of experiment"
+    logging.info(msg); print(msg)
+    totalTrials = trials.nTotal
     
     while nDone < totalTrials and expStop==False:
         print("nDone = ", nDone, " out of ", totalTrials, " trials.nRemaining = ", trials.nRemaining)
 
-        #Control which block we are in, AB or dualStream
-        if trials.nRemaining == 0:  # trialsAB.nTotal:
-            if trials == trialsAB:  #check if reached end of the AB part
-                trials = trialsDualStream
-                msg = "Starting dual stream part of experiment"
-                logging.info(msg); print(msg)
-            elif trials == trialsDualStream: #check if reached end of dual stream part
-                trials = trialsAB
-                msg='Starting AB part of experiment'
-                logging.info(msg); print(msg)
-        #end control of which block we are in 
         if eyetracking: 
             tracker.startEyeTracking(nDone,True,widthPix,heightPix) #start recording with eyetracker
         
@@ -1192,19 +1195,19 @@ else: #not staircase
         if lineupResponse:
             if len(whichStreamEachResp) != thisTrial['numRespsWanted']:
                 print("len(whichStreamEachResp) does not match numRespsWanted")
-            sideFirstLeftRightCentral=2 #default , respond to central
+            sideFirstLeftRightCentral = random.randint(0,2)
             showBothSides=False
             if thisTrial['numRespsWanted'] == 1:
                 if numRings==1 and  streamsPerRing == 2:
                     showBothSides = False
                     sideFirstLeftRightCentral= not whichStreamEachResp[0]  #have to flip it because 0 means East, right       # thisTrial['targetLeftRightIfOne']
-            else: #numRespsWanted >1
-                if numRings==1 and streamsPerRing ==2:
+            elif thisTrial['numRespsWanted'] > 1:
+                if numRings==1 and streamsPerRing >=2:
                     showBothSides = True
-                    sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
+                    #sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
                 else: #numStreams must be greater than 2. Probably only want to do lineup for 1. As stopgap measure, can put the lineup centrally on every trial
                     showBothSides = False
-            #print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral)
+            print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral) #debugON
             alphabet = list(string.ascii_uppercase)
             possibleResps = alphabet 
             possibleResps.remove('C'); possibleResps.remove('W')
@@ -1246,9 +1249,10 @@ else: #not staircase
             numTrialsApproxCorrect += eachApproxCorrect.all()
 
             if thisTrial['task']=="T1T2":
-                numTrialseachRespCorrect += eachRespCorrect
+                print('numTrialsEachRespCorrect=',numTrialsEachRespCorrect) #debugON
+                numTrialsEachRespCorrect += eachRespCorrect
                 numTrialsEachApproxCorrect += eachApproxCorrect
-                if numStreams==1:
+                if cuesTemporalPos[0] != cuesTemporalPos[1]: #targets are not simultaneous
                         cue2lagIdx = list(possibleCue2lags).index(cue2lag)
                         nTrialsCorrectT2eachLag[cue2lagIdx] += eachRespCorrect[1]
                         nTrialsApproxCorrectT2eachLag[cue2lagIdx] += eachApproxCorrect[1]
