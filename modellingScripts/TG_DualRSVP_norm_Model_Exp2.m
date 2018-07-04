@@ -8,8 +8,7 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-%sampleNames = {'SONA/twoStreams','SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
-sampleNames = {'SONA/18Streams/twoStreams', 'SONA/18Streams/eighteenStreams'};
+sampleNames = {'SONA/twoStreams'}; %,'SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
 itemRates = [12,12];
 
 letterArray = char(65:90);      % A to Z
@@ -73,7 +72,7 @@ for thisSample = 1:nSamples
     
     splitName = strsplit(sampleNames{thisSample},'/');
     folder = splitName{1};
-    group = splitName{3};
+    group = splitName{2};
     
     % Load data
     cd(dataDirectory);
