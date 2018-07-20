@@ -3,10 +3,9 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     global xDomain;
     global pseudo_uniform;
 
-    %[p mu sigma]
-    
-    mu = log(mu);
-    sigma = log(sigma);
+    [p mu sigma]
+
+    x = x - mu;
 
 %     fprintf('line 8\n')
     pseudo_normal = lognpdf(xDomain, mu, sigma).*pseudo_uniform;
@@ -42,11 +41,16 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     else
         tempResult = normResult+uniResult';
     end
+
+
+    if any(isnan(tempResult))
+    	tempResult(find(isnan(tempResult))) = 0; %replace NaNs with 0
+    end
 %     fprintf('tempResult')
 %     disp(tempResult)
     
     %xIndex = x-min(xDomain)+1;
     %results = tempResult(xIndex);
-    result = tempResult;
+    result = tempResult
 
 end
