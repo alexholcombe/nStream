@@ -5,8 +5,6 @@ clear all;
 addpath('~/gitcode/nStream/modellingScripts/')
 addpath('~/gitcode/nStream/modellingScripts/Model recovery')
 
-% Set options
-options = statset('MaxIter', fitMaxIter, 'MaxFunEvals', fitMaxFunEvals, 'Display', 'off');
 
 allcombs = @allcomb;
 
@@ -22,6 +20,9 @@ pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
 fitMaxFunEvals = 10^5;
+
+% Set options
+options = statset('MaxIter', fitMaxIter, 'MaxFunEvals', fitMaxFunEvals, 'Display', 'off');
 
 
 global xDomain;
@@ -110,7 +111,7 @@ for participant = participants
                             sigmaGuess = rand;
                         end
                         parameterGuess = [pGuess muGuess sigmaGuess];
-                        parameterLowerBound = [0 -1.1 0]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
+                        parameterLowerBound = [0 -1.1 10^-8]; %might have to replace the mu bound with small nonzero number. Not clear if bounds are open or not. Sigma cannot be 1 or less
                         parameterUpperBound = [1 2 3];
 
                         [currentEstimatesCombined, currentCIsCombined] = mle(theseErrors, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
