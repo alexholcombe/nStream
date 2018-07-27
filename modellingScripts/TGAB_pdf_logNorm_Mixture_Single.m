@@ -5,10 +5,11 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
 
     [p mu sigma]
 
-    x = x - mu;
+    x = x + exp(mu-sigma^2); %Shift the distribution by the mode
+    shiftedXDomain = xDomain + exp(mu-sigma^2)
 
 %     fprintf('line 8\n')
-    pseudo_normal = lognpdf(xDomain, mu, sigma).*pseudo_uniform;
+    pseudo_normal = lognpdf(shiftedXDomain, mu, sigma).*pseudo_uniform;
     
     normFactor_uniform = sum(pseudo_uniform);
     normFactor_normal = sum(pseudo_normal);
@@ -22,7 +23,7 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     end
     
 %     fprintf('line 22\n')
-    uniResultTemp = interp1(xDomain, pseudo_uniform, x);
+    uniResultTemp = interp1(shiftedXDomain, pseudo_uniform, x);
     normResultTemp = lognpdf(x, mu, sigma).*uniResultTemp;
 %     fprintf('normResultTemp')
 %     disp(normResultTemp)
@@ -51,6 +52,13 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     
     %xIndex = x-min(xDomain)+1;
     %results = tempResult(xIndex);
-    result = tempResult
+
+    if(any(tempResult == Inf))
+        x(find(tempResult==Inf))
+        uniResultTemp(find(tempResult==Inf))
+        normResultTemp(find(tempResult==Inf))
+    end
+
+    result = tempResult;
 
 end
