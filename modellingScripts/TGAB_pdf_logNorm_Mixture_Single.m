@@ -3,10 +3,10 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     global xDomain;
     global pseudo_uniform;
 
-    [p mu sigma]
+    [p mu sigma];
 
     x = x + exp(mu-sigma^2); %Shift the distribution by the mode
-    shiftedXDomain = xDomain + exp(mu-sigma^2)
+    shiftedXDomain = xDomain + exp(mu-sigma^2);
 
 %     fprintf('line 8\n')
     pseudo_normal = lognpdf(shiftedXDomain, mu, sigma).*pseudo_uniform;
@@ -57,6 +57,13 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
         x(find(tempResult==Inf))
         uniResultTemp(find(tempResult==Inf))
         normResultTemp(find(tempResult==Inf))
+    end
+
+
+    if(any(tempResult == 0))
+        x(find(tempResult==0))
+        uniResultTemp(find(tempResult==0))
+        normResultTemp(find(tempResult==0))
     end
 
     result = tempResult;
