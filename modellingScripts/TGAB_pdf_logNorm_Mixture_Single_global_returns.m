@@ -6,11 +6,16 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     params
     
     p = params(1);
-    mu = log(params(2));
-    sigma = log(params(3));
+    mu = params(2);
+    sigma = params(3);
+
+    function [Y] = lognpdfWrapper(X, mu, sigma)
+        X = X - mu;
+        lognpdf(X, mu, sigma);
+    end
 
 %     fprintf('line 8\n')
-    pseudo_normal = lognpdf(xDomain, mu, sigma).*pseudo_uniform;
+    pseudo_normal = lognpdfWrapper(xDomain, mu, sigma).*pseudo_uniform;
     
     normFactor_uniform = sum(pseudo_uniform);
     normFactor_normal = sum(pseudo_normal);
@@ -25,7 +30,7 @@ function [result pseudo_normal normFactor_uniform normFactor_normal uniResultTem
     
 %     fprintf('line 22\n')
     uniResultTemp = interp1(xDomain, pseudo_uniform, x);
-    normResultTemp = lognpdf(x, mu, sigma).*uniResultTemp;
+    normResultTemp = lognpdfWrapper(x, mu, sigma).*uniResultTemp;
 %     fprintf('normResultTemp')
 %     disp(normResultTemp)
     

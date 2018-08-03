@@ -5,16 +5,18 @@ clear all;
 usePath = '~/gitCode/nStream/';
 dataDirectory = [usePath 'modelOutput/compiled/'];
 
-% Task parameters
-sampleNames = {'End6Strm82msSOA','Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA'
+writeFiles = 0; %if true, write files.
 
-itemRate = 12;
+% Task parameters
+sampleNames = {'SONA/twoStreams'}%,'SONA/eightStreams','Pilots/Ex8Streams82msSOA', 'Pilots/Ex6Streams115msSOA'};
+
+itemRates = [12,12,12,8.6957];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [3 3 6 4];
-nTrials = 200;
+nParticipants = [10 10];
+nTrials = 300;
 nSessions = 1;
 nSamples = numel(sampleNames);
 
@@ -24,7 +26,7 @@ nFreeParameters = 3;
 pdf_normmixture = @TGAB_pdf_logNorm_Mixture_Single; % We can use the single-episode AB model
 pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns;
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 400;
+nReplicates = 200 ;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -45,7 +47,7 @@ options = statset('MaxIter', fitMaxIter, 'MaxFunEvals', fitMaxFunEvals, 'Display
 
 % Task parameters
 nLetters = length(letterArray); % Number of possible letters
-rateFactor = 1000./itemRate;
+rateFactors = 1000./itemRates;
 
 % Build data structures
 allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
@@ -67,9 +69,14 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
+    thisSplit = split(sampleNames{thisSample}, '/');
+    folder = thisSplit{1};
+    sample = thisSplit{2};
+    [folder '/CompiledData_TGRSVP_Exp2_' sample '.mat']
+    
     % Load data
     cd(dataDirectory);
-    load(['CompiledData_TGRSVP_Exp2_' sampleNames{thisSample} '.mat']);
+    load([folder '/CompiledData_TGRSVP_Exp2_' sample '.mat']);
     
     
     
@@ -78,6 +85,8 @@ for thisSample = 1:nSamples
 
     thisNParticipants = size(compiledErrors);
     thisNParticipants = thisNParticipants(1);
+    
+    thisRateFactor = rateFactors(thisSample)
     
     % MODEL -------------------------------------------------------------------
 
@@ -174,9 +183,9 @@ for thisSample = 1:nSamples
 
         % Use mixture
 
-        allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 rateFactor rateFactor];
-        allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 rateFactor rateFactor];
-        allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 rateFactor rateFactor];
+        allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 thisRateFactor thisRateFactor];
+        allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 thisRateFactor thisRateFactor];
+        allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 thisRateFactor thisRateFactor];
         allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
         allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
 
@@ -248,9 +257,9 @@ for thisSample = 1:nSamples
 
                     % Use mixture
 
-                    allEstimates_byParticipant(thisSample,thisParticipant,:) = bestEstimatesByParticipant.*[1 rateFactor rateFactor];
-                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 rateFactor rateFactor];
-                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 rateFactor rateFactor];
+                    allEstimates_byParticipant(thisSample,thisParticipant,:) = bestEstimatesByParticipant.*[1 thisRateFactor thisRateFactor];
+                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 thisRateFactor thisRateFactor];
+                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 thisRateFactor thisRateFactor];
                     allMinNegLogLikelihoods_byParticipant(thisSample, thisParticipant) = minNegLogLikelihoodByParticipant;
                     allNTrials_byParticipant(thisSample, thisParticipant) = numel(theseErrorsByParticipant);
                     
@@ -270,67 +279,69 @@ end
 % Write the data to *.csv files for analysis in JASP
 cd([usePath 'modelOutput/CSV/']);
 
-% Accuracy
-writeFile = fopen('TGRSVP_Exp2_AccuracyLogNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+if writeFiles
+    % Accuracy
+    writeFile = fopen('TGRSVP_Exp2_AccuracyLogNorm.csv','w');  % Overwrite file
+    fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
-for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%d',thisSample); % Group
-        for thisCondition = 1:nConditions
-            for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allAccuracy_byParticipant(thisSample,thisParticipant));
+    for thisSample = 1:nSamples
+        for thisParticipant = 1:nParticipants(thisSample)
+            fprintf(writeFile,'\n%d',thisSample); % Group
+            for thisCondition = 1:nConditions
+                for thisStream = 1:nStreams
+                    fprintf(writeFile,',%.4f', allAccuracy_byParticipant(thisSample,thisParticipant));
+                end
             end
         end
     end
-end
 
-% Efficacy
-writeFile = fopen('TGRSVP_Exp2_EfficacyLogNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+    % Efficacy
+    writeFile = fopen('TGRSVP_Exp2_EfficacyLogNorm.csv','w');  % Overwrite file
+    fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
-for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%d',thisSample); % Group
-        for thisCondition = 1:nConditions
-            for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,1));
+    for thisSample = 1:nSamples
+        for thisParticipant = 1:nParticipants(thisSample)
+            fprintf(writeFile,'\n%d',thisSample); % Group
+            for thisCondition = 1:nConditions
+                for thisStream = 1:nStreams
+                    fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,1));
+                end
             end
         end
     end
-end
 
-% Latency
-writeFile = fopen('TGRSVP_Exp2_LatencyLogNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+    % Latency
+    writeFile = fopen('TGRSVP_Exp2_LatencyLogNorm.csv','w');  % Overwrite file
+    fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
-for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%d',thisSample); % Group
-        for thisCondition = 1:nConditions
-            for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,2));
+    for thisSample = 1:nSamples
+        for thisParticipant = 1:nParticipants(thisSample)
+            fprintf(writeFile,'\n%d',thisSample); % Group
+            for thisCondition = 1:nConditions
+                for thisStream = 1:nStreams
+                    fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,2));
+                end
             end
         end
     end
-end
 
-% Precision
-writeFile = fopen('TGRSVP_Exp2_PrecisionLogNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
+    % Precision
+    writeFile = fopen('TGRSVP_Exp2_PrecisionLogNorm.csv','w');  % Overwrite file
+    fprintf(writeFile,'Group,SingleLeft,SingleRight,DualLeft,DualRight'); % Header
 
-for thisSample = 1:nSamples
-    for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%d',thisSample); % Group
-        for thisCondition = 1:nConditions
-            for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
+    for thisSample = 1:nSamples
+        for thisParticipant = 1:nParticipants(thisSample)
+            fprintf(writeFile,'\n%d',thisSample); % Group
+            for thisCondition = 1:nConditions
+                for thisStream = 1:nStreams
+                    fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
+                end
             end
         end
     end
+
+    cd('../Likelihood/') %Save the likelihood information for model comparison
+
+    save('logNormalModelLikelihoodByParticipant', 'allMinNegLogLikelihoods_byParticipant', 'allNTrials_byParticipant')
+    save('logNormalModelLikelihoodCombined', 'allMinNegLogLikelihoods_Combined', 'allNTrials_Combined')
 end
-
-cd('../Likelihood/') %Save the likelihood information for model comparison
-
-save('logNormalModelLikelihoodByParticipant', 'allMinNegLogLikelihoods_byParticipant', 'allNTrials_byParticipant')
-save('logNormalModelLikelihoodCombined', 'allMinNegLogLikelihoods_Combined', 'allNTrials_Combined')
