@@ -3,9 +3,10 @@ function result = TGAB_pdf_Mixture_Single(x,p,mu,sigma)
     global xDomain;
     global pseudo_uniform;
     
+    %[p mu sigma]
    
     truncNormPDF = @truncNormFunction;
-    x_min = -.01; %Lower bound should give us results at 0
+    x_min = -.5; %set the lower bound so that one tail is cut off
 
     pseudo_normal = truncNormPDF(xDomain,mu,sigma,x_min).*pseudo_uniform;
     
@@ -22,6 +23,7 @@ function result = TGAB_pdf_Mixture_Single(x,p,mu,sigma)
     
     
     uniResultTemp = interp1(xDomain, pseudo_uniform, x);
+    truncNormPDF(x, mu, sigma, x_min);
     normResultTemp = truncNormPDF(x,mu,sigma,x_min).*uniResultTemp;
     
     uniResultTemp = uniResultTemp/normFactor_uniform;

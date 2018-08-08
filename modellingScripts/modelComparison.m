@@ -6,11 +6,11 @@ likelihoodDirectory = 'modelOutput/Likelihood/';
 addpath(usePath)
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams'};
-modelNames = {'logNormal','normal'};
+sampleNames = {'End6Strm82msSOA', 'Ex6Strm82msSOA'};
+modelNames = {'truncNormal','normal'};
 
 nSamples = numel(sampleNames);
-nParticipants = [10 10];
+nParticipants = [6 6];
 nModels = numel(modelNames);
 nParams = 3;
 

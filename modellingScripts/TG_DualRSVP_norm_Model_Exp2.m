@@ -8,13 +8,13 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'SONA/twoStreams'}; %,'SONA/eightStreams', 'Pilots/End6Strm82msSOA', 'Pilots/Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
+sampleNames = {'End6Strm82msSOA', 'Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
 itemRates = [12,12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [10 10 6 4];
+nParticipants = [6 6];
 nTrials = 360;
 nSessions = 1;
 nSamples = numel(sampleNames);
@@ -26,7 +26,7 @@ pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB m
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 200;
+nReplicates = 100;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -56,7 +56,7 @@ allEstimates_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
 allLowerBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
 allUpperBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
 allMinNegLogLikelihoods_byParticipant = NaN(nSamples,max(nParticipants));
-allNTrials_byParticipant = NaN(nSamples,max(nParticipants))
+allNTrials_byParticipant = NaN(nSamples,max(nParticipants));
 
 
 allAccuracy_Combined = NaN(nSamples);
@@ -70,13 +70,11 @@ for thisSample = 1:nSamples
     
     fprintf('MLE by Condition for %s \n', sampleNames{thisSample})
     
-    splitName = strsplit(sampleNames{thisSample},'/');
-    folder = splitName{1};
-    group = splitName{2};
+    group = sampleNames{thisSample};
     
     % Load data
     cd(dataDirectory);
-    load([folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
+    load(['/CompiledData_TGRSVP_Exp2_' group '.mat']);
     
     
     
@@ -139,13 +137,22 @@ for thisSample = 1:nSamples
     warning('off', 'stats:mlecov:NonPosDefHessian');
 
     for thisReplicate = 1:nReplicates
-        pGuess = rand;
-        muGuess = ((3*rand)-1.5);
-        sigmaGuess = 2*rand;
-        parameterGuess = [pGuess muGuess sigmaGuess];
         parameterLowerBound = [0 -4 smallNonZeroNumber];
         parameterUpperBound = [1 4 5];
+        pGuess = rand;
 
+        muGuess = abs(((3*rand)-1.5));
+        while muGuess < parameterLowerBound(2) || muGuess > parameterUpperBound(2)
+            muGuess = abs(((3*rand)-1.5));
+        end
+
+        sigmaGuess = rand;
+        while sigmaGuess < parameterLowerBound(3) || sigmaGuess > parameterUpperBound(3)
+            sigmaGuess = rand;
+        end
+        
+        parameterGuess = [pGuess muGuess sigmaGuess];
+        
         [currentEstimatesCombined, currentCIsCombined] = mle(theseErrorsCombined, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
         %[result pseudo_normal normFactor_uniform normFactor_normal uniResultTemp normResultTemp normResult uniResult] = pdf_global(theseErrors, parameterGuess);
         % Compute negative log likelihood
@@ -188,7 +195,7 @@ for thisSample = 1:nSamples
     
     % Load data
     cd(dataDirectory);
-    load( [folder '/CompiledData_TGRSVP_Exp2_' group '.mat']);
+    load( ['/CompiledData_TGRSVP_Exp2_' group '.mat']);
    
     
     

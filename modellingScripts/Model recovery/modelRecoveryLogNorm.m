@@ -8,6 +8,7 @@ addpath('~/gitcode/nStream/modellingScripts/Model recovery')
 
 allcombs = @allcomb;
 
+thisModelName = 'LogNorm';
 
 % Model fitting parameters
 
@@ -37,7 +38,7 @@ latencies = [0 1 ];
 
 precisions = [.5 1 3/2];
 
-shifts = [1];
+shifts = [0];
 
 participants = 1:10;
 
@@ -77,18 +78,18 @@ for shift = shifts
                         nonGuess = binornd(1, efficacy);
                         if nonGuess
                             thisObs = lognrnd(latency, precision,1,1);
-                            thisObs = floor(thisObs); %Take the floor because if a stream is selected/bound at any point in between two items' onsets the data will be rounded to the last onset
+                            thisObs = round(thisObs); %Take the floor because if a stream is selected/bound at any point in between two items' onsets the data will be rounded to the last onset
                             while thisObs < minSPE || thisObs > maxSPE
                                 thisObs = lognrnd(latency, precision,1,1);
-                                thisObs = floor(thisObs);
+                                thisObs = round(thisObs);
                             end
                             theseErrors(trial) = thisObs-shift;
                         else %if not nonguess
                             thisObs = (maxSPE-minSPE+1).*rand(1,1)+minSPE;
-                            thisObs = floor(thisObs);
+                            thisObs = round(thisObs);
                             while thisObs < minSPE || thisObs > maxSPE
                                 thisObs = (maxSPE-minSPE+1).*rand(1,1)+minSPE;
-                                thisObs = floor(thisObs);
+                                thisObs = round(thisObs);
                             end
                             theseErrors(trial) = thisObs;
                         end
@@ -151,23 +152,24 @@ for shift = shifts
                             estimatesAndTruthLowerBounds(thisRow,6:8) = bestEstimateCIsCombined(1,:);
                             estimatesAndTruthUpperBounds(thisRow,6:8) = bestEstimateCIsCombined(2,:);
                         end
-                        estimatesAndTruth(thisRow,6:8)
-                        [heights, locations] = hist(theseErrors);
+                    estimatesAndTruth(thisRow,6:8)
+                    [heights, locations] = hist(theseErrors);
                     width = locations(2)-locations(1);
                     heights = heights / (trialN*width);
                     bar(locations,heights,'hist')
                     grid = linspace(min(theseErrors),max(theseErrors));
+                    xPos = max(theseErrors)-.25*(max(theseErrors)-min(theseErrors));
                     if h==0
-                        text(max(theseErrors)-2, max(heights)*.8, 'Efficacy = 0')
+                        text(xPos, max(heights)*.8, 'Efficacy = 0')
                         line(grid, pdf_uniformonly(grid,1))
                     else
-                        text(max(theseErrors)-2, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesCombined(1))));
-                        text(max(theseErrors)-2, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesCombined(2))));
-                        text(max(theseErrors)-2, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesCombined(3))));
+                        text(xPos, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesCombined(1))));
+                        text(xPos, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesCombined(2))));
+                        text(xPos, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesCombined(3))));
                         line(grid, pdf_normmixture(grid, bestEstimatesCombined(1), bestEstimatesCombined(2), bestEstimatesCombined(3)));
                     end
                     plotFileName = strcat('plot', num2str(i),'.png');
-                    saveas(gcf,['~/gitcode/nStream/modellingScripts/Model recovery/Plots/LogNorm/' plotFileName]);
+                    saveas(gcf,['~/gitcode/nStream/modellingScripts/Model recovery/Plots/' thisModelName '/' plotFileName]);
                     i = i + 1;
                 end
             end
@@ -176,13 +178,13 @@ for shift = shifts
 end
 
 
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/' 'estimatesAndTruth.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruth' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruth)
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/' 'estimatesAndTruthLowerBound.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruthLowerBound' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruthLowerBounds)
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/' 'estimatesAndTruthUpperBound.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruthUpperBound' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruthUpperBounds)
 
 
-SimDatafname = ['~/gitcode/nStream/modellingScripts/Model recovery/' 'SimulatedData.csv'];
+SimDatafname = ['~/gitcode/nStream/modellingScripts/Model recovery/SimulatedData/' thisModelName '/SimulatedData' thisModelName '.csv'];
 csvwrite(SimDatafname, simulatedData)
