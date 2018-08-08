@@ -15,7 +15,7 @@ saveCSV = T
 
 dataPath <- 'rawData/'
 
-groups <- c('2vs8','End6Strm82msSOA','Ex6Strm82msSOA')
+groups <- c('End6Strm82msSOA','Ex6Strm82msSOA')
 
 if(!'plots' %in% list.dirs(full.names=F)) dir.create('plots')
 
@@ -170,7 +170,7 @@ for(group in names(dataSets)){
 	      ###########################################################################################################
 	      
 	      tempKludged <- temp[21:nrow(temp),]
-	      
+	      print(paste0('wrangledData/',group,'/',participant,'.txt'))
 	      if(group=='2vs8'){
 	      	twoStreams <- tempKludged[tempKludged$streamsPerRing==2,]
 	      	eightStreams <- tempKludged[tempKludged$streamsPerRing==8,]
@@ -180,14 +180,15 @@ for(group in names(dataSets)){
 	     	 }
 	      } else {
 	      	if(saveCSV){
-	      		write.table(twoStreams, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-	        	write.table(eightStreams, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+	      		write.table(tempKludged, paste0('wrangledData/',group,'/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
 	      	}
 	      }
 	      
+	      if(group == '2vs8'){
+	        dataSets[[group]][[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
+	        dataSets[[group]][[participant]][[dateString]][['skew']] <- tempSkewTotal   
+	      }
 	      
-	      dataSets[[group]][[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
-	      dataSets[[group]][[participant]][[dateString]][['skew']] <- tempSkewTotal 
 	  	}
     }
 }
