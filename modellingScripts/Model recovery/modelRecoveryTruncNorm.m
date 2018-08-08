@@ -4,10 +4,11 @@ clear all;
 
 addpath('~/gitcode/nStream/modellingScripts/')
 addpath('~/gitcode/nStream/modellingScripts/Model recovery')
-addpath('~/gitcode/nStream/modellingScripts/TRUNCATED_NORMAL')
 
 truncNormInvCDF = @truncated_normal_a_cdf_inv; %for inverse transform sampling
 allcombs = @allcomb;
+
+thisModelName = 'TruncNorm';
 
 
 % Model fitting parameters
@@ -33,11 +34,11 @@ global pseudo_uniform;
 %ground truth parameters
 rate = 1000./12;
 
-efficacies = [0 .5 .9];
+efficacies = [0 .5 1];
 
-latencies = [0 1];
+latencies = [1 1.5];
 
-precisions = [50 70 100]./rate;
+precisions = [50 70 90]./rate;
 
 participants = 1:10;
 
@@ -158,17 +159,18 @@ for participant = participants
                     heights = heights / (trialN*width);
                     bar(locations,heights,'hist')
                     grid = linspace(min(theseErrors),max(theseErrors));
+                    xPos = max(theseErrors)-.25*(max(theseErrors)-min(theseErrors));
                     if h==0
-                        text(max(theseErrors)-2, max(heights)*.8, 'Efficacy = 0')
+                        text(xPos, max(heights)*.8, 'Efficacy = 0')
                         line(grid, pdf_uniformonly(grid,1))
                     else
-                        text(max(theseErrors)-2, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesCombined(1))));
-                        text(max(theseErrors)-2, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesCombined(2))));
-                        text(max(theseErrors)-2, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesCombined(3))));
+                        text(xPos, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesCombined(1))));
+                        text(xPos, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesCombined(2))));
+                        text(xPos, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesCombined(3))));
                         line(grid, pdf_normmixture(grid, bestEstimatesCombined(1), bestEstimatesCombined(2), bestEstimatesCombined(3)));
                     end
                     plotFileName = strcat('plot', num2str(i),'.png');
-                    saveas(gcf,['~/gitcode/nStream/modellingScripts/Model recovery/Plots/TruncNorm/' plotFileName]);
+                    saveas(gcf,['~/gitcode/nStream/modellingScripts/Model recovery/Plots/' thisModelName '/' plotFileName]);
                     i = i + 1;
             end
         end
@@ -176,13 +178,13 @@ for participant = participants
 end
 
 
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/' 'estimatesAndTruthTruncNorm.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruth' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruth)
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/' 'estimatesAndTruthLowerBoundTruncNorm.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruthLowerBound' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruthLowerBounds)
-EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/' 'estimatesAndTruthUpperBoundTruncNorm.csv'];
+EandTfname = ['~/gitcode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/' thisModelName '/estimatesAndTruthUpperBound' thisModelName '.csv'];
 csvwrite(EandTfname, estimatesAndTruthUpperBounds)
 
 
-SimDatafname = ['~/gitcode/nStream/modellingScripts/Model recovery/SimulatedData/TruncNorm/' 'SimulatedDataTruncNorm.csv'];
+SimDatafname = ['~/gitcode/nStream/modellingScripts/Model recovery/SimulatedData/' thisModelName '/SimulatedData' thisModelName '.csv'];
 csvwrite(SimDatafname, simulatedData)
