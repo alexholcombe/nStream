@@ -69,7 +69,7 @@ for thisGroup = 1:nGroups
 
         thisFileName = allFiles{thisFile};
         participant = strsplit(thisFileName,'.');
-        participant = participant{1};
+        participant = participant{1}
         allParticipants{thisFile} = participant;
 
     end
