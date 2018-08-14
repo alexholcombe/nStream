@@ -1,10 +1,10 @@
 library(ggplot2)
 rm(list = ls())
-paramEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
-paramLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
-paramUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
+TNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
+TNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
+TNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
 
-colnames(paramEstimates) <-  c(
+colnames(TNParamEstimates) <-  c(
   'Participant',
   'NonGuessingRate',
   'Mean',
@@ -14,7 +14,7 @@ colnames(paramEstimates) <-  c(
   'Precision'
 )
 
-colnames(paramLowerCI) <-  c(
+colnames(TNParamLowerCI) <-  c(
   'Participant',
   'NonGuessingRate',
   'Mean',
@@ -24,7 +24,7 @@ colnames(paramLowerCI) <-  c(
   'PrecisionLower'
 )
 
-colnames(paramUpperCI) <-  c(
+colnames(TNParamUpperCI) <-  c(
   'Participant',
   'NonGuessingRate',
   'Mean',
@@ -34,45 +34,206 @@ colnames(paramUpperCI) <-  c(
   'PrecisionUpper'
 )
 
-CIs <- cbind(paramLowerCI[,1:7], paramUpperCI[,5:7])
+TNCIs <- cbind(TNParamLowerCI[,1:7], TNParamUpperCI[,5:7])
 
 
 
-cor.test(paramEstimates$NonGuessingRate, paramEstimates$Efficacy)
+cor.test(TNParamEstimates$NonGuessingRate, TNParamEstimates$Efficacy)
 
-ggplot(paramEstimates, aes(NonGuessingRate,Efficacy))+
+ggplot(TNParamEstimates, aes(NonGuessingRate,Efficacy))+
   geom_point(colour = '#628093')+
-  geom_errorbar(data=CIs, aes(NonGuessingRate, ymin = EfficacyLower, ymax=EfficacyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  geom_errorbar(data=TNCIs, aes(NonGuessingRate, ymin = EfficacyLower, ymax=EfficacyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
   stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
   stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
-  scale_x_continuous(breaks = unique(paramEstimates$NonGuessingRate))+
-  scale_y_continuous(breaks = unique(paramEstimates$NonGuessingRate))+
-  geom_hline(yintercept = unique(paramEstimates$NonGuessingRate), linetype = 'dashed', alpha = .3)+
+  scale_x_continuous(breaks = unique(TNParamEstimates$NonGuessingRate))+
+  scale_y_continuous(breaks = unique(TNParamEstimates$NonGuessingRate))+
+  geom_hline(yintercept = unique(TNParamEstimates$NonGuessingRate), linetype = 'dashed', alpha = .3)+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 
 
-cor.test(paramEstimates$Mean, paramEstimates$Latency)
+cor.test(TNParamEstimates$Mean, TNParamEstimates$Latency)
 
-ggplot(paramEstimates, aes(Mean,Latency))+
+ggplot(TNParamEstimates, aes(Mean,Latency))+
   geom_point(colour = '#628093')+
-  geom_errorbar(data=CIs, aes(Mean, ymin = LatencyLower, ymax=LatencyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  geom_errorbar(data=TNCIs, aes(Mean, ymin = LatencyLower, ymax=LatencyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
   stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
   stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
-  scale_x_continuous(breaks = unique(paramEstimates$Mean))+
-  scale_y_continuous(breaks = c(2:3, unique(paramEstimates$Mean)))+
-  geom_hline(yintercept = unique(paramEstimates$Mean), linetype = 'dashed', alpha = .3)+
+  scale_x_continuous(breaks = unique(TNParamEstimates$Mean))+
+  scale_y_continuous(breaks = c(2:3, unique(TNParamEstimates$Mean)))+
+  geom_hline(yintercept = unique(TNParamEstimates$Mean), linetype = 'dashed', alpha = .3)+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 
 
-cor.test(paramEstimates$SD, paramEstimates$Precision)
+cor.test(TNParamEstimates$SD, TNParamEstimates$Precision)
 
-ggplot(paramEstimates, aes(SD,Precision))+
+ggplot(TNParamEstimates, aes(SD,Precision))+
   geom_point(colour = '#628093')+
-  geom_errorbar(data=CIs, aes(SD, ymin = PrecisionLower, ymax=PrecisionUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  geom_errorbar(data=TNCIs, aes(SD, ymin = PrecisionLower, ymax=PrecisionUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
   stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
   stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
-  scale_x_continuous(breaks = unique(paramEstimates$SD))+
-  scale_y_continuous(breaks = c(2:3, unique(paramEstimates$SD)))+
-  geom_hline(yintercept = unique(paramEstimates$SD), linetype = 'dashed')+
+  scale_x_continuous(breaks = unique(TNParamEstimates$SD))+
+  scale_y_continuous(breaks = c(2:3, unique(TNParamEstimates$SD)))+
+  geom_hline(yintercept = unique(TNParamEstimates$SD), linetype = 'dashed')+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+LNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLogNorm.csv', header = F)
+LNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLowerBoundLogNorm.csv', header = F)
+LNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthUpperBoundLogNorm.csv', header = F)
+
+colnames(LNParamEstimates) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'Shift',
+  'Efficacy',
+  'Latency',
+  'Precision'
+)
+
+LNParamEstimates$Latency <- LNParamEstimates$Latency/(1000/12)
+LNParamEstimates$Precision <- LNParamEstimates$Precision/(1000/12)
+
+colnames(LNParamLowerCI) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'Shift',
+  'EfficacyLower',
+  'LatencyLower',
+  'PrecisionLower'
+)
+
+colnames(LNParamUpperCI) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'Shift',
+  'EfficacyUpper',
+  'LatencyUpper',
+  'PrecisionUpper'
+)
+
+LNCIs <- cbind(LNParamLowerCI[,1:8], LNParamUpperCI[,6:8])
+
+
+
+cor.test(LNParamEstimates$NonGuessingRate, LNParamEstimates$Efficacy)
+
+ggplot(LNParamEstimates, aes(NonGuessingRate,Efficacy))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=LNCIs, aes(NonGuessingRate, ymin = EfficacyLower, ymax=EfficacyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(LNParamEstimates$NonGuessingRate))+
+  scale_y_continuous(breaks = unique(LNParamEstimates$NonGuessingRate))+
+  geom_hline(yintercept = unique(LNParamEstimates$NonGuessingRate), linetype = 'dashed', alpha = .3)+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+
+cor.test(LNParamEstimates$Mean, LNParamEstimates$Latency)
+
+ggplot(LNParamEstimates, aes(Mean,Latency))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=LNCIs, aes(Mean, ymin = LatencyLower, ymax=LatencyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(LNParamEstimates$Mean))+
+  scale_y_continuous(breaks = c(2:3, unique(LNParamEstimates$Mean)))+
+  geom_hline(yintercept = unique(LNParamEstimates$Mean), linetype = 'dashed', alpha = .3)+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+
+cor.test(LNParamEstimates$SD, LNParamEstimates$Precision)
+
+ggplot(LNParamEstimates, aes(SD,Precision))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=LNCIs, aes(SD, ymin = PrecisionLower, ymax=PrecisionUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(LNParamEstimates$SD))+
+  scale_y_continuous(breaks = c(2:3, unique(LNParamEstimates$SD)))+
+  geom_hline(yintercept = unique(LNParamEstimates$SD), linetype = 'dashed')+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+NParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthNormNorm.csv', header = F)
+NParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthLowerBoundNormNorm.csv', header = F)
+NParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthUpperBoundNormNorm.csv', header = F)
+
+colnames(NParamEstimates) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'Efficacy',
+  'Latency',
+  'Precision'
+)
+
+#NParamEstimates$Latency <- NParamEstimates$Latency/(1000/12)
+#NParamEstimates$Precision <- NParamEstimates$Precision/(1000/12)
+
+colnames(NParamLowerCI) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'EfficacyLower',
+  'LatencyLower',
+  'PrecisionLower'
+)
+
+colnames(NParamUpperCI) <-  c(
+  'Participant',
+  'NonGuessingRate',
+  'Mean',
+  'SD',
+  'EfficacyUpper',
+  'LatencyUpper',
+  'PrecisionUpper'
+)
+
+NCIs <- cbind(NParamLowerCI[,1:7], NParamUpperCI[,5:7])
+
+
+
+cor.test(NParamEstimates$NonGuessingRate, NParamEstimates$Efficacy)
+
+ggplot(NParamEstimates, aes(NonGuessingRate,Efficacy))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=NCIs, aes(NonGuessingRate, ymin = EfficacyLower, ymax=EfficacyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(NParamEstimates$NonGuessingRate))+
+  scale_y_continuous(breaks = unique(NParamEstimates$NonGuessingRate))+
+  geom_hline(yintercept = unique(NParamEstimates$NonGuessingRate), linetype = 'dashed', alpha = .3)+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+
+cor.test(NParamEstimates$Mean, NParamEstimates$Latency)
+
+ggplot(NParamEstimates, aes(Mean,Latency))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=NCIs, aes(Mean, ymin = LatencyLower, ymax=LatencyUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(NParamEstimates$Mean))+
+  scale_y_continuous(breaks = c(2:3, unique(NParamEstimates$Mean)))+
+  geom_hline(yintercept = unique(NParamEstimates$Mean), linetype = 'dashed', alpha = .3)+
+  theme(panel.background = element_blank(),axis.line = element_line(size = .5))
+
+
+cor.test(NParamEstimates$SD, NParamEstimates$Precision)
+
+ggplot(NParamEstimates, aes(SD,Precision))+
+  geom_point(colour = '#628093')+
+  geom_errorbar(data=NCIs, aes(SD, ymin = PrecisionLower, ymax=PrecisionUpper),alpha = .2, width = .15,  inherit.aes = F, colour = '#628093')+
+  stat_summary(fun.y = 'mean', geom='point', size = 4, colour = '#dca951')+
+  stat_summary(fun.data = 'mean_se', geom = 'errorbar', width = .2, colour = '#dca951')+
+  scale_x_continuous(breaks = unique(NParamEstimates$SD))+
+  scale_y_continuous(breaks = unique(NParamEstimates$SD))+
+  geom_hline(yintercept = unique(NParamEstimates$SD), linetype = 'dashed')+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 
