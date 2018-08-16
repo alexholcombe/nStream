@@ -36,7 +36,7 @@ if(plots){
 
 ringNames <- c('one','two','three')
 
-files <- list.files(pattern = '^[A-Z][A-Z]_.*\\.txt$', path = dataPath, full.names = T)
+files <- list.files(pattern = '^[A-Z][A-Z].*\\.txt$', path = dataPath, full.names = T)
 print(files)
 #removed split files
 #splitFiles <- grep('rawData/IK4_04May2017_14-35.txt|rawData/IK42_04May2017_15-06.txt|rawData/LT5_04May2017_15-52.txt|rawData/LT52_04May2017_16-21.txt', files)
@@ -81,6 +81,9 @@ IDs <- character()
 for(dataset in files){
   ID <- strsplit(dataset, '(?<=a)/|_(?=[0-9])', perl=T)[[1]][2]
   print(ID)
+  if(strsplit(ID,'')[[1]][nchar(ID)]=='2'){
+    ID <- paste0(strsplit(ID,'')[[1]][1:2],collapse = '')
+  }
   IDs <- c(IDs, ID)
   #Some date formatting
   dateString <- strsplit(strsplit(dataset, '_(?=[0-9])', perl=T)[[1]][2],'')[[1]]
@@ -219,10 +222,10 @@ if(saveAllErrorsTSV){
 #plus or minus one SPE for kim
 #kim <- aggregate(error~ID, data = allErrors[allErrors$condition=='crowded',], FUN = function(x) length(which(x>=-1 & x<=1))/length(x))
 
-totalPlot <- ggplot(allErrors, aes(x=error))+
+totalPlot <- ggplot(allErrors, aes(x=SPE))+
   geom_histogram(binwidth = 1)+
   labs(y = 'Count', x = 'Serial Position Error')+
-  facet_wrap(~ID+condition+ring, nrow = 3)+
+  facet_wrap(~ID+crowded+ring, nrow = 3)+
   geom_vline(xintercept = 0, linetype = 'dashed')
 
 show(totalPlot)

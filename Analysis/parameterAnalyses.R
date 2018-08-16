@@ -128,6 +128,8 @@ for(name in names(latencyInclusionBFs)){
   latencyInclusionBFs[name] <- thisInclusionBF
 }
 
+print(latencyInclusionBFs)
+
 ggplot(params, aes(x=crowded, y = latency))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
@@ -148,6 +150,8 @@ for(name in names(precisionInclusionBFs)){
   thisInclusionBF <- inclusionBF(precisionPriorProbs, name)
   precisionInclusionBFs[name] <- thisInclusionBF
 }
+
+print(precisionInclusionBFs)
 
 ggplot(params, aes(x=crowded, y = precision))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
