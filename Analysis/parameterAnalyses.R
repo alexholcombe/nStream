@@ -51,34 +51,81 @@ params <- expand.grid(
   ID = factor(unique(allErrors$ID)),
   crowded = factor(unique(allErrors$crowded)),
   ring = factor(unique(allErrors$ring)),
-  efficacy = numeric(1),
-  latency = numeric(1),
-  precision = numeric(1),
+  efficacy = 999,
+  latency = 999,
+  precision = 999,
+  val = 999,
+  valGuessing = 999,
+  pLRtest = 999,
   stringsAsFactors = F
 )
-if(!file.exists('modelOutput/parameterEstimates.csv')){
+
+nReps <- 1
+
+bounds <- parameterBounds()
+
+bounds['precision','upper'] <- 3
+
+nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
+
+if(nParamFiles==0){
   for(thisParticipant in unique(allErrors$ID)){
     for(thisCondition in unique(allErrors$crowded)){
       for(thisRing in unique(allErrors$ring)){
-        theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, parameterBounds(), 100)
+        theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
+        
+        if(theseParams$pLRtest<.05){
+          params %<>%
+            mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$efficacy)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(latency=replace(latency, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$latency)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(precision=replace(precision, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$precision)) %>%
+            as.data.frame()
+        } else {
+          params %<>%
+            mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, 0)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(latency=replace(latency, ID == thisParticipant & crowded == thisCondition & ring == thisRing, NaN)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(precision=replace(precision, ID == thisParticipant & crowded == thisCondition & ring == thisRing, NaN)) %>%
+            as.data.frame()
+        }
         
         params %<>%
-          mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$efficacy)) %>%
+          mutate(precision=replace(val, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$val)) %>%
           as.data.frame()
         
         params %<>%
-          mutate(latency=replace(latency, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$latency)) %>%
+          mutate(precision=replace(valGuessing, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$valGuessing)) %>%
           as.data.frame()
         
         params %<>%
-          mutate(precision=replace(precision, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$precision)) %>%
+          mutate(precision=replace(pLRtest, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$pLRtest)) %>%
           as.data.frame()
       }
     }
   }
-  write.csv(params, 'modelOutput/parameterEstimates.csv')
+  write.csv(params, paste0('modelOutput/parameterEstimates',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'))
 } else {
-  params <- read.csv('modelOutput/parameterEstimates.csv')
+  paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
+  
+  splits <- strsplit(paramFiles, 'Estimates|(?<=[0-9][0-9])_|\\.csv',perl = T) #split out the date stamps from the param files names
+  
+  theseDates <- lapply(splits,FUN =function(x) paste(x[2],x[3])) %>% 
+    unlist %>% 
+    as.POSIXct(.,format='%d-%m-%Y %H-%M-%S') #Format them as POSIXct (datetime) 
+  
+  whichMaxDate <- which(theseDates == max(theseDates)) #which is the oldest?
+  params <- read.csv(paramFiles[whichMaxDate]) #load the oldest
 }
 
 params$ring %<>% as.factor
