@@ -1,0 +1,374 @@
+---
+title: "nStreams Analysis"
+author: "Charlie Ludowici"
+date: "5/18/2017"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(reshape2)
+library(papaja)
+library(truncnorm)
+theme_set(theme_apa(base_size = 15) ) 
+
+savePlots <- T
+
+posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
+                      priorMean=0,priorSD=1) {
+        N = ifelse(is.null(N2), N1, N1*N2/(N1+N2))
+        df  = ifelse(is.null(N2), N1 - 1, N1 + N2 - 2)
+        
+        #prior and likelihood
+        #prior <- function(delta) dnorm(delta, priorMean, priorSD)*as.integer(delta >= lo)*as.integer(delta <= hi) 
+        prior <- function(delta) dcauchy(delta, priorMean, priorSD)*as.integer(delta >= lo)*as.integer(delta <= hi) 
+        K=1/integrate(prior,lower=lo,upper=hi)[[1]]
+        f=function(delta) K*prior(delta)
+        
+        #(The as.integer bits above just provide bounds for the prior if you want them)
+      
+        likelihood <- function(delta) dt(t, df, delta*sqrt(N))
+        
+        #marginal likelihood
+        marginal <- integrate(function(x) f(x)*likelihood(x), lo, hi)[[1]]
+        
+        #posterior
+        post <- function(x) f(x)*likelihood(x) / marginal
+        return(post(delta))
+}
+
+
+```
+
+```{r message=FALSE}
+
+null = 0
+
+groups <- c('Endogenous','Exogenous')
+
+latencyTN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
+
+precisionTN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
+
+efficacyTN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
+
+latencyN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+
+precisionN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
+
+efficacyN <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
+
+allErrors <- read.csv('allErrors.csv', stringsAsFactors = F)
+allErrors$subject <- gsub(' ','',allErrors$subject) #Why does python include a space after the ID?
+allErrors <- allErrors[allErrors$subject!='AH',]
+
+IDs <- unique(allErrors$subject)
+
+BFs <- read.csv('../modelOutput/BF_ByParticipant.csv')
+
+BFs$preferedModel <- ifelse(BFs$BF>3,'Buffering',ifelse(BFs$BF<.3,'Attention','Neither'))
+
+```
+
+```{r}
+#Show trunc model fits
+
+for(participant in IDs){
+  for(group in groups){
+    
+    theseErrors <- allErrors[allErrors$subject==participant & allErrors$condition == group,]
+    
+    x = seq(min(theseErrors$responsePosRelative0),max(theseErrors$responsePosRelative0),.01)
+    meanTN <- latencyTN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    sdTN <- precisionTN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    meanN <- latencyN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    sdN <- precisionN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    a = meanTN - sdTN
+    if(a<0){
+      a = 0
+    }
+    densTN <- dtruncnorm(x = x, a = a, b = Inf, mean = meanTN, sd = sdTN)
+    densN <- dnorm(x = x, mean = meanN, sd = sdN)
+    prefAttnModel <- BFs %>% filter(., Participant == participant & Group == group) %>% pull(preferedModel) == 'Attention'
+    prefNeither <- BFs %>% filter(., Participant == participant & Group == group) %>% pull(preferedModel) == 'Neither'
+    
+    if(!prefNeither){
+      colours <- c('green','red') #index this for plot colour. colours[1] is normal density colour. Green model is prefered
+      if(prefAttnModel){
+        colours <- rev(colours)
+      }
+    } else {
+      colours = c('red','red')
+    }
+    
+    thisData <- data.frame(x = x, norm = densN , Tnorm = densTN )
+    
+    show(ggplot(thisData, aes(x=x))+
+      geom_line(aes(y = norm), colour = colours[1])+
+      geom_line(aes(y=Tnorm), colour = colours[2])+
+      geom_histogram(data = theseErrors, aes(x=responsePosRelative0, y=..density..), binwidth = 1, alpha=.5)+
+      labs(title = paste0(participant,', ', group)))
+  }
+}
+```
+
+#Latency Analyses
+
+```{r warning=FALSE}
+latencyForPlot <- melt(latency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+latencyForPlot$Participant <- ordered(rep(1:10, times = 2))
+
+t  <- tLatency
+N1 <- 10
+N2 <- 10
+
+priorMean = null
+priorSD = sqrt(.5)
+
+#examples of BF via savage-dickey ratio
+#2-sided
+BF10 = dcauchy(null,priorMean,priorSD) / posterior(tLatency, N1, delta=null,
+                                              priorMean=priorMean,priorSD=priorSD)
+
+#one-sided BF
+BFplus = ( 2 * dcauchy(null,priorMean,priorSD) ) / posterior(tLatency, N1, delta=null, lo=0,
+                                            priorMean=priorMean,priorSD=priorSD)
+
+BF10
+BFplus
+
+delta  <- seq(-2, 4, .01)
+
+posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta, priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+
+posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
+#This would only work for normal, we use Cauchy!
+#credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
+#credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
+
+
+latencyPlot <- ggplot(latencyForPlot,aes(x=Condition, y=Estimate))+
+  geom_violin()+
+  geom_line(aes(group=Participant, colour=Participant))+
+  geom_point(aes(colour=Participant), size = 3)+
+  scale_colour_brewer(palette = 'Spectral')+
+  labs(x='Condition',y='Estimate (ms)',title='Latency')+
+  theme(plot.title = element_text(hjust=.5))
+
+show(latencyPlot)
+
+
+latencyScatter <- ggplot(latency, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, aes(colour=ordered(1:10)))+
+  scale_color_brewer(palette='Spectral', name='Participant')+
+  lims(x=c(20,120), y=c(20,120))+
+  labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
+  theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = 100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
+  geom_abline(intercept = 0, slope = 1,linetype='dashed')
+
+show(latencyScatter)
+
+
+
+latencyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+  geom_line(aes(y=posterior, linetype = 'Posterior'))+
+  geom_line(aes(y=prior, linetype = 'Prior'))+
+  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
+  labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
+```
+
+#Precision Analysis
+
+```{r warning=FALSE}
+precisionForPlot <- melt(precision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
+precisionForPlot$Participant <- ordered(rep(1:10, times = 2))
+
+
+frequentistTestPrecision <- t.test(x = precision$eightStreams, y = precision$twoStreams, paired = T)
+tPrecision <- frequentistTestPrecision$statistic[[1]]
+
+t  <- tPrecision
+N1 <- 10
+N2 <- 10
+
+priorMean =0
+priorSD = sqrt(.5)
+
+#examples of BF via savage-dickey ratio
+#2-sided
+BF10 = dcauchy(0,priorMean,priorSD) / posterior(tPrecision, N1, delta=0,
+                                              priorMean=priorMean,priorSD=priorSD)
+
+#one-sided BF
+BFplus = ( 2 * dcauchy(0,priorMean,priorSD) ) / posterior(tPrecision, N1, delta=0, lo=0,
+                                            priorMean=priorMean,priorSD=priorSD)
+
+BF10
+BFplus
+
+delta  <- seq(-4, 2, .01)
+
+posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
+posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
+                                                                       priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+
+posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
+
+precisionPlot <- ggplot(precisionForPlot,aes(x=Condition, y=Estimate))+
+  geom_violin()+
+  geom_line(aes(group=Participant, colour=Participant))+
+  geom_point(aes(colour=Participant),alpha=.8, size = 3)+
+  scale_colour_brewer(palette = 'Spectral')+
+  labs(x='Condition',y='Estimate (ms)',title='Precision')+
+  theme(plot.title = element_text(hjust=.5))
+
+show(precisionPlot)
+
+
+
+precisionScatter <- ggplot(precision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+  geom_point(size = 4)+
+  scale_color_brewer(palette='Spectral', name='Participant')+
+  lims(x=c(40,100), y=c(40,100))+
+  labs(title='Precision Estimates (ms)')+
+  theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
+  geom_abline(intercept = 0, slope = 1,linetype='dashed')
+
+show(precisionScatter)
+
+precisionBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+  geom_line(aes(y=posterior, linetype = 'Posterior'))+
+  geom_line(aes(y=prior, linetype = 'Prior'))+
+  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
+  labs(x = expression(delta), y='Density', title = 'Precision Effect Size')
+
+
+```
+
+#Efficacy Analysis
+
+```{r warning=FALSE}
+frequentistTestEfficacy <- t.test(x = efficacy$eightStreams, y = efficacy$twoStreams, paired = T)
+tEfficacy <- frequentistTestEfficacy$statistic[[1]]
+
+efficacyForPlot <- melt(efficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
+efficacyForPlot$Participant <- ordered(rep(1:10, times = 2))
+
+t  <- tEfficacy
+N1 <- 10
+N2 <- 10
+
+priorMean =0
+priorSD = sqrt(.5)
+
+#examples of BF via savage-dickey ratio
+#2-sided
+BF10 = dcauchy(0,priorMean,priorSD) / posterior(tEfficacy, N1, delta=0,
+                                              priorMean=priorMean,priorSD=priorSD)
+
+#one-sided BF
+BFplus = ( 2 * dcauchy(0,priorMean,priorSD) ) / posterior(tEfficacy, N1, delta=0, lo=0,
+                                            priorMean=priorMean,priorSD=priorSD)
+
+BF10
+BFplus
+
+delta  <- seq(-2, 4, .01)
+
+posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
+                                                                       priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+
+posteriorModeEfficacy <- optimize(function(delta) posterior(tEfficacy, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
+
+efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
+  geom_violin()+
+  geom_line(aes(group=Participant, colour=Participant))+
+  geom_point(aes(colour = Participant), size = 3)+
+  labs(x='Condition',y='Estimate',title='Efficacy')+
+  theme(plot.title = element_text(hjust=.5))+
+  scale_colour_brewer(palette = 'Spectral')
+
+show(efficacyPlot)
+
+
+efficacyScatter <- ggplot(efficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+  geom_point(size = 4)+
+  scale_color_brewer(palette='Spectral', name='Participant')+
+  lims(x=c(0,1), y=c(0,1))+
+  labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
+  theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=.8, y=.45, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
+  geom_abline(intercept = 0, slope = 1,linetype='dashed')
+
+show(efficacyScatter)
+
+efficacyBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+  geom_line(aes(y=posterior, linetype = 'Posterior'))+
+  geom_line(aes(y=prior, linetype = 'Prior'))+
+  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
+  labs(x = expression(delta), y='Density', title = 'Efficacy Effect Size')
+
+
+```
+
+```{r}
+
+efficacy$Parameter <- as.character('Efficacy')
+latency$Parameter <- as.character('Latency')
+precision$Parameter <- as.character('Precision')
+
+allParams <- rbind(efficacy,latency,precision)
+
+allParams <- melt(allParams, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
+
+paramBar <- ggplot(allParams[!allParams$Parameter=='Efficacy',], aes(x=Parameter,y=Estimate, fill = Condition))+
+  stat_summary(geom='bar', fun.y = mean, position = position_dodge(.9))+
+  stat_summary(geom='errorbar', fun.data=mean_se, position = position_dodge(.9), width = .3)+
+  scale_fill_brewer(palette = 'Spectral')
+
+paramBar
+
+predictions <- data.frame(twoStreams = rnorm(1000, latency$twoStreams[7], precision$twoStreams[7]), eightStreams = rnorm(1000, latency$eightStreams[7], precision$eightStreams[7]))
+
+predictions <- melt(predictions, measure.vars = c('twoStreams', 'eightStreams'), variable.name = 'Condition', value.name = 'response')
+
+meanLatencyTwo <- mean(latency$twoStreams)
+meanLatencyEight <- mean(latency$eightStreams)
+
+meanPrecisionTwo <- mean(precision$twoStreams)
+meanPrecisionEight <- mean(precision$eightStreams)
+
+predictionPlot <- ggplot()+
+  stat_function(data=data.frame(x=c(-400:400)/83.33), aes(x, fill = 'Eight Streams'), fun = dnorm, args = list(mean = meanLatencyEight/83.33, sd = meanPrecisionEight/83.33), geom='area', alpha = .9)+
+  stat_function(data=data.frame(x=c(-400:400)/83.33), aes(x, fill = 'Two Streams'), fun = dnorm, args = list(mean = meanLatencyTwo/83.33, sd = meanPrecisionTwo/83.33), geom='area', alpha = .9)+
+  scale_fill_manual(values=c('Two Streams' = '#628093', 'Eight Streams' = '#dca951'))+
+  scale_x_continuous(breaks = -3:4,limits = c(-3,4))+
+  labs(x='SPE', y=NULL, fill = 'Condition')
+
+predictionPlot
+
+
+if(savePlots){
+  ggsave(precisionPlot, file = 'precisionViolin.png', height=15, width=20,units='cm')
+  ggsave(latencyPlot, file = 'latencyViolin.png', height=15, width=20,units='cm')
+  ggsave(efficacyPlot, file = 'efficacyViolin.png', height=15, width=20,units='cm')
+  
+  ggsave(precisionScatter, file = 'precisionScatter.png', height=15, width=20,units='cm')
+  ggsave(latencyScatter, file = 'latencyScatter.png', height=15, width=20,units='cm')
+  ggsave(efficacyScatter, file = 'efficacyScatter.png', height=15, width=20,units='cm')
+  
+  
+  ggsave(efficacyBayesPlot, file = 'efficacyEffectSize.png', height=15, width=20,units='cm')
+  ggsave(latencyBayesPlot, file = 'latencyEffectSize.png', height=15, width=20,units='cm')
+    ggsave(precisionBayesPlot, file = 'precisionEffectSize.png', height=15, width=20,units='cm')
+}
+```

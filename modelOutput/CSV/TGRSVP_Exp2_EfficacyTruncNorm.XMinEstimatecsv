@@ -1,0 +1,13 @@
+Participant,Group,Parameter,Model,Estimate
+CL,Endogenous,Efficacy,Truncated Normal,0.6855
+EC,Endogenous,Efficacy,Truncated Normal,0.5368
+IT,Endogenous,Efficacy,Truncated Normal,0.5827
+KR,Endogenous,Efficacy,Truncated Normal,0.5077
+SH,Endogenous,Efficacy,Truncated Normal,0.3435
+WN,Endogenous,Efficacy,Truncated Normal,0.5675
+CL,Exogenous,Efficacy,Truncated Normal,0.3978
+EC,Exogenous,Efficacy,Truncated Normal,0.4158
+IT,Exogenous,Efficacy,Truncated Normal,0.6521
+KR,Exogenous,Efficacy,Truncated Normal,0.7115
+SH,Exogenous,Efficacy,Truncated Normal,0.4528
+WN,Exogenous,Efficacy,Truncated Normal,0.2838

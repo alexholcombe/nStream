@@ -1,0 +1,13 @@
+Participant,Group,Parameter,Model,Estimate
+CL,Endogenous,Latency,Truncated Normal,282.8845
+EC,Endogenous,Latency,Truncated Normal,180.4751
+IT,Endogenous,Latency,Truncated Normal,223.6860
+KR,Endogenous,Latency,Truncated Normal,329.8289
+SH,Endogenous,Latency,Truncated Normal,252.2369
+WN,Endogenous,Latency,Truncated Normal,173.9756
+CL,Exogenous,Latency,Truncated Normal,19.2129
+EC,Exogenous,Latency,Truncated Normal,46.2377
+IT,Exogenous,Latency,Truncated Normal,83.1456
+KR,Exogenous,Latency,Truncated Normal,134.4596
+SH,Exogenous,Latency,Truncated Normal,77.4878
+WN,Exogenous,Latency,Truncated Normal,22.5216

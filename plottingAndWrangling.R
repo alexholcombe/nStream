@@ -95,15 +95,15 @@ for(group in names(dataSets)){
               apatheme
             
             show(tempPlot)
-            
+            tempKludged <- temp[21:nrow(temp),]
 	          if(group != '2vs8'){
-	            plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
+	            plotByStream <- ggplot(tempKludged, aes(x=responsePosRelative0))+
 	              geom_histogram(binwidth = 1)+
 	              scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
 	              #geom_text(data=tempSkewStreams, x = 10, y=10, aes(label=paste0('skew =', round(responsePosRelative0,2))))+
 	              facet_wrap(~whichStream0)
 	          } else {
-	            plotByStream <- ggplot(temp, aes(x=responsePosRelative0))+
+	            plotByStream <- ggplot(tempKludged, aes(x=responsePosRelative0))+
 	              geom_histogram(binwidth = 1)+
 	              scale_x_continuous(breaks=seq(min(temp$responsePosRelative0), max(temp$responsePosRelative0),1))+
 	              #geom_text(data=tempSkewStreams, x = 10, y=10, aes(label=paste0('skew =', round(responsePosRelative0,2))))+
@@ -169,7 +169,7 @@ for(group in names(dataSets)){
 	      #### nTrials kludge. Dropping the first 20 ### 
 	      ###########################################################################################################
 	      
-	      tempKludged <- temp[21:nrow(temp),]
+	      
 	      print(paste0('wrangledData/',group,'/',participant,'.txt'))
 	      if(group=='2vs8'){
 	      	twoStreams <- tempKludged[tempKludged$streamsPerRing==2,]

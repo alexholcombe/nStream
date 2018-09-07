@@ -1,1 +1,13 @@
-Group,SingleLeft,SingleRight,DualLeft,DualRight,138.2094,127.8965,108.3921,106.0060,135.7925,195.2974,79.4894,66.4243,84.1290,64.8141,91.7412,65.7980
+Participant,Group,Parameter,Model,Estimate
+CL,Endogenous,Precision,Normal,127.8965
+EC,Endogenous,Precision,Normal,108.3921
+IT,Endogenous,Precision,Normal,106.0059
+KR,Endogenous,Precision,Normal,135.7925
+SH,Endogenous,Precision,Normal,195.2974
+WN,Endogenous,Precision,Normal,152.5707
+CL,Exogenous,Precision,Normal,83.5249
+EC,Exogenous,Precision,Normal,68.0430
+IT,Exogenous,Precision,Normal,79.0273
+KR,Exogenous,Precision,Normal,62.4512
+SH,Exogenous,Precision,Normal,88.5123
+WN,Exogenous,Precision,Normal,64.3546

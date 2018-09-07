@@ -1,0 +1,13 @@
+Participant,Group,Parameter,Model,Estimate
+CL,Endogenous,Precision,Truncated Normal,157.7347
+EC,Endogenous,Precision,Truncated Normal,92.5427
+IT,Endogenous,Precision,Truncated Normal,121.0071
+KR,Endogenous,Precision,Truncated Normal,137.3110
+SH,Endogenous,Precision,Truncated Normal,126.1135
+WN,Endogenous,Precision,Truncated Normal,100.1456
+CL,Exogenous,Precision,Truncated Normal,134.0636
+EC,Exogenous,Precision,Truncated Normal,61.5747
+IT,Exogenous,Precision,Truncated Normal,95.9408
+KR,Exogenous,Precision,Truncated Normal,49.0484
+SH,Exogenous,Precision,Truncated Normal,63.9254
+WN,Exogenous,Precision,Truncated Normal,41.6667
