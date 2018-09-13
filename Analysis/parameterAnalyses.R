@@ -8,6 +8,8 @@ library(BayesFactor)
 
 setwd('~/gitCode/nStream/')
 
+participantPlots = TRUE #plot histograms with density?
+
 inclusionBF <- function(priorProbs, variable){
   
   ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
@@ -60,18 +62,21 @@ params <- expand.grid(
   stringsAsFactors = F
 )
 
-nReps <- 1
+nReps <- 100
 
 bounds <- parameterBounds()
 
 bounds['precision','upper'] <- 3
 
+runAnyway <- FALSE #If TRUE, fit models regardless of the presence of a parameter file. 
+
 nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
 
-if(nParamFiles==0){
+if(nParamFiles==0 | runAnyway){
   for(thisParticipant in unique(allErrors$ID)){
     for(thisCondition in unique(allErrors$crowded)){
       for(thisRing in unique(allErrors$ring)){
+        print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition))
         theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
         
         if(theseParams$pLRtest<.05){
@@ -101,15 +106,15 @@ if(nParamFiles==0){
         }
         
         params %<>%
-          mutate(precision=replace(val, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$val)) %>%
+          mutate(val=replace(val, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$val)) %>%
           as.data.frame()
         
         params %<>%
-          mutate(precision=replace(valGuessing, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$valGuessing)) %>%
+          mutate(valGuessing=replace(valGuessing, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$valGuessing)) %>%
           as.data.frame()
         
         params %<>%
-          mutate(precision=replace(pLRtest, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$pLRtest)) %>%
+          mutate(pLRtest=replace(pLRtest, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$pLRtest)) %>%
           as.data.frame()
       }
     }
@@ -129,12 +134,14 @@ if(nParamFiles==0){
 }
 
 params$ring %<>% as.factor
+
+paramsForAnalysis <- params %>% filter(efficacy>.1 & ID != 'CH')
 #######################
 ###Efficacy Analyses###
 #######################
 
 efficacyBF <- anovaBF(efficacy ~ ring * crowded + ID, 
-                      data=params,
+                      data=paramsForAnalysis,
                       whichRandom = 'ID'
                       ) 
 
@@ -153,14 +160,14 @@ print(efficacyInclusionBFs)
 
 #Only evidence for an effect of ring
 
-ggplot(params, aes(x=crowded, y = efficacy))+
+ggplot(paramsForAnalysis, aes(x=crowded, y = efficacy))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
 
 
 latencyBF <- anovaBF(latency ~ ring * crowded + ID, 
-                      data=params,
+                      data=paramsForAnalysis,
                       whichRandom = 'ID'
 )
 
@@ -177,13 +184,13 @@ for(name in names(latencyInclusionBFs)){
 
 print(latencyInclusionBFs)
 
-ggplot(params, aes(x=crowded, y = latency))+
+ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
 
 precisionBF <- anovaBF(precision ~ ring * crowded + ID, 
-                     data=params,
+                     data=paramsForAnalysis,
                      whichRandom = 'ID'
 )
 
@@ -200,7 +207,42 @@ for(name in names(precisionInclusionBFs)){
 
 print(precisionInclusionBFs)
 
-ggplot(params, aes(x=crowded, y = precision))+
+ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+########################
+###Plots with Density###
+########################
+
+if(participantPlots){
+  for(thisParticipant in unique(allErrors$ID)){
+    for(thisCondition in unique(allErrors$crowded)){
+      for(thisRing in unique(allErrors$ring)){
+        thisEfficacy <- params %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(efficacy)
+        thisLatency <- params %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(latency)
+        thisPrecision <- thisEfficacy <- params %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(precision)
+        
+        theseErrors <- allErrors %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing)
+        print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
+        minError <- theseErrors %>% pull(SPE) %>% min
+        maxError <- theseErrors %>% pull(SPE) %>% max
+        thisRange <- seq(minError,maxError,.1)
+        
+        theseDensities <- data.frame(SPE = thisRange, density = dnorm(thisRange, thisLatency, thisPrecision))
+        if(any(is.nan(theseDensities$density))){
+          print(theseDensities)
+        }
+        
+        thisPlot <- ggplot(theseErrors, aes(x=SPE))+
+          geom_histogram(binwidth = 1)+
+          geom_line(data = theseDensities, aes(x = SPE, y=density*nrow(theseErrors)))+ #scale density to histogram with density * N * binwidth
+          scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
+          labs(y = 'Frequency')
+        
+        thisFileName <- paste0('modelOutput/Plots/',thisCondition,'/',thisRing,'/',thisParticipant,'-',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.png')
+        ggsave(filename = thisFileName, thisPlot,width = 16, height = 9)
+      }
+    }
+  }
+}

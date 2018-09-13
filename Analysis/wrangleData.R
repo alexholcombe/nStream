@@ -21,6 +21,7 @@ nRepetitions <- 1000 #number of bootstrap repetitions
 
 dataPath <- 'rawData'
 
+pracTrials <- 1:20
 
 if(plots){
   if(savePlots){
@@ -86,21 +87,13 @@ for(dataset in files){
   }
   IDs <- c(IDs, ID)
   #Some date formatting
-  dateString <- strsplit(strsplit(dataset, '_(?=[0-9])', perl=T)[[1]][2],'')[[1]]
-  print(dateString)
-  day <- paste0(dateString[1:2],collapse='')
-  month <- paste0(dateString[3:5],collapse='')
-  year <- paste0(dateString[6:9],collapse='')
-  dateString <- as.Date(paste(day,month,year, sep=':'),format='%d:%b:%Y') 
+  dateString <- paste(strsplit(dataset, '_(?=[0-9])|\\.txt', perl=T)[[1]][2:3], collapse = '_')
+  dateString <- as.POSIXct(dateString,format='%d%b%Y_%H-%M')
   
   temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
-  print(nrow(temp))
-  if(nrow(temp)==320){
-    temp <- temp[-pracTrials,]
-  } else if(nrow(temp)>320) {
-    temp <- temp[-c(pracTrials,maxTrials:nrow(temp)),]
-  }
   
+  temp <- temp[-pracTrials,]
+  print(nrow(temp))
   
   totalRows <- totalRows + nrow(temp)
   
