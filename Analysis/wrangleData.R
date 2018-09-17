@@ -85,14 +85,15 @@ for(dataset in files){
   if(strsplit(ID,'')[[1]][nchar(ID)]=='2'){
     ID <- paste0(strsplit(ID,'')[[1]][1:2],collapse = '')
   }
-  IDs <- c(IDs, ID)
+  if(!ID %in% IDs){
+    IDs <- c(IDs, ID)
+  }
   #Some date formatting
   dateString <- paste(strsplit(dataset, '_(?=[0-9])|\\.txt', perl=T)[[1]][2:3], collapse = '_')
   dateString <- as.POSIXct(dateString,format='%d%b%Y_%H-%M')
   
   temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
   
-  temp <- temp[-pracTrials,]
   print(nrow(temp))
   
   totalRows <- totalRows + nrow(temp)
@@ -102,6 +103,8 @@ for(dataset in files){
   
   dataSets[[ID]][[as.character(dateString)]][['data']] <- temp
 }
+
+totalRows <- totalRows - (length(IDs)*20) #because we'll be dropping the first 20 trials
 
 allErrors <- data.frame(
   exp = character(totalRows), 
@@ -124,6 +127,16 @@ for(participant in names(dataSets)){
           
     temp <- dataSets[[participant]][[dateString]][['data']]
     
+    timesForThisParticipant <- dataSets[[participant]] %>% names %>% as.POSIXct()
+
+    firstBlock <- as.POSIXct(dateString) == min(timesForThisParticipant) #if true, drop the first 20 trials as training
+    print(timesForThisParticipant)
+    print(dateString)
+    if(firstBlock){
+      print('firstBlock')
+      temp <- temp[-pracTrials,]
+    }
+      
     temp$responsePos <- temp$cuePos0+temp$responsePosRelative0
     
     tempSkewNStreams <- aggregate(responsePosRelative0~crowded, temp, skew)
@@ -175,8 +188,7 @@ for(participant in names(dataSets)){
     }    
     
     endRow <- startRow + nrow(temp) -1
-    print(startRow)
-    print(endRow)
+    
   
 
     allErrors$SPE[startRow:endRow] <- temp$responsePosRelative0
@@ -184,7 +196,7 @@ for(participant in names(dataSets)){
     allErrors$targetSP[startRow:endRow] <- temp$cuePos0
     
     allErrors$ID[startRow:endRow] <- participant
-    print(unique(allErrors$ID))
+    
     
     allErrors$crowded[startRow:endRow] <- temp$crowded
     

@@ -49,19 +49,6 @@ inclusionBF <- function(priorProbs, variable){
 
 allErrors <- read.table('Analysis/allErrors.txt', sep='\t', stringsAsFactors = F, header = T)
 
-params <- expand.grid(
-  ID = factor(unique(allErrors$ID)),
-  crowded = factor(unique(allErrors$crowded)),
-  ring = factor(unique(allErrors$ring)),
-  efficacy = 999,
-  latency = 999,
-  precision = 999,
-  val = 999,
-  valGuessing = 999,
-  pLRtest = 999,
-  stringsAsFactors = F
-)
-
 nReps <- 100
 
 bounds <- parameterBounds()
@@ -125,8 +112,15 @@ for(thisParticipant in notModelled){
   for(thisCondition in unique(allErrors$crowded)){
     for(thisRing in unique(allErrors$ring)){
       print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition))
-      theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
       
+      try({
+        invisible( #invisible combined with capture output hides those print 'error' statements hidden deep in mixRSVP::
+          capture.output(
+            theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
+          )
+        )
+      }, silent = T) #Doing everything I can to silence those messages
+    
       if(theseParams$pLRtest<.05){
         params %<>%
           mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$efficacy)) %>%
@@ -199,6 +193,7 @@ print(efficacyInclusionBFs)
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = efficacy))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
+  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
 
@@ -223,8 +218,10 @@ print(latencyInclusionBFs)
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
+  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+
 
 precisionBF <- anovaBF(precision ~ ring * crowded + ID, 
                      data=paramsForAnalysis,
@@ -246,6 +243,7 @@ print(precisionInclusionBFs)
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
+  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
 ########################
