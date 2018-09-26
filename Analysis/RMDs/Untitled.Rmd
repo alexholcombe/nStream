@@ -1,3 +1,16 @@
+---
+title: "Crowding"
+author: "Charlie Ludowici"
+date: "21/09/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Fitting
+```{r}
 ###Parameter Analyses###
 rm(list=ls())
 library(ggplot2)
@@ -55,13 +68,12 @@ bounds <- parameterBounds()
 
 bounds['precision','upper'] <- 3
 
-runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file. 
+runAnyway <- FALSE #If TRUE, fit models regardless of the presence of a parameter file. 
 plots <- FALSE
 
 nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
 
 if(nParamFiles>0){
-  print('we out here')
   paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
   
   splits <- strsplit(paramFiles, 'Estimates|(?<=[0-9][0-9])_|\\.csv',perl = T) #split out the date stamps from the param files names
@@ -112,7 +124,7 @@ if(length(notModelled)>0 & runAnyway){
   for(thisParticipant in notModelled){
     for(thisCondition in unique(allErrors$crowded)){
       for(thisRing in unique(allErrors$ring)){
-        print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition))
+        #print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition))
         
         try({
           invisible( #invisible combined with capture output hides those print 'error' statements hidden deep in mixRSVP::
@@ -171,10 +183,12 @@ paramsForAnalysis$ID %<>% as.character
 paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='AC5SONA', 'problemID')) %>%
   as.data.frame() #For some reason the string 'AC5SONA' is interpreted as a nul by anovaBF, which uses base64
 paramsForAnalysis$ID %<>% as.factor
+```
 
-#######################
-###Efficacy Analyses###
-#######################
+
+
+##Efficacy Analyses
+```{r}
 
 efficacyBF <- anovaBF(efficacy ~ ring * crowded + ID, 
                       data=paramsForAnalysis,
@@ -192,17 +206,20 @@ for(name in names(efficacyInclusionBFs)){ #calculate inclusion BFs for main effe
   efficacyInclusionBFs[name] <- thisInclusionBF
 }
 
-print(efficacyInclusionBFs)
+knitr::kable(efficacyInclusionBFs)
 
 #Only evidence for an effect of ring
-
 ggplot(paramsForAnalysis, aes(x=crowded, y = efficacy))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+```
 
 
+##Latency analysis
+
+```{r}
 latencyBF <- anovaBF(latency ~ ring * crowded + ID, 
                       data=paramsForAnalysis,
                       whichRandom = 'ID'
@@ -219,15 +236,17 @@ for(name in names(latencyInclusionBFs)){
   latencyInclusionBFs[name] <- thisInclusionBF
 }
 
-print(latencyInclusionBFs)
+knitr::kable(latencyInclusionBFs)
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+```
 
-
+##Precision Analysis
+```{r}
 precisionBF <- anovaBF(precision ~ ring * crowded + ID, 
                      data=paramsForAnalysis,
                      whichRandom = 'ID'
@@ -244,16 +263,20 @@ for(name in names(precisionInclusionBFs)){
   precisionInclusionBFs[name] <- thisInclusionBF
 }
 
-print(precisionInclusionBFs)
+knitr::kable(precisionInclusionBFs)
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
-########################
-###Plots with Density###
-########################
+
+```
+
+##Plots with Density
+
+```{r}
+
 
 paramsForAnalysis$ID %<>% as.character
 paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='problemID', 'AC5SONA')) %>%
@@ -268,15 +291,15 @@ if(participantPlots){
         thisPrecision <- paramsForAnalysis %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(precision)
         
         theseErrors <- allErrors %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing)
-        print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
+        # print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
         minError <- theseErrors %>% pull(SPE) %>% min
         maxError <- theseErrors %>% pull(SPE) %>% max
         thisRange <- seq(minError,maxError,.1)
         
         theseDensities <- data.frame(SPE = thisRange, density = dnorm(thisRange, thisLatency, thisPrecision))
-        if(any(is.nan(theseDensities$density))){
-          print(theseDensities)
-        }
+        # if(any(is.nan(theseDensities$density))){
+        #   print(theseDensities)
+        # }
         
         thisPlot <- ggplot(theseErrors, aes(x=SPE))+
           geom_histogram(binwidth = 1)+

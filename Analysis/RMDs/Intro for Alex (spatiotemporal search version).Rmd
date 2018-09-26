@@ -1,0 +1,165 @@
+---
+title: "nStreams Analysis"
+date: "5/18/2017"
+
+author: 
+  - name          : "Charles J. H. Ludowici"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "USYD"
+    email         : "charles.ludowici@sydney.edu.au"
+  - name          : "Alex O. Holcombe"
+    affiliation   : "1"
+
+affiliation:
+  - id            : "1"
+    institution   : "The University of Sydney"
+
+author_note: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  Enter abstract here. Each new line herein must be indented, like this line.
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : ["Bibtex/nStreams Bayesian.bib"]
+nocite            : |
+   @matsukura_does_2011
+
+figsintext        : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+mask              : no
+
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r echo = FALSE, message=FALSE}
+library(ggplot2)
+library(reshape2)
+library(papaja)
+library(magrittr)
+library(dplyr)
+library(BayesFactor)
+
+theme_set(theme_apa(base_size = 12) ) 
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE
+  )
+
+savePlots <- F
+
+
+horizErrorBars <- function(data, var.name){
+  SPEs <- data[,var.name]
+  otherColumn <- colnames(data)[which(colnames(data)!=var.name & colnames(data) != 'participant' & colnames(data) != 'Parameter')]
+  y = mean(data[,otherColumn], na.rm=T)
+  se = sqrt(var(SPEs)/length(which(!is.na(SPEs))))
+  xmin <- mean(SPEs, na.rm=T) - se
+  xmax <- mean(SPEs, na.rm=T) + se
+  x = mean(SPEs, na.rm=T)
+  data.frame(x=x, xmin=xmin, xmax=xmax, y=y)
+}
+
+vertErrorBars <- function(data, var.name){
+  SPEs <- data[,var.name]
+  otherColumn <- colnames(data)[which(colnames(data)!=var.name & colnames(data) != 'participant' & colnames(data) != 'Parameter')]
+  x = mean(data[,otherColumn], na.rm=T)
+  se = sqrt(var(SPEs)/length(which(!is.na(SPEs))))
+  ymin <- mean(SPEs, na.rm=T) - se
+  ymax <- mean(SPEs, na.rm=T) + se
+  y = mean(SPEs, na.rm=T)
+  data.frame(x=x, ymin=ymin, ymax=ymax, y=y)
+}
+
+
+posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
+                      priorMean=0,priorSD=1) {
+        N = ifelse(is.null(N2), N1, N1*N2/(N1+N2))
+        df  = ifelse(is.null(N2), N1 - 1, N1 + N2 - 2)
+        
+        #prior and likelihood
+        #prior <- function(delta) dnorm(delta, priorMean, priorSD)*as.integer(delta >= lo)*as.integer(delta <= hi) 
+        prior <- function(delta) dcauchy(delta, priorMean, priorSD)*as.integer(delta >= lo)*as.integer(delta <= hi) 
+        K=1/integrate(prior,lower=lo,upper=hi)[[1]]
+        f=function(delta) K*prior(delta)
+        
+        #(The as.integer bits above just provide bounds for the prior if you want them)
+      
+        likelihood <- function(delta) dt(t, df, delta*sqrt(N))
+        
+        #marginal likelihood
+        marginal <- integrate(function(x) f(x)*likelihood(x), lo, hi)[[1]]
+        
+        #posterior
+        post <- function(x) f(x)*likelihood(x) / marginal
+        return(post(delta))
+}
+
+null = 0
+
+MMlatency <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+MMprecision <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_precisionNorm.csv')
+MMefficacy <- read.csv('../../modelOutput/CSV/TGRSVP_Exp2_efficacyNorm.csv')
+
+nStreamLatency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
+
+nStreamPrecision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
+
+nStreamEfficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
+
+frequentistTestLatency = t.test(x = nStreamLatency$eightStreams, y=nStreamLatency$twoStreams, paired = T)
+tLatency <- frequentistTestLatency$statistic[[1]]
+
+```
+
+The brain processes a stream of temporally noisy visual information. Several factors affect the time it takes to process a visual signal. These include: where it falls in the visual field [@poggel_visual_2004], its contrast (reference), its location relative to the spatial locus of attention [@carrasco_visual_2011] and its location in time relative to attentional events [@broadbent_detection_1987; @dux_attentional_2009]. From this sea of noisy timing data, the brain must sometimes determine when two events were simultaneous. How does this happen? In this article, we investigate the temporal distribution of perceived simultaneity between rapid events. To do so, we must use tasks where participants select a particular event from a dynamic display. Experiments using such tasks have highlighted two potential mechanisms by which the brain may achieve this aim.
+
+Attention, the ability to prioritise stimuli for visual processing based on their kind or location, is one such mechanism. In tasks where there is uncertainty about the position of a response-relevant event, such as visual search [@nakayama_sustained_1989], sudden stimulation at a peripheral location causes that location to be prioritised relative to the rest of the visual field. This prioritisation is evident in improved detection and identification reaction times and contrast sensitivity at that location [see @carrasco_visual_2011 for a review]. It is not under conscious control and is referred to as "exogenous" to distinguish it from more willful prioritisation (endogenous or feature-based attention). 
+
+Attention facilitates the selection of object features to produce a bound percept. The most famous example of this is Treisman and Schmidt's (1982) illusory conjunctions. They demonstrated that features are mislocated when attention is overloaded in brief, static presentations. This selection can occur in dynamic displays too. Holcombe and Cavanagh (2008) presented participants with dot patterns that oscillated away from and towards fixation at a rate of 2.66Hz. The patterns changed colour from green to red at the same rate, but the latency between colour and motion changes was varied. The transitions between colours and motions were seen as simultaneous when the motion change preceded the colour change, consistent with previous reports (Moutoussis & Zeki, 1997; Nishida & Johnston, 2002). This apparent lag in processing disappeared when Holcombe and Cavanagh presented an exogenous attention cue (a white ring) with the stimulus. Under this condition the relative timing between colour and motion changes that best yielded apparent synchrony was close to 0. In other words, the exogenous cue allowed participants to correctly identify when colour and motion changes were simultaneous.
+
+This article is about temporal processing, so it is worth describing the temporal properties of an exogenous attention shift. The selection of any two events in time must happen after the onset of the cue, because the shift is triggered by the cueing stimulus. The time at which attention arrives at the cued position will be distributed with positive skew. The probability of completing the shift at the time of the cue's onset is zero, because this is the process that triggers the shift. The probability of completing the shift then increases rapidly. Exogenous attention is most efficacious around 100-120ms after the onset of the cue [@carrasco_visual_2011; @nakayama_sustained_1989]. Efficacy then trails off; producing a skewed distribution much like reaction time distributions. This skew comes about because the process has a lower bound at the time of the cue, but no upper bound (**apparently something in the Luce RT book about this**). The effect of an exogenous cue on accuracy in visual search tasks yields a distribution with this shape (Nakayama & MacKeben, 1983). Note that because we are concerned with selection of an event from a dynamic display, for events that end less than 100ms from the onset of the cue, the probability of selecting that event from the visual stream is low. Any distribution of selection times produced by an attention shift will thus have positive skew and be entirely post-cue.
+
+```{r attentionShift, echo = FALSE, fig.cap="\\label{attentionShift:figs}The predicted distribution of times for an attention shift."}
+attentionShiftExample <- data.frame(
+  x = (-200):500,
+  y = dlnorm(x = (-200):500, meanlog = 4, sdlog = 1)
+)
+
+ggplot(attentionShiftExample, aes(x=x,y=y))+
+  geom_line()+
+  geom_vline(linetype='dashed', xintercept = 0)+
+  scale_x_continuous(breaks =c(0), labels = c('Cue'))+
+  scale_y_continuous(breaks = c())+
+  labs(x = 'Time', y = NULL)
+  
+```
+
+@goodbourn_pseudoextinction propose that a rapidly decaying buffer of visual information may be another source of information for judging simultaneity. This buffer contains decaying representations of visual events. Unlike the attention shift there is no triggering process. The buffer is always recording events. One item from the buffer is selected for tokenisation and subsequent consolidation into working memory. This is based on some task-relevant factor such as simultaneity with a cue. @goodbourn_pseudoextinction argued for the presence of this storage based on RSVP data. In each trial of their experiments participants saw 2 RSVP streams containing letters in a random order with no repeats. One or both of the streams were cued at one point on each trial with white ring. Participants were tasked with reporting the cued letter(s). They analysed the temporal distribution of responses by mapping each response onto a point in time corresponding to when that letter appeared in the cued stream. After accounting for guessing (details in Modelling below), @goodbourn_pseudoextinction found that there were nonguessing responses from at the cue or before. This was despite the fact the cue was a white circle with a rapid onset, exactly the sort of stimulus one would expect to elicit an exogenous attention shift. Indeed, these responses are impossible under an attention shift. They are possible if the process that selects an item for conslidation is error prone and operates over item representations from timepoints that preceded the the cue. Such a process would produce a normally distribution of responses. This distribution would include items from before the cue. 
+
+The @goodbourn_pseudoextinction buffer is a brief, high-capacity store of visual information, similar to iconic memory [IM; @sperling_information_1960] and fragile memory [@sligte_are_2008]. However, it is not either of these. IM is a was proposed based on experiments showing that a cue presented after the offset of a brief visual array indicating a part of the array for report produces better memory for the array than without the cue. The cued information is thought to be selected from IM and sustained while the unselected information decays. Recently, another form of visual memory has been demonstrated using these cues at different timescales. This memory operates at a timepoint beyond the decay of IM and is not masked in the same way as IM [@pinto_fragile_2013; @sligte_are_2008, but see Matsukura & Hollingworth, 2011 for a dissenting opinion]. Iconic memory is extremely sensitive to masking from any stimulation at the visual location of the array. FM is not sensitive to masking from just any stimulation, but is masked by objects of the same kind at the visual location of the array [@pinto_fragile_2013]. @goodbourn_pseudoextinction used RSVP, where subsequent items - all of one kind - mask previous items. Under these conditions it is not possible to use IM or FM to perform the task. 
+
+The current article uses multiple-stream RSVP investigate the temporal properties of @goodbourn_pseudoextinction's buffer as we manipulate the its workload. We look for evidence of attention shifts in our data and in the initial @goodbourn_pseudoextinction data. The capacity of the buffer is unknown, as @goodbourn_pseudoextinction used a maximum of 2 RSVP streams. We increased the number of streams to 8, because this should exceed the buffer's capacity. We predicted under these conditions participants would rely on attention shifts rather than to select items from the cued stream. This strategy would produce a temporal distribution of responses that is positively skewed and entirely post-cue, whereas using buffered information for the task will create a normal distribution of responses that include timepoints from before the cue. We fit models corresponding to both these scenarios to detect the different strategies and interpret the estimated parameters of these models to draw inferences about the temporal properties of visual processing under these conditions. 
+
+##Modelling
+Our modelling is based on the temporal distribution of responses over many trials. We match each trial's response to a particular point in time on that trial - its serial position error (SPE). We fit distributions to the distributions of SPEs from all trials of a particular condition. The empirical RSVP distributions are thought to be a mixture of two components. One is a uniform component corresponding to trials in which the participant made a guess about the identity of the cued letter. The other component of the distribution will be responses informed by the cue. These do not have to be accurate responses. Instead, they can reflect the variance of a temporal binding process, the items selected after an attention shift, or some other process. Attention shifts and buffering predict different non-guessing distributions for the SPE distribution. If the task is performed using information from a buffer, we would expect a Gaussian distribution that includes items from at the cue or before, because the buffer may erroenously select items from before the cue as coincident with it. @goodbourn_pseudoextinction used this latter mixture to model their data, we refer to it as the buffering model. 
+
+If, on the other hand, participants select items from the cued stream using an attention shift, the SPE distribution will have a positively skewed non-guessing component. An attention shift will not trigger until the cue is detected. Thus, we expect the non-guessing component to not include any responses from before the cue and to have positive skew. To model this, we use the log-normal distribution as the non-guessing distribution. The log-normal is a positively-skewed distribution that is only defined for values greater than 0 [^1]. This distribution thus has the skew and domain associated with an attention shift.
+
+We fit both these models and compared them using Bayes factors. Each participant produced a distribution of SPEs in each condition and we fit the models to each of these distributions. We computed Bayes factors from the Bayesian Information Criterion for each model fit [@wagenmakers_practical_2007]. These Bayes factors are used to select the best fitting model. 
+
+[^1]: Update: My initial reasoning was that our items would be too brief for the correct item to be selected by an attention shift, but I no longer think this is the case. The lognormal might not be the best distribution for our purposes here. 
+
+\pagebreak
+
+#Bibliography

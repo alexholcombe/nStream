@@ -1,4 +1,6 @@
 library(ggplot2)
+library(magrittr)
+library(dplyr)
 
 rm(list=ls()) #remove all variables in workspace?
 
@@ -8,12 +10,12 @@ setwd('~/gitCode/nStream/')  #Charlie-specific
 source('ggplotElements.R')
 theme_set(theme_apa(base_size = 20)) 
 
-plots <- T #if true, create plots
+plots <- F #if true, create plots
 if(plots){
   savePlots <- F #save plots?
 }
 
-saveIndividualTSV <- T #Save data files?
+saveIndividualTSV <- F #Save data files?
 saveAllErrorsTSV <- T
 
 bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
@@ -94,17 +96,15 @@ for(dataset in files){
   
   temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
   
-  print(nrow(temp))
-  
-  totalRows <- totalRows + nrow(temp)
-  
   #nStreams <- length(grep('streamLtrSequence', colnames(temp))) 
   
   
   dataSets[[ID]][[as.character(dateString)]][['data']] <- temp
 }
 
-totalRows <- totalRows - (length(IDs)*20) #because we'll be dropping the first 20 trials
+totalRows <- (length(IDs)*360) - (length(IDs)*20) #because we'll be dropping the first 20 trials
+
+
 
 allErrors <- data.frame(
   exp = character(totalRows), 
@@ -119,9 +119,12 @@ startRow <- 1
 
 theseTempCols <- c('responsePosRelative0', 'cuePos0', 'crowded', 'ring')
 
+
 for(participant in names(dataSets)){
+  rowsThisParticipant <- 0
   for(dateString in names(dataSets[[participant]])){
     print(participant)
+    print(rowsThisParticipant)
     
     nInAlphabeticalOrder <- which(IDs==participant) #parameter estimates from MM are in alphabetical order, so this lets me select the appropriate params
           
@@ -130,10 +133,10 @@ for(participant in names(dataSets)){
     timesForThisParticipant <- dataSets[[participant]] %>% names %>% as.POSIXct()
 
     firstBlock <- as.POSIXct(dateString) == min(timesForThisParticipant) #if true, drop the first 20 trials as training
-    print(timesForThisParticipant)
+    #print(timesForThisParticipant)
     print(dateString)
     if(firstBlock){
-      print('firstBlock')
+      #print('firstBlock')
       temp <- temp[-pracTrials,]
     }
       
@@ -187,8 +190,20 @@ for(participant in names(dataSets)){
       assign(paste0('bouma',thisRingName), thisRingTrials)
     }    
     
-    endRow <- startRow + nrow(temp) -1
     
+    if(rowsThisParticipant + nrow(temp) > 340){
+      thisNRows <- 340 - rowsThisParticipant
+      
+      useTheseRows <- 1:thisNRows
+      temp <- temp[useTheseRows,]
+    } 
+    
+    
+    
+    print(rowsThisParticipant+nrow(temp))
+
+    endRow <- startRow + nrow(temp) -1
+
   
 
     allErrors$SPE[startRow:endRow] <- temp$responsePosRelative0
@@ -204,6 +219,8 @@ for(participant in names(dataSets)){
       
     startRow <- endRow + 1
     
+    rowsThisParticipant <- rowsThisParticipant + nrow(temp)
+
     if(saveIndividualTSV){
       for(condition in c('crowded','bouma')){
         for(ring in ringNames){
@@ -227,13 +244,15 @@ if(saveAllErrorsTSV){
 #plus or minus one SPE for kim
 #kim <- aggregate(error~ID, data = allErrors[allErrors$condition=='crowded',], FUN = function(x) length(which(x>=-1 & x<=1))/length(x))
 
-totalPlot <- ggplot(allErrors, aes(x=SPE))+
-  geom_histogram(binwidth = 1)+
-  labs(y = 'Count', x = 'Serial Position Error')+
-  facet_wrap(~ID+crowded+ring, nrow = 3)+
-  geom_vline(xintercept = 0, linetype = 'dashed')
-
-show(totalPlot)
+if(plots){
+  totalPlot <- ggplot(allErrors, aes(x=SPE))+
+    geom_histogram(binwidth = 1)+
+    labs(y = 'Count', x = 'Serial Position Error')+
+    facet_wrap(~ID+crowded+ring, nrow = 3)+
+    geom_vline(xintercept = 0, linetype = 'dashed')
+  
+  show(totalPlot)
+}
 
 if(plots){
   if(savePlots){
