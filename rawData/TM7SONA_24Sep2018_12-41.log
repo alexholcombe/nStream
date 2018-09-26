@@ -1,0 +1,52 @@
+17.5136 	INFO 	Successfully set darwin thread to realtime
+18.1481 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2018_09_24 12:41 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1537756910
+    experimentScript: nStreamBufferImageStim.py
+    experimentScript.digestSHA1: bed7ee886f435462010e392a06b2770fdddc42d9
+    experimentScript.directory: /Users/alexh/Documents/Charlie/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: spidey.staff.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 4850.484375
+    systemMemTotalRAM: 6144.0
+    systemPlatform: darwin 10.7.5 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0023129251785576344, 'default sr': 44100, 'name': u'Built-in Line Input'}, 1: {'host api index': 0, 'latency': 0.0023129251785576344, 'default sr': 44100, 'name': u'Built-in Digital Input'}}
+    systemPyo.OutputDevices: {2: {'host api index': 0, 'latency': 0.002585034118965268, 'default sr': 44100, 'name': u'Built-in Output'}, 3: {'host api index': 0, 'latency': 0.002585034118965268, 'default sr': 44100, 'name': u'Built-in Line Output'}, 4: {'host api index': 0, 'latency': 0.002585034118965268, 'default sr': 44100, 'name': u'Built-in Digital Output'}}
+    systemPyoVersion: 0.8.6
+    systemRavailable: R version 3.2.1 (2015-06-18) -- World-Famous Astronaut
+    systemRebooted: Sep 24 09:54
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8y 5 Feb 2013
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0049
+    systemUser: alexh
+    systemUserID: 502
+    systemUserProcCount: 20
+    systemUserProcFlagged: mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.053
+    windowRefreshTimeMedian_ms: 10.016
+    windowRefreshTimeAvg_ms: 10.001
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 36.5
+    windowMonitor.currentCalibName: 2012_03_01 17:15
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+19.6323 	EXP 	Set  sound=C
