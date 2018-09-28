@@ -1,0 +1,21 @@
+Participant,Group,Parameter,Model,Estimate
+AJ7,twoStreams,Precision,Truncated Normal,81.5666
+AN14,twoStreams,Precision,Truncated Normal,65.7049
+BB6,twoStreams,Precision,Truncated Normal,41.6667
+IK4,twoStreams,Precision,Truncated Normal,77.2233
+JA8,twoStreams,Precision,Truncated Normal,70.2802
+LH9,twoStreams,Precision,Truncated Normal,74.7408
+LS2,twoStreams,Precision,Truncated Normal,62.9727
+LT5,twoStreams,Precision,Truncated Normal,58.5755
+RN12,twoStreams,Precision,Truncated Normal,48.9827
+YZ15,twoStreams,Precision,Truncated Normal,53.3826
+AJ7,eightStreams,Precision,Truncated Normal,68.2064
+AN14,eightStreams,Precision,Truncated Normal,74.2874
+BB6,eightStreams,Precision,Truncated Normal,41.6667
+IK4,eightStreams,Precision,Truncated Normal,53.4089
+JA8,eightStreams,Precision,Truncated Normal,52.5226
+LH9,eightStreams,Precision,Truncated Normal,76.8025
+LS2,eightStreams,Precision,Truncated Normal,52.0286
+LT5,eightStreams,Precision,Truncated Normal,47.7835
+RN12,eightStreams,Precision,Truncated Normal,51.4285
+YZ15,eightStreams,Precision,Truncated Normal,52.4826

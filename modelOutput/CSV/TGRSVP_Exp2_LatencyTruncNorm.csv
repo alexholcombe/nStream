@@ -1,0 +1,21 @@
+Participant,Group,Parameter,Model,Estimate
+AJ7,twoStreams,Latency,Truncated Normal,47.1371
+AN14,twoStreams,Latency,Truncated Normal,75.0550
+BB6,twoStreams,Latency,Truncated Normal,50.3906
+IK4,twoStreams,Latency,Truncated Normal,81.8441
+JA8,twoStreams,Latency,Truncated Normal,25.4068
+LH9,twoStreams,Latency,Truncated Normal,79.9514
+LS2,twoStreams,Latency,Truncated Normal,55.2276
+LT5,twoStreams,Latency,Truncated Normal,65.8845
+RN12,twoStreams,Latency,Truncated Normal,70.4603
+YZ15,twoStreams,Latency,Truncated Normal,73.3270
+AJ7,eightStreams,Latency,Truncated Normal,90.2071
+AN14,eightStreams,Latency,Truncated Normal,132.5857
+BB6,eightStreams,Latency,Truncated Normal,56.6349
+IK4,eightStreams,Latency,Truncated Normal,100.7202
+JA8,eightStreams,Latency,Truncated Normal,73.3993
+LH9,eightStreams,Latency,Truncated Normal,103.5115
+LS2,eightStreams,Latency,Truncated Normal,93.9521
+LT5,eightStreams,Latency,Truncated Normal,80.8765
+RN12,eightStreams,Latency,Truncated Normal,80.3411
+YZ15,eightStreams,Latency,Truncated Normal,97.9231
