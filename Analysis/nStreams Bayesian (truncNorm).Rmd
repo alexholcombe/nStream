@@ -1,5 +1,5 @@
 ---
-title: "nStreams Analysis"
+title: "nStreams Analysis (truncNorm)"
 author: "Charlie Ludowici"
 date: "5/18/2017"
 output: html_document
@@ -9,10 +9,9 @@ output: html_document
 library(ggplot2)
 library(reshape2)
 library(papaja)
-library(BayesFactor)
 library(dplyr)
 library(magrittr)
-library(truncnorm)
+library(BayesFactor)
 theme_set(theme_apa(base_size = 15) ) 
 
 inclusionBF <- function(model, variable){
@@ -81,8 +80,6 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
 
 null = 0
 
-allErrors <- read.table('allErrors.txt', sep = '\t', header = T)
-
 LatencyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
 LatencyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
 
@@ -99,55 +96,13 @@ BFs <- read.csv('../modelOutput/BF_ByParticipant.csv', header = T)
 BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 
 
-allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
-allEfficacy$participantN <- factor(rep(1:10, times =4))
-
-efficacyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allEfficacy, whichRandom = 'participantN')
-
-efficacyModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
-
-for(thisFactor in efficacyModelInclusionBF$factor){
-  efficacyModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(efficacyModelBF, thisFactor)))
-  print(inclusionBF(efficacyModelBF, thisFactor))
-}
-
-knitr::kable(efficacyModelInclusionBF)
-
-allLatency <- rbind(LatencyNorm,LatencyTNorm)
-allLatency$participantN <- factor(rep(1:10, times =4))
-
-latencyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allLatency, whichRandom = 'participantN')
-
-latencyModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
-
-for(thisFactor in latencyModelInclusionBF$factor){
-  latencyModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(latencyModelBF, thisFactor)))
-  print(inclusionBF(latencyModelBF, thisFactor))
-}
-
-knitr::kable(latencyModelInclusionBF)
-
-allPrecision <- rbind(PrecisionNorm,PrecisionTNorm)
-allPrecision$participantN <- factor(rep(1:10, times =4))
-
-precisionModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allPrecision, whichRandom = 'participantN')
-
-precisionModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
-
-for(thisFactor in precisionModelInclusionBF$factor){
-  precisionModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(precisionModelBF, thisFactor)))
-  print(inclusionBF(precisionModelBF, thisFactor))
-}
-
-knitr::kable(precisionModelInclusionBF)
-
 ```
 
 #Latency Analyses
 
 ```{r warning=FALSE}
-latencyTwo <- LatencyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
-latencyEight <- LatencyNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
+latencyTwo <- LatencyTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+latencyEight <- LatencyTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 latencyTFreq  <- t.test(x = latencyTwo,
                         y = latencyEight, 
@@ -189,7 +144,7 @@ posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=d
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
 
 
-LatencyNormPlot <- ggplot(LatencyNorm,aes(x=Group, y=Estimate))+
+LatencyTNormPlot <- ggplot(LatencyTNorm,aes(x=Group, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
   geom_point(aes(colour=Participant), size = 3)+
@@ -197,11 +152,11 @@ LatencyNormPlot <- ggplot(LatencyNorm,aes(x=Group, y=Estimate))+
   labs(x='Condition',y='Estimate (ms)',title='Latency')+
   theme(plot.title = element_text(hjust=.5))
 
-show(LatencyNormPlot)
+show(LatencyTNormPlot)
 
-wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
+wideFormatLatency <- dcast(data=LatencyTNorm,formula = Participant~Group)
 
-LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams))+
+LatencyTNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams))+
   geom_point(size = 4, aes(colour=ordered(1:10)))+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(20,120), y=c(20,120))+
@@ -211,24 +166,24 @@ LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams
   annotate('text', x = 100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
-show(LatencyNormScatter)
+show(LatencyTNormScatter)
 
 
 
-LatencyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+LatencyTNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
   labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
 
-show(LatencyNormBayesPlot)
+show(LatencyTNormBayesPlot)
 ```
 
 #Precision Analysis
 
 ```{r warning=FALSE}
-precisionTwo <- PrecisionNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
-precisionEight <- PrecisionNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
+precisionTwo <- PrecisionTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+precisionEight <- PrecisionTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 precisionTFreq  <- t.test(x = precisionTwo,
                         y = precisionEight, 
@@ -267,7 +222,7 @@ posteriorAndPriorDF <- data.frame(delta = delta,
 posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
 
-PrecisionNormPlot <- ggplot(PrecisionNorm,aes(x=Group, y=Estimate))+
+PrecisionTNormPlot <- ggplot(PrecisionTNorm,aes(x=Group, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
   geom_point(aes(colour=Participant),alpha=.8, size = 3)+
@@ -275,12 +230,12 @@ PrecisionNormPlot <- ggplot(PrecisionNorm,aes(x=Group, y=Estimate))+
   labs(x='Condition',y='Estimate (ms)',title='Precision')+
   theme(plot.title = element_text(hjust=.5))
 
-show(PrecisionNormPlot)
+show(PrecisionTNormPlot)
 
-wideFormatPrecision <- dcast(data=PrecisionNorm,formula = Participant~Group)
+wideFormatPrecision <- dcast(data=PrecisionTNorm,formula = Participant~Group)
 
 
-PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+PrecisionTNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
   geom_point(size = 4)+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(40,100), y=c(40,100))+
@@ -290,9 +245,9 @@ PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStr
   annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
-show(PrecisionNormScatter)
+show(PrecisionTNormScatter)
 
-PrecisionNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+PrecisionTNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
@@ -304,8 +259,8 @@ PrecisionNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 #Efficacy Analysis
 
 ```{r warning=FALSE}
-efficacyTwo <- EfficacyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
-efficacyEight <- EfficacyNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
+efficacyTwo <- EfficacyTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+efficacyEight <- EfficacyTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 efficacyTFreq  <- t.test(x = efficacyTwo,
                         y = efficacyEight, 
@@ -338,7 +293,7 @@ posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(tEfficacy
 posteriorModeEfficacy <- optimize(function(delta) posterior(tEfficacy, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
 
-EfficacyNormPlot <- ggplot(EfficacyNorm, aes(x=Group, y=Estimate))+
+EfficacyTNormPlot <- ggplot(EfficacyTNorm, aes(x=Group, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
   geom_point(aes(colour = Participant), size = 3)+
@@ -346,12 +301,12 @@ EfficacyNormPlot <- ggplot(EfficacyNorm, aes(x=Group, y=Estimate))+
   theme(plot.title = element_text(hjust=.5))+
   scale_colour_brewer(palette = 'Spectral')
 
-show(EfficacyNormPlot)
+show(EfficacyTNormPlot)
 
-wideFormatEfficacy <- dcast(data=EfficacyNorm,formula = Participant~Group)
+wideFormatEfficacy <- dcast(data=EfficacyTNorm,formula = Participant~Group)
 
 
-EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+EfficacyTNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
   geom_point(size = 4)+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(0,1), y=c(0,1))+
@@ -361,9 +316,9 @@ EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStrea
   annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
-show(EfficacyNormScatter)
+show(EfficacyTNormScatter)
 
-EfficacyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+EfficacyTNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
@@ -371,43 +326,14 @@ EfficacyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 
 
 ```
-```{r}
-propBeforeCue <- expand.grid(
-  Participant = unique(LatencyNorm$Participant),
-  Group = unique(LatencyNorm$Group),
-  Proportion = -999,
-  nTrialsBeforeCue = -999
-)
-
-for(thisParticipant in unique(LatencyNorm$Participant)){
-  for(thisCondition in unique(LatencyNorm$Group)){
-    
-    thisNormLatency <- LatencyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
-    thisNormPrecision <- PrecisionNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
-    
-    thisNormEfficacy <- EfficacyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
-    
-    thisNTrials <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject) %>% nrow 
-    
-    thisProportionBeforeCue <- pnorm(0, thisNormLatency, thisNormPrecision)
-    thisNEfficaciousBeforeCue <- thisNTrials * thisNormEfficacy * thisProportionBeforeCue
-    
-    propBeforeCue %<>% mutate(Proportion = replace(Proportion, Participant==thisParticipant & Group == thisCondition, thisProportionBeforeCue))
-   
-    propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue)) 
-  }
-}
-
-knitr::kable(propBeforeCue)
-```
 
 ```{r}
 # 
-# EfficacyNorm$Parameter <- as.character('Efficacy')
-# LatencyNorm$Parameter <- as.character('Latency')
-# PrecisionNorm$Parameter <- as.character('Precision')
+# EfficacyTNorm$Parameter <- as.character('Efficacy')
+# LatencyTNorm$Parameter <- as.character('Latency')
+# PrecisionTNorm$Parameter <- as.character('Precision')
 # 
-# allParams <- rbind(EfficacyNorm,LatencyNorm,PrecisionNorm)
+# allParams <- rbind(EfficacyTNorm,LatencyTNorm,PrecisionTNorm)
 # 
 # allParams <- melt(allParams, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
 # 
@@ -418,15 +344,15 @@ knitr::kable(propBeforeCue)
 # 
 # paramBar
 # 
-# predictions <- data.frame(twoStreams = rnorm(1000, LatencyNorm$twoStreams[7], PrecisionNorm$twoStreams[7]), eightStreams = rnorm(1000, LatencyNorm$eightStreams[7], PrecisionNorm$eightStreams[7]))
+# predictions <- data.frame(twoStreams = rnorm(1000, LatencyTNorm$twoStreams[7], PrecisionTNorm$twoStreams[7]), eightStreams = rnorm(1000, LatencyTNorm$eightStreams[7], PrecisionTNorm$eightStreams[7]))
 # 
 # predictions <- melt(predictions, measure.vars = c('twoStreams', 'eightStreams'), variable.name = 'Condition', value.name = 'response')
 # 
-# meanLatencyTwo <- mean(LatencyNorm$twoStreams)
-# meanLatencyEight <- mean(LatencyNorm$eightStreams)
+# meanLatencyTwo <- mean(LatencyTNorm$twoStreams)
+# meanLatencyEight <- mean(LatencyTNorm$eightStreams)
 # 
-# meanPrecisionTwo <- mean(PrecisionNorm$twoStreams)
-# meanPrecisionEight <- mean(PrecisionNorm$eightStreams)
+# meanPrecisionTwo <- mean(PrecisionTNorm$twoStreams)
+# meanPrecisionEight <- mean(PrecisionTNorm$eightStreams)
 # 
 # 
 # predictionPlot <- ggplot()+
@@ -440,64 +366,17 @@ knitr::kable(propBeforeCue)
 # 
 # 
 # if(savePlots){
-#   ggsave(PrecisionNormPlot, file = 'PrecisionNormViolin.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormPlot, file = 'LatencyNormViolin.png', height=15, width=20,units='cm')
-#   ggsave(EfficacyNormPlot, file = 'EfficacyNormViolin.png', height=15, width=20,units='cm')
+#   ggsave(PrecisionTNormPlot, file = 'PrecisionTNormViolin.png', height=15, width=20,units='cm')
+#   ggsave(LatencyTNormPlot, file = 'LatencyTNormViolin.png', height=15, width=20,units='cm')
+#   ggsave(EfficacyTNormPlot, file = 'EfficacyTNormViolin.png', height=15, width=20,units='cm')
 #   
-#   ggsave(PrecisionNormScatter, file = 'PrecisionNormScatter.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormScatter, file = 'LatencyNormScatter.png', height=15, width=20,units='cm')
-#   ggsave(EfficacyNormScatter, file = 'EfficacyNormScatter.png', height=15, width=20,units='cm')
+#   ggsave(PrecisionTNormScatter, file = 'PrecisionTNormScatter.png', height=15, width=20,units='cm')
+#   ggsave(LatencyTNormScatter, file = 'LatencyTNormScatter.png', height=15, width=20,units='cm')
+#   ggsave(EfficacyTNormScatter, file = 'EfficacyTNormScatter.png', height=15, width=20,units='cm')
 #   
 #   
-#   ggsave(EfficacyNormBayesPlot, file = 'EfficacyNormEffectSize.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormBayesPlot, file = 'LatencyNormEffectSize.png', height=15, width=20,units='cm')
-#     ggsave(PrecisionNormBayesPlot, file = 'PrecisionNormEffectSize.png', height=15, width=20,units='cm')
+#   ggsave(EfficacyTNormBayesPlot, file = 'EfficacyTNormEffectSize.png', height=15, width=20,units='cm')
+#   ggsave(LatencyTNormBayesPlot, file = 'LatencyTNormEffectSize.png', height=15, width=20,units='cm')
+#     ggsave(PrecisionTNormBayesPlot, file = 'PrecisionTNormEffectSize.png', height=15, width=20,units='cm')
 # }
-```
-
-```{r}
-for(thisParticipant in unique(allErrors$ID)){
-  densities <- data.frame(SPE = numeric(0), condition = character(0), normDensity = numeric(0), tNormDensity = numeric(0))
-  for(thisCondition in unique(allErrors$condition)){
-    
-    thisNormLatency <- LatencyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
-    thisNormPrecision <- PrecisionNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
-    
-    thisTNormLatency <- LatencyTNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
-    thisTNormPrecision <- PrecisionTNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
-    
-    theseErrors <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
-    
-    #print(paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
-    minError <- theseErrors %>% pull(error) %>% min
-    maxError <- theseErrors %>% pull(error) %>% max
-    thisRange <- seq(minError,maxError,.1)
-    
-    theseDensities <- data.frame(SPE = thisRange, 
-                                 condition = rep(thisCondition, times = length(thisRange)),
-                                 normDensity = dnorm(thisRange, thisNormLatency, thisNormPrecision), 
-                                 tNormDensity = dtruncnorm(thisRange, a = thisTNormLatency-thisTNormPrecision, thisTNormLatency, thisTNormPrecision, b = Inf))
-    
-    densities <- rbind(densities, theseDensities)
-    
-    if(any(is.nan(theseDensities$density))){
-      print(theseDensities)
-    }
-    
-  
-    # thisFileName <- paste0('modelOutput/Plots/',thisCondition,'/',thisRing,'/',thisParticipant,'-',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.png')
-    # ggsave(filename = thisFileName, thisPlot,width = 16, height = 9)
-  }
-  errors <- allErrors %>% filter(ID == thisParticipant)
-  thisPlot <- ggplot(errors, aes(x=error))+
-      geom_histogram(binwidth = 1)+
-      geom_line(data = densities, aes(x = SPE, y=tNormDensity*150))+ #scale density to histogram with density * N * binwidth
-      geom_line(data = densities, aes(x = SPE, y=normDensity*150))+
-      scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
-      labs(y = 'Frequency', title = thisParticipant)+
-    facet_wrap(~condition)
-    
-    show(thisPlot)
-}
-
 ```

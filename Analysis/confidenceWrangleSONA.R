@@ -13,7 +13,7 @@ if(plots){
   savePlots <- F #save plots?
 }
 
-saveIndividualTSV <- F #Save data files?
+saveIndividualTSV <- T #Save data files?
 saveAllErrorsTSV <- T
 
 bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
@@ -131,8 +131,8 @@ for(dataset in files){
   ID <- strsplit(dataset, '(?<=A)/|_(?=[0-9])', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
   if(!ID %in% dropThese){
     #group <- strsplit(dataset,'/')[[1]][2]
-    # print(group)
-    # print(ID)
+    print(group)
+    print(ID)
     IDs <- c(IDs, ID)
     #Some date formatting
     dateString <- strsplit(strsplit(dataset, '_(?=[0-9])', perl=T)[[1]][2],'')[[1]]
@@ -180,7 +180,6 @@ for(group in names(dataSets)){
       
             
       temp <- dataSets[[group]][[participant]][[dateString]][['data']]
-      print(nrow(temp))
       
       temp$responsePos <- temp$cuePos0+temp$responsePosRelative0
       
@@ -305,8 +304,8 @@ for(group in names(dataSets)){
       
       endRow <- startRow + nrow(twoStreams) -1
       
-      #print(startRow)
-      #print(endRow)
+      print(startRow)
+      print(endRow)
       
       allErrors$condition[startRow:endRow] <- 'twoStreams'
       allErrors$ID[startRow:endRow] <- participant
@@ -327,13 +326,15 @@ for(group in names(dataSets)){
       startRow <- endRow + 1
       
       if(saveIndividualTSV){
-        write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-        write.table(eightStreams[!eightStreams$fixationReject,], paste0('wrangledData/',group,'/eightStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        write.table(twoStreams[!twoStreams$fixationReject & twoStreams$button == 2,], paste0('wrangledData/',group,'/Confidence/twoStreams/High/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        write.table(twoStreams[!twoStreams$fixationReject & twoStreams$button == 0,], paste0('wrangledData/',group,'/Confidence/twoStreams/Low/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        write.table(eightStreams[!eightStreams$fixationReject & eightStreams$button == 2,], paste0('wrangledData/',group,'/Confidence/eightStreams/High/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
+        write.table(eightStreams[!eightStreams$fixationReject & eightStreams$button == 0,], paste0('wrangledData/',group,'/Confidence/eightStreams/Low/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
       }
       dataSets[[group]][[participant]][[dateString]][['skewStreams']] <- tempSkewNStreams
       dataSets[[group]][[participant]][[dateString]][['skew']] <- tempSkewTotal 
     }
-    #print(mean(temp$fixationReject))
+    print(mean(temp$fixationReject))
   }
 }
 
@@ -341,7 +342,7 @@ for(group in names(dataSets)){
 
 #Drop any unused rows. These were allocated for participant(s) who had too many fixation rejections
 allErrors <- allErrors[!allErrors$ID=='',]
-#allErrors <- allErrors[allErrors$button %in% c(0,2),]
+allErrors <- allErrors[allErrors$button %in% c(0,2),]
 
 if(saveAllErrorsTSV){
   write.table(allErrors, file = 'Analysis/allErrors.txt', sep='\t', row.names = F, col.names = T)
@@ -350,13 +351,6 @@ if(saveAllErrorsTSV){
 #plus or minus one SPE for kim
 kim <- aggregate(error~ID, data = allErrors[allErrors$condition=='twoStreams',], FUN = function(x) length(which(x>=-1 & x<=1))/length(x))
 
-# totalPlot <- ggplot(allErrors[!allErrors$fixationReject,], aes(x=error))+
-#   geom_histogram(binwidth = 1)+
-#   labs(y = 'Count', x = 'Serial Position Error')+
-#   facet_wrap(~condition+button)+
-#   geom_vline(xintercept = 0, linetype = 'dashed')
-# 
-# show(totalPlot)
 
 if(plots){
   if(savePlots){

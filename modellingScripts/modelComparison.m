@@ -6,11 +6,11 @@ likelihoodDirectory = 'modelOutput/Likelihood/';
 addpath(usePath)
 
 % Task parameters
-sampleNames = {'twoStreams','eightStreams'};
-modelNames = {'logNormal','normal'};
+sampleNames = {'End6Strm82msSOA', 'Ex6Strm82msSOA'};
+modelNames = {'truncNormal','normal'};
 
 nSamples = numel(sampleNames);
-nParticipants = [10 10];
+nParticipants = [6 6];
 nModels = numel(modelNames);
 nParams = 3;
 
@@ -18,6 +18,10 @@ nParams = 3;
 % allBIC(:,:,2) = normal BIC
 allBICsByParticipant = NaN(nSamples, max(nParticipants), nModels);
 allBICsCombined = NaN(nSamples, nModels);
+
+
+conditionNames ={'Endogenous', 'Exogenous'}; %For writing into CSVs
+participants = {'CL','EC','IT','KR','SH','WN'};
 
 
 cd([usePath likelihoodDirectory])
@@ -48,20 +52,21 @@ for thisModel = 1:nModels
 end
 
 deltaBICByParticipant = allBICsByParticipant(:,:,1) - allBICsByParticipant(:,:,2);
-BFByParticipant = exp(-.5*deltaBICByParticipant);
+BFByParticipant = exp(deltaBICByParticipant./2);
 
 deltaBICCombined = allBICsCombined(:,1) - allBICsCombined(:,2);
-BFCombined = exp(-.5*deltaBICCombined);
+BFCombined = exp(deltaBICCombined./2);
 
 csvFile = fopen('../BFCombined.csv','w');
 fprintf(csvFile, 'twoStreams, eightStreams, End6Strm82msSOA,  Ex6Strm82msSOA \n');
 dlmwrite('../BFCombined.csv', BFCombined', '-append', 'precision','%i');
 
+writeFile = fopen('../BF_ByParticipant.csv','w');  % Overwrite file
+fprintf(writeFile,'Participant,Group,BF'); % Header
 
 for thisSample = 1:nSamples
-    sampleName = sampleNames(thisSample)
-    fileName= strcat('../BFsByParticipant_', sampleName, '.csv');
-    fileName = fileName{1};
-    csvFile = fopen(fileName,'w');
-    dlmwrite(fileName, BFByParticipant(thisSample,:)', '-append', 'precision', '%i');
-end 
+  for thisParticipant = 1:nParticipants(thisSample)
+      fprintf(writeFile,'\n%s,%s',participants{thisParticipant},conditionNames{thisSample}); % Group
+      fprintf(writeFile,',%e', BFByParticipant(thisSample, thisParticipant));
+  end
+end
