@@ -1,0 +1,4 @@
+"experimentPhase"	"trialnum"	"subject"	"task"	"noisePercent"	"targetLeftRightIfOne"	"streamsPerRing"	"baseAngleCWfromEast"	"resp0"	"button0"	"cuePos0"	"answer0"	"correct0"	"whichStream0"	"whichRespCue0"	"responsePosRelative0"	"streamLtrSequence0"	"streamLtrSequence1"	"streamLtrSequence2"	"streamLtrSequence3"	"streamLtrSequence4"	"streamLtrSequence5"	"streamLtrSequence6"	"streamLtrSequence7"	"timingBlips"	"responsePos"	"fixationReject"
+"main"	41	"LH9 "	" oneCued "	0	" right "	2	0	"K "	2	8	"K "	1	1	0	0	"RKTIJHXBDVFAMUZYPSGOENLQ"	"QAZIUHMFKNXVJGPDSERYLBTO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	64	"LH9 "	" oneCued "	0	" right "	2	270	"X "	2	8	"I "	0	0	0	-1	"NODUGPYXITQVKRFBSLEHZAJM"	"QGEMILPSUDTYNKOXBAZJVRHF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	172	"LH9 "	" oneCued "	0	" right "	2	0	"A "	2	6	"Y "	0	1	0	1	"EOMXHFIRYVPLUTDGJASQNZBK"	"XVLQFRYAEIUBGZKSPNMOJTDH"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE

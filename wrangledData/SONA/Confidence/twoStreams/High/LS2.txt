@@ -1,0 +1,16 @@
+"experimentPhase"	"trialnum"	"subject"	"task"	"noisePercent"	"targetLeftRightIfOne"	"streamsPerRing"	"baseAngleCWfromEast"	"resp0"	"button0"	"cuePos0"	"answer0"	"correct0"	"whichStream0"	"whichRespCue0"	"responsePosRelative0"	"streamLtrSequence0"	"streamLtrSequence1"	"streamLtrSequence2"	"streamLtrSequence3"	"streamLtrSequence4"	"streamLtrSequence5"	"streamLtrSequence6"	"streamLtrSequence7"	"timingBlips"	"responsePos"	"fixationReject"
+"main"	21	"LS2 "	" oneCued "	0	" right "	2	45	"R "	2	9	"D "	0	1	0	1	"ANVKHJIZEQTYFOBXDULMPSGR"	"QKXELOSNPDRGBHIAJTYMFVUZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	49	"LS2 "	" oneCued "	0	" right "	2	0	"H "	2	7	"O "	0	1	0	1	"QYTMHKLNBAEDIURSXZPGJFOV"	"AJIFLVTOHKBURNPQDSYEZXGM"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	56	"LS2 "	" oneCued "	0	" right "	2	225	"M "	2	6	"D "	0	0	0	1	"LFXIGBDMUQJOPVRKNSTEYZHA"	"DSPHMKNRBLETIFYJVZXUAOGQ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	124	"LS2 "	" oneCued "	0	" right "	2	225	"E "	2	8	"E "	1	1	0	0	"PMZGLRJOTYAFNHXVEQIDSBKU"	"AMHTNVZKEFBYXIRGQLUSPODJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	126	"LS2 "	" oneCued "	0	" right "	2	180	"K "	2	10	"M "	0	0	0	1	"BYQURFNLHIMKPAJVETXSZODG"	"YDIFBOZKSVEMGARHPQXNJULT"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	192	"LS2 "	" oneCued "	0	" right "	2	90	"A "	2	8	"J "	0	1	0	1	"FPMXLBJUAOVYIZSEHNDRTKGQ"	"ZYMFKIQBJATLGUPRVHXOESDN"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	213	"LS2 "	" oneCued "	0	" right "	2	180	"O "	2	9	"V "	0	0	0	14	"EIJYNTMLDVQAGKRBPXZSUHFO"	"HXGNLYVTQMBAORZPIUJDFSEK"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	23	FALSE
+"main"	226	"LS2 "	" oneCued "	0	" right "	2	45	"S "	2	8	"S "	1	1	0	0	"ASKNOQPGJBMFVHTLRIDEUYZX"	"XRTDEAGNSIOBQYUKPMLFHVJZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	237	"LS2 "	" oneCued "	0	" right "	2	90	"P "	2	9	"O "	0	1	0	1	"LTXHFNASBOEKZYURIPVMQDGJ"	"HYGVUMDRLOPNFJASZXEKTQBI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	257	"LS2 "	" oneCued "	0	" right "	2	90	"H "	2	7	"F "	0	1	0	1	"QVLZIPESTNAUORHJDBGFYXMK"	"EDGRSUVFHNPOJTBQLZYXAKMI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	264	"LS2 "	" oneCued "	0	" right "	2	315	"B "	2	6	"B "	1	1	0	0	"BPAYQSJZKFDGEROVTMLIHUNX"	"MXEKVIBDROSZGLFPQATYHNJU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	280	"LS2 "	" oneCued "	0	" right "	2	180	"E "	2	7	"V "	0	0	0	-1	"PLZRINEVDJBHQYTSAFMGKOUX"	"PZHOERQJFMBGIDVKNAXSTULY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	284	"LS2 "	" oneCued "	0	" right "	2	0	"E "	2	9	"T "	0	1	0	1	"EBKQNAPHYFRZTUSODJLMIXVG"	"HOVIZRSBMTEQJNLPYADGKXUF"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	293	"LS2 "	" oneCued "	0	" right "	2	180	"E "	2	10	"N "	0	1	0	1	"GDVSBJOZXNTERIAMLKHFQPYU"	"ALPBKOFVUDNEGSRYMTQIZXHJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	295	"LS2 "	" oneCued "	0	" right "	2	270	"A "	2	6	"A "	1	0	0	0	"ZQNXPHAJRLFTVOBMSKUDIYGE"	"LVMIETJXQNPUDOBGHFYAZKRS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE

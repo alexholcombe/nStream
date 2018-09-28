@@ -1,0 +1,21 @@
+"experimentPhase"	"trialnum"	"subject"	"task"	"noisePercent"	"targetLeftRightIfOne"	"streamsPerRing"	"baseAngleCWfromEast"	"resp0"	"button0"	"cuePos0"	"answer0"	"correct0"	"whichStream0"	"whichRespCue0"	"responsePosRelative0"	"streamLtrSequence0"	"streamLtrSequence1"	"streamLtrSequence2"	"streamLtrSequence3"	"streamLtrSequence4"	"streamLtrSequence5"	"streamLtrSequence6"	"streamLtrSequence7"	"timingBlips"	"responsePos"	"fixationReject"
+"main"	53	"IK4 "	" oneCued "	0	" right "	2	225	"P "	2	6	"P "	1	0	0	0	"DQYMNXPRVAFBZSTJEIUGHKLO"	"ZRSMDOKXGJBLEAFUPNHVYQTI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	56	"IK4 "	" oneCued "	0	" right "	2	135	"O "	2	10	"O "	1	0	0	0	"QUMHISFAJROTLENZDBGPYXKV"	"VSADFPBZYJHGILNQOEMUKTXR"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	73	"IK4 "	" oneCued "	0	" right "	2	180	"E "	2	10	"B "	0	1	0	1	"FLDGPVJMBKTAIOQXZYUSNRHE"	"LORISFXHYTBEKDPJNMUGAVQZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	88	"IK4 "	" oneCued "	0	" right "	2	270	"Z "	2	9	"Z "	1	0	0	0	"UNEGMYRJQZFIXKPABHTLVODS"	"ZQTXOYUVINKAEJDMGRHLFBPS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	99	"IK4 "	" oneCued "	0	" right "	2	45	"P "	2	10	"R "	0	0	0	-1	"THGVKJOUYPRBNSQMIDALFZXE"	"XSENGTFOBMJZVRALHIYQKPDU"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	107	"IK4 "	" oneCued "	0	" right "	2	90	"E "	2	7	"A "	0	0	0	1	"UYKSTBVAERIZLQDPMHGXNFJO"	"IQEONRKYBTUPFSMZDJAGHVLX"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	122	"IK4 "	" oneCued "	0	" right "	2	225	"A "	2	7	"N "	0	0	0	-1	"MGFPQYANRLZEKUOIVXSTJDHB"	"BNMEKOPLQFYXAIVSRGHDJUTZ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	153	"IK4 "	" oneCued "	0	" right "	2	0	"E "	2	8	"E "	1	0	0	0	"QHGXLYAVEUTPBIKJNRZSDOFM"	"NGUSYMHPXJLFARIEVOKZTBQD"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	163	"IK4 "	" oneCued "	0	" right "	2	180	"P "	2	6	"X "	0	0	0	1	"MVLEGHXPKYFBJDOTQAURSIZN"	"PTGHQXFDKJYEMZLVARBNOUSI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	2	"IK42 "	" oneCued "	0	" right "	2	180	"M "	2	10	"D "	0	0	0	1	"XNQKVEOPJADMLRTSFHUBIYGZ"	"IUDAPSJHRMYBFXENQZGKOLTV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	25	"IK42 "	" oneCued "	0	" right "	2	315	"M "	2	6	"Z "	0	1	0	1	"GTROKEZQVXPMNADBYISLHUFJ"	"AJXUFSZMLRBHTNDOYQPVEKGI"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	7	FALSE
+"main"	29	"IK42 "	" oneCued "	0	" right "	2	315	"A "	2	6	"A "	1	1	0	0	"BOVXNRTIKSYZMUGQJAPEFHLD"	"KMRVUYATHIXJEQDZPFGSONLB"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	6	FALSE
+"main"	37	"IK42 "	" oneCued "	0	" right "	2	90	"A "	2	9	"F "	0	1	0	1	"ELKIQVOAYJSBPFHDXGUNMZTR"	"SIMEKNTJUFADGOXQZBPLRHVY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
+"main"	43	"IK42 "	" oneCued "	0	" right "	2	135	"M "	2	7	"Z "	0	1	0	1	"ZGVDJMKELXYSUQAFRIOBPNHT"	"OFYUJPEZMHRVDKNGILTSQBXA"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	8	FALSE
+"main"	66	"IK42 "	" oneCued "	0	" right "	2	315	"J "	2	9	"J "	1	0	0	0	"FNAQOMSELJVXHZYIDBPKURGT"	"EBRTGUHSNQFXMOIVDJLAZKPY"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	82	"IK42 "	" oneCued "	0	" right "	2	0	"S "	2	9	"K "	0	1	0	2	"AGVNOPJXSKTBRHEQFDLMUZYI"	"ZIUYNMHAOKLSBVQTXPRJDFEG"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	96	"IK42 "	" oneCued "	0	" right "	2	0	"B "	2	9	"B "	1	1	0	0	"BSDZFATVMUPEXQOYINKGRLJH"	"TKQXUNDAIBEFRHZSOYJGMPLV"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	9	FALSE
+"main"	99	"IK42 "	" oneCued "	0	" right "	2	90	"M "	2	8	"R "	0	1	0	3	"EJOKINPLMRAQTUYGVXBDFZHS"	"OZNYDGLKRBUMFPXVTQEHJAIS"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	119	"IK42 "	" oneCued "	0	" right "	2	225	"A "	2	10	"T "	0	0	0	1	"YESOZNJMGRTALUHFKQPXIDVB"	"FZPINEMBUYKDRLOGHQVSXTAJ"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	11	FALSE
+"main"	140	"IK42 "	" oneCued "	0	" right "	2	315	"H "	2	9	"I "	0	0	0	1	"MTBZFVLYUIHGRAKPXJNDSOQE"	"HNTIUSXYQJFKRABZVGEMDLPO"	"-99"	"-99"	"-99"	"-99"	"-99"	"-99"	0	10	FALSE
