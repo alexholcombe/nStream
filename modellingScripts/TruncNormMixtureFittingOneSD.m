@@ -8,16 +8,16 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'End6Strm82msSOA', 'Ex6Strm82msSOA'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
-conditionNames ={'Endogenous', 'Exogenous'}; %For writing into CSVs
+sampleNames = {'twoStreams', 'eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
+conditionNames ={'twoStreams', 'eightStreams'}; %For writing into CSVs
 itemRates = [12,12];
 
 letterArray = char(65:90);      % A to Z
 nConditions = 1;
 nStreams = 1;
-nParticipants = [6 6];
-participants = {'CL','EC','IT','KR','SH','WN'};
-nTrials = 180;
+nParticipants = [10 10];
+participants = {'AJ7', 'AN14', 'BB6', 'IK4', 'JA8', 'LH9', 'LS2', 'LT5', 'RN12', 'YZ15'};
+nTrials = 150;
 nSessions = 1;
 nSamples = numel(sampleNames);
 
@@ -28,7 +28,7 @@ pdf_normmixture = @TGAB_pdf_Trunc_Norm_Mixture_Single; % We can use the single-e
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
 pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 200;
+nReplicates = 100;
 pCrit = .05;
 smallNonZeroNumber = 10^-3;
 fitMaxIter = 10^5;
@@ -126,73 +126,73 @@ for thisSample = 1:nSamples
     
     %estimates by condition, averaged over participants
     
-    minNegLogLikelihoodCombined = inf;
-    
-    theseErrorsCombined = squeeze(compiledErrors);
-    theseErrorsCombined = theseErrorsCombined(:);
-    theseErrorsCombined = theseErrorsCombined(~isnan(theseErrorsCombined));
-
-     % Compute negative log likelihood for uniform distribution
-
-    uniformNegLogLikelihoodCombined = -sum(log(pdf_uniformonly(theseErrorsCombined,1)));
-
-    warning('off', 'stats:mlecov:NonPosDefHessian');
-
-    for thisReplicate = 1:nReplicates
-        parameterLowerBound = [0 -1 .05];
-        parameterUpperBound = [1 4 5];
-        pGuess = rand;
-
-        muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand(); %Sample starting value from uniform in the interval defined by the bounds for that value
-        while muGuess < parameterLowerBound(2) || muGuess > parameterUpperBound(2)
-            muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand();
-        end
-
-        sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();
-        while sigmaGuess < parameterLowerBound(3) || sigmaGuess > parameterUpperBound(3)
-            sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();;
-        end
-        parameterGuess = [pGuess muGuess sigmaGuess];
-                    
-
-        [currentEstimatesCombined, currentCIsCombined] = mle(theseErrorsCombined, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
-        %[result pseudo_normal normFactor_uniform normFactor_normal uniResultTemp normResultTemp normResult uniResult] = pdf_global(theseErrors, parameterGuess);
-        % Compute negative log likelihood
-        thisNegLogLikelihoodCombined = -sum(log(pdf_normmixture(theseErrorsCombined,currentEstimatesCombined(1),currentEstimatesCombined(2),currentEstimatesCombined(3))));
-
-        if minNegLogLikelihoodCombined > thisNegLogLikelihoodCombined
-            minNegLogLikelihoodCombined = thisNegLogLikelihoodCombined;
-            bestEstimatesCombined = currentEstimatesCombined;
-            bestEstimateCIsCombined = currentCIsCombined;
-        end
-
-    end
-    
-
-    % Test for a significant difference in log likelihoods
-    [h,pValue,stat,cValue] = lratiotest(-minNegLogLikelihoodCombined,-uniformNegLogLikelihoodCombined,nFreeParameters,pCrit);
-
-    if h==0
-        fprintf('Null model not rejected for sample %s', sampleNames{thisSample})
-        % Null model not rejected; use uniform only
-
-        allEstimates_Combined(thisSample,:) = [0 NaN NaN];
-        allLowerBounds_Combined(thisSample,:) = [0 NaN NaN];
-        allUpperBounds_Combined(thisSample,:) = [0 NaN NaN];
-        allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
-        allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
-
-    else
-
-        % Use mixture
-
-        allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 rateFactor rateFactor];
-        allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 rateFactor rateFactor];
-        allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 rateFactor rateFactor];
-        allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
-        allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
-
-    end
+%     minNegLogLikelihoodCombined = inf;
+%     
+%     theseErrorsCombined = squeeze(compiledErrors);
+%     theseErrorsCombined = theseErrorsCombined(:);
+%     theseErrorsCombined = theseErrorsCombined(~isnan(theseErrorsCombined));
+% 
+%      % Compute negative log likelihood for uniform distribution
+% 
+%     uniformNegLogLikelihoodCombined = -sum(log(pdf_uniformonly(theseErrorsCombined,1)));
+% 
+%     warning('off', 'stats:mlecov:NonPosDefHessian');
+% 
+%     for thisReplicate = 1:nReplicates
+%         parameterLowerBound = [0 -1 .05];
+%         parameterUpperBound = [1 4 5];
+%         pGuess = rand;
+% 
+%         muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand(); %Sample starting value from uniform in the interval defined by the bounds for that value
+%         while muGuess < parameterLowerBound(2) || muGuess > parameterUpperBound(2)
+%             muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand();
+%         end
+% 
+%         sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();
+%         while sigmaGuess < parameterLowerBound(3) || sigmaGuess > parameterUpperBound(3)
+%             sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();;
+%         end
+%         parameterGuess = [pGuess muGuess sigmaGuess];
+%                     
+% 
+%         [currentEstimatesCombined, currentCIsCombined] = mle(theseErrorsCombined, 'pdf', pdf_normmixture, 'start', parameterGuess, 'lower', parameterLowerBound, 'upper', parameterUpperBound, 'options', options);
+%         %[result pseudo_normal normFactor_uniform normFactor_normal uniResultTemp normResultTemp normResult uniResult] = pdf_global(theseErrors, parameterGuess);
+%         % Compute negative log likelihood
+%         thisNegLogLikelihoodCombined = -sum(log(pdf_normmixture(theseErrorsCombined,currentEstimatesCombined(1),currentEstimatesCombined(2),currentEstimatesCombined(3))));
+% 
+%         if minNegLogLikelihoodCombined > thisNegLogLikelihoodCombined
+%             minNegLogLikelihoodCombined = thisNegLogLikelihoodCombined;
+%             bestEstimatesCombined = currentEstimatesCombined;
+%             bestEstimateCIsCombined = currentCIsCombined;
+%         end
+% 
+%     end
+%     
+% 
+%     % Test for a significant difference in log likelihoods
+%     [h,pValue,stat,cValue] = lratiotest(-minNegLogLikelihoodCombined,-uniformNegLogLikelihoodCombined,nFreeParameters,pCrit);
+% 
+%     if h==0
+%         fprintf('Null model not rejected for sample %s', sampleNames{thisSample})
+%         % Null model not rejected; use uniform only
+% 
+%         allEstimates_Combined(thisSample,:) = [0 NaN NaN];
+%         allLowerBounds_Combined(thisSample,:) = [0 NaN NaN];
+%         allUpperBounds_Combined(thisSample,:) = [0 NaN NaN];
+%         allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
+%         allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
+% 
+%     else
+% 
+%         % Use mixture
+% 
+%         allEstimates_Combined(thisSample,:) = bestEstimatesCombined.*[1 rateFactor rateFactor];
+%         allLowerBounds_Combined(thisSample,:) = bestEstimateCIsCombined(1,:).*[1 rateFactor rateFactor];
+%         allUpperBounds_Combined(thisSample,:) = bestEstimateCIsCombined(2,:).*[1 rateFactor rateFactor];
+%         allMinNegLogLikelihoods_Combined(1,thisSample) = minNegLogLikelihoodCombined;
+%         allNTrials_Combined(1,thisSample) = numel(theseErrorsCombined);
+% 
+%     end
 
     
     % Load data

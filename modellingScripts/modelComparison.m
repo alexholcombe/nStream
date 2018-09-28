@@ -6,11 +6,11 @@ likelihoodDirectory = 'modelOutput/Likelihood/';
 addpath(usePath)
 
 % Task parameters
-sampleNames = {'End6Strm82msSOA', 'Ex6Strm82msSOA'};
+sampleNames = {'twoStreams', 'eightStreams'};
 modelNames = {'truncNormal','normal'};
 
 nSamples = numel(sampleNames);
-nParticipants = [6 6];
+nParticipants = [10 10];
 nModels = numel(modelNames);
 nParams = 3;
 
@@ -20,8 +20,9 @@ allBICsByParticipant = NaN(nSamples, max(nParticipants), nModels);
 allBICsCombined = NaN(nSamples, nModels);
 
 
-conditionNames ={'Endogenous', 'Exogenous'}; %For writing into CSVs
-participants = {'CL','EC','IT','KR','SH','WN'};
+conditionNames ={'twoStreams', 'eightStreams'}; %For writing into CSVs
+participants = {'AJ7', 'AN14', 'BB6', 'IK4', 'JA8', 'LH9', 'LS2', 'LT5', 'RN12', 'YZ15'};
+
 
 
 cd([usePath likelihoodDirectory])
