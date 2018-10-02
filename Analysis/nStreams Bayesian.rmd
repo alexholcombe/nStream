@@ -398,7 +398,23 @@ for(thisParticipant in unique(LatencyNorm$Participant)){
   }
 }
 
+propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
+
 knitr::kable(propBeforeCue)
+
+ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
+        y = propBeforeCue$Proportion[propBeforeCue$Group=='eightStreams'],
+        data = propBeforeCue,
+        paired = T)
+
+x <- ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='eightStreams'],
+        data = propBeforeCue,
+        mu = 0) 
+
+ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
+        data = propBeforeCue, mu = 0)
+        
+
 ```
 
 ```{r}
