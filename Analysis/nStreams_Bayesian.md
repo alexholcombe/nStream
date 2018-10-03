@@ -7,7 +7,72 @@ Charlie Ludowici
 library(ggplot2)
 library(reshape2)
 library(papaja)
+library(BayesFactor)
+```
+
+    ## Loading required package: coda
+
+    ## Loading required package: Matrix
+
+    ## ************
+    ## Welcome to BayesFactor 0.9.12-4.2. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
+    ## 
+    ## Type BFManual() to open the manual.
+    ## ************
+
+``` r
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+library(magrittr)
+library(truncnorm)
 theme_set(theme_apa(base_size = 15) ) 
+
+inclusionBF <- function(model, variable){
+  
+  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
+
+  
+  priorProbs <- model %>% newPriorOdds() %>% `*`(model) %>% as.BFprobability() %>% as.vector() 
+  
+  theseNames <- names(priorProbs)
+  nProbs <- 1:length(priorProbs)
+  variableMatches <- grep(variable, theseNames)
+  
+  if(grepl(':', variable)){
+    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
+    
+    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
+    
+    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
+    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
+    
+    
+    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
+  } else {
+    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
+    
+    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
+    
+    
+    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
+    
+    
+    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
+  }
+}
 
 savePlots <- T
 
@@ -38,69 +103,126 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
 ``` r
 null = 0
 
-MMlatency <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
-MMprecision <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_precisionNorm.csv')
-MMefficacy <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_efficacyNorm.csv')
+allErrors <- read.table('allErrors.txt', sep = '\t', header = T)
 
-latency <- data.frame(twoStreams = MMlatency$SingleLeft[MMlatency$Group == 1], eightStreams = MMlatency$SingleLeft[MMlatency$Group == 2])
+LatencyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+LatencyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
 
-precision <- data.frame(twoStreams = MMprecision$SingleLeft[MMprecision$Group == 1], eightStreams = MMprecision$SingleLeft[MMprecision$Group == 2])
+PrecisionNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
+PrecisionTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
 
-efficacy <- data.frame(twoStreams = MMefficacy$SingleLeft[MMefficacy$Group == 1], eightStreams = MMefficacy$SingleLeft[MMefficacy$Group == 2])
-
-frequentistTestLatency = t.test(x = latency$eightStreams, y=latency$twoStreams, paired = T)
-tLatency <- frequentistTestLatency$statistic[[1]]
-frequentistTestLatency
+EfficacyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
+EfficacyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
 ```
 
-    ## 
-    ##  Paired t-test
-    ## 
-    ## data:  latency$eightStreams and latency$twoStreams
-    ## t = 6.429, df = 9, p-value = 0.0001211
-    ## alternative hypothesis: true difference in means is not equal to 0
-    ## 95 percent confidence interval:
-    ##  26.57040 55.42028
-    ## sample estimates:
-    ## mean of the differences 
-    ##                40.99534
+Model fits
+==========
+
+``` r
+BFs <- read.csv('../modelOutput/BF_ByParticipant.csv', header = T)
+BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
+```
+
+    ##  [1] 1.403833e+00 1.475233e+02 2.649419e+03 1.033721e+04 2.947341e+05
+    ##  [6] 8.565688e+05 2.142525e+06 8.395087e+08 1.629370e+10 1.075587e+16
+
+``` r
+allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
+allEfficacy$participantN <- factor(rep(1:10, times =4))
+
+efficacyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allEfficacy, whichRandom = 'participantN')
+
+efficacyModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
+
+for(thisFactor in efficacyModelInclusionBF$factor){
+  efficacyModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(efficacyModelBF, thisFactor)))
+  print(inclusionBF(efficacyModelBF, thisFactor))
+}
+```
+
+    ## [1] 23.79747
+    ## [1] 11.78798
+    ## [1] 7.282001
+
+``` r
+knitr::kable(efficacyModelInclusionBF)
+```
+
+| factor      |         BF|
+|:------------|----------:|
+| Group       |  23.797470|
+| Model       |  11.787983|
+| Group:Model |   7.282001|
+
+``` r
+allLatency <- rbind(LatencyNorm,LatencyTNorm)
+allLatency$participantN <- factor(rep(1:10, times =4))
+
+latencyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allLatency, whichRandom = 'participantN')
+
+latencyModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
+
+for(thisFactor in latencyModelInclusionBF$factor){
+  latencyModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(latencyModelBF, thisFactor)))
+  print(inclusionBF(latencyModelBF, thisFactor))
+}
+```
+
+    ## [1] 20507374
+    ## [1] 1.004012
+    ## [1] 1.076445
+
+``` r
+knitr::kable(latencyModelInclusionBF)
+```
+
+| factor      |            BF|
+|:------------|-------------:|
+| Group       |  2.050737e+07|
+| Model       |  1.004012e+00|
+| Group:Model |  1.076445e+00|
+
+``` r
+allPrecision <- rbind(PrecisionNorm,PrecisionTNorm)
+allPrecision$participantN <- factor(rep(1:10, times =4))
+
+precisionModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allPrecision, whichRandom = 'participantN')
+
+precisionModelInclusionBF <- expand.grid(factor = c('Group','Model','Group:Model'), BF = numeric(1))
+
+for(thisFactor in precisionModelInclusionBF$factor){
+  precisionModelInclusionBF %<>% mutate(BF = replace(BF, factor == thisFactor, inclusionBF(precisionModelBF, thisFactor)))
+  print(inclusionBF(precisionModelBF, thisFactor))
+}
+```
+
+    ## [1] 467.1998
+    ## [1] 9.623029
+    ## [1] 9.610994
+
+``` r
+knitr::kable(precisionModelInclusionBF)
+```
+
+| factor      |          BF|
+|:------------|-----------:|
+| Group       |  467.199776|
+| Model       |    9.623029|
+| Group:Model |    9.610994|
 
 Latency Analyses
 ================
 
 ``` r
-latencyForPlot <- melt(latency, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
-latencyForPlot$Participant <- ordered(rep(1:10, times = 2))
+latencyTwo <- LatencyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+latencyEight <- LatencyNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
-latencyPlot <- ggplot(latencyForPlot,aes(x=Condition, y=Estimate))+
-  geom_violin()+
-  geom_line(aes(group=Participant, colour=Participant))+
-  geom_point(aes(colour=Participant), size = 3)+
-  scale_colour_brewer(palette = 'Spectral')+
-  labs(x='Condition',y='Estimate (ms)',title='Latency')+
-  theme(plot.title = element_text(hjust=.5))
+latencyTFreq  <- t.test(x = latencyTwo,
+                        y = latencyEight, 
+                        paired = T)
 
-show(latencyPlot)
-```
+tLatency <- latencyTFreq$statistic[[1]]
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-3-1.png)
-
-``` r
-latencyScatter <- ggplot(latency, aes(x=twoStreams, y=eightStreams))+
-  geom_point(size = 4, aes(colour=ordered(1:10)))+
-  scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(20,120), y=c(20,120))+
-  labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
-  theme(plot.title = element_text(size=15, hjust=.5))+
-  geom_abline(intercept = 0, slope = 1,linetype='dashed')
-
-show(latencyScatter)
-```
-
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-3-2.png)
-
-``` r
-t  <- tLatency
 N1 <- 10
 N2 <- 10
 
@@ -119,72 +241,90 @@ BFplus = ( 2 * dcauchy(null,priorMean,priorSD) ) / posterior(tLatency, N1, delta
 BF10
 ```
 
-    ## [1] 242.5299
+    ## [1] 242.5306
 
 ``` r
 BFplus
 ```
 
-    ## [1] 484.9676
+    ## [1] 0.09212442
 
 ``` r
 delta  <- seq(-2, 4, .01)
 
-posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta, priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+posteriorAndPriorDF <- data.frame(
+  delta = delta, 
+  posterior = posterior(tLatency,N1,delta=delta, priorMean=priorMean,priorSD=priorSD), 
+  prior = dcauchy(delta, priorMean,priorSD))
 
-posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), 
+                                 interval=c(-4,4),
+                                 maximum = T)[[1]]
 
 #This would only work for normal, we use Cauchy!
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
 
 
-ggplot(posteriorAndPriorDF, aes(x=delta))+
-  geom_line(aes(y=posterior, linetype = 'Posterior'))+
-  geom_line(aes(y=prior, linetype = 'Prior'))+
-  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
-  labs(x = expression(delta), y='Density')
-```
-
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-3-3.png)
-
-Precision Analysis
-==================
-
-``` r
-precisionForPlot <- melt(precision, measure.vars = c('twoStreams','eightStreams'),variable.name = 'Condition', value.name = 'Estimate')
-precisionForPlot$Participant <- ordered(rep(1:10, times = 2))
-
-precisionPlot <- ggplot(precisionForPlot,aes(x=Condition, y=Estimate))+
+LatencyNormPlot <- ggplot(LatencyNorm,aes(x=Group, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
-  geom_point(aes(colour=Participant),alpha=.8, size = 3)+
+  geom_point(aes(colour=Participant), size = 3)+
   scale_colour_brewer(palette = 'Spectral')+
-  labs(x='Condition',y='Estimate (ms)',title='Precision')+
+  labs(x='Condition',y='Estimate (ms)',title='Latency')+
   theme(plot.title = element_text(hjust=.5))
 
-show(precisionPlot)
+show(LatencyNormPlot)
 ```
 
 ![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
-precisionScatter <- ggplot(precision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
-  geom_point(size = 4)+
+wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
+```
+
+    ## Using Estimate as value column: use value.var to override.
+
+``` r
+LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, aes(colour=ordered(1:10)))+
   scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(40,100), y=c(40,100))+
-  labs(title='Precision Estimates (ms)')+
+  lims(x=c(20,120), y=c(20,120))+
+  labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = 100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
-show(precisionScatter)
+show(LatencyNormScatter)
 ```
 
 ![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 ``` r
-frequentistTestPrecision <- t.test(x = precision$eightStreams, y = precision$twoStreams, paired = T)
-tPrecision <- frequentistTestPrecision$statistic[[1]]
+LatencyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+  geom_line(aes(y=posterior, linetype = 'Posterior'))+
+  geom_line(aes(y=prior, linetype = 'Prior'))+
+  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
+  labs(x = expression(delta), y='Density', title = 'Latency Effect Size')
+
+show(LatencyNormBayesPlot)
+```
+
+![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-3.png)
+
+Precision Analysis
+==================
+
+``` r
+precisionTwo <- PrecisionNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+precisionEight <- PrecisionNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
+
+precisionTFreq  <- t.test(x = precisionTwo,
+                        y = precisionEight, 
+                        paired = T)
+
+tPrecision <- precisionTFreq$statistic[[1]]
 
 t  <- tPrecision
 N1 <- 10
@@ -211,67 +351,76 @@ BF10
 BFplus
 ```
 
-    ## [1] 0.09697912
+    ## [1] 82.12754
 
 ``` r
 delta  <- seq(-4, 2, .01)
 
 posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
-posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
-                                                                       priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
+posteriorAndPriorDF <- data.frame(delta = delta, 
+                                  posterior = posterior(tPrecision,N1,delta=delta,
+                                                    priorMean=priorMean,priorSD=priorSD), 
+                                  prior = dcauchy(delta, priorMean,priorSD))
 
-posteriorModeEfficacy <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
-
-ggplot(posteriorAndPriorDF, aes(x=delta))+
-  geom_line(aes(y=posterior, linetype = 'Posterior'))+
-  geom_line(aes(y=prior, linetype = 'Prior'))+
-  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
-  labs(x = expression(delta), y='Density')
-```
-
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-3.png)
-
-Efficacy Analysis
-=================
-
-``` r
-frequentistTestEfficacy <- t.test(x = efficacy$eightStreams, y = efficacy$twoStreams, paired = T)
-tEfficacy <- frequentistTestEfficacy$statistic[[1]]
-
-efficacyForPlot <- melt(efficacy, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
-efficacyForPlot$Participant <- ordered(rep(1:10, times = 2))
+posteriorModePrecision <- optimize(function(delta) posterior(tPrecision, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
 
 
-efficacyPlot <- ggplot(efficacyForPlot, aes(x=Condition, y=Estimate))+
+PrecisionNormPlot <- ggplot(PrecisionNorm,aes(x=Group, y=Estimate))+
   geom_violin()+
   geom_line(aes(group=Participant, colour=Participant))+
-  geom_point(aes(colour = Participant), size = 3)+
-  labs(x='Condition',y='Estimate',title='Efficacy')+
-  theme(plot.title = element_text(hjust=.5))+
-  scale_colour_brewer(palette = 'Spectral')
+  geom_point(aes(colour=Participant),alpha=.8, size = 3)+
+  scale_colour_brewer(palette = 'Spectral')+
+  labs(x='Condition',y='Estimate (ms)',title='Precision')+
+  theme(plot.title = element_text(hjust=.5))
 
-show(efficacyPlot)
+show(PrecisionNormPlot)
 ```
 
 ![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
-efficacyScatter <- ggplot(efficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+wideFormatPrecision <- dcast(data=PrecisionNorm,formula = Participant~Group)
+```
+
+    ## Using Estimate as value column: use value.var to override.
+
+``` r
+PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
   geom_point(size = 4)+
   scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(0,1), y=c(0,1))+
-  labs(title='Efficacy Estimates', y = 'Eight Streams', y='Eight Streams')+
+  lims(x=c(40,100), y=c(40,100))+
+  labs(title='Precision Estimates (ms)')+
   theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
-show(efficacyScatter)
+show(PrecisionNormScatter)
 ```
 
 ![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-5-2.png)
 
 ``` r
-t  <- tEfficacy
+PrecisionNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
+  geom_line(aes(y=posterior, linetype = 'Posterior'))+
+  geom_line(aes(y=prior, linetype = 'Prior'))+
+  scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
+  labs(x = expression(delta), y='Density', title = 'Precision Effect Size')
+```
+
+Efficacy Analysis
+=================
+
+``` r
+efficacyTwo <- EfficacyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+efficacyEight <- EfficacyNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
+
+efficacyTFreq  <- t.test(x = efficacyTwo,
+                        y = efficacyEight, 
+                        paired = T)
+
+tEfficacy <- efficacyTFreq$statistic[[1]]
 N1 <- 10
 N2 <- 10
 
@@ -296,34 +445,255 @@ BF10
 BFplus
 ```
 
-    ## [1] 0.5468815
+    ## [1] 0.2042808
 
 ``` r
 delta  <- seq(-2, 4, .01)
 
-posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(t,N1,delta=delta,
+posteriorAndPriorDF <- data.frame(delta = delta, posterior = posterior(tEfficacy ,N1,delta=delta,
                                                                        priorMean=priorMean,priorSD=priorSD), prior = dcauchy(delta, priorMean,priorSD))
-ggplot(posteriorAndPriorDF, aes(x=delta))+
+
+posteriorModeEfficacy <- optimize(function(delta) posterior(tEfficacy, N1, delta=delta,priorMean=priorMean,priorSD=priorSD), interval=c(-4,4),maximum = T)[[1]]
+
+
+EfficacyNormPlot <- ggplot(EfficacyNorm, aes(x=Group, y=Estimate))+
+  geom_violin()+
+  geom_line(aes(group=Participant, colour=Participant))+
+  geom_point(aes(colour = Participant), size = 3)+
+  labs(x='Condition',y='Estimate',title='Efficacy')+
+  theme(plot.title = element_text(hjust=.5))+
+  scale_colour_brewer(palette = 'Spectral')
+
+show(EfficacyNormPlot)
+```
+
+![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+``` r
+wideFormatEfficacy <- dcast(data=EfficacyNorm,formula = Participant~Group)
+```
+
+    ## Using Estimate as value column: use value.var to override.
+
+``` r
+EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+  geom_point(size = 4)+
+  scale_color_brewer(palette='Spectral', name='Participant')+
+  lims(x=c(0,1), y=c(0,1))+
+  labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
+  theme(plot.title = element_text(size=15, hjust=.5))+
+  annotate('text', x=.8, y=.45, label = paste0('BF10 = ', round(BF10,2)))+
+  annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
+  geom_abline(intercept = 0, slope = 1,linetype='dashed')
+
+show(EfficacyNormScatter)
+```
+
+![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-6-2.png)
+
+``` r
+EfficacyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+
   geom_line(aes(y=prior, linetype = 'Prior'))+
   scale_linetype_manual(values = c('solid','dashed'),  guide = 'legend', name = NULL)+
-  labs(x = expression(delta), y='Density')
+  labs(x = expression(delta), y='Density', title = 'Efficacy Effect Size')
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-5-3.png)
+``` r
+propBeforeCue <- expand.grid(
+  Participant = unique(LatencyNorm$Participant),
+  Group = unique(LatencyNorm$Group),
+  Proportion = -999,
+  nTrialsBeforeCue = -999
+)
+
+for(thisParticipant in unique(LatencyNorm$Participant)){
+  for(thisCondition in unique(LatencyNorm$Group)){
+    
+    thisNormLatency <- LatencyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
+    thisNormPrecision <- PrecisionNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
+    
+    thisNormEfficacy <- EfficacyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)
+    
+    thisNTrials <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject) %>% nrow 
+    
+    thisProportionBeforeCue <- pnorm(0, thisNormLatency, thisNormPrecision)
+    thisNEfficaciousBeforeCue <- thisNTrials * thisNormEfficacy * thisProportionBeforeCue
+    
+    propBeforeCue %<>% mutate(Proportion = replace(Proportion, Participant==thisParticipant & Group == thisCondition, thisProportionBeforeCue))
+   
+    propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue)) 
+  }
+}
+
+propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
+```
+
+    ## # A tibble: 2 x 2
+    ##   Group        proportion
+    ##   <fct>             <dbl>
+    ## 1 eightStreams     0.0636
+    ## 2 twoStreams       0.270
 
 ``` r
-if(savePlots){
-  ggsave(precisionPlot, file = 'precisionViolin.png', height=15, width=20,units='cm')
-  ggsave(latencyPlot, file = 'latencyViolin.png', height=15, width=20,units='cm')
-  ggsave(efficacyPlot, file = 'efficacyViolin.png', height=15, width=20,units='cm')
+knitr::kable(propBeforeCue)
+```
+
+| Participant | Group        |  Proportion|  nTrialsBeforeCue|
+|:------------|:-------------|-----------:|-----------------:|
+| AJ7         | twoStreams   |   0.3723110|         40.512273|
+| AN14        | twoStreams   |   0.2076868|         20.186414|
+| BB6         | twoStreams   |   0.3449912|         40.281685|
+| IK4         | twoStreams   |   0.2010520|         22.676133|
+| JA8         | twoStreams   |   0.4560700|         45.892684|
+| LH9         | twoStreams   |   0.1715194|         18.358339|
+| LS2         | twoStreams   |   0.3321078|         29.860646|
+| LT5         | twoStreams   |   0.2016522|         25.142964|
+| RN12        | twoStreams   |   0.0873701|          5.547129|
+| YZ15        | twoStreams   |   0.3271893|         24.086366|
+| AJ7         | eightStreams |   0.0939610|         10.288167|
+| AN14        | eightStreams |   0.0371011|          3.493398|
+| BB6         | eightStreams |   0.0837935|          9.306187|
+| IK4         | eightStreams |   0.0301000|          2.662444|
+| JA8         | eightStreams |   0.1123735|         11.191320|
+| LH9         | eightStreams |   0.0875259|         10.723908|
+| LS2         | eightStreams |   0.0410124|          4.243084|
+| LT5         | eightStreams |   0.0461194|          5.663203|
+| RN12        | eightStreams |   0.0680447|          5.339233|
+| YZ15        | eightStreams |   0.0359095|          3.425442|
+
+``` r
+ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
+        y = propBeforeCue$Proportion[propBeforeCue$Group=='eightStreams'],
+        data = propBeforeCue,
+        paired = T)
+```
+
+    ## Bayes factor analysis
+    ## --------------
+    ## [1] Alt., r=0.707 : 214.9873 ±0%
+    ## 
+    ## Against denominator:
+    ##   Null, mu = 0 
+    ## ---
+    ## Bayes factor type: BFoneSample, JZS
+
+``` r
+x <- ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='eightStreams'],
+        data = propBeforeCue,
+        mu = 0) 
+
+ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
+        data = propBeforeCue, mu = 0)
+```
+
+    ## Bayes factor analysis
+    ## --------------
+    ## [1] Alt., r=0.707 : 723.6108 ±0%
+    ## 
+    ## Against denominator:
+    ##   Null, mu = 0 
+    ## ---
+    ## Bayes factor type: BFoneSample, JZS
+
+``` r
+# 
+# EfficacyNorm$Parameter <- as.character('Efficacy')
+# LatencyNorm$Parameter <- as.character('Latency')
+# PrecisionNorm$Parameter <- as.character('Precision')
+# 
+# allParams <- rbind(EfficacyNorm,LatencyNorm,PrecisionNorm)
+# 
+# allParams <- melt(allParams, measure.vars = c('twoStreams','eightStreams'), variable.name = 'Condition',value.name = 'Estimate')
+# 
+# paramBar <- ggplot(allParams[!allParams$Parameter=='Efficacy',], aes(x=Parameter,y=Estimate, fill = Condition))+
+#   stat_summary(geom='bar', fun.y = mean, position = position_dodge(.9))+
+#   stat_summary(geom='errorbar', fun.data=mean_se, position = position_dodge(.9), width = .3)+
+#   scale_fill_brewer(palette = 'Spectral')
+# 
+# paramBar
+# 
+# predictions <- data.frame(twoStreams = rnorm(1000, LatencyNorm$twoStreams[7], PrecisionNorm$twoStreams[7]), eightStreams = rnorm(1000, LatencyNorm$eightStreams[7], PrecisionNorm$eightStreams[7]))
+# 
+# predictions <- melt(predictions, measure.vars = c('twoStreams', 'eightStreams'), variable.name = 'Condition', value.name = 'response')
+# 
+# meanLatencyTwo <- mean(LatencyNorm$twoStreams)
+# meanLatencyEight <- mean(LatencyNorm$eightStreams)
+# 
+# meanPrecisionTwo <- mean(PrecisionNorm$twoStreams)
+# meanPrecisionEight <- mean(PrecisionNorm$eightStreams)
+# 
+# 
+# predictionPlot <- ggplot()+
+#   stat_function(data=data.frame(x=c(-400:400)/83.33), aes(x, fill = 'Eight Streams'), fun = dnorm, args = list(mean = meanLatencyEight/83.33, sd = meanPrecisionEight/83.33), geom='area', alpha = .9)+
+#   stat_function(data=data.frame(x=c(-400:400)/83.33), aes(x, fill = 'Two Streams'), fun = dnorm, args = list(mean = meanLatencyTwo/83.33, sd = meanPrecisionTwo/83.33), geom='area', alpha = .9)+
+#   scale_fill_manual(values=c('Two Streams' = '#628093', 'Eight Streams' = '#dca951'))+
+#   scale_x_continuous(breaks = -3:4,limits = c(-3,4))+
+#   labs(x='SPE', y=NULL, fill = 'Condition')
+# 
+# predictionPlot
+# 
+# 
+# if(savePlots){
+#   ggsave(PrecisionNormPlot, file = 'PrecisionNormViolin.png', height=15, width=20,units='cm')
+#   ggsave(LatencyNormPlot, file = 'LatencyNormViolin.png', height=15, width=20,units='cm')
+#   ggsave(EfficacyNormPlot, file = 'EfficacyNormViolin.png', height=15, width=20,units='cm')
+#   
+#   ggsave(PrecisionNormScatter, file = 'PrecisionNormScatter.png', height=15, width=20,units='cm')
+#   ggsave(LatencyNormScatter, file = 'LatencyNormScatter.png', height=15, width=20,units='cm')
+#   ggsave(EfficacyNormScatter, file = 'EfficacyNormScatter.png', height=15, width=20,units='cm')
+#   
+#   
+#   ggsave(EfficacyNormBayesPlot, file = 'EfficacyNormEffectSize.png', height=15, width=20,units='cm')
+#   ggsave(LatencyNormBayesPlot, file = 'LatencyNormEffectSize.png', height=15, width=20,units='cm')
+#     ggsave(PrecisionNormBayesPlot, file = 'PrecisionNormEffectSize.png', height=15, width=20,units='cm')
+# }
+```
+
+``` r
+for(thisParticipant in unique(allErrors$ID)){
+  densities <- data.frame(SPE = numeric(0), condition = character(0), normDensity = numeric(0), tNormDensity = numeric(0))
+  for(thisCondition in unique(allErrors$condition)){
+    
+    thisNormLatency <- LatencyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
+    thisNormPrecision <- PrecisionNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
+    
+    thisTNormLatency <- LatencyTNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
+    thisTNormPrecision <- PrecisionTNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
+    
+    theseErrors <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
+    
+    #print(paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
+    minError <- theseErrors %>% pull(error) %>% min
+    maxError <- theseErrors %>% pull(error) %>% max
+    thisRange <- seq(minError,maxError,.1)
+    
+    theseDensities <- data.frame(SPE = thisRange, 
+                                 condition = rep(thisCondition, times = length(thisRange)),
+                                 normDensity = dnorm(thisRange, thisNormLatency, thisNormPrecision), 
+                                 tNormDensity = dtruncnorm(thisRange, a = thisTNormLatency-thisTNormPrecision, thisTNormLatency, thisTNormPrecision, b = Inf))
+    
+    densities <- rbind(densities, theseDensities)
+    
+    if(any(is.nan(theseDensities$density))){
+      print(theseDensities)
+    }
+    
   
-  ggsave(precisionScatter, file = 'precisionScatter.png', height=15, width=20,units='cm')
-  ggsave(latencyScatter, file = 'latencyScatter.png', height=15, width=20,units='cm')
-  ggsave(efficacyScatter, file = 'efficacyScatter.png', height=15, width=20,units='cm')
+    # thisFileName <- paste0('modelOutput/Plots/',thisCondition,'/',thisRing,'/',thisParticipant,'-',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.png')
+    # ggsave(filename = thisFileName, thisPlot,width = 16, height = 9)
+  }
+  errors <- allErrors %>% filter(ID == thisParticipant)
+  thisPlot <- ggplot(errors, aes(x=error))+
+      geom_histogram(binwidth = 1)+
+      geom_line(data = densities, aes(x = SPE, y=tNormDensity*150))+ #scale density to histogram with density * N * binwidth
+      geom_line(data = densities, aes(x = SPE, y=normDensity*150))+
+      scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
+      labs(y = 'Frequency', title = thisParticipant)+
+    facet_wrap(~condition)
+    
+    show(thisPlot)
 }
 ```
 
-    ## Warning: Removed 1 rows containing missing values (geom_point).
-
-    ## Warning: Removed 2 rows containing missing values (geom_point).
+![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-1.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-2.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-3.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-4.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-5.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-6.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-7.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-8.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-9.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-10.png)

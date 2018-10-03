@@ -1,5 +1,5 @@
 ---
-title: "nStreams Analysis (truncNorm)"
+title: "nStreams Analysis (two-streams Buffer, eight-streams truncNorm)"
 author: "Charlie Ludowici"
 date: "5/18/2017"
 output: github_document
@@ -101,7 +101,7 @@ BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 #Latency Analyses
 
 ```{r warning=FALSE}
-latencyTwo <- LatencyTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+latencyTwo <- LatencyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
 latencyEight <- LatencyTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 latencyTFreq  <- t.test(x = latencyTwo,
@@ -182,7 +182,7 @@ show(LatencyTNormBayesPlot)
 #Precision Analysis
 
 ```{r warning=FALSE}
-precisionTwo <- PrecisionTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+precisionTwo <- PrecisionNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
 precisionEight <- PrecisionTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 precisionTFreq  <- t.test(x = precisionTwo,
@@ -259,7 +259,7 @@ PrecisionTNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 #Efficacy Analysis
 
 ```{r warning=FALSE}
-efficacyTwo <- EfficacyTNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
+efficacyTwo <- EfficacyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
 efficacyEight <- EfficacyTNorm %>% filter(Group == 'eightStreams') %>% pull(Estimate)
 
 efficacyTFreq  <- t.test(x = efficacyTwo,
