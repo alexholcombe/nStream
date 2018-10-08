@@ -52,15 +52,15 @@ allErrors <- read.table('Analysis/allErrors.txt', sep='\t', stringsAsFactors = F
 nReps <- 100
 
 bounds <- parameterBounds()
+bounds$upper[3] <- 3
 
-bounds['precision','upper'] <- 3
 
 runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file. 
 plots <- FALSE
 
 nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
 
-if(nParamFiles>0){
+if(nParamFiles>0 and !runAnway){
   print('we out here')
   paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
   
@@ -108,7 +108,7 @@ if(nParamFiles>0){
   )
 }  
 
-if(length(notModelled)>0 & runAnyway){
+if(length(notModelled)>0){
   for(thisParticipant in notModelled){
     for(thisCondition in unique(allErrors$crowded)){
       for(thisRing in unique(allErrors$ring)){
@@ -165,12 +165,11 @@ if(length(notModelled)>0 & runAnyway){
   write.csv(params, paste0('modelOutput/parameterEstimates',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
 }
 
-paramsForAnalysis <- params %>% filter(efficacy>.1 & ID != 'CH')
+params %<>% mutate(stringID = ID)
+params %<>% mutate(ID = as.factor(rep(1:16, times = 6)))
+paramsForAnalysis <- params %>% filter(efficacy>.1 & ID != 'CH' & !efficacy %in% bounds[1,] & !latency %in% bounds[2,] & !precision %in% bounds[3,] & precision < bounds[3,2])
 paramsForAnalysis$ring %<>% as.factor
-paramsForAnalysis$ID %<>% as.character
-paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='AC5SONA', 'problemID')) %>%
-  as.data.frame() #For some reason the string 'AC5SONA' is interpreted as a nul by anovaBF, which uses base64
-paramsForAnalysis$ID %<>% as.factor
+
 
 #######################
 ###Efficacy Analyses###
@@ -255,8 +254,7 @@ ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
 ###Plots with Density###
 ########################
 
-paramsForAnalysis$ID %<>% as.character
-paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='problemID', 'AC5SONA')) %>%
+paramsForAnalysis %<>% mutate(ID=stringID) %>%
   as.data.frame() #Convert the problem name back for plotting
 
 if(participantPlots){

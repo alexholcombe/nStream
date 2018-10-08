@@ -83,6 +83,13 @@ IDs <- character()
 
 for(dataset in files){
   ID <- strsplit(dataset, '(?<=a)/|_(?=[0-9])', perl=T)[[1]][2]
+  
+  if(ID == 'MH8SONA'){ #I made a mistake with the ID codes for these participants. Here's a correction that in the wrangled data
+    ID = 'MH9SONA'
+  } else if(ID == 'MN9SONA'){
+    ID = 'MN10SONA'
+  }
+  
   print(ID)
   if(strsplit(ID,'')[[1]][nchar(ID)]=='2'){
     ID <- paste0(strsplit(ID,'')[[1]][1:2],collapse = '')
@@ -136,7 +143,7 @@ for(participant in names(dataSets)){
     #print(timesForThisParticipant)
     print(dateString)
     if(firstBlock){
-      #print('firstBlock')
+      print('firstBlock')
       temp <- temp[-pracTrials,]
     }
       
