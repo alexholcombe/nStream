@@ -1,6 +1,0 @@
-experimentPhase	trialnum	subject	nStreams	ring	resp0	button0	cue0	answer0	correct0	pairAngle0	whichStreamCuedAngle0	whichRespCue0	whichInPair0	cuedStream0	responsePosRelative0	streamLtrSequence0	streamLtrSequence1	streamLtrSequence2	streamLtrSequence3	streamLtrSequence4	streamLtrSequence5	streamLtrSequence6	streamLtrSequence7	streamLtrSequence8	streamLtrSequence9	streamLtrSequence10	streamLtrSequence11	streamLtrSequence12	streamLtrSequence13	streamLtrSequence14	streamLtrSequence15	streamLtrSequence16	streamLtrSequence17	timingBlips
-main	0	Hubert	2	2	F	0	False	A	False	120	300.0	0	1	1	NA	F	I	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	0
-main	1	Hubert	2	1	X	0	True	A	True	120	330.0	0	1	1	NA	R	X	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	0
-main	2	Hubert	2	0	E	0	False	A	False	120	300.0	0	1	1	NA	E	M	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	0
-main	3	Hubert	2	0	R	0	False	A	False	60	240.0	0	1	1	NA	R	A	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	0
-main	4	Hubert	2	1	M	0	True	A	False	60	270.0	0	1	1	NA	H	R	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	999	0
