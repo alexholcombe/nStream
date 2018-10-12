@@ -1,0 +1,27 @@
+Participant,Group,Parameter,Model,Estimate
+AB14,twoStreams,Precision,Truncated Normal,46.1033
+BN12,twoStreams,Precision,Truncated Normal,59.0760
+EF6,twoStreams,Precision,Truncated Normal,240.1622
+FC21,twoStreams,Precision,Truncated Normal,48.9088
+GR13,twoStreams,Precision,Truncated Normal,60.9794
+HT5,twoStreams,Precision,Truncated Normal,143.0697
+JW8,twoStreams,Precision,Truncated Normal,122.0466
+KH18,twoStreams,Precision,Truncated Normal,59.7724
+MC10,twoStreams,Precision,Truncated Normal,53.8836
+NC21,twoStreams,Precision,Truncated Normal,97.8456
+RL11,twoStreams,Precision,Truncated Normal,60.5181
+SH20,twoStreams,Precision,Truncated Normal,65.7446
+ZZ9,twoStreams,Precision,Truncated Normal,122.3716
+AB14,eightStreams,Precision,Truncated Normal,41.6667
+BN12,eightStreams,Precision,Truncated Normal,67.4970
+EF6,eightStreams,Precision,Truncated Normal,189.8521
+FC21,eightStreams,Precision,Truncated Normal,75.2995
+GR13,eightStreams,Precision,Truncated Normal,67.9436
+HT5,eightStreams,Precision,Truncated Normal,146.1358
+JW8,eightStreams,Precision,Truncated Normal,122.0669
+KH18,eightStreams,Precision,Truncated Normal,79.5717
+MC10,eightStreams,Precision,Truncated Normal,69.4720
+NC21,eightStreams,Precision,Truncated Normal,99.9874
+RL11,eightStreams,Precision,Truncated Normal,57.4213
+SH20,eightStreams,Precision,Truncated Normal,76.1539
+ZZ9,eightStreams,Precision,Truncated Normal,129.6444

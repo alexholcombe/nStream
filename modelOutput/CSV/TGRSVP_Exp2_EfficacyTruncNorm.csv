@@ -1,0 +1,27 @@
+Participant,Group,Parameter,Model,Estimate
+AB14,twoStreams,Efficacy,Truncated Normal,0.7488
+BN12,twoStreams,Efficacy,Truncated Normal,0.7748
+EF6,twoStreams,Efficacy,Truncated Normal,0.6710
+FC21,twoStreams,Efficacy,Truncated Normal,0.6670
+GR13,twoStreams,Efficacy,Truncated Normal,0.6708
+HT5,twoStreams,Efficacy,Truncated Normal,0.7054
+JW8,twoStreams,Efficacy,Truncated Normal,0.5492
+KH18,twoStreams,Efficacy,Truncated Normal,0.8466
+MC10,twoStreams,Efficacy,Truncated Normal,0.6048
+NC21,twoStreams,Efficacy,Truncated Normal,0.7655
+RL11,twoStreams,Efficacy,Truncated Normal,0.6071
+SH20,twoStreams,Efficacy,Truncated Normal,0.7904
+ZZ9,twoStreams,Efficacy,Truncated Normal,0.4975
+AB14,eightStreams,Efficacy,Truncated Normal,0.8421
+BN12,eightStreams,Efficacy,Truncated Normal,0.8467
+EF6,eightStreams,Efficacy,Truncated Normal,0.5022
+FC21,eightStreams,Efficacy,Truncated Normal,0.6528
+GR13,eightStreams,Efficacy,Truncated Normal,0.6915
+HT5,eightStreams,Efficacy,Truncated Normal,0.5145
+JW8,eightStreams,Efficacy,Truncated Normal,0.6356
+KH18,eightStreams,Efficacy,Truncated Normal,0.8507
+MC10,eightStreams,Efficacy,Truncated Normal,0.6086
+NC21,eightStreams,Efficacy,Truncated Normal,0.6542
+RL11,eightStreams,Efficacy,Truncated Normal,0.7252
+SH20,eightStreams,Efficacy,Truncated Normal,0.8093
+ZZ9,eightStreams,Efficacy,Truncated Normal,0.4268

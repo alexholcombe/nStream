@@ -15,6 +15,8 @@ library(magrittr)
 library(truncnorm)
 theme_set(theme_apa(base_size = 15) ) 
 
+nParticipants = 13
+
 inclusionBF <- function(model, variable){
   
   ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
@@ -98,9 +100,11 @@ EfficacyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv'
 BFs <- read.csv('../modelOutput/BF_ByParticipant.csv', header = T)
 BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 
+BFs %<>% mutate(preferredModel = '') %>% mutate(preferredModel = replace(preferredModel, BF>3, 'Buffering')) %>% mutate(preferredModel = replace(preferredModel,BF<(1/3), 'Attention')) %>% mutate(preferredModel = replace(preferredModel, BF<3 & BF>(1/3), 'Neither'))
+
 
 allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
-allEfficacy$participantN <- factor(rep(1:10, times =4))
+allEfficacy$participantN <- factor(rep(1:13, times =4))
 
 efficacyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allEfficacy, whichRandom = 'participantN')
 
@@ -114,7 +118,7 @@ for(thisFactor in efficacyModelInclusionBF$factor){
 knitr::kable(efficacyModelInclusionBF)
 
 allLatency <- rbind(LatencyNorm,LatencyTNorm)
-allLatency$participantN <- factor(rep(1:10, times =4))
+allLatency$participantN <- factor(rep(1:nParticipants, times =4))
 
 latencyModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allLatency, whichRandom = 'participantN')
 
@@ -128,7 +132,7 @@ for(thisFactor in latencyModelInclusionBF$factor){
 knitr::kable(latencyModelInclusionBF)
 
 allPrecision <- rbind(PrecisionNorm,PrecisionTNorm)
-allPrecision$participantN <- factor(rep(1:10, times =4))
+allPrecision$participantN <- factor(rep(1:nParticipants, times =4))
 
 precisionModelBF <- anovaBF(Estimate~Model*Group+participantN, data = allPrecision, whichRandom = 'participantN')
 
@@ -155,8 +159,8 @@ latencyTFreq  <- t.test(x = latencyTwo,
 
 tLatency <- latencyTFreq$statistic[[1]]
 
-N1 <- 10
-N2 <- 10
+N1<- nParticipants
+N2<- nParticipants
 
 priorMean = null
 priorSD = sqrt(.5)
@@ -202,13 +206,13 @@ show(LatencyNormPlot)
 wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
 
 LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams))+
-  geom_point(size = 4, aes(colour=ordered(1:10)))+
+  geom_point(size = 4, aes(colour=ordered(1:nParticipants)))+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(20,120), y=c(20,120))+
   labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
-  annotate('text', x = 100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
+  annotate('text', x =1:100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
 show(LatencyNormScatter)
@@ -237,8 +241,8 @@ precisionTFreq  <- t.test(x = precisionTwo,
 tPrecision <- precisionTFreq$statistic[[1]]
 
 t  <- tPrecision
-N1 <- 10
-N2 <- 10
+N1<- nParticipants
+N2<- nParticipants
 
 priorMean =0
 priorSD = sqrt(.5)
@@ -280,7 +284,7 @@ show(PrecisionNormPlot)
 wideFormatPrecision <- dcast(data=PrecisionNorm,formula = Participant~Group)
 
 
-PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
   geom_point(size = 4)+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(40,100), y=c(40,100))+
@@ -312,8 +316,8 @@ efficacyTFreq  <- t.test(x = efficacyTwo,
                         paired = T)
 
 tEfficacy <- efficacyTFreq$statistic[[1]]
-N1 <- 10
-N2 <- 10
+N1<- nParticipants
+N2<- nParticipants
 
 priorMean =0
 priorSD = sqrt(.5)
@@ -351,7 +355,7 @@ show(EfficacyNormPlot)
 wideFormatEfficacy <- dcast(data=EfficacyNorm,formula = Participant~Group)
 
 
-EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:10)))+
+EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
   geom_point(size = 4)+
   scale_color_brewer(palette='Spectral', name='Participant')+
   lims(x=c(0,1), y=c(0,1))+
@@ -476,6 +480,16 @@ for(thisParticipant in unique(allErrors$ID)){
   densities <- data.frame(SPE = numeric(0), condition = character(0), normDensity = numeric(0), tNormDensity = numeric(0))
   for(thisCondition in unique(allErrors$condition)){
     
+    thisPreferredModel <- BFs %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(preferredModel)
+    
+    if(thisPreferredModel == 'Buffering'){
+      colours <- c('green','red')
+    } else if(thisPreferredModel=='Attention'){
+      colours <- c('red','green')
+    } else if(thisPreferredModel == 'Neither'){
+      colours <- c('red','red')
+    }
+    
     thisNormLatency <- LatencyNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
     thisNormPrecision <- PrecisionNorm %>% filter(Participant == thisParticipant & Group == thisCondition) %>% pull(Estimate)/(1000/12)
     
@@ -507,8 +521,8 @@ for(thisParticipant in unique(allErrors$ID)){
   errors <- allErrors %>% filter(ID == thisParticipant)
   thisPlot <- ggplot(errors, aes(x=error))+
       geom_histogram(binwidth = 1)+
-      geom_line(data = densities, aes(x = SPE, y=tNormDensity*150))+ #scale density to histogram with density * N * binwidth
-      geom_line(data = densities, aes(x = SPE, y=normDensity*150))+
+      geom_line(data = densities, aes(x = SPE, y=tNormDensity*150), colour = colours[1])+ #scale density to histogram with density * N * binwidth
+      geom_line(data = densities, aes(x = SPE, y=normDensity*150), colour = colours[2])+
       scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
       labs(y = 'Frequency', title = thisParticipant)+
     facet_wrap(~condition)
