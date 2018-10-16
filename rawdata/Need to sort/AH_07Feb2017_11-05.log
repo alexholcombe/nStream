@@ -1,0 +1,91 @@
+12.2617 	ERROR 	Screen apparently NOT the desired resolution of 1280x1024 pixels!!
+30.6707 	WARNING 	User requested fullscreen with size [1280 1024], but screen is actually [1024, 768]. Using actual size
+31.1202 	INFO 	Successfully set darwin thread to realtime
+31.8660 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.84.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2017_02_07 11:05 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1486425936
+    experimentScript: ABnStream.py
+    experimentScript.digestSHA1: b84316c9eaf6c6ab39e4fceb152ed5115a3d539f
+    experimentScript.directory: /Users/supalab/Documents/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan1965-a18-a19-10-65-156-117.staff.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 12346.6679688
+    systemMemTotalRAM: 16384.0
+    systemPlatform: darwin 10.10.5 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0006122448830865324, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.027142856270074844, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.0
+    systemRavailable: R version 3.1.2 (2014-10-31) -- Pumpkin Helmet
+    systemRebooted: Jan 16 14:21
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zg 14 July 2015
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0021
+    systemUser: supalab
+    systemUserID: 504
+    systemUserProcCount: 96
+    systemUserProcFlagged: iTunes mdworker Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.135
+    windowRefreshTimeMedian_ms: 11.765
+    windowRefreshTimeAvg_ms: 11.775
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2015_08_13 16:00
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+31.8783 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+31.8794 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+31.8808 	ERROR 	Requiring a square power of two (e.g. 16 x 16, 256 x 256) texture but didn't receive one
+32.0397 	EXP 	Set  sound=406__tictacshutup__click-1-d.wav
+32.0398 	EXP 	Set  sound=A
+32.0470 	EXP 	Created sequence: random, trialTypes=20, nReps=10, seed=None
+32.1097 	INFO 	 each trialDurFrames=234 or 2752.94117647 ms
+32.9706 	INFO 	Mouse: using default window
+32.9707 	INFO 	Starting dual stream part of experiment
+32.9710 	EXP 	New trial (rep=0, index=0): {'task': 'oneCued', 'targetLeftRightIfOne': 'right', 'numStreams': 6, 'numRespsWanted': 1, 'numToCue': 1, 'cue1lag': 0, 'firstRespLRifTwo': 'left', 'cue0temporalPos': 7}
+36.6285 	EXP 	window1: recordFrameIntervals = False
+36.6461 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+36.6585 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10d2d6c10>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+36.8371 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+39.8070 	DATA 	Mouse: Left button down, pos=(215,374)
+39.8073 	EXP 	Sound  started
+39.9604 	DATA 	Mouse:  Left button up, pos=(215,374)
+40.6784 	DATA 	Mouse: Left button down, pos=(513,145)
+40.7584 	DATA 	Mouse:  Left button up, pos=(513,145)
+41.1817 	EXP 	New trial (rep=0, index=1): {'task': 'oneCued', 'targetLeftRightIfOne': 'left', 'numStreams': 6, 'numRespsWanted': 1, 'numToCue': 1, 'cue1lag': 0, 'firstRespLRifTwo': 'left', 'cue0temporalPos': 8}
+44.8857 	EXP 	window1: recordFrameIntervals = False
+44.8900 	EXP 	Created OKrespZone = GratingStim(autoDraw=False, autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=0, interpolate=False, mask='gauss', maskParams=None, name='OKrespZone', opacity=1.0, ori=0.0, phase=array([ 0.,  0.]), pos=array([ 0.,  0.]), rgbPedestal=array([ 0.,  0.,  0.]), sf=array([ 0.,  0.]), size=array([ 0.5,  0.5]), tex='sin', texRes=64, units='norm', win=Window(...))
+44.8989 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10d2d6c10>: vertices = array([[-0.07,  0.02],
+       [ 0.07,  0.02],
+       [ 0.07, -0.02],
+       [-0.07, -0.02]])
+45.0488 	EXP 	OKrespZone: pos = array([ 0. , -0.6])
+46.4853 	DATA 	Mouse: Left button down, pos=(926,378)
+46.4855 	EXP 	Sound  started
+46.6394 	DATA 	Mouse:  Left button up, pos=(926,378)
+50.7005 	DATA 	Keypress: escape
+51.1800 	DATA 	Mouse: Left button down, pos=(530,159)
+51.1806 	INFO 	Finishing at 11:05 on 07 Feb 2017
+51.1812 	ERROR 	user aborted experiment on keypress with trials done=1 of 201
+51.1814 	EXP 	window1: mouseVisible = True

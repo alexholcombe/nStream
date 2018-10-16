@@ -1,0 +1,52 @@
+281.3111 	ERROR 	Frames per second ~=59.9 BUT program assumes 85which is off by more than3.0%!!
+285.3212 	INFO 	Successfully set darwin thread to realtime
+286.3821 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2018_07_31 16:14 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1533017681
+    experimentScript: ABnStream.py
+    experimentScript.digestSHA1: 72fba8ffeab3791535bfed613564df2ef9259ed2
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2680-10-17-73-163.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 4073.9609375
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.11.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.001995464786887169, 'default sr': 44100, 'name': u'Built-in Microph'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.006734693888574839, 'default sr': 44100, 'name': u'Built-in Output'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Jul 30 09:45
+    systemSec.OpenSSLVersion: OpenSSL 0.9.8zh 14 Jan 2016
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0065
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 134
+    systemUserProcFlagged: iTunes Dropbox ''Google Chrome'' Safari mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1024  768]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.160
+    windowRefreshTimeMedian_ms: 16.718
+    windowRefreshTimeAvg_ms: 16.723
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+288.6665 	EXP 	Set  sound=C

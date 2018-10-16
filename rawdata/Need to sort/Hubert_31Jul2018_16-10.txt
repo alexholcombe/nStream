@@ -1,0 +1,1 @@
+experimentPhase	trialnum	subject	task	noisePercent	targetLeftRightIfOne	resp0	answer0	correct0	whichStream0	whichRespCue0	responsePosRelative0	streamLtrSequence0	streamLtrSequence1	streamLtrSequence2	streamLtrSequence3	streamLtrSequence4	streamLtrSequence5	timingBlips
