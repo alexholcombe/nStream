@@ -3,10 +3,10 @@ function result = TGAB_pdf_Mixture_Single(x,p,mu,sigma)
     global xDomain;
     global pseudo_uniform;
     
-    %[p mu sigma]
+    [p mu sigma]
    
-    heaviside_l = @(x) 1.0*(x>=0);
-    truncNormPDF = (normpdf(x , mu, sigma)./normcdf(-x_min, -mu, sigma) .* heaviside_l(x - x_min));
+    
+    truncNormPDF = @truncNormFunction;
 
     x_min = mu - sigma; %set the lower bound so that one tail is cut off
 
