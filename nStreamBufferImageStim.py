@@ -351,11 +351,12 @@ for nStreams in nStreamsPossibilities:
                     halfAngle = 360/float(streamsPerRing)/2.0
                     thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
                     whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
+                    print(whichStreamCuedAngle)
                     stimList.append(         
                              {'nStreams':nStreams,  
                                 'cue0temporalPos':cueTemporalPos, 
                                 'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair}
-
+                                )
 
 
 trialsPerCondition = 2
@@ -369,6 +370,12 @@ print('There are ' + str(trials.nTotal) + ' trials.')
 
 testCuedStreams = False
 
+testCuedStreamsResults = {
+   '2' : [0]*2,
+   '6' : [0]*6,
+   '18' : [0]*18
+}
+
 if testCuedStreams:
     n = 0
     while n < trials.nTotal:
@@ -381,17 +388,24 @@ if testCuedStreams:
         
             
         whichStreamCuedAngle = trial['whichStreamCuedAngle']
+        #print('whichStreamCuedAngle = ' + str(whichStreamCuedAngle))
         
         cuedFrame = trial['cue0temporalPos']
-        if(nStreams > streamsPerRing):
+        if nStreams > streamsPerRing:
             #print(ring*streamsPerRing)
-            print((whichStreamCuedAngle))
             cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
             cuedStream = int(cuedStream)
-        else:
+        elif nStreams == streamsPerRing:
+            cuedStream= ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
+            cuedStream = int(cuedStream)
+        elif nStreams == 2:
             cuedStream = trial['whichInPair']
-        print('cuedStream = ' + str(cuedStream))
+        #print('nStreams =' + str(nStreams))
+        #print('cuedStream =' + str(cuedStream))
+        testCuedStreamsResults[str(nStreams)][cuedStream] += 1
         n+=1
+    myWin.close()
+print(testCuedStreamsResults)
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
@@ -644,11 +658,15 @@ def doRSVPStim(trial):
     whichStreamCuedAngle = trial['whichStreamCuedAngle']
     
     cuedFrame = trial['cue0temporalPos']
-    if(nStreams > streamsPerRing):
+    if nStreams > streamsPerRing:
+        #print(ring*streamsPerRing)
         cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
         cuedStream = int(cuedStream)
-    else:
-        cuedStream = (whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing)
+    elif nStreams == streamsPerRing:
+        cuedStream= ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
+        cuedStream = int(cuedStream)
+    elif nStreams == 2:
+        cuedStream = trial['whichInPair']
     
     print('cueFrame = ' + str(cuedFrame))
     print('cuedStream = ' + str(cuedStream))
