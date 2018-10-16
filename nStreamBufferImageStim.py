@@ -339,7 +339,7 @@ tasks=['T1','T1T2','allCued','oneCued','nStreams']
 numResponsesWanted=1; maxNumRespsWanted=1
 streamsPerRing = 6
 pairAngles = range(0,180,int(360/streamsPerRing)) #angles of possible cued streams
-nStreamsPossibilities = [2,18] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
+nStreamsPossibilities = [2,6,18] #np.arange(2,21,3) #this needs to be listed here so when print header can work out the maximum value
 rings = range(int(np.ceil(float(max(nStreamsPossibilities))/streamsPerRing)))
 
 
@@ -350,22 +350,12 @@ for nStreams in nStreamsPossibilities:
                 for whichInPair in [0,1]:
                     halfAngle = 360/float(streamsPerRing)/2.0
                     thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
-                    if nStreams==2:
-                        whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
-                        stimList.append(         
-                                 {'nStreams':nStreams,  
-                                    'cue0temporalPos':cueTemporalPos, 
-                                    'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                              )
-                    else:
-                       pass
-                       whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset
-                       print('whichStreamCuedAngle is ' + str(whichStreamCuedAngle))
-                       stimList.append(         
-                                {'nStreams':nStreams, 
-                                   'cue0temporalPos':cueTemporalPos,
-                                   'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair} 
-                             )
+                    whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
+                    stimList.append(         
+                             {'nStreams':nStreams,  
+                                'cue0temporalPos':cueTemporalPos, 
+                                'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair}
+
 
 
 trialsPerCondition = 2
@@ -393,7 +383,7 @@ if testCuedStreams:
         whichStreamCuedAngle = trial['whichStreamCuedAngle']
         
         cuedFrame = trial['cue0temporalPos']
-        if(nStreams > 2):
+        if(nStreams > streamsPerRing):
             #print(ring*streamsPerRing)
             print((whichStreamCuedAngle))
             cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
@@ -474,7 +464,7 @@ potentialLetters = [letter for letter in string.ascii_uppercase if letter not in
 
 streamTextObjects = list() #A text object for every stream. I'll update the text for each frame
 
-nextLargestMultiple = int(np.ceil(float(maxStreams)/streamsPerRing))*streamsPerRing #The next largest multiple of streamsPerRing after maxStreams
+nextLargestMultiple = int(np.ceil(float(maxStreams)/streamsPerRing)*streamsPerRing) #The next largest multiple of streamsPerRing after maxStreams
 print('nextLargestMultiple is ' + str(nextLargestMultiple))
 
 for stream in xrange(nextLargestMultiple): 
@@ -572,7 +562,7 @@ def calcStreamPos(trial,cueOffsets,streami,streamOrNoise):
     else:
         streamsThisRing = nStreams - streamsPerRing * thisRingNum
     
-    if nStreams == 2:
+    if nStreams <= streamsPerRing:
         thisRingNum = ring #innermost ring is now the outermost ring
     else:
         pairAngle = 0 #if 18 streams, no need for angular offset
@@ -654,11 +644,11 @@ def doRSVPStim(trial):
     whichStreamCuedAngle = trial['whichStreamCuedAngle']
     
     cuedFrame = trial['cue0temporalPos']
-    if(nStreams > 2):
+    if(nStreams > streamsPerRing):
         cuedStream = (ring*streamsPerRing) + ((whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing))
         cuedStream = int(cuedStream)
     else:
-        cuedStream = trial['whichInPair']
+        cuedStream = (whichStreamCuedAngle-thisRingAngleOffset)  / (360/streamsPerRing)
     
     print('cueFrame = ' + str(cuedFrame))
     print('cuedStream = ' + str(cuedStream))
@@ -718,7 +708,7 @@ def doRSVPStim(trial):
             
             thisLetterIdx = theseStimuli[thisStream] #The letter index for this particular stream on this particular frame
             
-            if nStreams == 2 and max(nStreamsPossibilities)>2:
+            if nStreams <= streamsPerRing and max(nStreamsPossibilities)>2:
                 #print('Stream was' + str(thisStream) +', but is now' + str(trial['ring']*streamsPerRing+thisStream))
                 thisStreamStimulus = streamTextObjects[trial['ring']*streamsPerRing+thisStream, thisLetterIdx]
             else:
