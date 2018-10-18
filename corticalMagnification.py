@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
 	ltrHeight = .9
 
-	for ecc in xrange(11):
+	for ecc in [3,7,11.5]:
 		stimulus = testStimulus()
 		stimulus.height = 0
 		stimulus.pos = [0,ecc]
@@ -66,9 +66,20 @@ if __name__ == '__main__':
 
 	print(sizes)
 
-	if sizes[3] == ltrHeight:
+	if sizes[0] == ltrHeight:
 		print('Test passed')
 	else:
 		print('Test failed. Stimulus size at 3deg is ' + str(sizes[3]))
+
+	class testCue( object ):
+		def __init__( self ):
+			self.radius = None
+			self.pos = list()
+
+	for ecc in [3,7,11.5]:
+		stimulus = testCue()
+		stimulus.pos = [0, ecc]
+		stimulus = corticalMagnification(stimulus, .9810000000000002, cue = True, sizeOut = False)
+		print(stimulus.radius)
 
 

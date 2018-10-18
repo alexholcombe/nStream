@@ -1,0 +1,52 @@
+15.7659 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1280, 800]. Using actual size
+16.8326 	INFO 	Successfully set darwin thread to realtime
+17.8876 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2018_10_17 14:36 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1539747361
+    experimentScript: sizeForMeasuring.py
+    experimentScript.digestSHA1: 23e225fc20add12bc26e9689ff69a041c9dd8bdf
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2680-10-17-75-181.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 3367.4609375
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.13.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0029705215711146593, 'default sr': 44100, 'name': u'Built-in Microph'}, 2: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Display Audio'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.0039002266712486744, 'default sr': 44100, 'name': u'Built-in Output'}, 2: {'host api index': 0, 'latency': 0.0035147392190992832, 'default sr': 44100, 'name': u'Display Audio'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Oct 17 14:04
+    systemSec.OpenSSLVersion: LibreSSL 2.2.7
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0061
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 186
+    systemUserProcFlagged: Dropbox ''Google Chrome'' Safari mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1280  800]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.109
+    windowRefreshTimeMedian_ms: 16.636
+    windowRefreshTimeAvg_ms: 16.628
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+19.3808 	EXP 	Set  sound=C

@@ -231,7 +231,6 @@ respPromptStim = visual.TextStim(myWin,pos=(0, -.8),colorSpace='rgb',color=(1,1,
 acceptTextStim = visual.TextStim(myWin,pos=(0, -.7),colorSpace='rgb',color=(1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 acceptTextStim.setText('Hit ENTER to accept. Backspace to edit')
 respStim = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color=(1,1,0),alignHoriz='center', alignVert='center',height=.16,units='norm',autoLog=autoLogging)
-clickSound, badKeySound = stringResponse.setupSoundsForResponse()
 requireAcceptance = False
 nextText = visual.TextStim(myWin,pos=(0, .1),colorSpace='rgb',color = (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
 NextRemindCountText = visual.TextStim(myWin,pos=(0,.2),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.1,units='norm',autoLog=autoLogging)
@@ -333,9 +332,6 @@ def calcStreamPos(thisStream, streamsPerRing):
     else:
         pairAngle = 0 #if 18 streams, no need for angular offset
     #print('streams this ring: ',streamsThisRing)
-
-
-
     if nStreams ==0:
         pos = np.array([0,0])
     else:
@@ -348,6 +344,21 @@ def calcStreamPos(thisStream, streamsPerRing):
         pos = np.array([x,y])
     return pos
 
+
+exitStim = visual.TextStim(
+                myWin,
+                pos=[0,-16],
+                colorSpace='rgb', 
+                font = font, 
+                color=letterColor,
+                alignHoriz='center',
+                alignVert='center',
+                units='deg',
+                height = 1,
+                text = 'Press \'m\' to exit',
+                autoLog=autoLogging
+                )
+                
 for thisStream in range(nStreams):
     thisPos = calcStreamPos(thisStream, streamsPerRing)
 
@@ -445,6 +456,7 @@ for index in range(3):
 sizeOneText.draw()
 sizeTwoText.draw()
 sizeThreeText.draw()
+exitStim.draw()
 myWin.flip()
 
 displaying = True

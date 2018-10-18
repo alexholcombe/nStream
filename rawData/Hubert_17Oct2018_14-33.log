@@ -1,0 +1,82 @@
+12.4844 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1280, 800]. Using actual size
+13.9476 	INFO 	Successfully set darwin thread to realtime
+15.0110 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2018_10_17 14:33 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1539747232
+    experimentScript: sizeForMeasuring.py
+    experimentScript.digestSHA1: a3acb2439b75705a7b155894c329ba57ad39cc68
+    experimentScript.directory: /Users/charlesludowici/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2680-10-17-75-181.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 3531.765625
+    systemMemTotalRAM: 8192.0
+    systemPlatform: darwin 10.13.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.0029705215711146593, 'default sr': 44100, 'name': u'Built-in Microph'}, 2: {'host api index': 0, 'latency': 0.009999999776482582, 'default sr': 44100, 'name': u'Display Audio'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.0039002266712486744, 'default sr': 44100, 'name': u'Built-in Output'}, 2: {'host api index': 0, 'latency': 0.0035147392190992832, 'default sr': 44100, 'name': u'Display Audio'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Oct 17 14:04
+    systemSec.OpenSSLVersion: LibreSSL 2.2.7
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0057
+    systemUser: charlesludowici
+    systemUserID: 501
+    systemUserProcCount: 178
+    systemUserProcFlagged: Dropbox ''Google Chrome'' Safari mdworker
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1280  800]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.098
+    windowRefreshTimeMedian_ms: 16.627
+    windowRefreshTimeAvg_ms: 16.626
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 57.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+16.3210 	EXP 	Set  sound=C
+16.3212 	WARNING 	Could not load the desired click sound file, instead using manually created inferior click
+16.3216 	EXP 	Set  sound=D
+16.7102 	EXP 	<method-wrapper '__getattribute__' of attributeSetter object at 0x10afc9610>: vertices = array([[-3.   ,  0.375],
+       [ 3.   ,  0.375],
+       [ 3.   , -0.375],
+       [-3.   , -0.375]])
+16.7129 	EXP 	Created unnamed Rect = Rect(autoDraw=False, autoLog=True, closeShape=True, contrast=1.0, depth=0, fillColor=None, fillColorSpace='rgb', fillRGB=None, interpolate=True, lineColor=array([-0.7, -0.7, -0.7]), lineColorSpace='rgb', lineRGB=array([-0.7, -0.7, -0.7]), lineWidth=1.5, name='unnamed Rect', opacity=1.0, ori=array(0.0), pos=array([ 0.,  0.]), size=array([ 1.,  1.]), units='deg', vertices=ndarray(...), win=Window(...))
+16.9208 	EXP 	window1: blendMode = 'avg'
+16.9249 	EXP 	window1: blendMode = 'avg'
+16.9284 	EXP 	window1: blendMode = 'avg'
+16.9317 	EXP 	window1: blendMode = 'avg'
+16.9352 	EXP 	window1: blendMode = 'avg'
+16.9385 	EXP 	window1: blendMode = 'avg'
+16.9438 	EXP 	window1: blendMode = 'avg'
+16.9472 	EXP 	window1: blendMode = 'avg'
+16.9505 	EXP 	window1: blendMode = 'avg'
+16.9539 	EXP 	window1: blendMode = 'avg'
+16.9573 	EXP 	window1: blendMode = 'avg'
+16.9604 	EXP 	window1: blendMode = 'avg'
+16.9650 	EXP 	window1: blendMode = 'avg'
+16.9684 	EXP 	window1: blendMode = 'avg'
+16.9718 	EXP 	window1: blendMode = 'avg'
+16.9748 	EXP 	window1: blendMode = 'avg'
+16.9779 	EXP 	window1: blendMode = 'avg'
+16.9813 	EXP 	window1: blendMode = 'avg'
+16.9859 	EXP 	window1: blendMode = 'avg'
+16.9866 	EXP 	window1: blendMode = 'avg'
+16.9872 	EXP 	window1: blendMode = 'avg'
+22.8750 	DATA 	Keypress: m
+22.8766 	EXP 	window1: mouseVisible = True
