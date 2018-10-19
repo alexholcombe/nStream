@@ -176,11 +176,11 @@ if(length(notModelled)>0 & runAnyway){
 }
 
 paramsForAnalysis <- params %>% filter(efficacy>.1 & ID != 'CH')
+paramsForAnalysis %<>% filter(!latency >= bounds[2,2] & !latency <= bounds[2,1])
+paramsForAnalysis %<>% filter(!precision >= bounds[3,2] & !precision <= bounds[3,1])
+
 paramsForAnalysis$ring %<>% as.factor
-paramsForAnalysis$ID %<>% as.character
-paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='AC5SONA', 'problemID')) %>%
-  as.data.frame() #For some reason the string 'AC5SONA' is interpreted as a nul by anovaBF, which uses base64
-paramsForAnalysis$ID %<>% as.factor
+paramsForAnalysis %<>% mutate(IDChar=ID) %>% mutate(ID = as.numeric(ID)) %>% mutate(ID=as.factor(ID)) %>% as.data.frame() #For some reason the string 'AC5SONA' is interpreted as a nul by anovaBF, which uses base64
 ```
 
 
@@ -296,16 +296,16 @@ ggplot(paramsForAnalysis, aes(x=factor(ring), y = precision))+
 ##Plots with Density
 
 ```{r}
-paramsForAnalysis$ID %<>% as.character
-paramsForAnalysis %<>% mutate(ID=replace(ID, ID=='problemID', 'AC5SONA')) %>%
-  as.data.frame() #Convert the problem name back for plotting
+paramsForAnalysis %<>% mutate(ID = IDChar) %>% as.data.frame #Convert the problem name back for plotting
 
 if(participantPlots){
   for(thisParticipant in unique(paramsForAnalysis$ID)){
     theseErrors <- allErrors %>% filter(ID==thisParticipant)
     theseDensities <- data.frame(density = numeric(0),SPE = numeric(0), crowded = character(0), ring = numeric(0), stringsAsFactors = F)
-    for(thisCondition in unique(paramsForAnalysis$crowded)){
-      for(thisRing in unique(paramsForAnalysis$ring)){
+    theseConditions <- paramsForAnalysis %>% filter(ID == thisParticipant) %>% pull(crowded) %>% unique
+    for(thisCondition in theseConditions){
+      theseRings <- paramsForAnalysis %>% filter(ID == thisParticipant & crowded == thisCondition) %>% pull(ring) %>% unique
+      for(thisRing in theseRings){
         thisEfficacy <- paramsForAnalysis %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(efficacy)
         thisLatency <- paramsForAnalysis %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(latency)
         thisPrecision <- paramsForAnalysis %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing) %>% pull(precision)

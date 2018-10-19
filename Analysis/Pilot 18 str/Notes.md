@@ -1,0 +1,1 @@
+* 18TR1: I had problems with the eyetracker for this participant, perhaps because the camera was too close to her. I ran her without eyetracking to test whether or not the code was working. 
