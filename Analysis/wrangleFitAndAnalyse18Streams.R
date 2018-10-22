@@ -336,6 +336,7 @@ efficacyBF <- anovaBF(efficacy ~ condition + ID,
 ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   #geom_violin(position = position_dodge(.9))+
   geom_jitter(position = position_dodge(.9))+
+  geom_line(aes(group = ID, colour = ID))+
   stat_summary(geom = 'point',fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))+
   lims(y=c(0,1))
@@ -349,6 +350,7 @@ latencyBF <- anovaBF(latency ~ condition + ID,
 ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   #geom_violin(position = position_dodge(.9))+
   geom_point(position = position_dodge(.9))+
+  geom_line(aes(group = ID, colour = ID))+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))
 
@@ -359,8 +361,9 @@ precisionBF <- anovaBF(precision ~ condition + ring + ID,
 )
 
 ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
-  geom_violin(position = position_dodge(.9))+
+  #geom_violin(position = position_dodge(.9))+
   geom_jitter(position = position_dodge(.9))+
+  geom_line(aes(group = factor(ID), colour = factor(ID)))+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9))+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))
 ########################
