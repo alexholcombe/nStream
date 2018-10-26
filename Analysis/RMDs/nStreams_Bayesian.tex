@@ -69,17 +69,9 @@ Holcombe\textsuperscript{1}}
       \date{5/18/2017}
 
 \shorttitle{SHORTTITLE}
-\authornote{Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
-
-Enter author note here.
-
-
-Correspondence concerning this article should be addressed to Charles J. H. Ludowici, USYD. E-mail: charles.ludowici@sydney.edu.au}
 \affiliation{
 \vspace{0.5cm}
 \textsuperscript{1} The University of Sydney}
-\abstract{Enter abstract here. Each new line herein must be indented, like this line.
-}
 \keywords{keywords\newline\indent Word count: X}
 \usepackage{csquotes}
 \usepackage{upgreek}
@@ -103,12 +95,29 @@ Correspondence concerning this article should be addressed to Charles J. H. Ludo
 
 \DeclareDelayedFloatFlavor{ThreePartTable}{table}
 \DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
 \makeatletter
-\renewcommand{\efloat@iwrite}[1]{\expandafter\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
 \makeatother
 \usepackage{lineno}
 
 \linenumbers
+
+\authornote{Add complete departmental affiliations for each
+author here. Each new line herein must be indented, like this line.
+
+Enter author note here.
+
+Correspondence concerning this article should be addressed to Charles J.
+H. Ludowici, USYD. E-mail:
+\href{mailto:charles.ludowici@sydney.edu.au}{\nolinkurl{charles.ludowici@sydney.edu.au}}}
+
+\abstract{
+Enter abstract here. Each new line herein must be indented, like this
+line.
+
+
+}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[section]
