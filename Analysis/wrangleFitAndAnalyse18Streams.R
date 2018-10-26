@@ -57,7 +57,7 @@ if(plots){
 saveIndividualTSV <- F #Save data files?
 saveAllErrorsTSV <- F
 
-participantPlots <- T
+participantPlots <- F
 
 bootstrapPredictions <- F #Should we bootstrap means and CIs for model predictions?
 nRepetitions <- 1000 #number of bootstrap repetitions
@@ -128,12 +128,15 @@ for(dataset in files){
         print(xtabs(~whichStreamCuedAngle0+ring, data = temp))
       }
       
-      temp <- temp[-pracTrials,]
       participant <- temp$subject[1]
+      
+      if(!grepl('_2', participant)){ #if there's _2 in the participant. It's because the eyetracker crashed, so the first 20 trials are not actually practice.
+        temp <- temp[-pracTrials,]
+      }
       
       temp %<>% mutate(responsePos = cuePos0+responsePosRelative0)
       
-      thisEyetrackerFile <- eyetrackerFiles[grepl(paste0('.*',participant,'.*'), eyetrackerFiles)]
+      thisEyetrackerFile <- eyetrackerFiles[grepl(paste0('.*',participant,'(?!_2).*'), eyetrackerFiles, perl =T)]
       temp %<>% mutate(fixationReject = FALSE)
       
       if(length(thisEyetrackerFile)>0){
@@ -202,6 +205,15 @@ for(dataset in files){
       print(mean(temp$fixationReject))      
 }
 
+###18LS4 and 18LS4_2 are the same participant. The tracker crashed###
+LS4TRIALS <- which(allErrors$ID == '18LS4'|allErrors$ID=='18LS4_2')
+DROPTHESE <- (max(LS4TRIALS)-(length(LS4TRIALS)-249)):max(LS4TRIALS) #The trials to drop from the analysis
+
+allErrors <- allErrors[-DROPTHESE,]
+
+allErrors %<>% mutate(ID = replace(ID, ID == '18LS4_2', '18LS4'))
+
+allErrors %<>% filter(ID!='')
 
 nStreams <- allErrors %>% pull(condition) %>% unique
 participants <- allErrors %>% pull(ID) %>% unique
@@ -314,8 +326,16 @@ if(length(notModelled)>0){
 nParticipants <- params %>% pull(ID) %>% unique %>% length
 
 params %<>% mutate(stringID = ID)
-params %<>% mutate(ID = as.factor(rep(1:nParticipants, times = 3)))
-params %<>% mutate(condition = ordered(condition))
+params %<>% mutate(ID = 999)
+
+for(thisID in unique(params$stringID)){
+  thisN <- which(unique(params$stringID) == thisID)
+  params %<>% mutate(ID = replace(ID, stringID == thisID, thisN))
+}
+
+params %<>% mutate(ID = factor(ID))
+
+params %<>% mutate(condition = factor(condition, levels = c(2,6,18), ordered = T))
 paramsForAnalysis <- params %>% filter(efficacy>.1 & efficacy < bounds[1,2] & efficacy > bounds[1,1] & latency < bounds[2,2] & latency > bounds[2,1] & precision < bounds[3,2] & precision > bounds[3,1])
 paramsForAnalysis %<>% mutate(latency = latency*rate)
 paramsForAnalysis %<>% mutate(precision = precision *rate)
@@ -335,11 +355,12 @@ efficacyBF <- anovaBF(efficacy ~ condition + ID,
 
 ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   #geom_violin(position = position_dodge(.9))+
-  geom_jitter(position = position_dodge(.9))+
+  geom_point(aes(colour = ID))+
   geom_line(aes(group = ID, colour = ID))+
-  stat_summary(geom = 'point',fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))+
-  lims(y=c(0,1))
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
+  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+  scale_colour_brewer(palette = 'Spectral')+
+  lims(y = c(0,1))
 
 
 latencyBF <- anovaBF(latency ~ condition + ID, 
@@ -349,23 +370,30 @@ latencyBF <- anovaBF(latency ~ condition + ID,
 
 ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(position = position_dodge(.9))+
+  geom_point(aes(colour = ID))+
   geom_line(aes(group = ID, colour = ID))+
-  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
+  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+  scale_colour_brewer(palette = 'Spectral')+
+  lims(y = c(-50,150))
 
 
-precisionBF <- anovaBF(precision ~ condition + ring + ID, 
+precisionBF <- anovaBF(precision ~ condition + ID, 
                        data=paramsForAnalysis,
                        whichRandom = 'ID'
 )
 
+
+
 ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   #geom_violin(position = position_dodge(.9))+
-  geom_jitter(position = position_dodge(.9))+
-  geom_line(aes(group = factor(ID), colour = factor(ID)))+
-  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9))
+  geom_point(aes(colour = ID))+
+  geom_line(aes(group = ID, colour = ID))+
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
+  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+  scale_colour_brewer(palette = 'Spectral')+
+  lims(y = c(0,150))
+  
 ########################
 ###Plots with Density###
 ########################
