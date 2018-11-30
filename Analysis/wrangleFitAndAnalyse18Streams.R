@@ -340,6 +340,12 @@ paramsForAnalysis <- params %>% filter(efficacy>.1 & efficacy < bounds[1,2] & ef
 paramsForAnalysis %<>% mutate(latency = latency*rate)
 paramsForAnalysis %<>% mutate(precision = precision *rate)
 
+for(thisID in paramsForAnalysis$stringID){
+  if(length(which(paramsForAnalysis$stringID==thisID))<3){
+    paramsForAnalysis %<>% filter(stringID!=thisID)
+  }
+}
+
 
 #######################
 ###Efficacy Analyses###
@@ -403,7 +409,7 @@ paramsForAnalysis %<>% mutate(ID=stringID) %>%
 
 if(participantPlots){
   for(thisParticipant in unique(paramsForAnalysis$ID)){
-    for(thisCondition in unique(paramsForAnalysis$condition)){
+    for(thisCondition in unique(paramsForAnalysis$condition[paramsForAnalysis$ID == thisParticipant])){
       thisEfficacy <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(efficacy) 
       thisLatency <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(latency) %>% `/`(1000/12)
       thisPrecision <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(precision) %>% `/`(1000/12)
