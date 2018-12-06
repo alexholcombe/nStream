@@ -214,6 +214,7 @@ allErrors <- allErrors[-DROPTHESE,]
 allErrors %<>% mutate(ID = replace(ID, ID == '18LS4_2', '18LS4'))
 
 allErrors %<>% filter(ID!='')
+write.csv(allErrors, "Analysis/allErrors18Streams.txt")
 
 nStreams <- allErrors %>% pull(condition) %>% unique
 participants <- allErrors %>% pull(ID) %>% unique
@@ -357,12 +358,22 @@ efficacyBF <- anovaBF(efficacy ~ condition + ID,
 ) 
 
 
+ttestBF(x = paramsForAnalysis$efficacy[paramsForAnalysis$condition==2],
+        y = paramsForAnalysis$efficacy[paramsForAnalysis$condition==6],
+        paired = T)
+
+ttestBF(x = paramsForAnalysis$efficacy[paramsForAnalysis$condition==6],
+        y = paramsForAnalysis$efficacy[paramsForAnalysis$condition==18],
+        paired = T)
+
+
+
 #Only evidence for an effect of ring
 
 ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(aes(colour = ID))+
-  geom_line(aes(group = ID, colour = ID))+
+  geom_point(alpha=.3)+
+  geom_line(aes(group = ID),alpha = .3)+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
@@ -374,10 +385,19 @@ latencyBF <- anovaBF(latency ~ condition + ID,
                      whichRandom = 'ID'
 )
 
+ttestBF(x = paramsForAnalysis$latency[paramsForAnalysis$condition==2],
+        y = paramsForAnalysis$latency[paramsForAnalysis$condition==6],
+        paired = T)
+
+ttestBF(x = paramsForAnalysis$latency[paramsForAnalysis$condition==6],
+        y = paramsForAnalysis$latency[paramsForAnalysis$condition==18],
+        paired = T)
+
+
 ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(aes(colour = ID))+
-  geom_line(aes(group = ID, colour = ID))+
+  geom_point(alpha=.3)+
+  geom_line(aes(group = ID),alpha = .3)+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
@@ -389,12 +409,18 @@ precisionBF <- anovaBF(precision ~ condition + ID,
                        whichRandom = 'ID'
 )
 
+ttestBF(x = paramsForAnalysis$precision[paramsForAnalysis$condition==2],
+        y = paramsForAnalysis$precision[paramsForAnalysis$condition==6],
+        paired = T)
 
+ttestBF(x = paramsForAnalysis$precision[paramsForAnalysis$condition==6],
+        y = paramsForAnalysis$precision[paramsForAnalysis$condition==18],
+        paired = T)
 
 ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(aes(colour = ID))+
-  geom_line(aes(group = ID, colour = ID))+
+  geom_point(alpha=.3)+
+  geom_line(aes(group = ID),alpha = .3)+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
