@@ -13,6 +13,7 @@ library(BayesFactor)
 library(dplyr)
 library(magrittr)
 library(truncnorm)
+library(effsize)
 theme_set(theme_apa(base_size = 15) ) 
 
 inclusionBF <- function(model, variable){
@@ -183,6 +184,8 @@ posteriorAndPriorDF <- data.frame(
 posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=delta, priorMean=priorMean, priorSD=priorSD), 
                                  interval=c(-4,4),
                                  maximum = T)[[1]]
+
+cohen.d(Estimate ~ Group, LatencyNorm)
 
 #This would only work for normal, we use Cauchy!
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
@@ -400,7 +403,11 @@ for(thisParticipant in unique(LatencyNorm$Participant)){
 
 propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
 
+propBeforeCue %>% group_by(Group) %>% summarise(mean = mean(nTrialsBeforeCue), sd = sd(nTrialsBeforeCue))
+
 knitr::kable(propBeforeCue)
+
+
 
 ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
         y = propBeforeCue$Proportion[propBeforeCue$Group=='eightStreams'],
