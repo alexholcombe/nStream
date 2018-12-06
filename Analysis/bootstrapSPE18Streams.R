@@ -30,8 +30,8 @@ bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   
   for(i in 1:nReps){
     thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size = nTrials)
-    nNegOne <- which(thisSample == whichSPE) %>% length
-    bootstraps %<>% mutate(count = replace(count, rep == i, nNegOne))
+    nThisSPE<- which(thisSample == whichSPE) %>% length
+    bootstraps %<>% mutate(count = replace(count, rep == i, nThisSPE))
   }
   
   return(length(which(bootstraps$count>=nWhichSPE))/nReps) #a p.value.
@@ -57,7 +57,7 @@ for(thisParticipant in unique(allErrors$ID)[1]){
     theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
     for(whichSPE in -9:9){
       print(whichSPE)
-      thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,100000)
+      thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
       ps %<>% mutate(p = replace(p, xDomain == whichSPE & participant == thisParticipant & condition == thisCondition, thisP))
     }
   }
