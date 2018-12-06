@@ -340,6 +340,12 @@ paramsForAnalysis <- params %>% filter(efficacy>.1 & efficacy < bounds[1,2] & ef
 paramsForAnalysis %<>% mutate(latency = latency*rate)
 paramsForAnalysis %<>% mutate(precision = precision *rate)
 
+for(thisID in paramsForAnalysis$stringID){
+  if(length(which(paramsForAnalysis$stringID==thisID))<3){
+    paramsForAnalysis %<>% filter(stringID!=thisID)
+  }
+}
+
 
 #######################
 ###Efficacy Analyses###
@@ -403,7 +409,7 @@ paramsForAnalysis %<>% mutate(ID=stringID) %>%
 
 if(participantPlots){
   for(thisParticipant in unique(paramsForAnalysis$ID)){
-    for(thisCondition in unique(paramsForAnalysis$condition)){
+    for(thisCondition in unique(paramsForAnalysis$condition[paramsForAnalysis$ID == thisParticipant])){
       thisEfficacy <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(efficacy) 
       thisLatency <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(latency) %>% `/`(1000/12)
       thisPrecision <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(precision) %>% `/`(1000/12)
@@ -431,3 +437,30 @@ if(participantPlots){
   }
 }
 
+propBeforeCue <- expand.grid(
+  Participant = unique(paramsForAnalysis$stringID),
+  Group = unique(paramsForAnalysis$condition),
+  Proportion = -999,
+  nTrialsBeforeCue = -999
+)
+
+for(thisParticipant in unique(paramsForAnalysis$stringID)){
+  for(thisCondition in unique(paramsForAnalysis$condition)){
+    
+    thisNormLatency <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(latency)
+    thisNormPrecision <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(precision)
+    
+    thisNormEfficacy <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(efficacy)
+    
+    thisNTrials <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject) %>% nrow 
+    
+    thisProportionBeforeCue <- pnorm(0, thisNormLatency, thisNormPrecision)
+    thisNEfficaciousBeforeCue <- thisNTrials * thisNormEfficacy * thisProportionBeforeCue
+    
+    propBeforeCue %<>% mutate(Proportion = replace(Proportion, Participant==thisParticipant & Group == thisCondition, thisProportionBeforeCue))
+    
+    propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue)) 
+  }
+}
+
+propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
