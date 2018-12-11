@@ -185,7 +185,7 @@ posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=d
                                  interval=c(-4,4),
                                  maximum = T)[[1]]
 
-cohen.d(Estimate ~ Group, LatencyNorm)
+cohen.d(Estimate ~ Group, LatencyNorm, paired = T)
 
 #This would only work for normal, we use Cauchy!
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
