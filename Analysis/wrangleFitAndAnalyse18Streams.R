@@ -9,40 +9,41 @@ library(BayesFactor)
 setwd('~/gitCode/nStream/')  #Charlie-specific
 
 source('ggplotElements.R')
-theme_set(theme_apa(base_size = 20)) 
+theme_set(theme_apa(base_size = 20))
 
+nIterations = 10000 #for posterior sampling
 
 inclusionBF <- function(priorProbs, variable){
-  
+
   ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
-  
-  
+
+
   if(typeof(priorProbs) == 'S4') priorProbs <- as.vector(priorProbs)
-  
-  
+
+
   theseNames <- names(priorProbs)
   nProbs <- 1:length(priorProbs)
   variableMatches <- grep(variable, theseNames)
-  
+
   if(grepl(':', variable)){
     subordinateVariables <- variable %>% strsplit(':') %>% unlist()
-    
+
     thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
-    
+
     subordinateEffects <- grep(thisRegex, theseNames, perl = T)
     subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
-    
-    
+
+
     sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
   } else {
     interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
-    
+
     variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
-    
-    
+
+
     otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
-    
-    
+
+
     sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
   }
 }
@@ -80,7 +81,7 @@ if(plots){
     }
   }
 }
- 
+
 files <- list.files(pattern = '^18[A-Z][A-Z].*\\.txt$', path = dataPath, full.names = T)
 print(files)
 
@@ -107,14 +108,14 @@ skew <- function(x){
 totalRows <- length(files)*250
 
 allErrors <- data.frame(
-  exp = character(totalRows), 
-  condition = character(totalRows), 
-  SPE = numeric(totalRows), 
+  exp = character(totalRows),
+  condition = character(totalRows),
+  SPE = numeric(totalRows),
   targetSP = numeric(totalRows),
-  ID = character(totalRows), 
-  fixationReject = logical(totalRows), 
-  button = numeric(totalRows), 
-  ring = numeric(totalRows), 
+  ID = character(totalRows),
+  fixationReject = logical(totalRows),
+  button = numeric(totalRows),
+  ring = numeric(totalRows),
   stringsAsFactors = F
   )
 
@@ -122,56 +123,56 @@ startRow <- 1
 
 for(dataset in files){
       temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
-      
+
       if(testPositions){
         print(xtabs(~ring+nStreams, data = temp))
         print(xtabs(~whichStreamCuedAngle0+ring, data = temp))
       }
-      
+
       participant <- temp$subject[1]
-      
+
       if(!grepl('_2', participant)){ #if there's _2 in the participant. It's because the eyetracker crashed, so the first 20 trials are not actually practice.
         temp <- temp[-pracTrials,]
       }
-      
+
       temp %<>% mutate(responsePos = cuePos0+responsePosRelative0)
-      
+
       thisEyetrackerFile <- eyetrackerFiles[grepl(paste0('.*',participant,'(?!_2).*'), eyetrackerFiles, perl =T)]
       temp %<>% mutate(fixationReject = FALSE)
-      
+
       if(length(thisEyetrackerFile)>0){
         theseFixations <- read.table(thisEyetrackerFile, sep='\t', stringsAsFactors = F, header = T)
-        
+
         theseFixations %<>% mutate(CURRENT_FIX_X_DEG = CURRENT_FIX_X/pixelsPerDegree)
         theseFixations %<>% mutate(CURRENT_FIX_Y_DEG = CURRENT_FIX_Y/pixelsPerDegree)
-        
+
         theseFixations %<>% filter(!TRIAL_INDEX %in% pracTrials)
-        
+
         theseFixations %<>% mutate(fixationDistance = 0)
-        
-        
+
+
         for(index in unique(theseFixations$TRIAL_INDEX)){ #If the trial has multiple fixations, compare each fixation to the initial fixation and reject that trial if it falls outside of a 1º radius circle centered on the initial fix
-          
+
           theseFixationsThisTrial = which(theseFixations$TRIAL_INDEX==index)
           nFixationsThisTrial <- length(theseFixationsThisTrial)
-          
+
           if(nFixationsThisTrial>1){
-            
+
             initialFixationX = theseFixations$CURRENT_FIX_X_DEG[theseFixationsThisTrial[1]]
             initialFixationY = theseFixations$CURRENT_FIX_Y_DEG[theseFixationsThisTrial[1]]
-            
+
             for(thisFixationRow in theseFixationsThisTrial){ #iterate over DF rows rather than fixations
               if(thisFixationRow == theseFixationsThisTrial[1]){
                 #skip the first fixation,
               } else {
-                
+
                 xVector <- theseFixations$CURRENT_FIX_X_DEG[thisFixationRow] - initialFixationX
                 yVector <- theseFixations$CURRENT_FIX_Y_DEG[thisFixationRow] - initialFixationY
-                
+
                 fixationDistance <- sqrt(xVector^2 + yVector^2)
-                
+
                 theseFixations$fixationDistance[thisFixationRow] <- fixationDistance
-                
+
                 if(fixationDistance>=criterion){
                   if(!theseFixations$CURRENT_FIX_BLINK_AROUND[thisFixationRow] %in% c('BEFORE','AFTER') ){
                     temp %<>% mutate(fixationReject = replace(fixationReject, trialnum == index-1, TRUE))
@@ -181,28 +182,28 @@ for(dataset in files){
             }
           }
         }
-        
+
         if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
           next
         }
-        
+
       }
       #Create densities for the SPE with fixation rejections removed
-      
+
       streamColumns <- grep('streamLtrSequence', colnames(temp))
-      
+
       endRow = startRow + nrow(temp) - 1
-      
+
       allErrors[startRow:endRow,] <- temp[,c(1,4,16,8,3,37,7,5)]
-      
+
       startRow <- endRow + 1
-      
+
       if(saveIndividualTSV){
         write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
         write.table(eighteenStreams[!eighteenStreams$fixationReject,], paste0('wrangledData/',group,'/eighteenStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
       }
-      
-      print(mean(temp$fixationReject))      
+
+      print(mean(temp$fixationReject))
 }
 
 ###18LS4 and 18LS4_2 are the same participant. The tracker crashed###
@@ -225,7 +226,7 @@ bounds <- parameterBounds()
 bounds$upper[3] <- 3
 
 
-runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file. 
+runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file.
 plots <- FALSE
 
 nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
@@ -233,19 +234,19 @@ nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimat
 if(nParamFiles>0){
   print('we out here')
   paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
-  
+
   splits <- strsplit(paramFiles, 'Estimates|(?<=[0-9][0-9])_|\\.csv',perl = T) #split out the date stamps from the param files names
-  
-  theseDates <- lapply(splits,FUN =function(x) paste(x[2],x[3])) %>% 
-    unlist %>% 
-    as.POSIXct(.,format='%d-%m-%Y %H-%M-%S') #Format them as POSIXct (datetime) 
-  
+
+  theseDates <- lapply(splits,FUN =function(x) paste(x[2],x[3])) %>%
+    unlist %>%
+    as.POSIXct(.,format='%d-%m-%Y %H-%M-%S') #Format them as POSIXct (datetime)
+
   whichMaxDate <- which(theseDates == max(theseDates)) #which is the newest?
   params <- read.csv(paramFiles[whichMaxDate]) #load the newest
-  
+
   #Empty space in the param DF for the un-modelled participants
   notModelled <- allErrors %>% filter(., !ID %in% params$ID) %>% pull(ID) %>% unique
-  
+
   unModelledRows <- expand.grid(
     ID = factor(notModelled),
     condition = factor(unique(allErrors$condition)),
@@ -257,12 +258,12 @@ if(nParamFiles>0){
     pLRtest = 999,
     stringsAsFactors = F
   )
-  
+
   params <- rbind(params, unModelledRows)
-  
+
 } else {
   notModelled <- allErrors %>% pull(ID) %>% unique
-  
+
   params <- expand.grid(
     ID = factor(notModelled),
     condition = factor(unique(allErrors$condition)),
@@ -274,23 +275,23 @@ if(nParamFiles>0){
     pLRtest = 999,
     stringsAsFactors = F
   )
-}  
+}
 
 if(length(notModelled)>0){
   for(thisParticipant in notModelled){
     for(thisCondition in unique(allErrors$condition)){
       print(paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition))
       theseParams <- allErrors %>% filter(., condition == thisCondition, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
-        
+
       if(theseParams$pLRtest<.05){
         params %<>%
           mutate(efficacy=replace(efficacy, ID == thisParticipant & condition == thisCondition , theseParams$efficacy)) %>%
           as.data.frame()
-        
+
         params %<>%
           mutate(latency=replace(latency, ID == thisParticipant & condition == thisCondition, theseParams$latency)) %>%
           as.data.frame()
-        
+
         params %<>%
           mutate(precision=replace(precision, ID == thisParticipant & condition == thisCondition, theseParams$precision)) %>%
           as.data.frame()
@@ -298,24 +299,24 @@ if(length(notModelled)>0){
         params %<>%
           mutate(efficacy=replace(efficacy, ID == thisParticipant & condition == thisCondition, 0)) %>%
           as.data.frame()
-        
+
         params %<>%
           mutate(latency=replace(latency, ID == thisParticipant & condition == thisCondition, NaN)) %>%
           as.data.frame()
-        
+
         params %<>%
           mutate(precision=replace(precision, ID == thisParticipant & condition == thisCondition, NaN)) %>%
           as.data.frame()
       }
-        
+
       params %<>%
         mutate(val=replace(val, ID == thisParticipant & condition == thisCondition, theseParams$val)) %>%
         as.data.frame()
-      
+
       params %<>%
         mutate(valGuessing=replace(valGuessing, ID == thisParticipant & condition == thisCondition, theseParams$valGuessing)) %>%
         as.data.frame()
-      
+
       params %<>%
         mutate(pLRtest=replace(pLRtest, ID == thisParticipant & condition == thisCondition, theseParams$pLRtest)) %>%
         as.data.frame()
@@ -352,19 +353,10 @@ for(thisID in paramsForAnalysis$stringID){
 ###Efficacy Analyses###
 #######################
 
-efficacyBF <- anovaBF(efficacy ~ condition + ID, 
+efficacyFullAgainstNull <- anovaBF(efficacy ~ condition + ID,
                       data=paramsForAnalysis,
                       whichRandom = 'ID'
-) 
-
-
-ttestBF(x = paramsForAnalysis$efficacy[paramsForAnalysis$condition==2],
-        y = paramsForAnalysis$efficacy[paramsForAnalysis$condition==6],
-        paired = T)
-
-ttestBF(x = paramsForAnalysis$efficacy[paramsForAnalysis$condition==6],
-        y = paramsForAnalysis$efficacy[paramsForAnalysis$condition==18],
-        paired = T)
+)
 
 
 
@@ -380,10 +372,18 @@ ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   lims(y = c(0,1))
 
 
-latencyBF <- anovaBF(latency ~ condition + ID, 
+latencyBFFullVSNull <- anovaBF(latency ~ condition + ID,
                      data=paramsForAnalysis,
                      whichRandom = 'ID'
 )
+
+samples <- posterior(latencyBFFullVSNull, iterations=nIterations) #http://bayesfactor.blogspot.com/2015/01/multiple-comparisons-with-bayesfactor-2.html
+consistent <- (samples[,'condition-2']<samples[,'condition-6'] & samples[,'condition-6']<samples[,'condition-18'])
+latencyBFOrderedVSFull <- (sum(consistent)/nIterations)/(1/6)
+
+latencyBFOrderedVSNull <- as.vector(latencyBFFullVSNull)*latencyBFOrderedVSFull
+latencyBFOrderedVSNull
+
 
 ttestBF(x = paramsForAnalysis$latency[paramsForAnalysis$condition==2],
         y = paramsForAnalysis$latency[paramsForAnalysis$condition==6],
@@ -404,10 +404,17 @@ ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   lims(y = c(-50,150))
 
 
-precisionBF <- anovaBF(precision ~ condition + ID, 
-                       data=paramsForAnalysis,
-                       whichRandom = 'ID'
+precisionBFFullVSNull <- anovaBF(precision ~ condition + ID,
+                               data=paramsForAnalysis,
+                               whichRandom = 'ID'
 )
+
+samples <- posterior(precisionBFFullVSNull, iterations=nIterations) #http://bayesfactor.blogspot.com/2015/01/multiple-comparisons-with-bayesfactor-2.html
+consistent <- (samples[,'condition-2']>samples[,'condition-6'] & samples[,'condition-6']>samples[,'condition-18'])
+precisionBFOrderedVSFull <- (sum(consistent)/nIterations)/(1/6)
+
+precisionBFOrderedVSNull <- as.vector(precisionBFFullVSNull)*precisionBFOrderedVSFull
+precisionBFOrderedVSNull
 
 ttestBF(x = paramsForAnalysis$precision[paramsForAnalysis$condition==2],
         y = paramsForAnalysis$precision[paramsForAnalysis$condition==6],
@@ -425,7 +432,7 @@ ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
   lims(y = c(0,150))
-  
+
 ########################
 ###Plots with Density###
 ########################
@@ -436,27 +443,27 @@ paramsForAnalysis %<>% mutate(ID=stringID) %>%
 if(participantPlots){
   for(thisParticipant in unique(paramsForAnalysis$ID)){
     for(thisCondition in unique(paramsForAnalysis$condition[paramsForAnalysis$ID == thisParticipant])){
-      thisEfficacy <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(efficacy) 
+      thisEfficacy <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(efficacy)
       thisLatency <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(latency) %>% `/`(1000/12)
       thisPrecision <- paramsForAnalysis %>% filter(ID == thisParticipant & condition == thisCondition) %>% pull(precision) %>% `/`(1000/12)
-      
+
       theseErrors <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
       print(paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
       minError <- theseErrors %>% pull(SPE) %>% min
       maxError <- theseErrors %>% pull(SPE) %>% max
       thisRange <- seq(minError,maxError,.1)
-      
+
       theseDensities <- data.frame(SPE = thisRange, density = dnorm(thisRange, thisLatency, thisPrecision))
       if(any(is.nan(theseDensities$density))){
         print(theseDensities)
       }
-      
+
       thisPlot <- ggplot(theseErrors, aes(x=SPE))+
         geom_histogram(binwidth = 1)+
         geom_line(data = theseDensities, aes(x = SPE, y=density*nrow(theseErrors)))+ #scale density to histogram with density * N * binwidth
         scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
         labs(y = 'Frequency')
-      
+
       thisFileName <- paste0('modelOutput/Plots/',thisCondition,'/',thisParticipant,'-',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.png')
       ggsave(filename = thisFileName, thisPlot,width = 16, height = 9)
     }
@@ -472,20 +479,20 @@ propBeforeCue <- expand.grid(
 
 for(thisParticipant in unique(paramsForAnalysis$stringID)){
   for(thisCondition in unique(paramsForAnalysis$condition)){
-    
+
     thisNormLatency <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(latency)
     thisNormPrecision <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(precision)
-    
+
     thisNormEfficacy <- paramsForAnalysis %>% filter(stringID == thisParticipant & condition == thisCondition) %>% pull(efficacy)
-    
-    thisNTrials <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject) %>% nrow 
-    
+
+    thisNTrials <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject) %>% nrow
+
     thisProportionBeforeCue <- pnorm(0, thisNormLatency, thisNormPrecision)
     thisNEfficaciousBeforeCue <- thisNTrials * thisNormEfficacy * thisProportionBeforeCue
-    
+
     propBeforeCue %<>% mutate(Proportion = replace(Proportion, Participant==thisParticipant & Group == thisCondition, thisProportionBeforeCue))
-    
-    propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue)) 
+
+    propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue))
   }
 }
 
