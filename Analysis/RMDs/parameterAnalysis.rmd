@@ -206,6 +206,13 @@ for(name in names(efficacyInclusionBFs)){ #calculate inclusion BFs for main effe
 
 knitr::kable(efficacyInclusionBFs)
 
+samples <- posterior(efficacyBF[2], iterations = 10000)
+
+consistent <- samples[,'ring-0']>samples[,'ring-1'] & samples[,'ring-1'] > samples[,'ring-2']
+
+efficacyBFOrderVsFull <- (sum(consistent)/10000)/(1/6)
+efficacyBFOrderVsNull <- efficacyBFOrderVsFull*as.vector(efficacyBF[2])
+
 #Only evidence for an effect of ring
 ggplot(paramsForAnalysis, aes(x=crowded, y = efficacy))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
@@ -244,6 +251,13 @@ for(name in names(latencyInclusionBFs)){
 
 knitr::kable(latencyInclusionBFs)
 
+samples <- posterior(latencyBF[2], iterations = 10000)
+
+consistent <- samples[,'ring-0']>samples[,'ring-1'] & samples[,'ring-1'] > samples[,'ring-2']
+
+latencyBFOrderVsFull <- (sum(consistent)/10000)/(1/6)
+latencyBFOrderVsNull <- latencyBFOrderVsFull*as.vector(latencyBF[2])
+
 ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
   geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
@@ -277,6 +291,13 @@ for(name in names(precisionInclusionBFs)){
 }
 
 knitr::kable(precisionInclusionBFs)
+
+samples <- posterior(precisionBF[2], iterations = 10000)
+
+consistent <- samples[,'ring-0']<samples[,'ring-1'] & samples[,'ring-1'] < samples[,'ring-2']
+
+precisionBFOrderVsFull <- (sum(consistent)/10000)/(1/6)
+precisionBFOrderVsNull <- precisionBFOrderVsFull*as.vector(precisionBF[2])
 
 ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
   geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
