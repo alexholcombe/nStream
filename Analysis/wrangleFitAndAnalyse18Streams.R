@@ -55,7 +55,7 @@ if(plots){
   savePlots <- F #save plots?
 }
 
-saveIndividualTSV <- F #Save data files?
+saveIndividualTSV <- T #Save data files?
 saveAllErrorsTSV <- F
 
 participantPlots <- F
@@ -120,6 +120,8 @@ allErrors <- data.frame(
   )
 
 startRow <- 1
+
+createdMatlab = FALSE
 
 for(dataset in files){
       temp <- read.table(dataset,sep='\t',header=T, stringsAsFactors = F)
@@ -194,14 +196,18 @@ for(dataset in files){
 
       endRow = startRow + nrow(temp) - 1
 
+
+      if(!createdMatlab){
+        tempNRows <- nrow(temp)
+        matlabAllRows <- tempNRows+totalRows
+        allErrorsMatlab = temp[(tempNRows+1):matlabAllRows,]
+        createdMatlab = TRUE
+      }
+
       allErrors[startRow:endRow,] <- temp[,c(1,4,16,8,3,37,7,5)]
+      allErrorsMatlab[startRow:endRow,] <- temp
 
       startRow <- endRow + 1
-
-      if(saveIndividualTSV){
-        write.table(twoStreams[!twoStreams$fixationReject,], paste0('wrangledData/',group,'/twoStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-        write.table(eighteenStreams[!eighteenStreams$fixationReject,], paste0('wrangledData/',group,'/eighteenStreams/',participant,'.txt'), sep='\t', col.names = T, row.names = F)
-      }
 
       print(mean(temp$fixationReject))
 }
@@ -216,6 +222,33 @@ allErrors %<>% mutate(ID = replace(ID, ID == '18LS4_2', '18LS4'))
 
 allErrors %<>% filter(ID!='')
 write.csv(allErrors, "Analysis/allErrors18Streams.txt")
+
+
+LS4TRIALS <- which(allErrorsMatlab$subject == '18LS4'|allErrorsMatlab$subject=='18LS4_2')
+DROPTHESE <- (max(LS4TRIALS)-(length(LS4TRIALS)-249)):max(LS4TRIALS) #The trials to drop from the analysis
+
+allErrorsMatlab <- allErrorsMatlab[-DROPTHESE,]
+
+allErrorsMatlab %<>% mutate(subject = replace(subject, subject == '18LS4_2', '18LS4'))
+
+allErrorsMatlab %<>% filter(subject!='')
+
+
+if(saveIndividualTSV){
+  for(thisNStream in c('2','6','18')){
+    for(thisParticipant in unique(allErrors$ID)){
+      fileName <- paste0('wrangledData/SONA/18Streams/', thisNStream,'/', thisParticipant,'.txt')
+      allErrorsMatlab %>%
+        filter(subject == thisParticipant & nStreams == thisNStream & !fixationReject) %>%
+        write.table(.,
+                    file = fileName,
+                    sep = '\t',
+                    col.names = T,
+                    row.names = F)
+    }
+  }
+}
+
 
 nStreams <- allErrors %>% pull(condition) %>% unique
 participants <- allErrors %>% pull(ID) %>% unique
@@ -339,6 +372,7 @@ params %<>% mutate(ID = factor(ID))
 
 params %<>% mutate(condition = factor(condition, levels = c(2,6,18), ordered = T))
 paramsForAnalysis <- params %>% filter(efficacy>.1 & efficacy < bounds[1,2] & efficacy > bounds[1,1] & latency < bounds[2,2] & latency > bounds[2,1] & precision < bounds[3,2] & precision > bounds[3,1])
+paramsForAnalysis %<>% filter(ID != '18TR1') #No eyetracking. Bug in number of trials?
 paramsForAnalysis %<>% mutate(latency = latency*rate)
 paramsForAnalysis %<>% mutate(precision = precision *rate)
 
@@ -416,14 +450,6 @@ precisionBFOrderedVSFull <- (sum(consistent)/nIterations)/(1/6)
 precisionBFOrderedVSNull <- as.vector(precisionBFFullVSNull)*precisionBFOrderedVSFull
 precisionBFOrderedVSNull
 
-ttestBF(x = paramsForAnalysis$precision[paramsForAnalysis$condition==2],
-        y = paramsForAnalysis$precision[paramsForAnalysis$condition==6],
-        paired = T)
-
-ttestBF(x = paramsForAnalysis$precision[paramsForAnalysis$condition==6],
-        y = paramsForAnalysis$precision[paramsForAnalysis$condition==18],
-        paired = T)
-
 ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   #geom_violin(position = position_dodge(.9))+
   geom_point(alpha=.3)+
@@ -496,4 +522,36 @@ for(thisParticipant in unique(paramsForAnalysis$stringID)){
   }
 }
 
-propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
+ggplot(propBeforeCue, aes(x = factor(Group), y = Proportion))+
+  geom_point(alpha = .7)+
+  stat_summary(geom = 'point', fun.y = mean, size = 4, alpha = .3)+
+  stat_summary(geom = 'errorbar', fun.data = mean_se, width = .1, alpha = .3)+
+  labs(x = 'Number of Streams')+
+  lims(y = c(0,1))
+
+
+propBeforeCue %>% group_by(Group) %>% summarise(mean = mean(Proportion), sd = sd(Proportion))
+
+propBeforeCueFullVSNull <- anovaBF(Proportion~Group+Participant,
+                           whichRandom = 'Participant',
+                           data = propBeforeCue)
+
+samples <- posterior(propBeforeCueFullVSNull, iterations = nIterations)
+
+consistent <- samples[,'Group-2']>samples[,'Group-6'] & samples[,'Group-6']== samples[,'Group-18']
+
+propBeforeCueOrderVSFull <- (sum(consistent)/nIterations)/(1/6)
+propBeforeCueOrderVSNull <- propBeforeCueOrderVSFull*as.vector(propBeforeCueFullVSNull)
+
+#Are 6 & 18 streams equal?
+
+#add a new label
+
+propBeforeCue %<>% mutate(equalRestriction = ifelse(Group == '2', '2','equal'))
+propBeforeCue %<>% mutate(equalRestriction = factor(equalRestriction))
+
+PropEqualRestrictionBF <- anovaBF(Proportion~equalRestriction+Participant,
+                                  whichRandom = 'Participant',
+                                  data = propBeforeCue)
+
+propBeforeCueOrderVSNull/as.vector(PropEqualRestrictionBF)

@@ -4,49 +4,51 @@ library(magrittr)
 library(mixRSVP)
 setwd('~/gitCode/nStream/')
 
-allErrors <- read.csv('Analysis/allErrors18Streams.txt', header = T, stringsAsFactors = F)
+allErrors <- read.table('Analysis/allErrors.txt', header = T, stringsAsFactors = F, sep ='\t')
+
+colnames(allErrors)[c(3,7)] <- c('SPE', 'targetSP')
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
-
+  
   #############################
   ###Generate pseudo-uniform###
   #############################
-
+  
   maxSPETheseData <- theseData %>% pull(targetSP) %>% max
   minSPETheseData <- theseData %>% pull(targetSP) %>% min
   minSPE <- 1 - maxSPETheseData
   maxSPE <- numItemsInStream - minSPETheseData
-
+  
   guessingDist <- createGuessingDistribution(minSPE = minSPE,
                                              maxSPE = maxSPE,
                                              targetSP = theseData$targetSP,
                                              numItemsInStream = numItemsInStream)
-
+  
   pseudoUniform <- data.frame(xDomain = minSPE:maxSPE, guessingDist = guessingDist, prob = guessingDist/sum(guessingDist)) #give guessing dist values labels
-
-
-
-
+  
+  
+  
+  
   nWhichSPE <- theseData %>% filter(SPE == whichSPE) %>% nrow() #How many observations at SPE = whichSPE?
-
+  
   bootstraps <- data.frame(rep = 1:nReps, #store the counts of whichSPE sampled from the pseudouniform here.
                            count = -999)
-
+  
   for(i in 1:nReps){
     thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size = nTrials) #sample nTrials many trials from the pseudouniform over the range of possible SPEs in this experiment
     nThisSPE<- which(thisSample == whichSPE) %>% length #How many of the trials had an SPE == whichSPE
     bootstraps %<>% mutate(count = replace(count, rep == i, nThisSPE)) #Put the count nThisSPE in the dataframe
   }
-
+  
   return(length(which(bootstraps$count>=nWhichSPE))/nReps) #a p.value. The proportion of bootstrapped samples that had a count of whichSPE at least as great as the observed count
-
+  
 }
 
 
 numItemsInStream = 24
 
-pFiles <- list.files(pattern = 'bootstrapPValues18Streams.*\\.csv', 
+pFiles <- list.files(pattern = 'bootstrapPValues8Streams.*\\.csv', 
                      path = 'Analysis', 
                      full.names = T)
 
@@ -72,7 +74,7 @@ if(length(pFiles)>0){
     print(thisParticipant)
     for(thisCondition in unique(allErrors$condition)){
       print(thisCondition)
-      theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
+      theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject)
       for(whichSPE in -9:9){
         print(whichSPE)
         thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
@@ -80,7 +82,7 @@ if(length(pFiles)>0){
       }
     }
   }
-  write.csv(ps, paste0('Analysis/bootstrapPValues18Streams',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
+  write.csv(ps, paste0('Analysis/bootstrapPValues8Streams',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
 }
 
 ps %<>% filter(participant != '18TR1')

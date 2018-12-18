@@ -80,11 +80,6 @@ if(plots){
   }
 }
 
-efficacy <- read.csv('modelOutput/CSV/Efficacy.csv')
-latency <- read.csv('modelOutput/CSV/Latency.csv')
-precision <- read.csv('modelOutput/CSV/Precision.csv')
-
-
 files <- list.files(pattern = '^[A-Z][A-Z][0-9].*\\.txt$', path = dataPath, full.names = T)
 print(files)
 #removed split files
@@ -159,7 +154,14 @@ for(dataset in files){
   }
 }
 
-allErrors <- data.frame(exp = character(totalRows), condition = character(totalRows), error = numeric(totalRows), ID = character(totalRows), fixationReject = logical(totalRows), button = numeric(totalRows), stringsAsFactors = F)
+allErrors <- data.frame(exp = character(totalRows), 
+                        condition = character(totalRows), 
+                        error = numeric(totalRows), 
+                        ID = character(totalRows), 
+                        fixationReject = logical(totalRows), 
+                        button = numeric(totalRows), 
+                        cuePos0 = numeric(totalRows),
+                        stringsAsFactors = F)
 
 startRow <- 1
 
@@ -169,15 +171,7 @@ for(group in names(dataSets)){
       print(participant)
       
       nInAlphabeticalOrder <- which(IDs==participant) #parameter estimates from MM are in alphabetical order, so this lets me select the appropriate params
-      
-      
-      #Mixture Modelled parameter estimates
-      twoStreamsLatency <- latency$twoStreams[nInAlphabeticalOrder]
-      twoStreamsPrecision <- precision$eightStreams[nInAlphabeticalOrder]
-      
-      eightStreamsLatency <- latency$eightStreams[nInAlphabeticalOrder]
-      eightStreamsPrecision <- precision$eightStreams[nInAlphabeticalOrder]
-      
+    
             
       temp <- dataSets[[group]][[participant]][[dateString]][['data']]
       print(nrow(temp))
@@ -313,6 +307,7 @@ for(group in names(dataSets)){
       allErrors$error[startRow:endRow] <- twoStreams$responsePosRelative0
       allErrors$fixationReject[startRow:endRow] <- twoStreams$fixationReject
       allErrors$button[startRow:endRow] <- twoStreams$button0
+      allErrors$cuePos0[startRow:endRow] <- twoStreams$cuePos0
       
       startRow <- endRow+1
       
@@ -323,6 +318,7 @@ for(group in names(dataSets)){
       allErrors$error[startRow:endRow] <- eightStreams$responsePosRelative0
       allErrors$fixationReject[startRow:endRow] <- eightStreams$fixationReject
       allErrors$button[startRow:endRow] <- eightStreams$button0
+      allErrors$cuePos0[startRow:endRow] <- eightStreams$cuePos0
       
       startRow <- endRow + 1
       
