@@ -1,3 +1,4 @@
+rm(list=ls())
 library(ggplot2)
 library(dplyr)
 library(magrittr)
@@ -54,12 +55,12 @@ pFiles <- list.files(pattern = 'bootstrapPValues8Streams.*\\.csv',
 
 if(length(pFiles)>0){
   splits <- pFiles %>% strsplit(x = .,
-                                split = 'PValues|\\.csv')
+                                split = 'Streams|PValues|\\.csv')
   
   
   dates <- lapply(splits,
                   FUN = function(x){
-                    x[2] %>% as.POSIXct(., format = "%d-%m-%Y_%H-%M-%S")
+                    x[3] %>% as.POSIXct(., format = "%d-%m-%Y_%H-%M-%S")
                   }) %>% unlist
   
   whichLatestDate <- which(dates == max(dates))
@@ -96,9 +97,19 @@ ps %>% filter(p != -1) %>% ggplot(., aes(x = xDomain, y = p))+
 
 table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05)))
 
-table %<>% mutate(milliseconds = xDomain*(1000/12))
+table %>% dcast(.,
+                xDomain ~ condition,
+                value.var = 'nSig')
 
-ps %>% ggplot(., aes(x=milliseconds, y = p))+
-  geom_line(aes(colour = factor(condition)))+
-  facet_wrap(~participant, nrow = 3)
+bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
+  geom_line(aes(linetype = factor(condition)),size = 1)+
+  scale_x_continuous(breaks = -9:9)+
+  scale_y_continuous(breaks = seq(0,12,3))+
+  labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
+
+ggsave(filename = 'modelOutput/8Streams/bootstrapPlot.png',
+       plot = bootstrapPlot,
+       height=15, 
+       width=20,
+       units='cm')
 

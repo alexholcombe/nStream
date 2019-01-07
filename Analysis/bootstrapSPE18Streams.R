@@ -96,6 +96,19 @@ table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p
 
 table %<>% mutate(milliseconds = xDomain*(1000/12))
 
-table %>% ggplot(., aes(x=milliseconds, y = nSig))+
-  geom_line(aes(colour = factor(condition)))
+table %>% dcast(.,
+                xDomain ~ condition,
+                value.var = 'nSig')
+
+bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
+  geom_line(aes(linetype = factor(condition)),size = 1)+
+  scale_x_continuous(breaks = -9:9)+
+  scale_y_continuous(breaks = seq(0,12,3))+
+  labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
+
+ggsave(filename = 'modelOutput/18Streams/bootstrapPlot.png',
+       plot = bootstrapPlot,
+       height=15, 
+       width=20,
+       units='cm')
 
