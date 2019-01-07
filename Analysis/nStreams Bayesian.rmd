@@ -2,7 +2,7 @@
 title: "nStreams Analysis"
 author: "Charlie Ludowici"
 date: "5/18/2017"
-output: github_document
+output: html_document
 ---
 
 ```{r}
@@ -103,6 +103,9 @@ BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 
 BFs %<>% mutate(preferredModel = '') %>% mutate(preferredModel = replace(preferredModel, BF>3, 'Buffering')) %>% mutate(preferredModel = replace(preferredModel,BF<(1/3), 'Attention')) %>% mutate(preferredModel = replace(preferredModel, BF<3 & BF>(1/3), 'Neither'))
 
+BFs %>% group_by(Group) %>% summarise(buffering = length(which(preferredModel == 'Buffering')),
+                                      attention = length(which(preferredModel == 'Attention')),
+                                      neither = length(which(preferredModel == 'Neither')))
 
 allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
 allEfficacy$participantN <- factor(rep(1:13, times =4))
@@ -217,7 +220,7 @@ LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams
   labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
-  annotate('text', x =1:100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
+  #annotate('text', x =1:100, y=37, label = paste0('Effect size = ', round(posteriorModeLatency,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
 show(LatencyNormScatter)
@@ -296,7 +299,7 @@ PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStr
   labs(title='Precision Estimates (ms)')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
-  annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
+  #annotate('text', x = 90, y=66, label = paste0('Effect size = ', round(posteriorModePrecision,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
 show(PrecisionNormScatter)
@@ -367,7 +370,7 @@ EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStrea
   labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=.8, y=.45, label = paste0('BF10 = ', round(BF10,2)))+
-  annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
+  #annotate('text', x = .8, y=.37, label = paste0('Effect size = ', round(posteriorModeEfficacy,2)))+
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
 show(EfficacyNormScatter)
@@ -464,20 +467,20 @@ ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
 # predictionPlot
 # 
 # 
-# if(savePlots){
-#   ggsave(PrecisionNormPlot, file = 'PrecisionNormViolin.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormPlot, file = 'LatencyNormViolin.png', height=15, width=20,units='cm')
-#   ggsave(EfficacyNormPlot, file = 'EfficacyNormViolin.png', height=15, width=20,units='cm')
-#   
-#   ggsave(PrecisionNormScatter, file = 'PrecisionNormScatter.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormScatter, file = 'LatencyNormScatter.png', height=15, width=20,units='cm')
-#   ggsave(EfficacyNormScatter, file = 'EfficacyNormScatter.png', height=15, width=20,units='cm')
-#   
-#   
-#   ggsave(EfficacyNormBayesPlot, file = 'EfficacyNormEffectSize.png', height=15, width=20,units='cm')
-#   ggsave(LatencyNormBayesPlot, file = 'LatencyNormEffectSize.png', height=15, width=20,units='cm')
-#     ggsave(PrecisionNormBayesPlot, file = 'PrecisionNormEffectSize.png', height=15, width=20,units='cm')
-# }
+if(savePlots){
+  ggsave(PrecisionNormPlot, file = '../plots/PrecisionNormViolin.png', height=15, width=20,units='cm')
+  ggsave(LatencyNormPlot, file = '../plots/LatencyNormViolin.png', height=15, width=20,units='cm')
+  ggsave(EfficacyNormPlot, file = '../plots/EfficacyNormViolin.png', height=15, width=20,units='cm')
+
+  ggsave(PrecisionNormScatter, file = '../plots/PrecisionNormScatter.png', height=15, width=20,units='cm')
+  ggsave(LatencyNormScatter, file = '../plots/LatencyNormScatter.png', height=15, width=20,units='cm')
+  ggsave(EfficacyNormScatter, file = '../plots/EfficacyNormScatter.png', height=15, width=20,units='cm')
+
+
+  ggsave(EfficacyNormBayesPlot, file = '../plots/EfficacyNormEffectSize.png', height=15, width=20,units='cm')
+  ggsave(LatencyNormBayesPlot, file = '../plots/LatencyNormEffectSize.png', height=15, width=20,units='cm')
+    ggsave(PrecisionNormBayesPlot, file = '../plots/PrecisionNormEffectSize.png', height=15, width=20,units='cm')
+}
 ```
 
 ```{r}
