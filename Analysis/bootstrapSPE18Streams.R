@@ -52,7 +52,7 @@ pFiles <- list.files(pattern = 'bootstrapPValues18Streams.*\\.csv',
 
 if(length(pFiles)>0){
   splits <- pFiles %>% strsplit(x = .,
-                                split = 'PValues|\\.csv')
+                                split = '18Streams|\\.csv')
   
   
   dates <- lapply(splits,
@@ -68,9 +68,9 @@ if(length(pFiles)>0){
                     p = -1,
                     participant = unique(allErrors$ID),
                     condition = unique(allErrors$condition))
-  for(thisParticipant in unique(allErrors$ID)){
+  for(thisParticipant in unique(allErrors$ID)[1]){
     print(thisParticipant)
-    for(thisCondition in unique(allErrors$condition)){
+    for(thisCondition in unique(allErrors$condition)[1]){
       print(thisCondition)
       theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
       for(whichSPE in -9:9){
@@ -96,7 +96,6 @@ table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p
 
 table %<>% mutate(milliseconds = xDomain*(1000/12))
 
-ps %>% ggplot(., aes(x=milliseconds, y = p))+
-  geom_line(aes(colour = factor(condition)))+
-  facet_wrap(~participant, nrow = 3)
+table %>% ggplot(., aes(x=milliseconds, y = nSig))+
+  geom_line(aes(colour = factor(condition)))
 
