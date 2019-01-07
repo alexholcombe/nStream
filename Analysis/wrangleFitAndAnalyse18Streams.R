@@ -55,7 +55,7 @@ if(plots){
   savePlots <- F #save plots?
 }
 
-saveIndividualTSV <- T #Save data files?
+saveIndividualTSV <- F #Save data files?
 saveAllErrorsTSV <- F
 
 participantPlots <- F
@@ -81,6 +81,23 @@ if(plots){
     }
   }
 }
+
+BFs <- read.csv('modelOutput/18Streams/BF_ByParticipant.csv')
+
+BFs %<>% mutate(preferredModel = '') %>% 
+  mutate(preferredModel = replace(preferredModel, BF>3, 'Buffering')) %>% 
+  mutate(preferredModel = replace(preferredModel,BF<(1/3), 'Attention')) %>% 
+  mutate(preferredModel = replace(preferredModel, BF<3 & BF>(1/3), 'Neither'))
+
+BFs %>% dcast( Participant ~ Group, value.var = 'BF') %>% write.csv(x = .,
+                                                                    file = 'modelOutput/18Streams/BFsForManuscript.csv',
+                                                                    row.names = F)
+
+BFCounts <- BFs %>% group_by(Group) %>% summarise(Buffering = length(which(preferredModel=='Buffering')),
+                                                  Attention = length(which(preferredModel == 'Attention')),
+                                                  Neither = length(which(preferredModel == 'Neither')))
+
+
 
 files <- list.files(pattern = '^18[A-Z][A-Z].*\\.txt$', path = dataPath, full.names = T)
 print(files)
@@ -262,11 +279,11 @@ bounds$upper[3] <- 3
 runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file.
 plots <- FALSE
 
-nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
+nParamFiles <- length(list.files(path = 'modelOutput/18Streams',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
 
 if(nParamFiles>0){
   print('we out here')
-  paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
+  paramFiles <- list.files(path = 'modelOutput/18Streams',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
 
   splits <- strsplit(paramFiles, 'Estimates|(?<=[0-9][0-9])_|\\.csv',perl = T) #split out the date stamps from the param files names
 
@@ -358,6 +375,17 @@ if(length(notModelled)>0){
   write.csv(params, paste0('modelOutput/parameterEstimates',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
 }
 
+descriptives <- params %>% group_by(condition) %>% summarise(mean_efficacy = mean(efficacy, na.rm=T),
+                                                             sd_efficacy = sd(efficacy, na.rm=T),
+                                                             mean_latency = mean(latency, na.rm=T),
+                                                             sd_latency = sd(latency, na.rm=T),
+                                                             mean_precision = mean(precision, na.rm=T),
+                                                             sd_precision = sd(precision, na.rm=T))
+
+write.csv(x = descriptives,
+          file = 'modelOutput/18Streams/descriptives.csv',
+          row.names = F)
+
 nParticipants <- params %>% pull(ID) %>% unique %>% length
 
 params %<>% mutate(stringID = ID)
@@ -396,7 +424,7 @@ efficacyFullAgainstNull <- anovaBF(efficacy ~ condition + ID,
 
 #Only evidence for an effect of ring
 
-ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
+efficacyPlot = ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   #geom_violin(position = position_dodge(.9))+
   geom_point(alpha=.3)+
   geom_line(aes(group = ID),alpha = .3)+
@@ -428,7 +456,7 @@ ttestBF(x = paramsForAnalysis$latency[paramsForAnalysis$condition==6],
         paired = T)
 
 
-ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
+latencyPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   #geom_violin(position = position_dodge(.9))+
   geom_point(alpha=.3)+
   geom_line(aes(group = ID),alpha = .3)+
@@ -450,7 +478,7 @@ precisionBFOrderedVSFull <- (sum(consistent)/nIterations)/(1/6)
 precisionBFOrderedVSNull <- as.vector(precisionBFFullVSNull)*precisionBFOrderedVSFull
 precisionBFOrderedVSNull
 
-ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
+precisionPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   #geom_violin(position = position_dodge(.9))+
   geom_point(alpha=.3)+
   geom_line(aes(group = ID),alpha = .3)+
@@ -458,6 +486,24 @@ ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
   lims(y = c(0,150))
+
+ggsave(filename = 'modelOutput/18Streams/efficacyScatter.png',
+       plot = efficacyPlot, 
+       height=15, 
+       width=20,
+       units='cm')
+
+ggsave(filename = 'modelOutput/18Streams/latencyScatter.png',
+       plot = latencyPlot, 
+       height=15, 
+       width=20,
+       units='cm')
+
+ggsave(filename = 'modelOutput/18Streams/precisionScatter.png',
+       plot = precisionPlot, 
+       height=15, 
+       width=20,
+       units='cm')
 
 ########################
 ###Plots with Density###
@@ -522,12 +568,19 @@ for(thisParticipant in unique(paramsForAnalysis$stringID)){
   }
 }
 
-ggplot(propBeforeCue, aes(x = factor(Group), y = Proportion))+
+proportionPlot <- ggplot(propBeforeCue, aes(x = factor(Group), y = Proportion))+
   geom_point(alpha = .7)+
+  geom_line(aes(group = Participant), alpha = .3)+
   stat_summary(geom = 'point', fun.y = mean, size = 4, alpha = .3)+
   stat_summary(geom = 'errorbar', fun.data = mean_se, width = .1, alpha = .3)+
   labs(x = 'Number of Streams')+
   lims(y = c(0,1))
+
+ggsave(filename = 'modelOutput/18Streams/ProportionPlot.png',
+       plot = proportionPlot, 
+       height=15, 
+       width=20,
+       units='cm')
 
 
 propBeforeCue %>% group_by(Group) %>% summarise(mean = mean(Proportion), sd = sd(Proportion))
