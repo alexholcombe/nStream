@@ -214,9 +214,8 @@ show(LatencyNormPlot)
 wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
 
 LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams))+
-  geom_point(size = 4, aes(colour=ordered(1:nParticipants)))+
-  scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(20,120), y=c(20,120))+
+  geom_point(size = 4, alpha = .7)+
+  lims(x=c(20,300), y=c(20,300))+
   labs(title='Latency Estimates (ms)', x = 'Two Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=100, y=45, label = paste0('BF10 = ', round(BF10,2)))+
@@ -292,10 +291,9 @@ show(PrecisionNormPlot)
 wideFormatPrecision <- dcast(data=PrecisionNorm,formula = Participant~Group)
 
 
-PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
-  lims(x=c(40,100), y=c(40,100))+
+PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, alpha = .7)+
+  lims(x=c(40,200), y=c(40,200))+
   labs(title='Precision Estimates (ms)')+
   theme(plot.title = element_text(size=15, hjust=.5))+
   annotate('text', x=90, y=70, label = paste0('BF10 = ', round(BF10,2)))+
@@ -363,9 +361,8 @@ show(EfficacyNormPlot)
 wideFormatEfficacy <- dcast(data=EfficacyNorm,formula = Participant~Group)
 
 
-EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams, colour=ordered(1:nParticipants)))+
-  geom_point(size = 4)+
-  scale_color_brewer(palette='Spectral', name='Participant')+
+EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStreams))+
+  geom_point(size = 4, alpha = .7)+
   lims(x=c(0,1), y=c(0,1))+
   labs(title='Efficacy Estimates [1 - P(Guess)]', y = 'Eight Streams', y='Eight Streams')+
   theme(plot.title = element_text(size=15, hjust=.5))+
@@ -479,7 +476,7 @@ if(savePlots){
 
   ggsave(EfficacyNormBayesPlot, file = '../plots/EfficacyNormEffectSize.png', height=15, width=20,units='cm')
   ggsave(LatencyNormBayesPlot, file = '../plots/LatencyNormEffectSize.png', height=15, width=20,units='cm')
-    ggsave(PrecisionNormBayesPlot, file = '../plots/PrecisionNormEffectSize.png', height=15, width=20,units='cm')
+  ggsave(PrecisionNormBayesPlot, file = '../plots/PrecisionNormEffectSize.png', height=15, width=20,units='cm')
 }
 ```
 
