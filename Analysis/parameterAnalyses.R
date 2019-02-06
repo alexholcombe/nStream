@@ -5,6 +5,9 @@ library(mixRSVP)
 library(dplyr)
 library(magrittr)
 library(BayesFactor)
+library(papaja)
+
+
 
 setwd('~/gitCode/nStream/')
 
@@ -60,7 +63,7 @@ plots <- FALSE
 
 nParamFiles <- length(list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
 
-if(nParamFiles>0 and !runAnway){
+if(nParamFiles>0){
   print('we out here')
   paramFiles <- list.files(path = 'modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
   
@@ -166,7 +169,7 @@ if(length(notModelled)>0){
 }
 
 params %<>% mutate(stringID = ID)
-params %<>% mutate(ID = as.factor(rep(1:16, times = 6)))
+params %<>% mutate(ID = as.factor(rep(1:15, times = 6)))
 paramsForAnalysis <- params %>% filter(efficacy>.1 & ID != 'CH' & !efficacy %in% bounds[1,] & !latency %in% bounds[2,] & !precision %in% bounds[3,] & precision < bounds[3,2])
 paramsForAnalysis$ring %<>% as.factor
 
@@ -192,6 +195,10 @@ for(name in names(efficacyInclusionBFs)){ #calculate inclusion BFs for main effe
 }
 
 print(efficacyInclusionBFs)
+
+efficacyDescriptives <- paramsForAnalysis %>% group_by(crowded, ring) %>% summarise(mean = mean(efficacy), sd = sd(efficacy))
+
+print(efficacyDescriptives)
 
 #Only evidence for an effect of ring
 
@@ -220,11 +227,20 @@ for(name in names(latencyInclusionBFs)){
 
 print(latencyInclusionBFs)
 
-ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
-  geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
-  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
+latencyDescriptives <- paramsForAnalysis %>% group_by(crowded, ring) %>% summarise(mean = mean(latency), sd = sd(latency))
+
+print(latencyDescriptives)
+
+paramsForAnalysis %<>% mutate(ringID = paste(ring, ID))
+
+ggplot(paramsForAnalysis, aes(x=ring, y = latency))+
+  geom_violin(position = 'dodge')+
+  geom_line(aes(group = ID), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_point(aes(group = ID), position = 'dodge')+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))+
+  facet_wrap(~crowded)+
+  theme_apa()
 
 
 precisionBF <- anovaBF(precision ~ ring * crowded + ID, 
@@ -245,11 +261,49 @@ for(name in names(precisionInclusionBFs)){
 
 print(precisionInclusionBFs)
 
-ggplot(paramsForAnalysis, aes(x=crowded, y = precision))+
-  geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
-  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
+precisionDescriptives <- paramsForAnalysis %>% group_by(crowded, ring) %>% summarise(mean = mean(precision), sd = sd(precision))
+
+print(precisionDescriptives)
+
+precisionPosterior <- posterior(precisionBF, iterations = 10000)
+
+
+t.testResults <- list()
+
+
+for(thisRing in c(0,1)){
+  for(thisCrowded in c('Yes', 'Bouma')){
+    x = paramsForAnalysis %>% filter(ring == thisRing & crowded == thisCrowded) 
+    y = paramsForAnalysis %>% filter(ring == thisRing+1 & crowded == thisCrowded) 
+    
+    if(nrow(x)!=nrow(y)){
+      if(nrow(x)< nrow(y)){
+        exclude <- y$ID[!y$ID %in% x$ID]
+      } else {
+        exclude <- x$ID[!x$ID %in% y$ID]
+      }
+      x %<>% filter(!ID %in% exclude)
+      y %<>% filter(!ID %in% exclude)
+    }
+    thisTTest <- ttestBF(
+      x = x$precision,
+      y = y$precision,
+      paired = T
+    )
+    
+    t.testResults[[as.character(thisRing)]][[thisCrowded]] <- as.vector(thisTTest)
+  }
+}
+
+
+ggplot(paramsForAnalysis, aes(x=ring, y = precision))+
+  geom_violin(position = 'dodge')+
+  geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_point(aes(group = ID, colour = crowded), position = 'dodge', alpha = .3)+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))+
+  #facet_wrap(~crowded)+
+  theme_apa()
 ########################
 ###Plots with Density###
 ########################
