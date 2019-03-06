@@ -377,10 +377,10 @@ if(length(notModelled)>0){
 
 descriptives <- params %>% group_by(condition) %>% summarise(mean_efficacy = mean(efficacy, na.rm=T),
                                                              sd_efficacy = sd(efficacy, na.rm=T),
-                                                             mean_latency = mean(latency, na.rm=T),
-                                                             sd_latency = sd(latency, na.rm=T),
-                                                             mean_precision = mean(precision, na.rm=T),
-                                                             sd_precision = sd(precision, na.rm=T))
+                                                             mean_latency = mean(latency, na.rm=T)*rate,
+                                                             sd_latency = sd(latency, na.rm=T)*rate,
+                                                             mean_precision = mean(precision, na.rm=T)*rate,
+                                                             sd_precision = sd(precision, na.rm=T)*rate)
 
 write.csv(x = descriptives,
           file = 'modelOutput/18Streams/descriptives.csv',
@@ -608,3 +608,21 @@ PropEqualRestrictionBF <- anovaBF(Proportion~equalRestriction+Participant,
                                   data = propBeforeCue)
 
 propBeforeCueOrderVSNull/as.vector(PropEqualRestrictionBF)
+
+##################
+###Raw Accuracy###
+##################
+
+accuracy <- allErrors %>% filter(!fixationReject) %>% group_by(condition, ID) %>% summarise(accuracy = length(which(SPE == 0))/length(SPE))
+
+accuracy %<>% ungroup()
+
+accuracy %<>% mutate(ID = as.factor(ID), condition = factor(condition, levels = c(2,6,18), ordered = T))
+
+anovaBF(accuracy~condition+ID, whichRandom = 'ID', data = accuracy)
+
+accuracy %>% ggplot(., aes(x = condition, y = accuracy))+
+  geom_point()+
+  stat_summary(fun.y = mean, geom = 'point', shape = 5, size = 5)+
+  stat_summary(fun.data = mean_se, geom = 'errorbar')
+

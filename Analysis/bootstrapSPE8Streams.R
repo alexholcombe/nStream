@@ -107,6 +107,8 @@ bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   scale_y_continuous(breaks = seq(0,12,3))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
 
+bootstrapPlot
+
 ggsave(filename = 'modelOutput/8Streams/bootstrapPlot.png',
        plot = bootstrapPlot,
        height=15, 

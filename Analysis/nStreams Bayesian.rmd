@@ -84,19 +84,19 @@ null = 0
 
 allErrors <- read.table('allErrors.txt', sep = '\t', header = T)
 
-LatencyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
-LatencyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
+LatencyNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+LatencyTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
 
-PrecisionNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
-PrecisionTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
+PrecisionNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
+PrecisionTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
 
-EfficacyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
-EfficacyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
+EfficacyNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
+EfficacyTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
 ```
 
 #Model fits
 ```{r}
-BFs <- read.csv('../modelOutput/BF_ByParticipant.csv', header = T)
+BFs <- read.csv('../modelOutput/8Streams/BF_ByParticipant.csv', header = T)
 BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 
 
@@ -400,6 +400,12 @@ for(thisParticipant in unique(LatencyNorm$Participant)){
     propBeforeCue %<>% mutate(nTrialsBeforeCue = replace(nTrialsBeforeCue, Participant==thisParticipant & Group == thisCondition, thisNEfficaciousBeforeCue)) 
   }
 }
+
+propBeforeCue %>% ggplot(., aes(x = Group,y = Proportion))+
+  geom_violin()+
+  geom_point()+
+  stat_summary(fun.y = mean, geom = 'point', size = 5, shape = 5)+
+  stat_summary(fun.data = mean_se, geom='errorbar', width = .2)
 
 propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
 
