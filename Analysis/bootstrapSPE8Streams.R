@@ -9,6 +9,9 @@ allErrors <- read.table('Analysis/allErrors.txt', header = T, stringsAsFactors =
 
 colnames(allErrors)[c(3,7)] <- c('SPE', 'targetSP')
 
+runAnyway <- TRUE
+xDomain = -4:4
+
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
   
@@ -20,6 +23,13 @@ bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   minSPETheseData <- theseData %>% pull(targetSP) %>% min
   minSPE <- 1 - maxSPETheseData
   maxSPE <- numItemsInStream - minSPETheseData
+  
+  
+  thisAccuracy <- length(which(theseData$SPE == 0))/nTrials
+  
+  thisGuessingRate <- 1 - thisAccuracy
+  print(thisAccuracy)
+  print(thisGuessingRate)
   
   guessingDist <- createGuessingDistribution(minSPE = minSPE,
                                              maxSPE = maxSPE,
@@ -37,7 +47,7 @@ bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
                            count = -999)
   
   for(i in 1:nReps){
-    thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size = nTrials) #sample nTrials many trials from the pseudouniform over the range of possible SPEs in this experiment
+    thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size =  nTrials*thisGuessingRate) #sample nTrials many trials from the pseudouniform over the range of possible SPEs in this experiment
     nThisSPE<- which(thisSample == whichSPE) %>% length #How many of the trials had an SPE == whichSPE
     bootstraps %<>% mutate(count = replace(count, rep == i, nThisSPE)) #Put the count nThisSPE in the dataframe
   }
@@ -53,7 +63,7 @@ pFiles <- list.files(pattern = 'bootstrapPValues8Streams.*\\.csv',
                      path = 'Analysis', 
                      full.names = T)
 
-if(length(pFiles)>0){
+if(length(pFiles)>0 & !runAnyway){
   splits <- pFiles %>% strsplit(x = .,
                                 split = 'Streams|PValues|\\.csv')
   
@@ -67,7 +77,7 @@ if(length(pFiles)>0){
   
   ps <- read.csv(pFiles[whichLatestDate])
 } else{
-  ps <- expand.grid(xDomain = -9:9,
+  ps <- expand.grid(xDomain = xDomain,
                     p = -1,
                     participant = unique(allErrors$ID),
                     condition = unique(allErrors$condition))
@@ -76,9 +86,9 @@ if(length(pFiles)>0){
     for(thisCondition in unique(allErrors$condition)){
       print(thisCondition)
       theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject)
-      for(whichSPE in -9:9){
+      for(whichSPE in xDomain){
         print(whichSPE)
-        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
+        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,5000)
         ps %<>% mutate(p = replace(p, xDomain == whichSPE & participant == thisParticipant & condition == thisCondition, thisP))
       }
     }

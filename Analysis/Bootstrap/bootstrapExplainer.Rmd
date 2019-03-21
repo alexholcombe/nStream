@@ -1,14 +1,74 @@
+---
+title: "Bootstrapping explanation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
 library(ggplot2)
 library(dplyr)
 library(magrittr)
 library(mixRSVP)
 library(reshape2)
-setwd('~/gitCode/nStream/')
+```
 
-allErrors <- read.csv('Analysis/allErrors18Streams.txt', header = T, stringsAsFactors = F)
+#Boostrapping Procedure Explainer
+The motivation for this procedure is to find an analysis that tests for the presence of non-guesses from before the cue without relying on the mixture modelling. 
 
-runAnyway <- TRUE
-xDomain <- -4:4
+To start with, we generate a distribution of guesses. First we pull the data for one participant in one condition.
+
+```{r}
+allErrors <- read.csv('../allErrors18Streams.txt', header = T, stringsAsFactors = F) #All our RSVP data for the 18streams experiment
+
+theseData <- allErrors %>% filter(ID == '18AH2', condition == 2)
+```
+
+The distribution of responses for this participant looks like this.
+
+```{r}
+ggplot(theseData, aes(x = SPE))+
+  geom_histogram(binwidth = 1)
+```
+
+Now that we have this data, we can create a distribution of guesses. This assumes that all the responses were guesses, which is obviously untrue. 
+
+```{r}
+nTrials <- nrow(theseData)
+numItemsInStream = 24
+
+#############################
+###Generate pseudo-uniform###
+#############################
+
+maxSPETheseData <- theseData %>% pull(targetSP) %>% max
+minSPETheseData <- theseData %>% pull(targetSP) %>% min
+minSPE <- 1 - maxSPETheseData
+maxSPE <- numItemsInStream - minSPETheseData
+
+guessingDist <- createGuessingDistribution(minSPE = minSPE,
+                                           maxSPE = maxSPE,
+                                           targetSP = theseData$targetSP,
+                                           numItemsInStream = numItemsInStream)
+
+pseudoUniform <- data.frame(
+  xDomain = minSPE:maxSPE, 
+  guessingDist = guessingDist, 
+  prob = guessingDist/sum(guessingDist)) #Prob is the probabilty of a particular response
+```
+
+The distribution we'd expect if all responses were guesses would look like this.
+
+```{r echo = F}
+ggplot(pseudoUniform, aes(x = xDomain, y = guessingDist))+
+  geom_bar(width = 1, stat = 'identity')+
+  labs(y = 'Count', x = 'SPE')+
+  scale_x_continuous(breaks = seq(minSPE,maxSPE,2))
+```
+
+But this is wrong! We want to scale it down a bit so that 
+
+```{r}
+
+runAnyway <- FALSE
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
@@ -55,9 +115,10 @@ bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
 
 numItemsInStream = 24
 
-pFiles <- list.files(pattern = 'bootstrapPValues18Streams.*\\.csv', 
-                     path = 'Analysis', 
+pFiles <- list.files(pattern = 'bootstrapPValues18Streams.*.csv',
+                     path = '..',
                      full.names = T)
+
 
 
 if(length(pFiles)>0 & !runAnyway){
@@ -74,23 +135,23 @@ if(length(pFiles)>0 & !runAnyway){
   
   ps <- read.csv(pFiles[whichLatestDate])
 } else{
-  ps <- expand.grid(xDomain = xDomain,
+  ps <- expand.grid(xDomain = -9:9,
                     p = -1,
                     participant = unique(allErrors$ID),
                     condition = unique(allErrors$condition))
-  for(thisParticipant in unique(allErrors$ID)){
+  for(thisParticipant in unique(allErrors$ID)[1:3]){
     print(thisParticipant)
     for(thisCondition in unique(allErrors$condition)){
       print(thisCondition)
       theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
-      for(whichSPE in xDomain){
+      for(whichSPE in -9:9){
         print(whichSPE)
-        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,5000)
+        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
         ps %<>% mutate(p = replace(p, xDomain == whichSPE & participant == thisParticipant & condition == thisCondition, thisP))
       }
     }
   }
-  write.csv(ps, paste0('Analysis/bootstrapPValues18Streams',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
+  #write.csv(ps, paste0('Analysis/bootstrapPValues18Streams',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
 }
 
 ps %<>% filter(participant != '18TR1')
@@ -102,18 +163,13 @@ ps %>% filter(p != -1) %>% ggplot(., aes(x = xDomain, y = p))+
   geom_vline(xintercept = -1, linetype = 'dashed')+
   labs(x = 'SPE', y = 'p', colour = 'nStream')
 
-table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05 & p >-1)))
+table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05)))
 
 table %<>% mutate(milliseconds = xDomain*(1000/12))
-
-ggplot(table, aes(x = xDomain, y = nSig))+
-  geom_line(aes(linetype = condition))
 
 table %>% dcast(.,
                 xDomain ~ condition,
                 value.var = 'nSig')
-
-
 
 bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   geom_line(aes(linetype = factor(condition)),size = 1)+
@@ -121,9 +177,11 @@ bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   scale_y_continuous(breaks = seq(0,12,3))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
 
-ggsave(filename = 'modelOutput/18Streams/bootstrapPlot.png',
+ggsave(filename = '../../modelOutput/18Streams/bootstrapPlot.png',
        plot = bootstrapPlot,
        height=15, 
        width=20,
        units='cm')
 
+
+```
