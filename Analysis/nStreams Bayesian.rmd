@@ -82,16 +82,24 @@ for(participant in IDs){
     theseErrors <- allErrors[allErrors$subject==participant & allErrors$condition == group,]
     
     x = seq(min(theseErrors$responsePosRelative0),max(theseErrors$responsePosRelative0),.01)
+    
     meanTN <- latencyTN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    
     sdTN <- precisionTN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    
     meanN <- latencyN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    
     sdN <- precisionN %>% filter(., Participant == participant & Group == group) %>% pull(Estimate)/(1000/12)
+    
     a = meanTN - sdTN
     if(a<0){
       a = 0
     }
+    
     densTN <- dtruncnorm(x = x, a = a, b = Inf, mean = meanTN, sd = sdTN)
+    
     densN <- dnorm(x = x, mean = meanN, sd = sdN)
+    
     prefAttnModel <- BFs %>% filter(., Participant == participant & Group == group) %>% pull(preferedModel) == 'Attention'
     prefNeither <- BFs %>% filter(., Participant == participant & Group == group) %>% pull(preferedModel) == 'Neither'
     
@@ -345,9 +353,9 @@ meanPrecisionEndogenous <- allParams %>% filter(Group == 'Endogenous' & Paramete
 meanPrecisionExogenous <- allParams %>% filter(Group == 'Exogenous' & Parameter == 'Precision') %>% pull(Estimate) %>% mean
 
 predictionPlot <- ggplot()+
-  stat_function(data=data.frame(x=c(-400:800)/83.33), aes(x, fill = 'Eight Streams'), fun = dnorm, args = list(mean = meanLatencyExogenous/83.33, sd = meanPrecisionExogenous/83.33), geom='area', alpha = .9)+
-  stat_function(data=data.frame(x=c(-400:800)/83.33), aes(x, fill = 'Two Streams'), fun = dnorm, args = list(mean = meanLatencyEndogenous/83.33, sd = meanPrecisionEndogenous/83.33), geom='area', alpha = .9)+
-  scale_fill_manual(values=c('Two Streams' = '#628093', 'Eight Streams' = '#dca951'))+
+  stat_function(data=data.frame(x=c(-400:800)/83.33), aes(x, fill = 'Peripheral'), fun = dnorm, args = list(mean = meanLatencyExogenous/83.33, sd = meanPrecisionExogenous/83.33), geom='area', alpha = .9)+
+  stat_function(data=data.frame(x=c(-400:800)/83.33), aes(x, fill = 'Central'), fun = dnorm, args = list(mean = meanLatencyEndogenous/83.33, sd = meanPrecisionEndogenous/83.33), geom='area', alpha = .9)+
+  scale_fill_manual(values=c('Central' = '#628093', 'Peripheral' = '#dca951'))+
   scale_x_continuous(breaks = -3:8,limits = c(-3,8))+
   labs(x='SPE', y=NULL, fill = 'Condition')
 
