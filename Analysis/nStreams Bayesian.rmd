@@ -97,8 +97,10 @@ EfficacyTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyTrunc
 #Model fits
 ```{r}
 BFs <- read.csv('../modelOutput/8Streams/BF_ByParticipant.csv', header = T)
-BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
 
+BFsWide <- BFs %>% dcast(Participant~Group, value.var = 'BF') %>% mutate(
+  eightStreams = round(eightStreams,2), 
+  twoStreams = formatC(twoStreams, format = 'e', digits = 2))
 
 allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
 allEfficacy$participantN <- factor(rep(1:10, times =4))
@@ -365,6 +367,8 @@ EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStrea
   geom_abline(intercept = 0, slope = 1,linetype='dashed')
 
 show(EfficacyNormScatter)
+
+
 
 EfficacyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   geom_line(aes(y=posterior, linetype = 'Posterior'))+

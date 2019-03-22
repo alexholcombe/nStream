@@ -7,7 +7,7 @@ setwd('~/gitCode/nStream/')
 
 allErrors <- read.csv('Analysis/allErrors18Streams.txt', header = T, stringsAsFactors = F)
 
-runAnyway <- TRUE
+runAnyway <- FALSE
 xDomain <- -4:4
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
@@ -121,9 +121,11 @@ bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   scale_y_continuous(breaks = seq(0,12,3))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
 
+bootstrapPlot
+
 ggsave(filename = 'modelOutput/18Streams/bootstrapPlot.png',
        plot = bootstrapPlot,
-       height=15, 
-       width=20,
+       width=29.21, 
+       height=12.09,
        units='cm')
 

@@ -347,17 +347,18 @@ rings = range(int(np.ceil(float(max(nStreamsPossibilities))/streamsPerRing)))
 for nStreams in nStreamsPossibilities:
     for cueTemporalPos in possibleCueTemporalPositions: #5 or 6 temporal serial positions for  the cue
         for ring in rings:
-            for pairAngle in pairAngles:
-                for whichInPair in [0,1]:
-                    halfAngle = 360/float(streamsPerRing)/2.0
-                    thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
-                    whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
-                    #print(whichStreamCuedAngle)
-                    stimList.append(         
-                             {'nStreams':nStreams,  
-                                'cue0temporalPos':cueTemporalPos, 
-                                'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair}
-                                )
+            for whichInPair in [0,1]:
+                pairAngle = np.random.choice(range(0,180,int(360/streamsPerRing)),1)[0]
+                #Randomise it rather than making the demo compute all possible combinations
+                halfAngle = 360/float(streamsPerRing)/2.0
+                thisRingAngleOffset = (ring % 2) * halfAngle #offset odd-numbered rings by half the angle
+                whichStreamCuedAngle = (pairAngle + whichInPair * 180) + thisRingAngleOffset  #either the stream at pairangle or the one opposite
+                #print(whichStreamCuedAngle)
+                stimList.append(         
+                         {'nStreams':nStreams,  
+                            'cue0temporalPos':cueTemporalPos, 
+                            'pairAngle':pairAngle, 'ring':ring, 'whichStreamCuedAngle' : whichStreamCuedAngle, 'whichInPair':whichInPair}
+                            )
 
 
 trialsPerCondition = 1
@@ -830,7 +831,7 @@ def doRSVPStim(trial):
     for n in xrange(trialDurFrames):
         oneFrameOfStim(n, frameStimuli)
         myWin.flip()
-        core.wait(.005) #mimics 100Hz refresh
+        core.wait(.01) #mimics 100Hz refresh
         ts.append(trialClock.getTime() - t0)
 
     if eyetracking:

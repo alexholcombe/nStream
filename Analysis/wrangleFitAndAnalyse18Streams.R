@@ -8,6 +8,9 @@ library(BayesFactor)
 
 setwd('~/gitCode/nStream/')  #Charlie-specific
 
+PowerPointSize <- c(29.21, 12.09)
+PowerPointUnit <- 'cm'
+
 source('ggplotElements.R')
 theme_set(theme_apa(base_size = 20))
 
@@ -420,18 +423,21 @@ efficacyFullAgainstNull <- anovaBF(efficacy ~ condition + ID,
                       whichRandom = 'ID'
 )
 
-
+BayesFactorLabel <- efficacyFullAgainstNull %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
 
 #Only evidence for an effect of ring
 
 efficacyPlot = ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(alpha=.3)+
+  geom_point(alpha=1, colour = '#dca951', size = 4)+
   geom_line(aes(group = ID),alpha = .3)+
-  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
-  scale_colour_brewer(palette = 'Spectral')+
+  annotate(x = 1.25, y = .45, label = BayesFactorLabel, geom = 'text',size = 5,parse = T)+
+  labs(x = "Number of Streams", y = "Efficacy")+
   lims(y = c(0,1))
+
+efficacyPlot
 
 
 latencyBFFullVSNull <- anovaBF(latency ~ condition + ID,
@@ -455,15 +461,23 @@ ttestBF(x = paramsForAnalysis$latency[paramsForAnalysis$condition==6],
         y = paramsForAnalysis$latency[paramsForAnalysis$condition==18],
         paired = T)
 
+BayesFactorLabelOne <- latencyBFOrderedVSNull %>% as.vector %>% round(2) %>% paste0('BF[Ordered~vs~Null]==', .)
+BayesFactorLabelTwo <- latencyBFOrderedVSFull %>% as.vector %>% round(2) %>% paste0('BF[Ordered~vs~No-Order]==', .)
+
+
 
 latencyPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(alpha=.3)+
+  geom_point(alpha=1, colour = '#dca951', size = 4)+
   geom_line(aes(group = ID),alpha = .3)+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
-  lims(y = c(-50,150))
+  annotate(x = 1.25, y = -50, label = BayesFactorLabelOne, geom = 'text',size = 5,parse = T)+
+  annotate(x = 1.25, y = -35, label = BayesFactorLabelTwo, geom = 'text',size = 5,parse = T)+
+  lims(y = c(-50,200))
+
+latencyPlot
 
 
 precisionBFFullVSNull <- anovaBF(precision ~ condition + ID,
@@ -478,31 +492,38 @@ precisionBFOrderedVSFull <- (sum(consistent)/nIterations)/(1/6)
 precisionBFOrderedVSNull <- as.vector(precisionBFFullVSNull)*precisionBFOrderedVSFull
 precisionBFOrderedVSNull
 
+BayesFactorLabelOne <- precisionBFOrderedVSNull %>% as.vector %>% round(2) %>% paste0('BF[Ordered~vs~Null]==', .)
+BayesFactorLabelTwo <- precisionBFOrderedVSFull %>% as.vector %>% round(2) %>% paste0('BF[Ordered~vs~No-Order]==', .)
+
 precisionPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   #geom_violin(position = position_dodge(.9))+
-  geom_point(alpha=.3)+
+  geom_point(alpha=1, colour = '#dca951', size = 4)+
   geom_line(aes(group = ID),alpha = .3)+
-  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   scale_colour_brewer(palette = 'Spectral')+
+  annotate(x = 1.25, y = 30, label = BayesFactorLabelOne, geom = 'text',size = 5,parse = T)+
+  annotate(x = 1.25, y = 40, label = BayesFactorLabelTwo, geom = 'text',size = 5,parse = T)+
   lims(y = c(0,150))
+
+precisionPlot
 
 ggsave(filename = 'modelOutput/18Streams/efficacyScatter.png',
        plot = efficacyPlot, 
-       height=15, 
-       width=20,
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
        units='cm')
 
 ggsave(filename = 'modelOutput/18Streams/latencyScatter.png',
        plot = latencyPlot, 
-       height=15, 
-       width=20,
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
        units='cm')
 
 ggsave(filename = 'modelOutput/18Streams/precisionScatter.png',
        plot = precisionPlot, 
-       height=15, 
-       width=20,
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
        units='cm')
 
 ########################
@@ -578,8 +599,8 @@ proportionPlot <- ggplot(propBeforeCue, aes(x = factor(Group), y = Proportion))+
 
 ggsave(filename = 'modelOutput/18Streams/ProportionPlot.png',
        plot = proportionPlot, 
-       height=15, 
-       width=20,
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
        units='cm')
 
 

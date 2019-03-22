@@ -3,13 +3,17 @@ library(ggplot2)
 library(dplyr)
 library(magrittr)
 library(mixRSVP)
+library(reshape2)
+library(papaja)
 setwd('~/gitCode/nStream/')
+
+theme_set(theme_apa())
 
 allErrors <- read.table('Analysis/allErrors.txt', header = T, stringsAsFactors = F, sep ='\t')
 
 colnames(allErrors)[c(3,7)] <- c('SPE', 'targetSP')
 
-runAnyway <- TRUE
+runAnyway <- FALSE
 xDomain = -4:4
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
@@ -113,15 +117,15 @@ table %>% dcast(.,
 
 bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   geom_line(aes(linetype = factor(condition)),size = 1)+
-  scale_x_continuous(breaks = -9:9)+
-  scale_y_continuous(breaks = seq(0,12,3))+
+  scale_x_continuous(breaks = (-4):4)+
+  scale_y_continuous(breaks = seq(0,10,1))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
 
 bootstrapPlot
 
 ggsave(filename = 'modelOutput/8Streams/bootstrapPlot.png',
        plot = bootstrapPlot,
-       height=15, 
-       width=20,
+       height=12.09, 
+       width=29.21,
        units='cm')
 
