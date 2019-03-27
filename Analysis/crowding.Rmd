@@ -1,0 +1,523 @@
+---
+title: "Eccentricity Results"
+output: html_document
+---
+
+<style type="text/css">
+.table {
+
+    width: 40%;
+    margin-left:auto; 
+    margin-right:auto;
+
+}
+</style>
+
+```{r setup, include=FALSE}
+###Parameter Analyses###
+rm(list=ls())
+library(ggplot2)
+library(mixRSVP)
+library(dplyr)
+library(magrittr)
+library(BayesFactor)
+library(papaja)
+library(knitr)
+
+knitr::opts_chunk$set(warning = FALSE)
+
+
+participantPlots = TRUE #plot histograms with density?
+
+inclusionBF <- function(priorProbs, variable){
+  
+  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
+  
+  
+  if(typeof(priorProbs) == 'S4') priorProbs <- as.vector(priorProbs)
+  
+  
+  theseNames <- names(priorProbs)
+  nProbs <- 1:length(priorProbs)
+  variableMatches <- grep(variable, theseNames)
+  
+  if(grepl(':', variable)){
+    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
+
+    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
+    
+    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
+    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
+    
+    
+    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
+  } else {
+    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
+    
+    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
+    
+    
+    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
+    
+    
+    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
+  }
+}
+
+
+
+allErrors <- read.table('allErrors.txt', sep='\t', stringsAsFactors = F, header = T)
+
+nReps <- 100
+
+bounds <- parameterBounds()
+bounds$upper[3] <- 3
+
+
+runAnyway <- TRUE #If TRUE, fit models regardless of the presence of a parameter file. 
+plots <- FALSE
+
+nParamFiles <- length(list.files(path = '../modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T)) #How many parameter DFs are saved?
+
+if(nParamFiles>0){
+  print('we out here')
+  paramFiles <- list.files(path = '../modelOutput',pattern ='parameterEstimates.*\\.csv',full.names = T) #What are the saved param files?
+  
+  splits <- strsplit(paramFiles, 'Estimates|(?<=[0-9][0-9])_|\\.csv',perl = T) #split out the date stamps from the param files names
+  
+  theseDates <- lapply(splits,FUN =function(x) paste(x[2],x[3])) %>% 
+    unlist %>% 
+    as.POSIXct(.,format='%d-%m-%Y %H-%M-%S') #Format them as POSIXct (datetime) 
+  
+  whichMaxDate <- which(theseDates == max(theseDates)) #which is the newest?
+  params <- read.csv(paramFiles[whichMaxDate]) #load the newest
+  
+  #Empty space in the param DF for the un-modelled participants
+  notModelled <- allErrors %>% filter(., !ID %in% params$ID) %>% pull(ID) %>% unique
+  
+  unModelledRows <- expand.grid(
+    ID = factor(notModelled),
+    crowded = factor(unique(allErrors$crowded)),
+    ring = factor(unique(allErrors$ring)),
+    efficacy = 999,
+    latency = 999,
+    precision = 999,
+    val = 999,
+    valGuessing = 999,
+    pLRtest = 999,
+    stringsAsFactors = F
+  )
+  
+  params <- rbind(params, unModelledRows)
+  
+} else {
+  notModelled <- allErrors %>% pull(ID) %>% unique
+  
+  params <- expand.grid(
+    ID = factor(notModelled),
+    crowded = factor(unique(allErrors$crowded)),
+    ring = factor(unique(allErrors$ring)),
+    efficacy = 999,
+    latency = 999,
+    precision = 999,
+    val = 999,
+    valGuessing = 999,
+    pLRtest = 999,
+    stringsAsFactors = F
+  )
+}  
+
+if(length(notModelled)>0){
+  for(thisParticipant in notModelled){
+    for(thisCondition in unique(allErrors$crowded)){
+      for(thisRing in unique(allErrors$ring)){
+        print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition))
+        
+        try({
+          invisible( #invisible combined with capture output hides those print 'error' statements hidden deep in mixRSVP::
+            capture.output(
+              theseParams <- allErrors %>% filter(., crowded == thisCondition, ring == thisRing, ID == thisParticipant) %>% analyzeOneCondition(., 24, bounds, nReps)
+            )
+          )
+        }, silent = T) #Doing everything I can to silence those messages
+      
+        if(theseParams$pLRtest<.05){
+          params %<>%
+            mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$efficacy)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(latency=replace(latency, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$latency)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(precision=replace(precision, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$precision)) %>%
+            as.data.frame()
+        } else {
+          params %<>%
+            mutate(efficacy=replace(efficacy, ID == thisParticipant & crowded == thisCondition & ring == thisRing, 0)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(latency=replace(latency, ID == thisParticipant & crowded == thisCondition & ring == thisRing, NaN)) %>%
+            as.data.frame()
+          
+          params %<>%
+            mutate(precision=replace(precision, ID == thisParticipant & crowded == thisCondition & ring == thisRing, NaN)) %>%
+            as.data.frame()
+        }
+        
+        params %<>%
+          mutate(val=replace(val, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$val)) %>%
+          as.data.frame()
+        
+        params %<>%
+          mutate(valGuessing=replace(valGuessing, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$valGuessing)) %>%
+          as.data.frame()
+        
+        params %<>%
+          mutate(pLRtest=replace(pLRtest, ID == thisParticipant & crowded == thisCondition & ring == thisRing, theseParams$pLRtest)) %>%
+          as.data.frame()
+      }
+    }
+  }
+  write.csv(params, paste0('../modelOutput/parameterEstimates',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
+}
+
+params %<>% mutate(stringID = ID)
+# params %<>% mutate(ID = rep(1:15, times = 6))
+# params %<>% mutate(ID = LETTERS[ID])
+params %<>% mutate(ID = factor(ID))
+
+params %<>% mutate(crowded = ifelse(crowded == 'Yes', 'Standard', 'Bouma'))
+
+paramsForAnalysis <- params %>% 
+  filter(efficacy>.1 & 
+           ID != 'CH' & 
+           !efficacy %in% bounds[1,] & 
+           !latency %in% bounds[2,] & 
+           !precision %in% bounds[3,] & 
+           precision < bounds[3,2])
+
+paramsForAnalysis$ring %<>% as.factor
+
+paramsForAnalysis %<>% 
+  mutate(latency = latency*(1000/12),
+         precision = precision*(1000/12),
+         eccentricity = c(3, 7, 11.5)[as.numeric(ring)],
+         crowdedCoded = ifelse(crowded == 'Bouma', 0, 1))
+
+viewdist = 36.5 #cm
+
+widthPix = 1024 #monitor width in pixels of Agosta
+heightPix = 768 #800 #monitor height in pixels
+monitorwidth = 40.5
+
+pixelperdegree = widthPix/ (atan(monitorwidth/viewdist) /pi*180)
+
+
+```
+
+I ran this experiment to check for an effect of crowding in our 18 streams results. The program presented two streams at either 3, 7.5 or 11 degrees of eccentricity. A pair of streams presented together always had the same eccentricity. Stimuli were cortically scaled from  .9º at 3º of eccentricity to 1.62º and 2.43º for stimuli at 7 and 11.5 degrees of eccentricity, respectively. Cue diameter was varied according to condition. The "standard" condition used the same diameter produced by cortically scaling our cue, given the eccentricity of the cued stimulus. This resulted in cue diameters of .98º, 1.77º and 2.65º at 3, 7 and 11.5 degrees of eccentricity, respectively. The "bouma scaled" cues were designed such that the distance between the cue and the centre of the target was outside the region described by the Bouma law (Pelli & Tillman, 2008). Bouma's law states that letter stimuli that have a centre to centre spacing of less than half their eccentricity will crowd each other. Bouma scaled cues in this study should fall outside of the critical region described by the bouma law. They had a diameter, in degrees, equal to:
+
+$$.5 * eccentricity + .5 * letterHeight + 1$$
+This produced cues with radii of 2.95, 5.31 and 7.97 degrees at 3, 7, and 11.5 degrees of eccentricity, respectively. All of the cues had a line width of `r (2/pixelperdegree) %>% round(2)`º.
+
+I collected `r allErrors %>% pull(ID) %>% unique %>% length` participants. All of which were colleagues.
+
+If crowding occurs in this experiment. We should see more guessing in the crowded condition relative to the bouma scaled condition. 
+
+This experiment also lets us test for effects of eccentricity on temporal selection. 
+
+
+##Efficacy Analyses
+
+
+```{r}
+
+efficacyBF <- generalTestBF(efficacy ~ 1 + eccentricity * crowded * ID, 
+                      data=paramsForAnalysis,
+                      whichRandom = c('ID', 'eccentricity:ID', 'crowded:ID', 'eccentricity:crowded:ID'), 
+                      progress = FALSE
+                      )
+
+efficacyPriorProbs <- efficacyBF %>% newPriorOdds() %>% `*`(efficacyBF) %>% as.BFprobability() %>% as.vector() #extract P(M|Data) from BF object
+
+efficacyInclusionBFs <- data.frame(
+  variable = c('crowdedCoded','eccentricity','eccentricity:crowdedCoded','ID', 'eccentricity:ID', 'crowdedCoded:ID', 'eccentricity:crowdedCoded:ID'),
+  BF = -999,
+  inclusionEvidence = character(1),
+  stringsAsFactors = F
+               )
+
+for(thisVariable in efficacyInclusionBFs$variable){ #calculate inclusion BFs for main effects and interactions
+  thisInclusionBF <- inclusionBF(efficacyPriorProbs, thisVariable) %>% round(2)
+  efficacyInclusionBFs %<>% mutate(BF = replace(BF, variable == thisVariable, thisInclusionBF))
+}
+
+efficacyInclusionBFs %<>% 
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF>3, 'Include')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF<1/3, 'Exclude')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF > 1/3 & BF < 3, 'Equivocal'))
+
+kable(efficacyInclusionBFs, format.args = list(digits = 3, scientific = TRUE))
+```
+
+These values are the BAWS inclusion BFs for each factor. They give us a Bayes factor for including a particular dependent variable in the model by comparing the evidence for all models with that factor to the evidence for all models without that factor. For more info see [here](https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp). We can draw a couple of conclusions from this. Firstly, there's no need for random slopes in the model. None of the inclusion BFs for the interactions between ID and the independent variables exceed `r efficacyInclusionBFs$BF[5:7] %>% max %>% round(5) `. We can't, at the moment, make a claim about crowding, because the BF is `r efficacyInclusionBFs$BF[1] %>% round(2)`. This is evidence in favour of the null, but the ratio is only `r efficacyInclusionBFs$BF[1] %>% round(2) %>% (function(x) 1/x)`. However, we can see that we should include an effect of eccentricity and random intercepts in our analyses (BFs of `r efficacyInclusionBFs$BF[2] %>% round(2)` and `r efficacyInclusionBFs$BF[4] %>% round(2)`, respectively).
+
+So what does the model with these values look like?
+
+```{r}
+
+efficacyPosterior <- posterior(efficacyBF[6], iterations = 10000,progress = FALSE)
+
+efficacyPosteriorSummary <- summary(efficacyPosterior)
+
+efficacyPosteriorSummary$statistics[c(1,2,18:20),] %>% kable(digits = 2, caption = 'Linear model estimates for efficacy (fixed effects only)') #Don't print the random intercepts
+efficacyPosteriorSummary$quantiles[c(1,2,18:20),] %>% kable(digits = 2, caption = 'Quantiles for linear model estimates, efficacy')
+
+```
+
+The linear model we fit gives us a fixed effect estimate of `r efficacyPosteriorSummary$statistics[2,1] %>% round(2)` with a 95% credible interval of (`r efficacyPosteriorSummary$quantiles[2,1] %>% round(3)`,`r efficacyPosteriorSummary$quantiles[2,5] %>% round(3)`). The model thus predicts that efficacy drops with increasing eccentricity by about `r efficacyPosteriorSummary$statistics[2,1] %>% round(2) %>% (function(x) x*100)`% for every degree of visual angle. What does this change look like in our data? 
+
+
+```{r warning=FALSE}
+
+efficacyDescriptives <- paramsForAnalysis %>% group_by(crowded, eccentricity) %>% summarise(mean = mean(efficacy), sd = sd(efficacy))
+
+efficacyDescriptives %<>% mutate(mean = round(mean, 2), sd = round(sd, 2))
+efficacyDescriptives %<>% select(crowded, eccentricity, mean, sd)
+
+kable(efficacyDescriptives)
+
+#Only evidence for an effect of ring
+
+
+ggplot(paramsForAnalysis, aes(x=eccentricity, y = efficacy))+
+  geom_violin(aes(group = eccentricity),position = 'dodge')+
+  #geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_jitter(aes(group = ID, colour = crowded), width = .3, size = 3, alpha = .8)+
+  stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9), shape = 18, size = 5)+
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9), width = .4)+
+  #facet_wrap(~crowded)+
+  scale_x_continuous(breaks = c(3,7,11.5),labels = c('3º', '7º', '11.5º'), name = 'Eccentricity')+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,.2))+
+  scale_colour_manual(values = c("Bouma"='#23375f', 'Standard' = '#ffa951'))+
+  theme_apa()
+```
+
+Efficacy, perhaps unsurprisingly, decreases with increasing eccentricity. 
+
+##Latency Analyses
+
+
+```{r}
+latencyBF <-  generalTestBF(latency ~ 1 + eccentricity * crowdedCoded * ID, 
+                      data=paramsForAnalysis,
+                      whichRandom = 'ID, eccentricity:ID, crowdedCoded:ID, eccentricity:crowdedCoded:ID', 
+                      progress = FALSE
+                      ) 
+
+latencyPriorProbs <- latencyBF %>% newPriorOdds() %>% `*`(latencyBF) %>% as.BFprobability() %>% as.vector() #extract P(M|Data) from BF object
+
+latencyInclusionBFs <- data.frame(
+  variable = c('crowdedCoded','eccentricity','eccentricity:crowdedCoded','ID', 'eccentricity:ID', 'crowdedCoded:ID', 'eccentricity:crowdedCoded:ID'),
+  BF = -999,
+  inclusionEvidence = character(1),
+  stringsAsFactors = F
+               )
+
+for(thisVariable in latencyInclusionBFs$variable){ #calculate inclusion BFs for main effects and interactions
+  thisInclusionBF <- inclusionBF(latencyPriorProbs, thisVariable)
+  latencyInclusionBFs %<>% mutate(BF = replace(BF, variable == thisVariable, thisInclusionBF))
+}
+
+latencyInclusionBFs %<>% 
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF>3, 'Include')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF<1/3, 'Exclude')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF > 1/3 & BF < 3, 'Equivocal'))
+
+kable(latencyInclusionBFs, format.args = list(digits = 3, scientific = TRUE))
+
+```
+
+Based on these results, the model should include an effect of crowding, random slopes for eccentricity by participant and random intercepts by participant. It seems weird to include random slopes when there's no fixed effect for eccentricity, but I think this represents a sort of crossover interaction. 
+
+```{r}
+latencyPosterior <- posterior(latencyBF[11], iterations = 10000, progress = FALSE)
+
+latencyPosteriorSummary <- latencyPosterior %>% summary()
+
+latencyPosteriorSummary$statistics[1:3,] %>% kable(digits = 2, caption = 'Linear model estimates for latency (fixed effects only)')
+latencyPosteriorSummary$quantiles[1:3,] %>% kable(digits = 2, caption = 'Quantiles for slope and mu estimates for latency (fixed effects only)')
+```
+
+The model predicts that latency increases by about `r latencyPosteriorSummary$statistics[3,1] %>% round(2)`ms (95% Credible Interval: `r latencyPosteriorSummary$quantiles[3,1] %>% round(1)`, `r latencyPosteriorSummary$quantiles[3,5] %>% round(1)`) for the standard condition over the Bouma scaled condition. This is a fairly small effect. One interpretation could be that if the cue crowds the item, then participants select the item at SPE = 1 instead, but this would predict a shift in the range of 83ms, which is much larger than that which we observe. 
+
+```{r}
+latencyDescriptives <- paramsForAnalysis %>% group_by(crowded, eccentricity) %>% summarise(mean = mean(latency), sd = sd(latency))
+latencyDescriptives %<>% mutate(mean = round(mean, 2), sd = round(sd, 2))
+latencyDescriptives %<>% select(crowded, eccentricity, mean, sd)
+
+kable(latencyDescriptives, digits = 2, caption = 'Descriptive statistics for latency')
+
+paramsForAnalysis %<>% mutate(ringID = paste(ring, ID))
+
+ggplot(paramsForAnalysis, aes(x=crowded, y = latency))+
+  geom_violin(position = 'dodge')+
+  geom_line(aes(group = interaction(ID,eccentricity)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_point(aes(group = ID, colour = factor(eccentricity)), position = 'dodge', size = 3)+
+  stat_summary(geom = 'point', aes(group = crowded),fun.y = mean, position = position_dodge(.9))+
+  stat_summary(geom= 'errorbar', aes(group = crowded), fun.data = mean_se, position = position_dodge(.9), width = .1)+
+  #facet_wrap(~crowded)+
+  scale_x_discrete(name = 'Crowded', labels = c('Bouma Scaled', 'Standard'))+
+  scale_colour_manual(values = c('3' = '#FFE22E', '7' = '#FE9717', '11.5' = '#FE4D01'), name = 'Eccentricity')+
+  theme_apa()
+
+
+
+ggplot(paramsForAnalysis, aes(x=eccentricity, y = latency))+
+  geom_violin(position = 'dodge', aes(group = eccentricity))+
+  #geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_point(aes(group = ID, colour = crowded), position = 'dodge', size = 3, alpha = .8)+
+  stat_summary(geom = 'point', aes(group = eccentricity),fun.y = mean, position = position_dodge(.9), size = 5, , shape = 18)+
+  stat_summary(geom= 'errorbar', aes(group = eccentricity), fun.data = mean_se, position = position_dodge(.9), width = .5)+
+  #facet_wrap(~eccentricity)+
+  scale_x_continuous(name = 'Eccentricity', breaks = c(3,7,11.5))+
+  labs(y = 'Latency (ms)')+
+  scale_colour_manual(values = c("Bouma"='#23375f', 'Standard' = '#ffa951'))+
+  theme_apa()
+
+```
+
+We see the effect in our data.
+
+Latency increases when the stimulus is crowded, from `r paramsForAnalysis %>% filter(crowded == 'Bouma') %>% pull(latency) %>% mean %>% round(2)`ms with a bouma scaled cue to `r paramsForAnalysis %>% filter(crowded == 'Yes') %>% pull(latency) %>% mean %>% round(2)`ms with the standard cue. Latency is very low in this experiment
+
+##Precision Analysis
+
+```{r}
+precisionBF <-  generalTestBF(precision ~ eccentricity * crowdedCoded * ID, 
+                      data=paramsForAnalysis,
+                      whichRandom = 'ID, eccentricity:ID, crowdedCoded:ID, eccentricity:crowdedCoded:ID', 
+                      progress = TRUE
+                      ) 
+
+precisionPriorProbs <- precisionBF %>% newPriorOdds() %>% `*`(precisionBF) %>% as.BFprobability() %>% as.vector() #extract P(M|Data) from BF object
+
+precisionInclusionBFs <- data.frame(
+  variable = c('crowdedCoded','eccentricity','eccentricity:crowdedCoded','ID', 'eccentricity:ID', 'crowdedCoded:ID', 'eccentricity:crowdedCoded:ID'),
+  BF = -999,
+  inclusionEvidence = character(1),
+  stringsAsFactors = F
+               )
+
+for(thisVariable in precisionInclusionBFs$variable){ #calculate inclusion BFs for main effects and interactions
+  thisInclusionBF <- inclusionBF(precisionPriorProbs, thisVariable)
+  precisionInclusionBFs %<>% mutate(BF = replace(BF, variable == thisVariable, thisInclusionBF))
+}
+
+precisionInclusionBFs %<>% 
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF>3, 'Include')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF<1/3, 'Exclude')) %>%
+  mutate(inclusionEvidence = replace(inclusionEvidence, BF > 1/3 & BF < 3, 'Equivocal'))
+
+kable(precisionInclusionBFs, format.args = list(digits = 3, scientific = TRUE))
+```
+
+The BAWS factors for inclusion in the precision models tell us that all we want is a model with an effect of eccentricity and random intercepts by participant.
+
+```{r echo = FALSE}
+precisionPosterior <- posterior(precisionBF[6], iterations = 10000, progress = FALSE)
+precisionPosteriorSummary <- summary(precisionPosterior)
+
+
+precisionPosteriorSummary$statistics[1:2,] %>% kable(digits = 2, caption = 'Linear model estimates for precision (fixed effects only)')
+
+precisionPosteriorSummary$quantiles[1:2,] %>% kable(digits = 2, caption = 'Posterior quantiles for precision')
+```
+
+The model predicts that precision widens by `r precisionPosteriorSummary$statistics[2,1] %>% round(2)`ms for every degree of eccentricity (95% Credible Interval: `r precisionPosteriorSummary$quantiles[2,1] %>% round(2)`,`r precisionPosteriorSummary$quantiles[2,5] %>% round(2)`).
+
+```{r echo = FALSE}
+
+precisionDescriptives <- paramsForAnalysis %>% group_by(crowded, eccentricity) %>% summarise(mean = mean(precision), 
+                                                                                     sd = sd(precision))
+
+precisionDescriptives %<>% mutate(mean = round(mean, 2), sd = round(sd, 2))
+precisionDescriptives %<>% select(crowded, eccentricity, mean, sd)
+
+
+knitr::kable(precisionDescriptives, caption = 'Descriptive statistics for precision')
+
+```
+
+
+```{r fig.cap= 'Precision by Eccentricity'}
+
+paramsForAnalysis %>%
+  ggplot(., aes(x=eccentricity, y = precision))+
+    geom_violin(position = 'dodge', aes(group = eccentricity))+
+    #geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+    geom_point(aes(group = ID, colour = crowded), position = 'dodge', size = 3, alpha = .8)+
+    stat_summary(geom = 'point', aes(group = eccentricity),fun.y = mean, position = position_dodge(.9), size = 5, , shape = 18)+
+    stat_summary(geom= 'errorbar', aes(group = eccentricity), fun.data = mean_se, position = position_dodge(.9), width = .5)+
+    #facet_wrap(~eccentricity)+
+    scale_x_continuous(breaks = c(3, 7, 11.5))+
+    scale_colour_manual(values = c("Bouma"='#23375f', 'Standard' = '#ffa951'))+
+    labs(y = 'Precision (ms)')+
+    theme_apa()
+```
+
+
+```{r}
+########################
+###Plots with Density###
+########################
+
+# paramsForAnalysis %<>% mutate(ID=stringID) %>%
+#   as.data.frame() #Convert the problem name back for plotting
+# 
+# if(participantPlots){
+#   for(thisParticipant in unique(paramsForAnalysis$ID)){
+#     theseParams <- filter(paramsForAnalysis, ID == thisParticipant)
+#     for(thisCondition in unique(theseParams$crowded)){
+#       theseParams <- filter(paramsForAnalysis, ID == thisParticipant & crowded == thisCondition)
+#       for(thisRing in unique(theseParams$ring)){
+#         theseParams <- filter(paramsForAnalysis, ID == thisParticipant & crowded == thisCondition & ring == thisRing)
+#         
+#         thisEfficacy <- theseParams %>% pull(efficacy) %>% "/"(1000/12)
+#         
+#         thisLatency <- theseParams %>% pull(latency) %>% "/"(1000/12)
+#         
+#         thisPrecision <- theseParams %>% pull(precision) %>% "/"(1000/12)
+# 
+#         theseErrors <- allErrors %>% filter(ID == thisParticipant & crowded == thisCondition & ring == thisRing)
+#         
+#         print(paste0('Participant: ', thisParticipant, '. Ring: ', thisRing, '. Condition: ', thisCondition,'. N = ', nrow(theseErrors)))
+#         
+#         minError <- theseErrors %>% pull(SPE) %>% min
+#         maxError <- theseErrors %>% pull(SPE) %>% max
+#         thisRange <- seq(minError,maxError,.1)
+# 
+#         theseDensities <- data.frame(SPE = thisRange, density = dnorm(thisRange, thisLatency, thisPrecision))
+#         if(any(is.nan(theseDensities$density))){
+#           print(theseDensities)
+#         }
+# 
+#         thisPlot <- ggplot(theseErrors, aes(x=SPE))+
+#           geom_histogram(binwidth = 1)+
+#           geom_line(data = theseDensities, aes(x = SPE, y=density*nrow(theseErrors)))+ #scale density to histogram with density * N * binwidth
+#           scale_y_continuous(sec.axis = sec_axis(~./nrow(theseErrors), name = 'Density'))+
+#           labs(y = 'Frequency')
+#         
+#         show(thisPlot)
+# 
+#         thisFileName <- paste0('modelOutput/Plots/',thisCondition,'/',thisRing,'/',thisParticipant,'-',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.png')
+#         #ggsave(filename = thisFileName, thisPlot,width = 16, height = 9)
+#       }
+#     }
+#   }
+# }
+
+```

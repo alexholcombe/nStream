@@ -202,12 +202,14 @@ print(efficacyDescriptives)
 
 #Only evidence for an effect of ring
 
-ggplot(paramsForAnalysis, aes(x=crowded, y = efficacy))+
-  geom_violin(aes(fill = factor(ring)), position = position_dodge(.9))+
-  geom_jitter(aes(group = factor(ring)), position = position_dodge(.9))+
+ggplot(paramsForAnalysis, aes(x=ring, y = efficacy))+
+  geom_violin(position = 'dodge')+
+  geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+  geom_point(aes(group = ID, colour = crowded), position = 'dodge', alpha = .3)+
   stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))
-
+  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))+
+  #facet_wrap(~crowded)+
+  theme_apa()
 
 latencyBF <- anovaBF(latency ~ ring * crowded + ID, 
                       data=paramsForAnalysis,
@@ -243,8 +245,12 @@ ggplot(paramsForAnalysis, aes(x=ring, y = latency))+
   theme_apa()
 
 
-precisionBF <- anovaBF(precision ~ ring * crowded + ID, 
-                     data=paramsForAnalysis,
+#Ryo has v high precision in one condition. What happens if we drop him?
+
+
+
+precisionBF <- paramsForAnalysis %>% filter(!(ID == 13 & crowded == 'Yes')) %>% anovaBF(precision ~ ring * crowded + ID, 
+                     data=.,
                      whichRandom = 'ID'
 )
 
@@ -295,15 +301,16 @@ for(thisRing in c(0,1)){
   }
 }
 
+paramsForAnalysis %>% filter(!(ID == 13 & crowded == 'Yes')) %>%
+  ggplot(., aes(x=ring, y = precision))+
+    geom_violin(position = 'dodge')+
+    geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
+    geom_point(aes(group = ID, colour = crowded), position = 'dodge', alpha = .3)+
+    stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
+    stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))+
+    #facet_wrap(~crowded)+
+    theme_apa()
 
-ggplot(paramsForAnalysis, aes(x=ring, y = precision))+
-  geom_violin(position = 'dodge')+
-  geom_line(aes(group = interaction(ID,crowded)), position = 'dodge', linetype = 'dashed', alpha = .6)+
-  geom_point(aes(group = ID, colour = crowded), position = 'dodge', alpha = .3)+
-  stat_summary(geom = 'point', aes(group = factor(ring)),fun.y = mean, position = position_dodge(.9))+
-  stat_summary(geom= 'errorbar', aes(group = factor(ring)), fun.data = mean_se, position = position_dodge(.9))+
-  #facet_wrap(~crowded)+
-  theme_apa()
 ########################
 ###Plots with Density###
 ########################
