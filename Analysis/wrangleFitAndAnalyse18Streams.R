@@ -5,6 +5,7 @@ library(mixRSVP)
 library(dplyr)
 library(magrittr)
 library(BayesFactor)
+library(reshape2)
 
 setwd('~/gitCode/nStream/')  #Charlie-specific
 
@@ -434,7 +435,7 @@ efficacyPlot = ggplot(paramsForAnalysis, aes(x=condition, y = efficacy))+
   stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
   stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
   annotate(x = 1.25, y = .45, label = BayesFactorLabel, geom = 'text',size = 5,parse = T)+
-  labs(x = "Number of Streams", y = "Efficacy")+
+  labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]")+
   lims(y = c(0,1))
 
 efficacyPlot
@@ -475,7 +476,8 @@ latencyPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = latency))+
   scale_colour_brewer(palette = 'Spectral')+
   annotate(x = 1.25, y = -50, label = BayesFactorLabelOne, geom = 'text',size = 5,parse = T)+
   annotate(x = 1.25, y = -35, label = BayesFactorLabelTwo, geom = 'text',size = 5,parse = T)+
-  lims(y = c(-50,200))
+  lims(y = c(-50,200))+
+  labs(x = 'Number of Streams', y = 'Latency (ms)')
 
 latencyPlot
 
@@ -504,7 +506,8 @@ precisionPlot <- ggplot(paramsForAnalysis, aes(x=condition, y = precision))+
   scale_colour_brewer(palette = 'Spectral')+
   annotate(x = 1.25, y = 30, label = BayesFactorLabelOne, geom = 'text',size = 5,parse = T)+
   annotate(x = 1.25, y = 40, label = BayesFactorLabelTwo, geom = 'text',size = 5,parse = T)+
-  lims(y = c(0,150))
+  lims(y = c(0,150))+
+  labs(x = 'Number of Streams', y = 'Precision (ms)')
 
 precisionPlot
 
@@ -629,6 +632,51 @@ PropEqualRestrictionBF <- anovaBF(Proportion~equalRestriction+Participant,
                                   data = propBeforeCue)
 
 propBeforeCueOrderVSNull/as.vector(PropEqualRestrictionBF)
+
+###############################################
+###Example Participant Distribution for Plot###
+###############################################
+
+examplePlot <- allErrors %>% filter(ID == '18RC3', condition == '2') %>% 
+  ggplot(aes(x = SPE))+
+  geom_histogram(binwidth = 1)+
+  geom_vline(xintercept = 0, linetype = 'dashed')
+
+
+ggsave(filename = 'modelOutput/18Streams/ExampleParticipantPlot18RC32.png',
+       plot = examplePlot,
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
+       units='cm')
+################################
+###Aggregated Param Densities###
+################################
+
+meanTemporal <- paramsForAnalysis %>% group_by(condition) %>% summarise(precision = mean(precision),
+                                                                        latency = mean(latency))
+
+
+aggregateData <- data.frame(x= seq(-6,6, .05))
+
+aggregateData %<>% mutate(two = dnorm(x*(1000/12), meanTemporal$latency[meanTemporal$condition == '2'], meanTemporal$precision[meanTemporal$condition == '2']),
+                          six = dnorm(x*(1000/12), meanTemporal$latency[meanTemporal$condition == '6'], meanTemporal$precision[meanTemporal$condition == '6']),
+                          eighteen = dnorm(x*(1000/12), meanTemporal$latency[meanTemporal$condition == '18'], meanTemporal$precision[meanTemporal$condition == '18']))
+
+#aggregateData %<>% melt(id.vars = 'x', measure.vars = c('two', 'six', 'eighteen'))
+
+aggregateDensityPlot <- ggplot(aggregateData, aes(x = x), alpha = .5)+
+  geom_area(aes(y = two, fill = 'two'), stat = 'identity', alpha = .8)+
+  geom_area(aes(y = six, fill = 'six'), stat = 'identity', alpha = .8)+
+  geom_area(aes(y = eighteen, fill = 'eighteen'), stat = 'identity', alpha = .8)+
+  scale_fill_manual(values = c('two' = '#23375f', 'six' = '#ffa951', 'eighteen' = '#bc2e48'), labels = c('Two','Six','Eighteen'), breaks  = c('two', 'six', 'eighteen'))+
+  labs(x = 'SPE', y = NULL, fill = 'Number of Streams')
+
+ggsave(filename = 'modelOutput/18Streams/densityPlot.png',
+       plot = aggregateDensityPlot, 
+       height = PowerPointSize[2], 
+       width = PowerPointSize[1],
+       units='cm')
+
 
 ##################
 ###Raw Accuracy###

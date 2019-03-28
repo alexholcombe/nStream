@@ -4,9 +4,13 @@ library(papaja)
 library(magrittr)
 library(dplyr)
 library(truncnorm)
+library(R.matlab)
 
 PowerPointSize <- c(29.21, 12.09)
 PowerPointUnit <- 'cm'
+
+
+GoodbournAndHolcombe <- read.csv("~/Google Drive/AllRSVP/parameterMasterDF.csv", stringsAsFactors = F) %>% filter(experiment == 'DualRSVP_SONA_Exp1' | experiment == 'DualRSVP_Exp2')
 
 xlims <- c(-6,10)
 
@@ -103,3 +107,21 @@ plotSix <- ggplot(plotSixData, aes(x = x, y = guessingDist/sum(guessingDist)))+
 plotSix
 
 ggsave(plotSix,filename = '~/PlotSix.png', width = PowerPointSize[1], height = PowerPointSize[2], units = PowerPointUnit)
+
+
+meanParam <- GoodbournAndHolcombe %>% group_by(condition, stream, parameter) %>% summarise(mean = mean(estimate, na.rm=T), sd = sd(estimate, na.rm=T))
+
+GoodbournAndHolcombe %>% group_by(condition, stream, parameter, experiment) %>% summarise(n = n()) %>% View()
+
+plotSeven <- data.frame(x = seq(-6,10, .05)) %>%
+  ggplot(data = ., aes(x = x))+
+    stat_function(fun = dunif, args = list(-6, 10), fill = '#628093', geom = 'area')+
+    stat_function(fun = dnorm, args = list(mean = 37.5/83.33, sd = 75/83.33), fill = '#dca951', geom = 'area')+
+    geom_vline(xintercept = 0, linetype = 'dashed')+
+    lims(x = c(-4, 6))+
+    labs(x = 'SPE')+
+    theme_apa()
+plotSeven
+
+ggsave(plotSeven,filename = '~/PlotSeven.png', width = PowerPointSize[1], height = PowerPointSize[2], units = PowerPointUnit)
+
