@@ -16,7 +16,7 @@ nParticipants <- allErrors %>% pull(ID) %>% unique() %>% length()
 colnames(allErrors)[3] <- 'SPE'
 
 runAnyway <- FALSE
-xDomain = -4:4
+xDomain = -4:5
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
@@ -82,6 +82,15 @@ if(length(pFiles)>0 & !runAnyway){
   whichLatestDate <- which(dates == max(dates))
   
   ps <- read.csv(pFiles[whichLatestDate])
+  
+  unmodelled <- xDomain[!xDomain %in% ps$xDomain]
+  
+  unmodelledRows <- expand.grid(xDomain = unmodelled,
+                                p = -1,
+                                participant = unique(allErrors$ID),
+                                condition = unique(allErrors$condition))
+  
+  ps <- rbind(ps, unmodelledRows)
 } else{
   
   ps <- expand.grid(xDomain = xDomain,
@@ -89,13 +98,23 @@ if(length(pFiles)>0 & !runAnyway){
                     participant = unique(allErrors$ID),
                     condition = unique(allErrors$condition))
   
-  for(thisParticipant in unique(allErrors$ID)){
+  unmodelledRows <- ps
+  
+}
+
+if(nrow(unmodelledRows)>0){
+  for(thisParticipant in unique(unmodelledRows$participant)){
     
-    for(thisCondition in unique(allErrors$condition)){
+    theseUnmodelledRows <-  unmodelledRows %>% filter(participant == thisParticipant)
+    theseUnmodelledConditions <- theseUnmodelledRows %>% pull(condition) %>% unique
+    
+    for(thisCondition in theseUnmodelledConditions){
       
       theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition & !fixationReject)
       
-      for(whichSPE in xDomain){
+      theseUnmodelledSPEs <- theseUnmodelledRows %>% filter(condition == thisCondition) %>% pull(xDomain) %>% unique()
+      
+      for(whichSPE in theseUnmodelledSPEs){
         paste0(rep(' ', times = 100), '\r') %>% cat()
         paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition, ' SPE: ', whichSPE, '                             \r') %>% cat()
         thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,5000)
@@ -125,8 +144,8 @@ table %>% dcast(.,
 
 bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   geom_line(aes(linetype = factor(condition)),size = 1)+
-  scale_x_continuous(breaks = (-4):4)+
-  scale_y_continuous(breaks = seq(0,10,1))+
+  scale_x_continuous(breaks = (-4):5)+
+  scale_y_continuous(breaks = seq(0,13,1))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'Number of Streams')
 
 bootstrapPlot
