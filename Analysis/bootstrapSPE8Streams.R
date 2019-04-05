@@ -109,7 +109,7 @@ ps %>% filter(p != -1) %>% ggplot(., aes(x = xDomain, y = p))+
   geom_vline(xintercept = -1, linetype = 'dashed')+
   labs(x = 'SPE', y = 'p', colour = 'nStream')
 
-table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05)))
+table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<(.05/10))))
 
 table %>% dcast(.,
                 xDomain ~ condition,

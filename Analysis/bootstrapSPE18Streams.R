@@ -102,7 +102,7 @@ ps %>% filter(p != -1) %>% ggplot(., aes(x = xDomain, y = p))+
   geom_vline(xintercept = -1, linetype = 'dashed')+
   labs(x = 'SPE', y = 'p', colour = 'nStream')
 
-table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05 & p >-1)))
+table <- ps %>% group_by(condition, xDomain) %>% summarise(nSig = length(which(p<.05/12 & p >-1)))
 
 table %<>% mutate(milliseconds = xDomain*(1000/12))
 
@@ -122,6 +122,8 @@ bootstrapPlot <- table %>% ggplot(., aes(x=xDomain, y = nSig))+
   labs(x = 'SPE', y = 'Deviations from Guessing',linetype = 'nStreams')
 
 bootstrapPlot
+
+numNeg
 
 ggsave(filename = 'modelOutput/18Streams/bootstrapPlot.png',
        plot = bootstrapPlot,
