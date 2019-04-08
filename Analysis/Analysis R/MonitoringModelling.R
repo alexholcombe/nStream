@@ -3,13 +3,18 @@
 ###########################################################################################
 rm(list=ls())
 library(truncnorm)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(reshape2)
+library(BayesFactor)
 
-
+setwd('~/gitCode/nStream/')
 
 nTrials <- 300
 
 nStreams <- c(2,6,18)
-nSimulations <- 1000
+nSimulations <- 500
 
 efficacy <- read.csv('modelOutput/18Streams/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
 allErrors <- read.csv('Analysis/allErrors18Streams.txt', stringsAsFactors = F)
@@ -78,17 +83,18 @@ simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficac
 }
 
 allResponses <- expand.grid(
-  participant = simulatedParticipants,
-  monitoredStreams = c(1,2),
-  simulation = 1:nSimulations,
-  trial = 1:nTrials, 
-  nStreams = nStreams, 
+  participant = character(1),
+  monitoredStreams = numeric(1),
+  simulation = numeric(1),
+  trial = numeric(1), 
+  nStreams = numeric(1), 
   SPE = -999, 
   source = character(1),
-  response = character(1),
+  response = character(2e4),
   stringsAsFactors = F
   )
 
+startRow <- 1
 for(thisMonitoredStreams in c(1,2)){
   for(thisSimulation in 1:nSimulations){
     for(thisParticipant in simulatedParticipants){
@@ -98,35 +104,29 @@ for(thisMonitoredStreams in c(1,2)){
         thisNTrial <- allErrors %>% filter(condition == thisNStream, ID == thisParticipant, !fixationReject) %>% nrow()
         
         thisDistribution <- simulatedResponses(thisNStream,thisNTrial, thisMonitoredStreams ,efficacy = thisEfficacy)
-        allResponses %<>% mutate(
-          SPE = replace(SPE, 
-                        participant == thisParticipant & 
-                          nStreams == thisNStream & 
-                          trial %in% 1:thisNTrial & 
-                          simulation == thisSimulation &
-                          monitoredStreams == thisMonitoredStreams, 
-                        thisDistribution$SPE),
-          source = replace(source, 
-                           participant == thisParticipant & 
-                             nStreams == thisNStream & 
-                             trial %in% 1:thisNTrial & 
-                             simulation == thisSimulation &
-                             monitoredStreams == thisMonitoredStreams, 
-                           thisDistribution$source),
-          response = replace(response, 
-                             participant == thisParticipant & 
-                               nStreams == thisNStream & 
-                               trial %in% 1:thisNTrial & 
-                               simulation == thisSimulation &
-                               monitoredStreams == thisMonitoredStreams, 
-                             thisDistribution$response)
-        )
+        
+        thisDistribution %<>% mutate(participant = thisParticipant,
+                                     monitoredStreams = thisMonitoredStreams,
+                                     simulation = thisSimulation)
+        
+        thisDistribution %<>% select(participant,
+                                     monitoredStreams,
+                                     simulation,
+                                     trial,
+                                     nStreams,
+                                     SPE,
+                                     source,
+                                     response)
+        
+        endRow <- startRow + nrow(thisDistribution) -1
+        allResponses[startRow:endRow,] <- thisDistribution
+        startRow <- endRow+1
       }
     }
   }
 }
 
-allResponses %<>% filter(SPE > -999)
+allResponses %<>% filter(SPE > -999) 
 
 proportionNegModel <- allResponses %>% group_by(nStreams, participant, simulation, monitoredStreams) %>% summarise(pNeg = sum(SPE<0)/n())
 proportionNegEmpirical <- allErrors %>% filter(!fixationReject) %>% group_by(condition, ID) %>% summarise(pNeg = sum(SPE<0)/n())
@@ -160,7 +160,7 @@ ggplot()+
 ##############################
 ###2-6 One Stream monitored###
 ##############################
-x = proportionModelDifference %>% filter(variable == 'twoToSix', monitoredStreams == 1) %>% pull(value)
+x = proportionModelDifference %>% filter(variable == 'twoToSix', monitoredStreams == 1, !is.na(value)) %>% pull(value)
 y = proportionEmpiricalDifference %>% filter(variable == 'twoToSix') %>% pull(value)
 
 ttestBF(x = x,
