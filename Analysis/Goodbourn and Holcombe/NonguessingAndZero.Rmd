@@ -5,15 +5,6 @@ csl: apa.csl
 bibliography: references.bib
 ---
 
-<style type="text/css">
-.table {
-
-    width: 40%;
-    margin-left:auto;
-    margin-right:auto;
-}
-</style>
-
 ```{r echo = F, message = F}
 library(ggplot2)
 library(mixRSVP)
@@ -219,7 +210,7 @@ paramsForTable <- params %>%
   rename(Participant = participant, SPEZero = pBetween)
 
 cbind(paramsForTable[1:13,], paramsForTable[14:26,]) %>%
-  knitr::kable()
+  knitr::kable(digits = 2)
 ```
 
 All of these are less than one, which is what we want. A t-test confirms this
@@ -234,8 +225,6 @@ t.test(x = params$pBetween,
 And here are the nonguessing distributions, with SPE = 0 highlighted
 
 ```{r out.width='100%', fig.height=10}
-params %>% summarise(mean = mean(pBetween), 
-                     sd = sd(pBetween))
 
 densities <- params %>% #Purrr is new to me
   select(participant,latency, precision)%>% #Select the columns with the variables we want
