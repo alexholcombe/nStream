@@ -66,6 +66,21 @@ paramFiles <- list.files(
   full.names = T
   )
 
+
+twoStreamsOneTargetWide <- twoStreamsOneTarget %>% #Put the observed proportions of zeros in params
+    dcast(ID+trial+block~stream, value.var = 'SPE') %>%
+    rename('One' = '1', 'Two' = '2') %>%
+    mutate(SPE = ifelse(is.na(One), Two, One)) 
+
+twoStreamsOneTargetWide <- twoStreamsOneTarget %>%
+    dcast(ID+trial+block~stream, value.var = 'targetSP') %>%
+    rename('One' = '1', 'Two' = '2') %>%
+    mutate(targetSP = ifelse(is.na(One), Two, One)) %>%
+    select(ID,trial, block, targetSP) %>%
+    inner_join(twoStreamsOneTargetWide, by = c('ID','trial', 'block'))
+
+
+
 if(length(paramFiles)>0){
   params <- read.csv(paramFiles[1], stringsAsFactors = F)
 } else{
@@ -92,29 +107,11 @@ if(length(paramFiles)>0){
     
     cat('Participant', thisParticipant, 'in', thisExp, 'from the', thisPool, 'pool.                                          \r')
     
-    theseTrials <- twoStreamsOneTarget %>% filter( #Put the SPEs in the same column, because we don't care about the stream location for this analysis
-      ID == thisParticipant,
-      condition == 2,
-      exp == thisExp
-    ) %>%
-      dcast(ID+trial+block~stream, value.var = 'SPE') %>%
-      rename('One' = '1', 'Two' = '2') %>%
-      mutate(SPE = ifelse(is.na(One), Two, One))
+    theseTrials <- twoStreamsOneTargetWide %>% filter( #Put the SPEs in the same column, because we don't care about the stream location for this analysis
+      ID == thisParticipant
+    )
     
-    
-    
-    theseTargetSPs <- GandHTrials %>% filter(
-      ID == thisParticipant,
-      condition == 2,
-      exp == thisExp
-    ) %>% 
-      dcast(ID+trial+block~stream, value.var = 'targetSP') %>%
-      rename('One' = '1', 'Two' = '2') %>%
-      mutate(targetSP = ifelse(is.na(One), Two, One)) %>%
-      pull(targetSP)
-    
-    theseParams <- theseTrials %>% 
-      mutate(targetSP = theseTargetSPs) %>% 
+    theseParams <- theseTrials
       analyzeOneConditionDF(., 24, parameterBounds(), nReps)
     
     params %<>% mutate(
@@ -149,11 +146,12 @@ if(length(paramFiles)>0){
       pBetween = replace(pBetween, participant == thisParticipant, thisPBetween)
     )
   }
-  
+  # 
   # write.csv(
   #   file = 'ParamsTwoStreamSingleCue2019.csv',
-  #   x = params)
-  
+  #   x = params,
+  #   row.names = F)
+  # 
 }
 ```
 
@@ -220,6 +218,12 @@ t.test(x = params$pBetween,
        mu = 1, 
        alternative = 'less'
        )
+
+params %>% 
+  summarise(mean = mean(pBetween),
+            sd = sd(pBetween),
+            min = min(pBetween),
+            max = max(pBetween))
 ```
 
 And here are the nonguessing distributions, with SPE = 0 highlighted
@@ -251,7 +255,57 @@ densities %>%
 
 ```
 
-This confirms that the SPE = 0 measure is a conservative measure of efficacy. Efficacious trials are spread over several SPEs, and SPE = 0 only corresponds to a subset of these trials.
+The guessing contribution to SPE = 0 is $0.042 \cdot (1 - efficacy)$. The sum of the guessing contribution at 0 and the proportion of efficacious responses at 0 does not exceed efficacy for any participant. This suggest that the SPE = 0 measure is a conservative measure of efficacy. Efficacious trials are spread over several SPEs, and SPE = 0 only corresponds to a subset of these trials. 
 
+```{r}
+params <- twoStreamsOneTargetWide %>%
+    group_by(ID) %>%
+    summarise(propZero = sum(SPE == 0)/n()) %>%
+    rename(participant = ID)%>%
+    inner_join(params, by ='participant')
+
+guessingDistSummarise <- function(targetSP){ #get proportion of guessing at 0
+
+  maxSPTheseData <-targetSP %>% max
+  minSPTheseData <- targetSP %>% min
+  minSPE <- 1 - maxSPTheseData
+  maxSPE <- 24 - minSPTheseData
+
+  xDomain <- minSPE:maxSPE
+  
+  guessingDist <- createGuessingDistribution(minSPE = minSPE,
+                                             maxSPE = maxSPE,
+                                             targetSP = targetSP,
+                                             numItemsInStream = 24)
+  
+  return(guessingDist[xDomain==0]/sum(guessingDist))
+} 
+
+params <- twoStreamsOneTargetWide %>%
+  group_by(ID) %>%
+  summarise(guessingPropZero = guessingDistSummarise(targetSP)) %>%
+  rename(participant= ID) %>%
+  inner_join(params, by = 'participant')
+
+params %<>%
+  mutate(predictedZero = (pBetween * efficacy) + (guessingPropZero * (1-efficacy)))
+
+params %<>% mutate(
+  greaterThanEfficacy = ifelse(predictedZero > efficacy, TRUE, FALSE)
+)
+
+lm(propZero~predictedZero, data = params) %>% summary()
+
+
+ggplot(params, aes(x = predictedZero, y = propZero))+
+  geom_point()+
+  geom_abline(intercept = 0, slope = 1)+
+  geom_smooth(method = 'lm')
+
+# params %<>% 
+#   mutate(
+#     predictedZero <- 
+#   )
+```
 
 #Bibliography
