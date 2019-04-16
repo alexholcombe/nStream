@@ -1,0 +1,240 @@
+---
+title: "SPE = 0"
+output: html_document
+---
+
+```{r message=FALSE}
+library(ggplot2)
+library(mixRSVP)
+library(dplyr)
+library(magrittr)
+library(reshape2)
+library(purrr)
+library(papaja)
+library(knitr)
+rm(list=ls())
+
+knitr::opts_chunk$set(fig.align = "center",
+                      warning = F)
+
+nReps = 1
+
+rate <- 1000/12
+```
+
+##Wrangling
+
+Read in data.
+```{r}
+
+GandHTrials <- read.csv('Data and Materials/allData.csv', stringsAsFactors = F)
+
+GandHTrials %<>% select(-c(rate, eccentricity)) #Remove some empty columns
+
+twoStreamsOneTarget <- GandHTrials %>% filter(condition == 2, (exp == 'Exp2' & pool == 'Experienced Observers') | (exp == 'Exp1' & pool == 'SONA'))
+
+head(twoStreamsOneTarget) %>% kable()
+
+```
+
+
+The data come from a condition with two streams and a single cue. The original analyses took into account the spatial location of the stream, but we don't need to worry about that. Here I collapse SPEs from the different streams into a single, cued stream.
+
+```{r}
+#######################
+###Collapse the SPEs###
+#######################
+
+twoStreamsOneTargetWide <- twoStreamsOneTarget %>% #
+  dcast(ID+trial+block~stream, value.var = 'SPE') %>%
+  rename('One' = '1', 'Two' = '2') %>%
+  mutate(SPE = ifelse(is.na(One), Two, One)) 
+
+twoStreamsOneTargetWide <- twoStreamsOneTarget %>% #Add targetSP
+  dcast(ID+trial+block~stream, value.var = 'targetSP') %>%
+  rename('One' = '1', 'Two' = '2') %>%
+  mutate(targetSP = ifelse(is.na(One), Two, One)) %>%
+  select(ID,trial, block, targetSP) %>%
+  inner_join(twoStreamsOneTargetWide, by = c('ID','trial', 'block'))
+
+head(twoStreamsOneTargetWide) %>% kable()
+```
+
+##Parameters
+
+I've fit the mixRSVP model to these data for each participant. Here are the parameters
+
+```{r}
+
+params <- read.csv('ParamsTwoStreamSingleCue2019.csv', stringsAsFactors = F)
+
+head(params) %>% kable
+
+params %>%
+  melt(
+    measure.vars = c('efficacy','latency','precision'),
+    id.vars = c('participant'),
+    variable.name = 'Parameter',
+    value.name = 'Estimate'
+  ) %>% 
+  group_by(Parameter) %>%
+  summarise(Mean = mean(Estimate),
+            Sd = sd(Estimate)) %>%
+  knitr::kable(digits = 2)
+  
+```
+
+```{r}
+params %>% 
+  select(efficacy)%>%
+  ggplot(aes(y = efficacy))+
+  geom_violin(aes(x = 1))+
+  geom_point(aes(x = 1), position = 'dodge')+
+  scale_x_continuous(breaks = NULL)+
+  labs(x = NULL, y = 'Efficacy')+
+  theme_apa()
+
+params %>% 
+  select(latency)%>%
+  ggplot(aes(y = latency))+
+  geom_violin(aes(x = 1))+
+  geom_point(aes(x = 1), position = 'dodge')+
+  scale_x_continuous(breaks = NULL)+
+  labs(x = NULL, y = 'Latency')+
+  theme_apa()
+
+params %>% 
+  select(precision)%>%
+  ggplot(aes(y = precision))+
+  geom_violin(aes(x = 1))+
+  geom_point(aes(x = 1), position = 'dodge')+
+  scale_x_continuous(breaks = NULL)+
+  labs(x = NULL, y = 'Precision')+
+  theme_apa()
+
+```
+
+##Proportion of non-guesses at zero from the model
+
+For each participant, we want the proportion of the gaussian between 0 and 1. This corresponds to SPEs that are equal to zero. The 'pBetween' column in the params dataframe contains this value, but the code below shows how I calculated it for clarity's sake.
+
+```{r}
+for(thisParticipant in params$participant){
+  thisLatency <- params %>% filter(participant == thisParticipant) %>% pull(latency)
+  thisPrecision <- params %>% filter(participant == thisParticipant) %>% pull(precision)
+  
+  cdfOne <- pnorm(rate, thisLatency, thisPrecision) #proportion of gaussian <=1. rate = 83.33ms = 1SPE
+  cdfZero <- pnorm(0, thisLatency, thisPrecision) #proportion of gaussian <=0
+  
+  thisPBetween <- cdfOne - cdfZero #difference between these is the proportion between zero and one (inclusive)
+ 
+  params %<>% mutate(
+    pBetween = replace(pBetween, participant == thisParticipant, thisPBetween)
+  )
+}
+
+params %>% 
+  summarise(mean = mean(pBetween),
+            sd = sd(pBetween),
+            min = min(pBetween),
+            max = max(pBetween)) %>%
+  kable()
+
+
+```
+
+What are the observed proportions at zero? I calculate this from the SPE data for each participant and add this information to the `params` data frame.
+
+```{r}
+params <- twoStreamsOneTargetWide %>% #SPE data
+  group_by(ID) %>% #For each participant
+  summarise(propZero = sum(SPE == 0)/n()) %>% #What is the number of SPE = 0 divided by the # responses for that participant?
+  rename(participant = ID)%>% #This is just there because the SPE data and the parameter data have different column names
+  inner_join(params, by ='participant') #This adds the observed proportion data to the params dataframe
+
+```
+
+##Proportion of Guesses at Zero
+
+In this section I write a function that creates a guessing distribution and divides the value of the guessing distribution at zero by the sum of the values in the guessing distribution in order to get a proportion of responses at zero. 
+
+This is the thing I'm most worried about. I'm not sure the function does what I think it does. Does dividing the value of the guessing distribution at zero by the sum of the guessing distribution across all SPEs give me a proportion that's interpretable? The thing that bugs me here is that the value of the guessing distribution represents the count of trials that could potentially result in that SPE, so I'm not sure what the sum represents.
+
+Here's the function
+
+```{r}
+
+guessingDistSummarise <- function(targetSP){ #get proportion of guessing at 0
+  
+  #arguments for the createGuessingDistribution function
+  maxSPTheseData <-targetSP %>% max 
+  minSPTheseData <- targetSP %>% min
+  minSPE <- 1 - maxSPTheseData
+  maxSPE <- 24 - minSPTheseData
+  
+  xDomain <- minSPE:maxSPE #The domain for the distribution
+  
+  guessingDist <- createGuessingDistribution(minSPE = minSPE,
+                                             maxSPE = maxSPE,
+                                             targetSP = targetSP,
+                                             numItemsInStream = 24) #The guessing distribution
+  
+  return(guessingDist[xDomain==0]/sum(guessingDist)) #The proportion of the guessing distribution at zero
+} 
+
+
+```
+
+Here I run the function for each participant's data and add the resulting proportions to the `params` data frame. 
+
+```{r}
+#Add the guessing proportions to params
+params <- twoStreamsOneTargetWide %>%
+  group_by(ID) %>% #For each participant
+  summarise(guessingPropZero = guessingDistSummarise(targetSP)) %>% #run the function defined in the last code chunk
+  rename(participant= ID) %>% #rename 'ID' to 'participant' so that the inner join works
+  inner_join(params, by = 'participant') #add the guessing proportions at zero to the param data frame
+
+```
+
+So the params dataframe now has `pBetween`, the model's proportion of efficacious responses at zero, and `guessingPropZero`, the model's proportion of guesses at zero. The proportion of total responses predicted by the model for each participant is thus
+
+```{r}
+#Predicted counts at zero
+params %<>%
+  mutate(predictedZero = (pBetween * efficacy) + (guessingPropZero * (1-efficacy)))
+```
+
+Does value this exceed efficacy for any participant?
+
+```{r}
+params %<>% mutate(
+  greaterThanEfficacy = ifelse(predictedZero > efficacy, TRUE, FALSE)
+)
+
+
+params %>% pull(greaterThanEfficacy) %>% sum %>% as.logical
+```
+
+It does not. 
+
+Here are the values calculated over the last couple of chunks, with efficacy for comparison
+
+```{r}
+params %>%
+  select(efficacy, pBetween, guessingPropZero, predictedZero) %>%
+  round(2)%>%
+  kable(digits = 2)
+```
+
+
+And here is a plot
+
+```{r}
+ggplot(params, aes(x = predictedZero, y = propZero))+
+  geom_point()+
+  geom_abline(intercept = 0, slope = 1)+
+  geom_smooth(method = 'lm') +
+  lims(x = c(0,.7), y = c(0,.7))+
+  labs(x = 'Predicted proportion of zeros', y = 'Observed proportion of zeros')
+```

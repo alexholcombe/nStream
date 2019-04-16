@@ -257,6 +257,11 @@ params %<>% mutate(
   greaterThanEfficacy = ifelse(predictedZero > efficacy, TRUE, FALSE)
 )
 
+params %>%
+  select(efficacy, pBetween, guessingPropZero, predictedZero) %>%
+  round(2)%>%
+  View
+
 lm(propZero~predictedZero, data = params) %>% summary()
 
 
