@@ -3,7 +3,7 @@ function result = TGAB_pdf_Mixture_Single(x,p,mu,sigma)
     global xDomain;
     global pseudo_uniform;
     
-    [p mu sigma]
+    %[p mu sigma]
    
     
     truncNormPDF = @truncNormFunction;

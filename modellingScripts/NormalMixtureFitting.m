@@ -26,11 +26,11 @@ nSamples = numel(sampleNames);
 % Model fitting parameters
 
 nFreeParameters = 3;
-pdf_normmixture = @TGAB_pdf_Mixture_Single; % We can use the single-episode AB model
+pdf_normmixture = @NormalMixturePDF; % We can use the single-episode AB model
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
-pdf_uniformonly = @TG_pdf_Uniform;
-nReplicates = 50;
+pdf_uniformonly = @UniformPDF;
+nReplicates = 200;
 pCrit = .05;
 smallNonZeroNumber = 10^-10;
 fitMaxIter = 10^5;
@@ -60,7 +60,7 @@ allEstimates_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParam
 allLowerBounds_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParameters);
 allUpperBounds_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParameters);
 allMinNegLogLikelihoods_byParticipant = NaN(nSamples,nStreams,max(nParticipants));
-allNTrials_byParticipant = NaN(nSamples,max(nParticipants));
+allNTrials_byParticipant = NaN(nSamples, nStreams, max(nParticipants));
 
 
 allAccuracy_Combined = NaN(nSamples);
@@ -72,21 +72,13 @@ allNTrials_Combined = NaN(1,nSamples);
 
 for thisSample = 1:nSamples
     
-    fprintf('MLE by Condition for %s                     \r', sampleNames{thisSample})
-    
     group = sampleNames{thisSample};
     
     % Load data
     cd(dataDirectory);
     load(['/CompiledData_TGRSVP_Exp2_' group '.mat']);
     
-    
-    
-    % compiledErrors(thisParticipant,thisSession,thisTrial);
-    % compiledTargets(thisParticipant,thisSession,thisTrial);
-
-    thisNParticipants = size(compiledErrors);
-    thisNParticipants = thisNParticipants(2);
+   
     
     rateFactor = rateFactors(thisSample);
     
@@ -196,11 +188,11 @@ for thisSample = 1:nSamples
 
     % end
 
-    
-    % Load data
-    cd(dataDirectory);
-    load( ['/CompiledData_TGRSVP_Exp2_' group '.mat']);
-   
+%     
+%     % Load data
+%     cd(dataDirectory);
+%     load( ['/CompiledData_TGRSVP_Exp2_' group '.mat']);
+%    
     
     
     
@@ -208,7 +200,7 @@ for thisSample = 1:nSamples
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
     thisNParticipants = size(compiledErrors);
-    thisNParticipants = thisNParticipants(1);
+    thisNParticipants = thisNParticipants(2);
     
     % MODEL -------------------------------------------------------------------
 
@@ -253,10 +245,14 @@ for thisSample = 1:nSamples
 
             for thisParticipant = 1:thisNParticipants
                 
-                fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
+                S = sprintf('Group: %s. Participant: %d. Stream: %d\n',sampleNames{thisSample}, thisParticipant, thisStream);  
+                
+                fprintf(S);
+                
+                
                 minNegLogLikelihoodByParticipant = inf;
 
-                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,thisCondition,:,:, thisStream));
+                theseErrorsByParticipant = squeeze(compiledErrors(thisCondition, thisParticipant, :, :, thisStream));
                 theseErrorsByParticipant = theseErrorsByParticipant(:);
                 theseErrorsByParticipant = theseErrorsByParticipant(~isnan(theseErrorsByParticipant));
 
@@ -333,6 +329,8 @@ for thisSample = 1:nSamples
     end
 
 end
+
+fprintf('\n\r')
 
 % Write the data to *.csv files for analysis in JASP
 cd([usePath 'modelOutput/CSV/']);

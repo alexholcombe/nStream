@@ -8,26 +8,28 @@ dataDirectory = [usePath 'modelOutput/compiled/'];
 
 
 % Task parameters
-sampleNames = {'twoStreams', 'eightStreams'}; %'Ex8Streams82msSOA', 'Ex6Streams115msSOA
-conditionNames ={'twoStreams', 'eightStreams'}; %For writing into CSVs
-itemRates = [12,12];
+sampleNames = {'6_per_sec', '8_per_sec' '12_per_sec' '24_per_sec'};
+conditionNames ={'6_per_sec', '8_per_sec' '12_per_sec' '24_per_sec'}; %For writing into CSVs
+itemRates = [6 8 12 24];
 
-letterArray = char(65:90);      % A to Z
-nConditions = 1;
-nStreams = 1;
-nParticipants = [10 10];
-participants = {'AJ7', 'AN14', 'BB6', 'IK4', 'JA8', 'LH9', 'LS2', 'LT5', 'RN12', 'YZ15'};
-nTrials = 150;
-nSessions = 1;
+letterArray = [char(65:77) char(79:85) char(87:90)];      % A to Z
+nLeadTrailItems = 6;            % Number of items in stream at beginning and end with no target
+nConditions = 1;                %Per sample
+nStreams = 2;
+nTrials = 25;                   % Per participant, per condition, per session
+nSessions = 4;      
+
+nParticipants = [6 6 6 6];
+participants = {'AH','CW','EN','FJ','PG','SM'};
 nSamples = numel(sampleNames);
 
 % Model fitting parameters
 
 nFreeParameters = 3;
-pdf_normmixture = @TGAB_pdf_Trunc_Norm_Mixture_Single; % We can use the single-episode AB model
+pdf_normmixture = @TruncNormMixtureOneSDPDF; % We can use the single-episode AB model
 %pdf_global = @TGAB_pdf_logNorm_Mixture_Single_global_returns; %This is a
 %debuging function that returns all the variables used to calculate the pdf
-pdf_uniformonly = @TG_pdf_Uniform;
+pdf_uniformonly = @UniformPDF;
 nReplicates = 100;
 pCrit = .05;
 smallNonZeroNumber = 10^-3;
@@ -53,12 +55,12 @@ nLetters = length(letterArray); % Number of possible letters
 rateFactors = 1000./itemRates;
 
 % Build data structures
-allAccuracy_byParticipant = NaN(nSamples,max(nParticipants));
-allEstimates_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
-allLowerBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
-allUpperBounds_byParticipant = NaN(nSamples,max(nParticipants),nFreeParameters);
-allMinNegLogLikelihoods_byParticipant = NaN(nSamples,max(nParticipants));
-allNTrials_byParticipant = NaN(nSamples,max(nParticipants))
+allAccuracy_byParticipant = NaN(nSamples,nStreams,max(nParticipants));
+allEstimates_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParameters);
+allLowerBounds_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParameters);
+allUpperBounds_byParticipant = NaN(nSamples,nStreams,max(nParticipants),nFreeParameters);
+allMinNegLogLikelihoods_byParticipant = NaN(nSamples,nStreams,max(nParticipants));
+allNTrials_byParticipant = NaN(nSamples, nStreams, max(nParticipants));
 
 
 allAccuracy_Combined = NaN(nSamples);
@@ -84,7 +86,7 @@ for thisSample = 1:nSamples
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
     thisNParticipants = size(compiledErrors);
-    thisNParticipants = thisNParticipants(1);
+    thisNParticipants = thisNParticipants(2);
     
     rateFactor = rateFactors(thisSample);
     
@@ -206,7 +208,7 @@ for thisSample = 1:nSamples
     % compiledTargets(thisParticipant,thisSession,thisTrial);
 
     thisNParticipants = size(compiledErrors);
-    thisNParticipants = thisNParticipants(1);
+    thisNParticipants = thisNParticipants(2);
     
     % MODEL -------------------------------------------------------------------
 
@@ -251,10 +253,10 @@ for thisSample = 1:nSamples
 
             for thisParticipant = 1:thisNParticipants
                 
-                fprintf('Group: %s. Participant: %d \n\r',sampleNames{thisSample}, thisParticipant) 
+                fprintf('Group: %s. Participant: %d. Stream: %d \n\r',sampleNames{thisSample}, thisParticipant, thisStream) 
                 minNegLogLikelihoodByParticipant = inf;
 
-                theseErrorsByParticipant = squeeze(compiledErrors(thisParticipant,:,:));
+                theseErrorsByParticipant = squeeze(compiledErrors(1,thisParticipant,:,:,thisStream));
                 theseErrorsByParticipant = theseErrorsByParticipant(:);
                 theseErrorsByParticipant = theseErrorsByParticipant(~isnan(theseErrorsByParticipant));
 
@@ -266,19 +268,22 @@ for thisSample = 1:nSamples
 
                 for thisReplicate = 1:nReplicates
                     %fprintf('Replicate: %d \n',thisReplicate)
-                    parameterLowerBound = [0 -1 0.5];
-                    parameterUpperBound = [1 4 5];
+                    parameterLowerBound = [0 -.5 0.5];
+                    parameterUpperBound = [1 4 1.5];
                     pGuess = rand;
                     
-                    muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand(); %Sample starting value from uniform in the interval defined by the bounds for that value
+                    muGuess = parameterLowerBound(2) + (parameterUpperBound(2) - parameterLowerBound(2)) * rand(); %Sample starting value from uniform in the interval defined by the bounds for that value
                     while muGuess < parameterLowerBound(2) || muGuess > parameterUpperBound(2)
-                        muGuess = parameterUpperBound(2) + (parameterLowerBound(2) - parameterUpperBound(2)) * rand();
+                        fprintf('bounds violated mu')
+                        muGuess = parameterLowerBound(2) + (parameterUpperBound(2) - parameterLowerBound(2)) * rand();
                     end
-
-                    sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();
+                    
+                    sigmaGuess = parameterLowerBound(3) + (parameterUpperBound(3) - parameterLowerBound(3)) * rand();
                     while sigmaGuess < parameterLowerBound(3) || sigmaGuess > parameterUpperBound(3)
-                        sigmaGuess = parameterUpperBound(3) + (parameterLowerBound(3) - parameterUpperBound(3)) * rand();;
+                        fprintf('bounds violated sigma')
+                        sigmaGuess = parameterLowerBound(3) + (parameterUpperBound(3) - parameterLowerBound(3)) * rand();;
                     end
+                    
                     parameterGuess = [pGuess muGuess sigmaGuess];
                     
 
@@ -305,40 +310,40 @@ for thisSample = 1:nSamples
 
                     % Null model not rejected; use uniform only
 
-                    allEstimates_byParticipant(thisSample,thisParticipant,:) = [0 NaN NaN];
-                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = [0 NaN NaN];
-                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = [0 NaN NaN];
+                    allEstimates_byParticipant(thisSample,thisStream, thisParticipant,:) = [0 NaN NaN];
+                    allLowerBounds_byParticipant(thisSample, thisStream, thisParticipant,:) = [0 NaN NaN];
+                    allUpperBounds_byParticipant(thisSample, thisStream, thisParticipant,:) = [0 NaN NaN];
 
                 else
 
                     % Use mixture
-
-                    allEstimates_byParticipant(thisSample,thisParticipant,:) = bestEstimatesByParticipant.*[1 rateFactor rateFactor];
-                    allLowerBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 rateFactor rateFactor];
-                    allUpperBounds_byParticipant(thisSample,thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 rateFactor rateFactor];
-                    allMinNegLogLikelihoods_byParticipant(thisSample, thisParticipant) = minNegLogLikelihoodByParticipant;
-                    allNTrials_byParticipant(thisSample, thisParticipant) = numel(theseErrorsByParticipant);
+                    
+                    allEstimates_byParticipant(thisSample,thisStream, thisParticipant,:) = bestEstimatesByParticipant.*[1 rateFactor rateFactor];
+                    allLowerBounds_byParticipant(thisSample,thisStream, thisParticipant,:) = bestEstimateCIsByParticipant(1,:).*[1 rateFactor rateFactor];
+                    allUpperBounds_byParticipant(thisSample,thisStream, thisParticipant,:) = bestEstimateCIsByParticipant(2,:).*[1 rateFactor rateFactor];
+                    allMinNegLogLikelihoods_byParticipant(thisSample, thisStream, thisParticipant) = minNegLogLikelihoodByParticipant;
+                    allNTrials_byParticipant(thisSample, thisStream, thisParticipant) = numel(theseErrorsByParticipant);
                     
                 end
 %                 
-%                 thisAccuracyByParticipant = sum(theseErrorsByParticipant==0)/numel(theseErrorsByParticipant);
-%                 allAccuracy_byParticipant(thisSample,thisParticipant) = thisAccuracyByParticipant;
-%                 [heights, locations] = hist(theseErrorsByParticipant);
-%                 width = locations(2)-locations(1);
-%                 heights = heights / (nTrials*width);
-%                 bar(locations,heights,'hist')
-%                 grid = linspace(min(theseErrorsByParticipant),max(theseErrorsByParticipant));
-%                 if h==0
-%                     text(max(theseErrorsByParticipant)-2, max(heights)*.8, 'Efficacy = 0')
-%                     line(grid, pdf_uniformonly(grid,1))
-%                 else
-%                     text(max(theseErrorsByParticipant)-2, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesByParticipant(1))));
-%                     text(max(theseErrorsByParticipant)-2, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesByParticipant(2))));
-%                     text(max(theseErrorsByParticipant)-2, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesByParticipant(3))));
-%                     line(grid, pdf_normmixture(grid, bestEstimatesByParticipant(1), bestEstimatesByParticipant(2), bestEstimatesByParticipant(3)));
-%                 end
-%                 plotFileName = strcat('plot', num2str(thisParticipant),'.png');
-%                 saveas(gcf,['~/gitCode/nStream/modelOutput/Plots/' group '/' plotFileName]);
+                thisAccuracyByParticipant = sum(theseErrorsByParticipant==0)/numel(theseErrorsByParticipant);
+                allAccuracy_byParticipant(thisSample,thisParticipant) = thisAccuracyByParticipant;
+                [heights, locations] = hist(theseErrorsByParticipant);
+                width = locations(2)-locations(1);
+                heights = heights / (nTrials*width);
+                bar(locations,heights,'hist')
+                grid = linspace(min(theseErrorsByParticipant),max(theseErrorsByParticipant));
+                if h==0
+                    text(max(theseErrorsByParticipant)-2, max(heights)*.8, 'Efficacy = 0')
+                    line(grid, pdf_uniformonly(grid,1))
+                else
+                    text(max(theseErrorsByParticipant)-2, max(heights)*.8, strcat('Efficacy = ',num2str(bestEstimatesByParticipant(1))));
+                    text(max(theseErrorsByParticipant)-2, max(heights)*.7, strcat('Latency = ',num2str(bestEstimatesByParticipant(2))));
+                    text(max(theseErrorsByParticipant)-2, max(heights)*.6, strcat('Precision = ',num2str(bestEstimatesByParticipant(3))));
+                    line(grid, pdf_normmixture(grid, bestEstimatesByParticipant(1), bestEstimatesByParticipant(2), bestEstimatesByParticipant(3)));
+                end
+                plotFileName = strcat('plot', num2str(thisParticipant),'.png');
+                saveas(gcf,['~/gitCode/nStream/modelOutput/Plots/' group '/' plotFileName]);
             end
 
         end
@@ -367,14 +372,14 @@ end
 
 % Efficacy
 writeFile = fopen('TGRSVP_Exp2_EfficacyTruncNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Participant,Group,Parameter,Model,Estimate'); % Header
+fprintf(writeFile,'Participant,Group, Stream, Parameter,Model,Estimate'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample},'Efficacy','Truncated Normal'); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,1));
+                fprintf(writeFile,'\n%s,%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample},num2str(thisStream), 'Efficacy','Truncated Normal'); % Group
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisStream,thisParticipant,1));
             end
         end
     end
@@ -382,14 +387,14 @@ end
 
 % Latency
 writeFile = fopen('TGRSVP_Exp2_LatencyTruncNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Participant,Group,Parameter,Model,Estimate'); % Header
+fprintf(writeFile,'Participant,Group, Stream, Parameter,Model,Estimate'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample},'Latency','Truncated Normal'); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,2));
+                fprintf(writeFile,'\n%s,%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample}, num2str(thisStream), 'Latency','Truncated Normal'); % Group
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisStream,thisParticipant,2));
             end
         end
     end
@@ -397,14 +402,14 @@ end
 
 % Precision
 writeFile = fopen('TGRSVP_Exp2_PrecisionTruncNorm.csv','w');  % Overwrite file
-fprintf(writeFile,'Participant,Group,Parameter,Model,Estimate'); % Header
+fprintf(writeFile,'Participant,Group, Stream, Parameter,Model,Estimate'); % Header
 
 for thisSample = 1:nSamples
     for thisParticipant = 1:nParticipants(thisSample)
-        fprintf(writeFile,'\n%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample},'Precision','Truncated Normal'); % Group
         for thisCondition = 1:nConditions
             for thisStream = 1:nStreams
-                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisParticipant,3));
+                fprintf(writeFile,'\n%s,%s,%s,%s,%s',participants{thisParticipant},conditionNames{thisSample},num2str(thisStream), 'Precision','Truncated Normal'); % Group
+                fprintf(writeFile,',%.4f', allEstimates_byParticipant(thisSample,thisStream,thisParticipant,3));
             end
         end
     end

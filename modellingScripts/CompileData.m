@@ -104,7 +104,7 @@ for thisSample = 1:nSamples
                     % Store
                     
                     compiledErrors(thisCondition,thisParticipant,thisSession,thisTrial,:) = positionError;
-                    compiledTargets(thisCondition,thisParticipant,thisSession,thisTrial,:) = targetLetters;
+                    compiledTargets(thisCondition,thisParticipant,thisSession,thisTrial,:) = targetPosition;
                     compiledResponses(thisCondition,thisParticipant,thisSession,thisTrial,:) = responseLetters;
                     compiledResponsePositions(thisCondition,thisParticipant,thisSession,thisTrial,:) = responsePosition;
 
