@@ -14,7 +14,7 @@ library(dplyr)
 library(magrittr)
 library(truncnorm)
 library(effsize)
-theme_set(theme_apa(base_size = 15) ) 
+theme_set(theme_apa(base_size = 20) ) 
 
 inclusionBF <- function(model, variable){
   
@@ -82,21 +82,21 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
 
 null = 0
 
-allErrors <- read.table('allErrors.txt', sep = '\t', header = T)
+allErrors <- read.table('../allErrors.txt', sep = '\t', header = T)
 
-LatencyNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyNorm.csv')
-LatencyTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
+LatencyNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+LatencyTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
 
-PrecisionNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
-PrecisionTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
+PrecisionNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
+PrecisionTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
 
-EfficacyNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
-EfficacyTNorm <- read.csv('../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
+EfficacyNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
+EfficacyTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
 ```
 
 #Model fits
 ```{r}
-BFs <- read.csv('../modelOutput/8Streams/BF_ByParticipant.csv', header = T)
+BFs <- read.csv('../../modelOutput/8Streams/BF_ByParticipant.csv', header = T)
 
 BFsWide <- BFs %>% dcast(Participant~Group, value.var = 'BF') %>% mutate(
   eightStreams = round(eightStreams,2), 
@@ -193,16 +193,28 @@ cohen.d(Estimate ~ Group, LatencyNorm, paired = T)
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
 
+LatencyNorm %<>% mutate(
+  Group = ordered(Group, levels = c('twoStreams', 'eightStreams'))
+)
 
 LatencyNormPlot <- ggplot(LatencyNorm,aes(x=Group, y=Estimate))+
-  geom_violin()+
-  geom_line(aes(group=Participant, colour=Participant))+
-  geom_point(aes(colour=Participant), size = 3)+
-  scale_colour_brewer(palette = 'Spectral')+
-  labs(x='Condition',y='Estimate (ms)',title='Latency')+
-  theme(plot.title = element_text(hjust=.5))
+    geom_point(alpha=.9, colour = '#628093', size = 5)+
+    geom_line(aes(group = Participant),alpha = .3)+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, size = .5)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 7, shape = 23,fill = '#ffa951')+
+    scale_colour_brewer(palette = 'Spectral')+
+    scale_x_discrete(labels = c('eightStreams' = '8', 'twoStreams' = '2'))+
+    labs(x = 'Number of Streams', y = 'Latency (ms)')
 
 show(LatencyNormPlot)
+
+ggsave(
+  x = LatencyNormPlot,
+  filename = '../../modelOutput/8Streams/LatencyScatter8Streams.png',
+  height = PowerPointSize[2],
+  width = PowerPointSize[1],
+  units = PowerPointUnit
+)
 
 wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
 

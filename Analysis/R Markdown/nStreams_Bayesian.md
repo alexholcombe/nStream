@@ -15,7 +15,7 @@ library(BayesFactor)
     ## Loading required package: Matrix
 
     ## ************
-    ## Welcome to BayesFactor 0.9.12-4.2. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
+    ## Welcome to BayesFactor 0.9.12-4.1. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
     ## 
     ## Type BFManual() to open the manual.
     ## ************
@@ -38,6 +38,7 @@ library(dplyr)
 ``` r
 library(magrittr)
 library(truncnorm)
+library(effsize)
 theme_set(theme_apa(base_size = 15) ) 
 
 inclusionBF <- function(model, variable){
@@ -103,30 +104,28 @@ posterior <- function(t, N1, N2=NULL, delta, lo=-Inf, hi = Inf,
 ``` r
 null = 0
 
-allErrors <- read.table('allErrors.txt', sep = '\t', header = T)
+allErrors <- read.table('../allErrors.txt', sep = '\t', header = T)
 
-LatencyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyNorm.csv')
-LatencyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
+LatencyNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyNorm.csv')
+LatencyTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_LatencyTruncNorm.csv')
 
-PrecisionNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
-PrecisionTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
+PrecisionNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionNorm.csv')
+PrecisionTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_PrecisionTruncNorm.csv')
 
-EfficacyNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
-EfficacyTNorm <- read.csv('../modelOutput/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
+EfficacyNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyNorm.csv')
+EfficacyTNorm <- read.csv('../../modelOutput/8Streams/CSV/TGRSVP_Exp2_EfficacyTruncNorm.csv')
 ```
 
-Model fits
-==========
+\#Model
+fits
 
 ``` r
-BFs <- read.csv('../modelOutput/BF_ByParticipant.csv', header = T)
-BFs %>% filter(Group == 'twoStreams') %>% pull(BF) %>% sort()
-```
+BFs <- read.csv('../../modelOutput/8Streams/BF_ByParticipant.csv', header = T)
 
-    ##  [1] 1.403833e+00 1.475233e+02 2.649419e+03 1.033721e+04 2.947341e+05
-    ##  [6] 8.565688e+05 2.142525e+06 8.395087e+08 1.629370e+10 1.075587e+16
+BFsWide <- BFs %>% dcast(Participant~Group, value.var = 'BF') %>% mutate(
+  eightStreams = round(eightStreams,2), 
+  twoStreams = formatC(twoStreams, format = 'e', digits = 2))
 
-``` r
 allEfficacy <- rbind(EfficacyNorm,EfficacyTNorm)
 allEfficacy$participantN <- factor(rep(1:10, times =4))
 
@@ -140,19 +139,19 @@ for(thisFactor in efficacyModelInclusionBF$factor){
 }
 ```
 
-    ## [1] 23.79747
-    ## [1] 11.78798
-    ## [1] 7.282001
+    ## [1] 22.82452
+    ## [1] 11.56858
+    ## [1] 8.11659
 
 ``` r
 knitr::kable(efficacyModelInclusionBF)
 ```
 
-| factor      |         BF|
-|:------------|----------:|
-| Group       |  23.797470|
-| Model       |  11.787983|
-| Group:Model |   7.282001|
+| factor      |        BF |
+| :---------- | --------: |
+| Group       | 22.824517 |
+| Model       | 11.568584 |
+| Group:Model |  8.116589 |
 
 ``` r
 allLatency <- rbind(LatencyNorm,LatencyTNorm)
@@ -168,19 +167,19 @@ for(thisFactor in latencyModelInclusionBF$factor){
 }
 ```
 
-    ## [1] 20507374
-    ## [1] 1.004012
-    ## [1] 1.076445
+    ## [1] 19848277
+    ## [1] 1.002693
+    ## [1] 1.134213
 
 ``` r
 knitr::kable(latencyModelInclusionBF)
 ```
 
-| factor      |            BF|
-|:------------|-------------:|
-| Group       |  2.050737e+07|
-| Model       |  1.004012e+00|
-| Group:Model |  1.076445e+00|
+| factor      |           BF |
+| :---------- | -----------: |
+| Group       | 1.984828e+07 |
+| Model       | 1.002693e+00 |
+| Group:Model | 1.134213e+00 |
 
 ``` r
 allPrecision <- rbind(PrecisionNorm,PrecisionTNorm)
@@ -196,22 +195,22 @@ for(thisFactor in precisionModelInclusionBF$factor){
 }
 ```
 
-    ## [1] 467.1998
-    ## [1] 9.623029
-    ## [1] 9.610994
+    ## [1] 472.6124
+    ## [1] 9.95198
+    ## [1] 9.695074
 
 ``` r
 knitr::kable(precisionModelInclusionBF)
 ```
 
-| factor      |          BF|
-|:------------|-----------:|
-| Group       |  467.199776|
-| Model       |    9.623029|
-| Group:Model |    9.610994|
+| factor      |         BF |
+| :---------- | ---------: |
+| Group       | 472.612399 |
+| Model       |   9.951980 |
+| Group:Model |   9.695074 |
 
-Latency Analyses
-================
+\#Latency
+Analyses
 
 ``` r
 latencyTwo <- LatencyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
@@ -261,6 +260,18 @@ posteriorModeLatency <- optimize(function(delta) posterior(tLatency, N1, delta=d
                                  interval=c(-4,4),
                                  maximum = T)[[1]]
 
+cohen.d(Estimate ~ Group, LatencyNorm, paired = T)
+```
+
+    ## 
+    ## Cohen's d
+    ## 
+    ## d estimate: -2.033029 (large)
+    ## 95 percent confidence interval:
+    ##        inf        sup 
+    ## -3.1901202 -0.8759371
+
+``` r
 #This would only work for normal, we use Cauchy!
 #credibleIntervalDensityLower <- mean(posteriorAndPriorDF$posterior)-sd(posteriorAndPriorDF$posterior)*1.96
 #credibleIntervalDensityUpper <- mean(posteriorAndPriorDF$posterior)+sd(posteriorAndPriorDF$posterior)*1.96
@@ -277,7 +288,7 @@ LatencyNormPlot <- ggplot(LatencyNorm,aes(x=Group, y=Estimate))+
 show(LatencyNormPlot)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 wideFormatLatency <- dcast(data=LatencyNorm,formula = Participant~Group)
@@ -299,7 +310,7 @@ LatencyNormScatter <- ggplot(wideFormatLatency, aes(x=twoStreams, y=eightStreams
 show(LatencyNormScatter)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-2.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ``` r
 LatencyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
@@ -311,10 +322,10 @@ LatencyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
 show(LatencyNormBayesPlot)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-4-3.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->
 
-Precision Analysis
-==================
+\#Precision
+Analysis
 
 ``` r
 precisionTwo <- PrecisionNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
@@ -377,7 +388,7 @@ PrecisionNormPlot <- ggplot(PrecisionNorm,aes(x=Group, y=Estimate))+
 show(PrecisionNormPlot)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 wideFormatPrecision <- dcast(data=PrecisionNorm,formula = Participant~Group)
@@ -399,7 +410,7 @@ PrecisionNormScatter <- ggplot(wideFormatPrecision, aes(x=twoStreams, y=eightStr
 show(PrecisionNormScatter)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-5-2.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
 ``` r
 PrecisionNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
@@ -409,8 +420,8 @@ PrecisionNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
   labs(x = expression(delta), y='Density', title = 'Precision Effect Size')
 ```
 
-Efficacy Analysis
-=================
+\#Efficacy
+Analysis
 
 ``` r
 efficacyTwo <- EfficacyNorm %>% filter(Group == 'twoStreams') %>% pull(Estimate)
@@ -467,7 +478,7 @@ EfficacyNormPlot <- ggplot(EfficacyNorm, aes(x=Group, y=Estimate))+
 show(EfficacyNormPlot)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 wideFormatEfficacy <- dcast(data=EfficacyNorm,formula = Participant~Group)
@@ -489,7 +500,7 @@ EfficacyNormScatter <- ggplot(wideFormatEfficacy, aes(x=twoStreams, y=eightStrea
 show(EfficacyNormScatter)
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ``` r
 EfficacyNormBayesPlot <- ggplot(posteriorAndPriorDF, aes(x=delta))+
@@ -526,6 +537,16 @@ for(thisParticipant in unique(LatencyNorm$Participant)){
   }
 }
 
+propBeforeCue %>% ggplot(., aes(x = Group,y = Proportion))+
+  geom_violin()+
+  geom_point()+
+  stat_summary(fun.y = mean, geom = 'point', size = 5, shape = 5)+
+  stat_summary(fun.data = mean_se, geom='errorbar', width = .2)
+```
+
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
 propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
 ```
 
@@ -536,31 +557,41 @@ propBeforeCue %>% group_by(Group) %>% summarise(proportion = mean(Proportion))
     ## 2 twoStreams       0.270
 
 ``` r
+propBeforeCue %>% group_by(Group) %>% summarise(mean = mean(nTrialsBeforeCue), sd = sd(nTrialsBeforeCue))
+```
+
+    ## # A tibble: 2 x 3
+    ##   Group         mean    sd
+    ##   <fct>        <dbl> <dbl>
+    ## 1 eightStreams  6.63  3.37
+    ## 2 twoStreams   27.3  12.2
+
+``` r
 knitr::kable(propBeforeCue)
 ```
 
-| Participant | Group        |  Proportion|  nTrialsBeforeCue|
-|:------------|:-------------|-----------:|-----------------:|
-| AJ7         | twoStreams   |   0.3723110|         40.512273|
-| AN14        | twoStreams   |   0.2076868|         20.186414|
-| BB6         | twoStreams   |   0.3449912|         40.281685|
-| IK4         | twoStreams   |   0.2010520|         22.676133|
-| JA8         | twoStreams   |   0.4560700|         45.892684|
-| LH9         | twoStreams   |   0.1715194|         18.358339|
-| LS2         | twoStreams   |   0.3321078|         29.860646|
-| LT5         | twoStreams   |   0.2016522|         25.142964|
-| RN12        | twoStreams   |   0.0873701|          5.547129|
-| YZ15        | twoStreams   |   0.3271893|         24.086366|
-| AJ7         | eightStreams |   0.0939610|         10.288167|
-| AN14        | eightStreams |   0.0371011|          3.493398|
-| BB6         | eightStreams |   0.0837935|          9.306187|
-| IK4         | eightStreams |   0.0301000|          2.662444|
-| JA8         | eightStreams |   0.1123735|         11.191320|
-| LH9         | eightStreams |   0.0875259|         10.723908|
-| LS2         | eightStreams |   0.0410124|          4.243084|
-| LT5         | eightStreams |   0.0461194|          5.663203|
-| RN12        | eightStreams |   0.0680447|          5.339233|
-| YZ15        | eightStreams |   0.0359095|          3.425442|
+| Participant | Group        | Proportion | nTrialsBeforeCue |
+| :---------- | :----------- | ---------: | ---------------: |
+| AJ7         | twoStreams   |  0.3723110 |        40.512273 |
+| AN14        | twoStreams   |  0.2076868 |        20.186414 |
+| BB6         | twoStreams   |  0.3449912 |        40.281685 |
+| IK4         | twoStreams   |  0.2010520 |        22.676133 |
+| JA8         | twoStreams   |  0.4560700 |        45.892684 |
+| LH9         | twoStreams   |  0.1715194 |        18.358339 |
+| LS2         | twoStreams   |  0.3321078 |        29.860646 |
+| LT5         | twoStreams   |  0.2016522 |        25.142964 |
+| RN12        | twoStreams   |  0.0873701 |         5.547129 |
+| YZ15        | twoStreams   |  0.3271893 |        24.086366 |
+| AJ7         | eightStreams |  0.0939610 |        10.288167 |
+| AN14        | eightStreams |  0.0371011 |         3.493398 |
+| BB6         | eightStreams |  0.0837935 |         9.306187 |
+| IK4         | eightStreams |  0.0301000 |         2.662444 |
+| JA8         | eightStreams |  0.1123735 |        11.191320 |
+| LH9         | eightStreams |  0.0875259 |        10.723908 |
+| LS2         | eightStreams |  0.0410124 |         4.243084 |
+| LT5         | eightStreams |  0.0461194 |         5.663203 |
+| RN12        | eightStreams |  0.0680447 |         5.339233 |
+| YZ15        | eightStreams |  0.0359095 |         3.425442 |
 
 ``` r
 ttestBF(x = propBeforeCue$Proportion[propBeforeCue$Group=='twoStreams'],
@@ -696,4 +727,4 @@ for(thisParticipant in unique(allErrors$ID)){
 }
 ```
 
-![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-1.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-2.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-3.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-4.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-5.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-6.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-7.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-8.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-9.png)![](nStreams_Bayesian_files/figure-markdown_github/unnamed-chunk-9-10.png)
+![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-5.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-6.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-7.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-8.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-9.png)<!-- -->![](nStreams_Bayesian_files/figure-gfm/unnamed-chunk-9-10.png)<!-- -->

@@ -8,7 +8,8 @@ library(BayesFactor)
 library(dplyr)
 library(truncnorm)
 
-
+PowerPointSize <- c(29.21, 12.09)
+PowerPointUnit <- 'cm'
 
 analyseParams <- function(params, thisModel){
   nIterations <- 10000
@@ -32,12 +33,18 @@ analyseParams <- function(params, thisModel){
                                 data=theseEfficacies)
 
   efficacyPlot <- ggplot(theseEfficacies, aes(x=Group, y =Estimate))+
-    geom_point()+
-    stat_summary(geom = 'point', fun.y = mean)+
-    stat_summary(geom = 'errorbar', fun.data = mean_se)
+    geom_point(alpha=1, colour = '#dca951', size = 4)+
+    geom_line(aes(group = Participant),alpha = .3)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]")+
+    lims(y = c(0,1))
 
 
-  resultsList$Efficacy %<>% c(.,efficacyFullVsNull,list(descriptives),list(efficacyPlot))
+  resultsList$Efficacy %<>% c(.,
+                              Bayes = efficacyFullVsNull,
+                              Descriptives = list(descriptives),
+                              scatterPlot = list(efficacyPlot))
 
   ##############
   ###LATENCY####
@@ -58,16 +65,19 @@ analyseParams <- function(params, thisModel){
   latencyOrderVsNull <- latencyOrderVsFull*as.vector(latencyFullVsNull)
 
   latencyPlot <- ggplot(theseLatencies, aes(x=Group, y =Estimate))+
-    geom_point()+
-    geom_line(aes(group = Participant))+
-    stat_summary(geom = 'point', fun.y = mean)+
-    stat_summary(geom = 'errorbar', fun.data = mean_se)
+    geom_point(alpha=.9, colour = '#628093', size = 5)+
+    geom_line(aes(group = Participant),alpha = .3)+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, size = .5)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 6, shape = 23,fill = '#ffa951')+
+    scale_colour_brewer(palette = 'Spectral')+
+    lims(y = c(-50,200))+
+    labs(x = 'Number of Streams', y = 'Latency (ms)')
 
 
   resultsList$Latency %<>% c(.,
-                             list(FullVsNull = latencyFullVsNull, OrderedVsNull = latencyOrderVsNull, OrderedVsFull = latencyOrderVsFull),
-                             list(descriptives),
-                             list(latencyPlot))
+                             Bayes = list(FullVsNull = latencyFullVsNull, OrderedVsNull = latencyOrderVsNull, OrderedVsFull = latencyOrderVsFull),
+                             descriptives =list(descriptives),
+                             scatterPlot = list(latencyPlot))
 
   ###############
   ###PRECISION###
@@ -97,16 +107,18 @@ analyseParams <- function(params, thisModel){
   OrderVsEqual = precisionOrderVsNull/as.vector(EqualVsNull)
 
   precisionPlot <- ggplot(thesePrecisions, aes(x=Group, y =Estimate))+
-    geom_point()+
-    geom_line(aes(group = Participant))+
-    stat_summary(geom = 'point', fun.y = mean)+
-    stat_summary(geom = 'errorbar', fun.data = mean_se)
-
+    geom_point(alpha=1, colour = '#dca951', size = 4)+
+    geom_line(aes(group = Participant),alpha = .3)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+    scale_colour_brewer(palette = 'Spectral')+
+    lims(y = c(0,150))+
+    labs(x = 'Number of Streams', y = 'Precision (ms)')
 
   resultsList$Precision %<>% c(.,
-                             list(FullVsNull = precisionFullVsNull, OrderedVsNull = precisionOrderVsNull, OrderedVsFull = precisionOrderVsFull, EqualVsNull = EqualVsNull, OrderVsEqual = OrderVsEqual),
-                             list(descriptives),
-                             list(precisionPlot))
+                             Bayes = list(FullVsNull = precisionFullVsNull, OrderedVsNull = precisionOrderVsNull, OrderedVsFull = precisionOrderVsFull, EqualVsNull = EqualVsNull, OrderVsEqual = OrderVsEqual),
+                             Descriptives =list(descriptives),
+                             scatterPlot = list(precisionPlot))
 
 
   return(resultsList)
@@ -172,7 +184,16 @@ NormResults <- analyseParams(params,'Normal')
 #Truncated Norm Results
 TNormResults <- analyseParams(params,'Normal')
 
-##################
+
+ggsave(
+  x = NormResults$Latency$scatterPlot,
+  filename = 'modelOutput/18Streams/LatencyScatter18Streams.png',
+  height = PowerPointSize[2],
+  width = PowerPointSize[1],
+  units = PowerPointUnit
+)
+
+ ##################
 ###DOESNT WORK####
 ##################
 #
