@@ -57,8 +57,8 @@ allData <- data.frame(
 )
 
 parameterBoundsGamma <- data.frame(
-  lower = c(0,0.1,0.1),
-  upper = c(1,8,5)
+  lower = c(0,0.1,0.001),
+  upper = c(1,6,3)
 )
 
 parameterBoundsNormal <- data.frame(
@@ -189,83 +189,102 @@ write.csv(file = paramsFile,
           x = paramsDF, 
           row.names = F)
 
+allDataFile <- paste0('Analysis/allData_', timeStamp, '.csv')
+
+write.csv(file = allDataFile,
+          x = allData, 
+          row.names = F)
+
+paramsDF %<>% mutate(
+  efficacy = replace(efficacy, pLRtest >=.05, 0),
+  latency = replace(latency, pLRtest >= .05, NA),
+  precision = replace(precision, pLRtest >= .05, NA)
+)
+
+
+#############
+###Density###
+#############
+
+
 densities <- paramsDF %>% #Purrr is new to me
-  select(participant, condition, stream, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
-  pmap_dfr(function(latency, condition, stream, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
+  select(participant, condition, stream, efficacy, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
+  pmap_dfr(function(efficacy, latency, condition, stream, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
     SPE <- seq(-500,1000,1)/(1000/12)
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
-    if(favouredModel == 'Gamma'){
-      if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
-        data.frame(ID = participant,
-                   condition = condition,
-                   stream = stream,
-                   SPE = SPE,
-                   density = density,
-                   model = model,
-                   favouredModel = favouredModel,
-                   stringsAsFactors = F)
-      } 
-    } else if(favouredModel == 'Normal'){
-      if(model == 'Normal'){
-        density = dnorm(SPE, latency, precision)
-        data.frame(ID = participant,
-                   condition = condition,
-                   stream = stream,
-                   SPE = SPE,
-                   density = density,
-                   model = model,
-                   favouredModel = favouredModel,
-                   stringsAsFactors = F)
-      }
-    } else {
-      if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
-        data.frame(ID = participant,
-                   condition = condition,
-                   stream = stream,
-                   SPE = SPE,
-                   density = density,
-                   model = model,
-                   favouredModel = favouredModel,
-                   stringsAsFactors = F)
-      } else if(model == 'Normal'){
-        density = dnorm(SPE, latency, precision)
-        data.frame(ID = participant,
-                   condition = condition,
-                   stream = stream,
-                   SPE = SPE,
-                   density = density,
-                   model = model,
-                   favouredModel = favouredModel,
-                   stringsAsFactors = F)
-      }
+    if(efficacy > 0){
+      if(favouredModel == 'Gamma'){
+        if(model == 'Gamma'){
+          shape = latency
+          rate = precision
+          density =dgamma(SPE, shape = shape, scale = rate)
+          data.frame(ID = participant,
+                     condition = condition,
+                     stream = stream,
+                     SPE = SPE,
+                     density = density,
+                     model = model,
+                     favouredModel = favouredModel,
+                     stringsAsFactors = F)
+        } 
+      } else if(favouredModel == 'Normal'){
+        if(model == 'Normal'){
+          density = dnorm(SPE, latency, precision)
+          data.frame(ID = participant,
+                     condition = condition,
+                     stream = stream,
+                     SPE = SPE,
+                     density = density,
+                     model = model,
+                     favouredModel = favouredModel,
+                     stringsAsFactors = F)
+        }
+      } else {
+        if(model == 'Gamma'){
+          shape = latency
+          rate = precision
+          density =dgamma(SPE, shape = shape, scale = rate)
+          data.frame(ID = participant,
+                     condition = condition,
+                     stream = stream,
+                     SPE = SPE,
+                     density = density,
+                     model = model,
+                     favouredModel = favouredModel,
+                     stringsAsFactors = F)
+        } else if(model == 'Normal'){
+          density = dnorm(SPE, latency, precision)
+          data.frame(ID = participant,
+                     condition = condition,
+                     stream = stream,
+                     SPE = SPE,
+                     density = density,
+                     model = model,
+                     favouredModel = favouredModel,
+                     stringsAsFactors = F)
+        }
+    }
     }
   }
   )
 
 
 for(thisID in IDs){
-  for(thisCondition in conditions){
-      theseObservations <- allData %>% filter(ID == thisID, condition == thisCondition)
-      
-      theseDensities <- densities %>% filter(ID == thisID, condition == thisCondition)
-      
-      thisIDNoSpace <- thisID %>% gsub(pattern = ' ', replacement = '', x = .)
-      
-      thisPlot <- ggplot(theseObservations, aes(x = SPE))+
-        geom_histogram(binwidth = 1)+
-        geom_line(data = theseDensities, aes(x = SPE, y = density*50, colour = model)) +
-        labs(title = paste0('Participant: ', thisIDNoSpace,'. Condition: ', thisCondition))+
-        facet_wrap(~stream, labeller = 'label_both')
+    theseObservations <- allData %>% filter(ID == thisID)
+    
+    theseDensities <- densities %>% filter(ID == thisID)
+    
+    thisIDNoSpace <- thisID %>% gsub(pattern = ' ', replacement = '', x = .)
+    
+    thisPlot <- ggplot(theseObservations, aes(x = SPE))+
+      geom_histogram(binwidth = 1)+
+      geom_line(data = theseDensities, aes(x = SPE, y = density*50, colour = model)) +
+      labs(title = paste0('Participant: ', thisIDNoSpace,'. Condition: ', thisCondition))+
+      geom_vline(xintercept = 0, linetype = 'dashed') +
+      facet_grid(rows = vars(condition), cols = vars(stream), labeller = 'label_both')
         
-      ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/',thisIDNoSpace,'_',thisCondition,'.png'),
+      ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/',thisIDNoSpace,'.png'),
              plot = thisPlot, width = 29.21, height = 12.09, units = 'cm'
       )
-  }
 } 
 
