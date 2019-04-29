@@ -90,10 +90,15 @@ for(thisFile in matlabDataFiles){
   }
   for(thisStream in 1:2){
     endRow <- startRow + 24
-    theseStimuli <- apply(thisMatlab$allLetterOrder[,thisStream,],2,function(i) stimuli[i]) %>% apply(., 1, paste0, collapse = '')
+    theseStimuli <- apply(thisMatlab$allLetterOrder[,thisStream,],2,function(i) stimuli[i]) %>% 
+      apply(., 1, paste0, collapse = '')
+    
+    
     theseTargets <- thisMatlab$allTargets[,thisStream]
+    
     theseResponseSPs <- c()
     theseResponses <- c()
+    
     for(thisTrial in 1:25){
       actualTrialN <- trialN[thisTrial]
       thisResponse <- thisMatlab$allResponses[thisTrial, thisStream]
@@ -102,6 +107,7 @@ for(thisFile in matlabDataFiles){
       theseResponseSPs <- c(theseResponseSPs, thisSP)
       theseResponses <- c(theseResponses, stimuli[thisResponse])
     }
+    
     theseSPEs <- theseResponseSPs - theseTargets
     
     
@@ -245,23 +251,21 @@ densities <- paramsDF %>% #Purrr is new to me
 
 for(thisID in IDs){
   for(thisCondition in conditions){
-    for(thisStream in 1:2){
-      theseObservations <- allData %>% filter(ID == thisID, condition == thisCondition, stream == thisStream)
+      theseObservations <- allData %>% filter(ID == thisID, condition == thisCondition)
       
-      theseDensities <- densities %>% filter(ID == thisID, condition == thisCondition, stream == thisStream)
+      theseDensities <- densities %>% filter(ID == thisID, condition == thisCondition)
       
       thisIDNoSpace <- thisID %>% gsub(pattern = ' ', replacement = '', x = .)
       
       thisPlot <- ggplot(theseObservations, aes(x = SPE))+
         geom_histogram(binwidth = 1)+
         geom_line(data = theseDensities, aes(x = SPE, y = density*50, colour = model)) +
-        labs(title = paste0('Participant: ', thisIDNoSpace,'. Condition: ', thisCondition))
+        labs(title = paste0('Participant: ', thisIDNoSpace,'. Condition: ', thisCondition))+
+        facet_wrap(~stream, labeller = 'label_both')
         
-      ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/',thisIDNoSpace,'_', thisStream, '_',thisCondition,'.png'),
+      ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/',thisIDNoSpace,'_',thisCondition,'.png'),
              plot = thisPlot, width = 29.21, height = 12.09, units = 'cm'
       )
-    }
-  } 
-}
-
+  }
+} 
 
