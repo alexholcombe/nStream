@@ -248,9 +248,8 @@ for(thisID in IDs){
 #################################
 
 paramsDF %<>% mutate(
-  latency = latency * (1000/condition),
-  latencyRelativeOnset = latency + (1000/condition)*.6
-) %>% mutate(
-  latencyRelativeOnset = replace(latencyRelativeOnset, model == 'Gamma', NA)
+  latency = latency * (1000/12),
+  precision = precision*(1000/12),
+  latencyRelativeOnset = latency + 11.5
 )
 
