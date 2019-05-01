@@ -9,6 +9,7 @@ library(magrittr)
 library(reshape2)
 library(purrr)
 library(R.matlab)
+library(BayesFactor)
 devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
@@ -28,6 +29,42 @@ guessingDistributionBIC <- function(df){
   data.frame(BFGuessVsMix = exp(deltaBIC/2))
 }
 
+inclusionBF <- function(priorProbs, variable){
+  
+  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
+  
+  
+  if(typeof(priorProbs) == 'S4') priorProbs <- as.vector(priorProbs)
+  
+  
+  theseNames <- names(priorProbs)
+  nProbs <- 1:length(priorProbs)
+  variableMatches <- grep(variable, theseNames)
+  
+  if(grepl(':', variable)){
+    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
+    
+    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
+    
+    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
+    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
+    
+    
+    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
+  } else {
+    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
+    
+    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
+    
+    
+    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
+    
+    
+    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
+  }
+}
+
+
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
 
 setwd('~/gitCode/nStream/')
@@ -43,7 +80,7 @@ conditions <-  as.character(c(6,8,12,24))
 
 stimuli <- LETTERS[!LETTERS %in% c('N', 'V')]
 
-nReplications = 20
+nReplications = 100
 numLettersInStream <- 24
 
 paramsDF <- expand.grid(
@@ -72,8 +109,8 @@ allData <- data.frame(
 )
 
 parameterBoundsGamma <- data.frame(
-  lower = c(0,0.1,0.001),
-  upper = c(1,6,3)
+  lower = c(0,0.1,.1),
+  upper = c(1,7,3)
 )
 
 parameterBoundsNormal <- data.frame(
@@ -82,7 +119,6 @@ parameterBoundsNormal <- data.frame(
 )
 
 nObs <- allData %>%
-  filter(!fixationReject) %>%
   group_by(ID, condition, stream) %>%
   summarise(n = n()) %>%
   rename(participant = ID)
@@ -100,7 +136,10 @@ dataFiles <- list.files(
   full.names = T
   )
 
-if(length(dataFiles)>1){
+runParamAnyway <- TRUE #even if there are parameter files, do the fit again
+runDataAnyway <- FALSE #even if there are data files, wrangle the data again
+
+if(length(dataFiles)>1 & !runDataAnyway){
   allData <- read.csv(dataFiles[1], stringsAsFactors = F)
 } else {
   for(thisFile in matlabDataFiles){
@@ -167,8 +206,11 @@ paramFiles <- list.files(path = 'Analysis/Gamma Fits',
                          pattern = 'params.*csv',
                          full.name = T)
 
-if(length(paramFiles)>0){
-  paramsDF <- read.csv(paramFiles[1], stringsAsFactors = F)
+if(length(paramFiles)>0 & !runParamAnyway){
+  times <- gsub('.*paramsDF_|\\.csv','', paramFiles) 
+  timesFormated <- times %>% as.POSIXct(format = '%d-%m-%Y_%H-%M')
+  maxDate <- which(timesFormated == max(timesFormated))
+  paramsDF <- read.csv(paramFiles[maxDate], stringsAsFactors = F)
 } else{
   for(thisParticipant in IDs){
     for(thisCondition in conditions){
@@ -252,8 +294,21 @@ paramsDF %<>% mutate(
   precision = ifelse(model == 'Gamma', sqrt(shape*(scale^2)), precision)
 )
 
+plotData <- expand.grid(
+  shape = c(.1,1:10),
+  observation = numeric(10000)
+)
 
+for(thisShape in c(.1,1:10)){
+  theseObs <- rgamma(10000, shape = thisShape, scale = 2)
+  plotData %<>% mutate(observation = ifelse(shape == thisShape, theseObs, observation))
+}
 
+plotData %<>% mutate(ordered(shape))
+
+ggplot(plotData, aes(x = observation))+
+  geom_histogram()+
+  facet_grid(cols = vars(shape))
 
 #############
 ###Density###
@@ -344,8 +399,28 @@ for(thisID in IDs){
 
 paramsDF %<>% mutate(
   latency = latency * (1000/condition),
-  latencyRelativeOnset = latency + (1000/condition)*.6
-) %>% mutate(
-  latencyRelativeOnset = replace(latencyRelativeOnset, model == 'Gamma', NA)
-  )
+  latencyRelativeOnset = latency + (1000/condition)*.3
+)
+
+
+test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
+  mutate(participant = factor(participant),
+         condition = factor(condition),
+         stream = factor(stream),
+         model = factor(model)) %>%
+  anovaBF(latencyRelativeOnset ~ condition*stream*participant, whichRandom = 'participant', data = .)
+
+paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
+ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
+  geom_point(aes(colour = participant, shape = model))+
+  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
+  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
+  facet_wrap(~stream)
+
+paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
+  ggplot(aes(x = factor(condition), y = latency))+
+  geom_point(aes(colour = participant))+
+  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
+  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
+  facet_wrap(~stream+model)
 
