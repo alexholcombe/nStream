@@ -136,7 +136,7 @@ dataFiles <- list.files(
   full.names = T
   )
 
-runParamAnyway <- TRUE #even if there are parameter files, do the fit again
+runParamAnyway <- FALSE #even if there are parameter files, do the fit again
 runDataAnyway <- FALSE #even if there are data files, wrangle the data again
 
 if(length(dataFiles)>1 & !runDataAnyway){
@@ -423,4 +423,19 @@ paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
   stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
   stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
   facet_wrap(~stream+model)
+
+
+latencyMeasuresPlot <- paramsDF %>% 
+  melt(id.vars = c('participant', 'condition', 'stream', 'model'), measure.vars = c('latency', 'latencyRelativeOnset')) %>%
+  mutate(condition = factor(condition))%>%
+  ggplot(aes(x = condition, y = value))+
+  geom_point(alpha = .3, size = 2)+
+  stat_summary(geom = 'point', fun.y = mean, shape = 23, size = 2)+
+  stat_summary(geom = 'errorbar', fun.data = mean_se, width = .3)+
+  facet_grid(rows = vars(model), cols = vars(stream, variable), labeller = 'label_both')+
+  theme_apa()
+
+ggsave(filename = 'Analysis/Gamma Fits/latencyMeasuresPlot.png',plot = latencyMeasuresPlot, width = 32, height = 18, units = 'cm')
+
+
 
