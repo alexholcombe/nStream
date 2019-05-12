@@ -57,7 +57,7 @@ bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
 numItemsInStream = 24
 
 pFiles <- list.files(pattern = 'bootstrapPValues18Streams.*\\.csv', 
-                     path = 'Analysis', 
+                     path = 'Analysis/Bootstrap', 
                      full.names = T)
 
 

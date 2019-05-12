@@ -268,6 +268,8 @@ paramsDF %<>% mutate(
   precision = ifelse(model == 'Gamma', sqrt(latency)*precision, precision)
 )
 
+paramsDF %<>% filter(participant != '18TR1')
+
 densities <- paramsDF %>% #Purrr is new to me
   select(participant, condition, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
   pmap_dfr(function(latency, condition, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
@@ -358,15 +360,22 @@ if(plots){
          units = 'cm')
 }
 
-gammaResults <- analyses(
+gammaanalysis <- analyses(
   params = paramsDF,
   modelKind = 'Gamma'
   )
 
-NormalResults <- analyses(
+normalAnalysis <- analyses(
   params = paramsDF,
   modelKind = 'Normal'
 )
+
+plotHeight <-  6.90045
+plotWidth <- 27.67/2
+
+ggsave('~/latencyEighteenStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'in')
+ggsave('~/precisionEighteenStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'in')
+
 
 bestFittingResults <- analyses(
   params = paramsDF,
