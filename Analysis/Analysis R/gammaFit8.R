@@ -8,6 +8,7 @@ library(dplyr)
 library(magrittr)
 library(reshape2)
 library(purrr)
+library(BayesFactor)
 devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
@@ -26,6 +27,126 @@ guessingDistributionBIC <- function(df){
   
   data.frame(BFGuessVsMix = exp(deltaBIC/2))
 }
+
+analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations = 10000){
+  if(bestFitting){
+    params %<>% filter(model == favouredModel)
+    modelKind = 'Best Fitting'
+  } else {
+    params %<>% filter(model == modelKind)
+    x = params %>% filter(condition == 'eightStreams') #For t-tests. If bestFitting is true then we get different Ns, so must use a linear model instead
+    y = params %>% filter(condition == 'twoStreams')
+  }
+  
+  results <- list()
+  
+  #######################
+  ###Efficacy Analyses###
+  #######################
+  if(bestFitting){
+    efficacyBFFullVSNull <- anovaBF(efficacy ~ condition + participant,
+                                   data=params,
+                                   whichRandom = 'participant', 
+                                   progress = FALSE
+    )
+  } else {
+    xEfficacy <- x %>% pull(efficacy)
+    yEfficacy <- y %>% pull(efficacy)
+    efficacyBFFullVSNull <- ttestBF(x = xEfficacy, y = yEfficacy, paired = T)
+  }
+  
+  
+  BayesFactorLabel <- efficacyBFFullVSNull %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+  
+  #Only evparticipantence for an effect of ring
+  
+  efficacyPlot = ggplot(params, aes(x=condition, y = efficacy))+
+    #geom_violin(position = position_dodge(.9))+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_line(aes(group = participant),alpha = .3)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
+    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]", title = paste0(modelKind, ': Efficacy'))+
+    lims(y = c(0,1))+
+    theme_apa()
+
+  
+  results[['Efficacy']] <- list(
+    'BF' = efficacyBFFullVSNull,
+    'Plot' = efficacyPlot
+  )
+  
+  #######################
+  ###Latency Analyses###
+  ####################### 
+  if(bestFitting){
+    latencyBFFullVSNull <- anovaBF(latency ~ condition + participant,
+                                   data=params,
+                                   whichRandom = 'participant', 
+                                   progress = FALSE
+    )
+  } else {
+    xLatency <- x %>% pull(latency)
+    yLatency <- y %>% pull(latency)
+    latencyBFFullVSNull <- ttestBF(x = xLatency, y = yLatency, paired = T)
+  }
+  
+  
+  BayesFactorLabelOne <- latencyBFFullVSNull %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+  
+  
+  latencyPlot <- ggplot(params, aes(x=condition, y = latency))+
+    #geom_violin(position = position_dodge(.9))+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_line(aes(group = participant),alpha = .3)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
+    scale_colour_brewer(palette = 'Spectral')+
+    labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))+
+    theme_apa()
+
+  
+  results[['Latency']] <- list(
+    'BF' = latencyBFFullVSNull,
+    'Plot' = latencyPlot 
+  )
+  
+  ########################
+  ###Precision Analyses###
+  ########################
+  if(bestFitting){
+    precisionBFFullVSNull <- anovaBF(precision ~ condition + participant,
+                                   data=params,
+                                   whichRandom = 'participant', 
+                                   progress = FALSE
+    )
+  } else {
+    xPrecision <- x %>% pull(precision)
+    yPrecision <- y %>% pull(precision)
+    precisionBFFullVSNull <- ttestBF(x = xPrecision, y = yPrecision, paired = T)
+  }
+  
+  BayesFactorLabelOne <- precisionBFFullVSNull %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+  
+  
+  precisionPlot <- ggplot(params, aes(x=condition, y = precision))+
+    #geom_violin(position = position_dodge(.9))+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_line(aes(group = participant),alpha = .3)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
+    scale_colour_brewer(palette = 'Spectral')+
+    labs(x = 'Number of Streams', y = 'Precision (ms)', title = paste0(modelKind, ': Precision'))+
+    theme_apa()
+
+  results[['Precision']] <- list(
+    'BF' =  precisionBFFullVSNull,
+    'Plot' = precisionPlot 
+  )
+  
+  results
+}
+
 
 
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
@@ -76,6 +197,8 @@ nParams <- c('Gamma' = 3, 'Normal' = 3)
 paramFiles <- list.files(path = 'Analysis/Gamma Fits',
                          pattern = 'paramsDF8.*csv',
                          full.name = T)
+
+
 
 if(length(paramFiles)>0){
   paramsDF <- read.csv(paramFiles[1], stringsAsFactors = F)
@@ -158,7 +281,7 @@ paramsDF %<>% mutate(
   scale = ifelse(model == 'Gamma', precision, NA),
 ) %>% mutate(
   latency = ifelse(model == 'Gamma', shape*scale, latency),
-  precision = ifelse(model == 'Gamma', sqrt(shape*(scale^2)), precision)
+  precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
 )
 
 
@@ -167,81 +290,83 @@ paramsDF %<>% mutate(
 #############
 ###Density###
 #############
-
-
-densities <- paramsDF %>% #Purrr is new to me
-  select(participant, condition, efficacy, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
-  pmap_dfr(function(participant, condition, efficacy, latency, shape, scale, precision, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
-    SPE <- seq(-5,10,.1)
-    print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
-    if(efficacy > 0){
-      if(favouredModel == 'Gamma'){
-        if(model == 'Gamma'){
-          density =dgamma(SPE, shape = shape, scale = scale)
-          data.frame(ID = participant,
-                     condition = condition,
-                     SPE = SPE,
-                     density = density,
-                     model = model,
-                     favouredModel = favouredModel,
-                     stringsAsFactors = F)
-        } 
-      } else if(favouredModel == 'Normal'){
-        if(model == 'Normal'){
-          density = dnorm(SPE, latency, precision)
-          data.frame(ID = participant,
-                     condition = condition,
-                     SPE = SPE,
-                     density = density,
-                     model = model,
-                     favouredModel = favouredModel,
-                     stringsAsFactors = F)
-        }
-      } else {
-        if(model == 'Gamma'){
-          density =dgamma(SPE, shape = shape, scale = scale)
-          data.frame(ID = participant,
-                     condition = condition,
-                     SPE = SPE,
-                     density = density,
-                     model = model,
-                     favouredModel = favouredModel,
-                     stringsAsFactors = F)
-        } else if(model == 'Normal'){
-          density = dnorm(SPE, latency, precision)
-          data.frame(ID = participant,
-                     condition = condition,
-                     SPE = SPE,
-                     density = density,
-                     model = model,
-                     favouredModel = favouredModel,
-                     stringsAsFactors = F)
+if(plots){
+  densities <- paramsDF %>% #Purrr is new to me
+    select(participant, condition, efficacy, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
+    pmap_dfr(function(participant, condition, efficacy, latency, shape, scale, precision, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
+      SPE <- seq(-5,10,.1)
+      print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
+      if(efficacy > 0){
+        if(favouredModel == 'Gamma'){
+          if(model == 'Gamma'){
+            density =dgamma(SPE, shape = shape, scale = scale)
+            data.frame(ID = participant,
+                       condition = condition,
+                       SPE = SPE,
+                       density = density,
+                       model = model,
+                       favouredModel = favouredModel,
+                       stringsAsFactors = F)
+          } 
+        } else if(favouredModel == 'Normal'){
+          if(model == 'Normal'){
+            density = dnorm(SPE, latency, precision)
+            data.frame(ID = participant,
+                       condition = condition,
+                       SPE = SPE,
+                       density = density,
+                       model = model,
+                       favouredModel = favouredModel,
+                       stringsAsFactors = F)
+          }
+        } else {
+          if(model == 'Gamma'){
+            density =dgamma(SPE, shape = shape, scale = scale)
+            data.frame(ID = participant,
+                       condition = condition,
+                       SPE = SPE,
+                       density = density,
+                       model = model,
+                       favouredModel = favouredModel,
+                       stringsAsFactors = F)
+          } else if(model == 'Normal'){
+            density = dnorm(SPE, latency, precision)
+            data.frame(ID = participant,
+                       condition = condition,
+                       SPE = SPE,
+                       density = density,
+                       model = model,
+                       favouredModel = favouredModel,
+                       stringsAsFactors = F)
+          }
         }
       }
     }
-  }
-  )
+    )
+  
+  
+  
+  for(thisID in IDs){
+    theseObservations <- allData %>% filter(ID == thisID)
+    
+    theseDensities <- densities %>% filter(ID == thisID)
+    
+    thisIDNoSpace <- thisID %>% gsub(pattern = ' ', replacement = '', x = .)
+    
+    thisPlot <- ggplot(theseObservations, aes(x = SPE))+
+      geom_histogram(binwidth = 1)+
+      geom_line(data = theseDensities, aes(x = SPE, y = density*100, colour = model)) +
+      labs(title = paste0('Participant: ', thisIDNoSpace))+
+      geom_vline(xintercept = 0, linetype = 'dashed')+
+      facet_grid(cols = vars(condition))
+    
+    ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/8/',thisIDNoSpace,'.png'),
+           plot = thisPlot, width = 29.21, height = 12.09, units = 'cm'
+    )
+  } 
+}
 
 
-
-for(thisID in IDs){
-  theseObservations <- allData %>% filter(ID == thisID)
-  
-  theseDensities <- densities %>% filter(ID == thisID)
-  
-  thisIDNoSpace <- thisID %>% gsub(pattern = ' ', replacement = '', x = .)
-  
-  thisPlot <- ggplot(theseObservations, aes(x = SPE))+
-    geom_histogram(binwidth = 1)+
-    geom_line(data = theseDensities, aes(x = SPE, y = density*100, colour = model)) +
-    labs(title = paste0('Participant: ', thisIDNoSpace))+
-    geom_vline(xintercept = 0, linetype = 'dashed')+
-    facet_grid(cols = vars(condition))
-  
-  ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/8/',thisIDNoSpace,'.png'),
-         plot = thisPlot, width = 29.21, height = 12.09, units = 'cm'
-  )
-} 
 
 #################################
 ###Latencies relative to onset###
@@ -250,6 +375,44 @@ for(thisID in IDs){
 paramsDF %<>% mutate(
   latency = latency * (1000/12),
   precision = precision*(1000/12),
-  latencyRelativeOnset = latency + 11.5
-)
+  latencyRelativeOnset = latency + 11.5,
+  participantNumeric = factor(rep(1:10, times = 4)),
+  condition = ordered(condition, levels = c("twoStreams", "eightStreams"))
+) %>% rename(participantCharacter = participant,
+             participant = participantNumeric)
+
+gammaAnalysis <- analyses(paramsDF,modelKind = 'Gamma')
+
+
+
+normalAnalysis <- analyses(paramsDF,modelKind = 'Normal')
+
+normalEfficacyLabel <- normalAnalysis$Efficacy$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+
+normalAnalysis$Efficacy$Plot <- normalAnalysis$Efficacy$Plot +
+  annotate(label = normalEfficacyLabel, geom = 'text', x = 1, y = .25, parse = T,size = 10)+
+  labs(title = NULL)
+
+
+normalLatencyLabel <- normalAnalysis$Latency$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+
+normalAnalysis$Latency$Plot <- normalAnalysis$Latency$Plot +
+  annotate(label = normalLatencyLabel, geom = 'text', x = 1, y = 100, parse = T, size = 10)+
+  labs(title = NULL)
+
+normalPrecisionLabel <- normalAnalysis$Precision$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+
+normalAnalysis$Precision$Plot <- normalAnalysis$Precision$Plot +
+  annotate(label = normalPrecisionLabel, geom = 'text', x = 1, y = 35, parse = T, size = 10)+
+  labs(title = NULL)
+
+plotHeight <-  6.90045
+plotWidth <- 27.67/2
+
+ggsave('~/latencyEightStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'in')
+ggsave('~/precisionEightStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'in')
+
+
+bestFittingAnalysis <- analyses(paramsDF, bestFitting = T)
+
 
