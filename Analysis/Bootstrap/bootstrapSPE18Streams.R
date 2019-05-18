@@ -11,6 +11,20 @@ runAnyway <- FALSE
 plotExample <- FALSE #Generates the components of the bootstrap explainer plot
 xDomain <- -4:4
 
+speNs <- function(theseData){
+  xDomain = -4:4
+  
+  outs <- data.frame(xDomain = xDomain, counts = -999)
+  for(thisX in xDomain){
+    count <- length(which(theseData$SPE == thisX))
+    outs$counts[outs$xDomain == thisX] <- count
+  }
+  
+  outs
+}
+
+
+
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
 
@@ -93,6 +107,10 @@ if(length(pFiles)>0 & !runAnyway){
   }
   write.csv(ps, paste0('Analysis/bootstrapPValues18Streams',format(Sys.time(), "%d-%m-%Y_%H-%M-%S"),'.csv'),row.names = F)
 }
+
+ps <- allData %>% group_by(ID, condition) %>% do(speNs(.)) %>% rename(participant = ID) %>% left_join(ps, ., by = c('participant', 'condition', 'xDomain'))
+ps <- allData %>% group_by(ID, condition) %>% summarise(ntrials = n()) %>% rename(participant = ID) %>% left_join(ps, ., by = c('participant', 'condition'))
+
 
 ps %<>% filter(participant != '18TR1')
 

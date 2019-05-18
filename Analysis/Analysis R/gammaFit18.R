@@ -78,10 +78,10 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   efficacyPlot = ggplot(params, aes(x=condition, y = efficacy))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 4)+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
-    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     annotate(x = 1.25, y = .45, label = BayesFactorLabel, geom = 'text',size = 5,parse = T)+
     labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]", title = paste0(modelKind, ': Efficacy'))+
     lims(y = c(0,1))
@@ -114,10 +114,10 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   latencyPlot <- ggplot(params, aes(x=condition, y = latency))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 4)+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 3)+
-    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     scale_colour_brewer(palette = 'Spectral')+
     lims(y = limits)+
     labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))
@@ -154,10 +154,10 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   precisionPlot <- ggplot(params, aes(x=condition, y = precision))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 4)+
+    geom_point(alpha=1, colour = '#dca951', size = 6)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), alpha = .7, size = 5)+
-    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, alpha = .7)+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
+    stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     scale_colour_brewer(palette = 'Spectral')+
     lims(y = limits)+
     labs(x = 'Number of Streams', y = 'Precision (ms)', title = paste0(modelKind, ': Precision'))+
