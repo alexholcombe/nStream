@@ -137,6 +137,7 @@ allErrors <- data.frame(
   fixationReject = logical(totalRows),
   button = numeric(totalRows),
   ring = numeric(totalRows),
+  whichStreamCuedAngle = numeric(totalRows),
   stringsAsFactors = F
   )
 
@@ -225,7 +226,7 @@ for(dataset in files){
         createdMatlab = TRUE
       }
 
-      allErrors[startRow:endRow,] <- temp[,c(1,4,16,8,3,37,7,5)]
+      allErrors[startRow:endRow,] <- temp[,c(1,4,16,8,3,37,7,5,12)]
       allErrorsMatlab[startRow:endRow,] <- temp
 
       startRow <- endRow + 1
@@ -242,7 +243,7 @@ allErrors <- allErrors[-DROPTHESE,]
 allErrors %<>% mutate(ID = replace(ID, ID == '18LS4_2', '18LS4'))
 
 allErrors %<>% filter(ID!='')
-write.csv(allErrors, "Analysis/allErrors18Streams.txt")
+write.csv(allErrors, "Analysis/allErrors18Streams.txt", row.names = F)
 
 
 LS4TRIALS <- which(allErrorsMatlab$subject == '18LS4'|allErrorsMatlab$subject=='18LS4_2')

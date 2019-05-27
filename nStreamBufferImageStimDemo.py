@@ -9,6 +9,9 @@ from math import atan, log, ceil, cos, sin, pi, atan2
 from copy import deepcopy
 import time, sys, os#, pylab
 import string, random
+import cv2
+#from mss import mss
+from PIL import Image
 
 eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.83.01 mistakenly included an old version of pylink which prevents EyelinkEyetrackerForPsychopySUPA3 stuff from importing
 #Eyetracking stuff
@@ -78,7 +81,7 @@ if demo:
 font = 'sloan'
 
 threshCriterion = 0.58
-bgColor = [-.7,-.7,-.7] # [-1,-1,-1]
+bgColor = [0,0,0] # [-1,-1,-1]
 cueColor = [1.,1.,1.]
 cueType = 'exogenousRing' #'lowerCase' #'exogenousRing' #'endogenous':
 if cueType == 'endogenous':
@@ -96,13 +99,13 @@ monitorname = 'testmonitor'
 
 waitBlank = False
 
-widthPix = 1440 #monitor width in pixels of Agosta
-heightPix = 900 #800 #monitor height in pixels
+widthPix = 1024 #monitor width in pixels of Agosta
+heightPix = 1024 #800 #monitor height in pixels
 monitorwidth = 40.5
 
 mon = monitors.Monitor(monitorname,width=monitorwidth, distance=viewdist)#relying on  monitorwidth cm (39 for Mitsubishi to do deg calculations) and gamma info in calibratn
 
-mon.setSizePix( (widthPix,heightPix) )
+mon.setSizePix( (2880,1800) )
 
 units='deg' #'cm'
 
@@ -111,8 +114,8 @@ scrn = 1
 doStaircase = False
 
 screenValues = {
-    'widthPix': 800, #monitor width in pixels of Agosta
-    'heightPix': 600, #800 #monitor height in pixels
+    'widthPix': widthPix, #monitor width in pixels of Agosta
+    'heightPix': heightPix, #800 #monitor height in pixels
     'monitorwidth' :40.5, #monitor width in cm
     'scrn':0, #0 to use main screen, 1 to use external screen connected to computer
     'fullscr':True, #True to use fullscreen, False to not. Timing probably won't be quite right if fullscreen = False
