@@ -15,8 +15,8 @@ nParticipants <- allErrors %>% pull(ID) %>% unique() %>% length()
 
 colnames(allErrors)[3] <- 'SPE'
 
-runAnyway <- FALSE
-xDomain = -4:5
+runAnyway <- TRUE
+xDomain = -1
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)
@@ -116,8 +116,8 @@ if(nrow(unmodelledRows)>0){
       
       for(whichSPE in theseUnmodelledSPEs){
         paste0(rep(' ', times = 100), '\r') %>% cat()
-        paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition, ' SPE: ', whichSPE, '                             \r') %>% cat()
-        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,5000)
+        paste0('Participant: ', thisParticipant, '. Condition: ', thisCondition, ' SPE: ', whichSPE, '                                          \r') %>% cat()
+        thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
         ps %<>% mutate(p = replace(p, xDomain == whichSPE & participant == thisParticipant & condition == thisCondition, thisP))
       }
     }
