@@ -13,8 +13,8 @@ allErrors <- read.table('Analysis/allErrors.txt', header = T, stringsAsFactors =
 
 colnames(allErrors)[c(3,7)] <- c('SPE', 'targetSP')
 
-runAnyway <- FALSE
-xDomain = -4:4
+runAnyway <- TRUE
+xDomain = -1
 
 bootstrapPValue <- function(theseData, numItemsInStream, whichSPE, nReps){
   nTrials <- nrow(theseData)

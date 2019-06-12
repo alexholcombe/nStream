@@ -62,11 +62,12 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   efficacyPlot = ggplot(params, aes(x=condition, y = efficacy))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_point(alpha=1, colour = '#dca951', size = 4)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 7, colour = '#23375f')+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 4, colour = '#23375f')+
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
-    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]", title = paste0(modelKind, ': Efficacy'))+
+    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]")+
+    scale_x_discrete(breaks = c('twoStreams', 'eightStreams'), labels = c('2', '8'))+
     lims(y = c(0,1))+
     theme_apa()
 
@@ -97,12 +98,13 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   latencyPlot <- ggplot(params, aes(x=condition, y = latency))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_point(alpha=1, colour = '#dca951', size = 4)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),size = 7, colour = '#23375f')+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),size = 4, colour = '#23375f')+
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     scale_colour_brewer(palette = 'Spectral')+
-    labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))+
+    labs(x = 'Number of Streams', y = 'Latency (ms)')+
+    scale_x_discrete(breaks = c('twoStreams', 'eightStreams'), labels = c('2', '8'))+
     theme_apa()
 
   
@@ -131,12 +133,13 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   
   precisionPlot <- ggplot(params, aes(x=condition, y = precision))+
     #geom_violin(position = position_dodge(.9))+
-    geom_point(alpha=1, colour = '#dca951', size = 6)+
+    geom_point(alpha=1, colour = '#dca951', size = 4)+
     geom_line(aes(group = participant),alpha = .3)+
-    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
+    stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 4, colour = '#23375f')+
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     scale_colour_brewer(palette = 'Spectral')+
-    labs(x = 'Number of Streams', y = 'Precision (ms)', title = paste0(modelKind, ': Precision'))+
+    labs(x = 'Number of Streams', y = 'Precision (ms)')+
+    scale_x_discrete(breaks = c('twoStreams', 'eightStreams'), labels = c('2', '8'))+
     theme_apa()
 
   results[['Precision']] <- list(
@@ -387,30 +390,31 @@ gammaAnalysis <- analyses(paramsDF,modelKind = 'Gamma')
 
 normalAnalysis <- analyses(paramsDF,modelKind = 'Normal')
 
-normalEfficacyLabel <- normalAnalysis$Efficacy$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+ normalEfficacyLabel <- normalAnalysis$Efficacy$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+# 
+# # normalAnalysis$Efficacy$Plot <- normalAnalysis$Efficacy$Plot +
+# #   annotate(label = normalEfficacyLabel, geom = 'text', x = 1, y = .25, parse = T,size = 10)+
+# #   labs(title = NULL)
+# 
+# 
+# normalLatencyLabel <- normalAnalysis$Latency$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+# 
+# normalAnalysis$Latency$Plot <- normalAnalysis$Latency$Plot +
+#   annotate(label = normalLatencyLabel, geom = 'text', x = 1, y = 100, parse = T, size = 10)+
+#   labs(title = NULL)
+# 
+# normalPrecisionLabel <- normalAnalysis$Precision$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
+# 
+# normalAnalysis$Precision$Plot <- normalAnalysis$Precision$Plot +
+#   annotate(label = normalPrecisionLabel, geom = 'text', x = 1, y = 35, parse = T, size = 10)+
+#   labs(title = NULL)
 
-normalAnalysis$Efficacy$Plot <- normalAnalysis$Efficacy$Plot +
-  annotate(label = normalEfficacyLabel, geom = 'text', x = 1, y = .25, parse = T,size = 10)+
-  labs(title = NULL)
+plotHeight <- 19*(9/16)
+plotWidth <- 19
 
-
-normalLatencyLabel <- normalAnalysis$Latency$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
-
-normalAnalysis$Latency$Plot <- normalAnalysis$Latency$Plot +
-  annotate(label = normalLatencyLabel, geom = 'text', x = 1, y = 100, parse = T, size = 10)+
-  labs(title = NULL)
-
-normalPrecisionLabel <- normalAnalysis$Precision$BF %>% as.vector %>% round(2) %>% paste0('BF[10]==', .)
-
-normalAnalysis$Precision$Plot <- normalAnalysis$Precision$Plot +
-  annotate(label = normalPrecisionLabel, geom = 'text', x = 1, y = 35, parse = T, size = 10)+
-  labs(title = NULL)
-
-plotHeight <-  6.90045
-plotWidth <- 27.67/2
-
-ggsave('~/latencyEightStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'in')
-ggsave('~/precisionEightStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'in')
+ggsave('~/efficacyEightStream.png', plot = normalAnalysis$Efficacy$Plot,height = plotHeight, width = plotWidth, units = 'cm')
+ggsave('~/latencyEightStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'cm')
+ggsave('~/precisionEightStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'cm')
 
 
 bestFittingAnalysis <- analyses(paramsDF, bestFitting = T)
