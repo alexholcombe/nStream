@@ -201,9 +201,9 @@ paramFiles <- list.files(path = 'Analysis/Gamma Fits',
                          pattern = 'paramsDF8.*csv',
                          full.name = T)
 
+runAnyway = FALSE
 
-
-if(length(paramFiles)>0){
+if(length(paramFiles)>0 & !runAnyway){
   paramsDF <- read.csv(paramFiles[1], stringsAsFactors = F)
 } else{
   for(thisParticipant in IDs){
