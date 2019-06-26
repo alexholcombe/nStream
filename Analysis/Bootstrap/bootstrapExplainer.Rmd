@@ -19,14 +19,22 @@ To start with, we generate a distribution of guesses. First we pull the data for
 ```{r}
 allErrors <- read.csv('../allErrors18Streams.txt', header = T, stringsAsFactors = F) #All our RSVP data for the 18streams experiment
 
-theseData <- allErrors %>% filter(ID == '18AH2', condition == 2)
+theseData <- allErrors %>% filter(ID == '18JG', condition == 2)
 ```
 
 The distribution of responses for this participant looks like this.
 
 ```{r}
-ggplot(theseData, aes(x = SPE))+
-  geom_histogram(binwidth = 1)
+ggplot(allErrors, aes(x = SPE))+
+  geom_histogram(binwidth = 1)+
+  labs(y = 'Count', x = 'SPE')+
+  facet_wrap(~ID+condition)
+
+empiricalHist <- ggplot(theseData, aes(x = SPE))+
+  geom_histogram(binwidth = 1, aes(fill = SPE == -1))+
+  scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = FALSE)+
+  labs(y = 'Count', x = 'SPE')+
+  theme_apa()
 ```
 
 Now that we have this data, we can create a distribution of guesses. This assumes that all the responses were guesses, which is obviously untrue. 
@@ -49,6 +57,8 @@ guessingDist <- createGuessingDistribution(minSPE = minSPE,
                                            targetSP = theseData$targetSP,
                                            numItemsInStream = numItemsInStream)
 
+guessingDist <- guessingDist/sum(guessingDist)
+
 pseudoUniform <- data.frame(
   xDomain = minSPE:maxSPE, 
   guessingDist = guessingDist, 
@@ -58,10 +68,12 @@ pseudoUniform <- data.frame(
 The distribution we'd expect if all responses were guesses would look like this.
 
 ```{r echo = F}
-ggplot(pseudoUniform, aes(x = xDomain, y = guessingDist))+
-  geom_bar(width = 1, stat = 'identity')+
+pseudoUnifHist <- ggplot(pseudoUniform, aes(x = xDomain, y = guessingDist))+
+  geom_bar(width = 1, stat = 'identity', aes(fill = xDomain == -1))+
+  scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = FALSE)+
   labs(y = 'Count', x = 'SPE')+
-  scale_x_continuous(breaks = seq(minSPE,maxSPE,2))
+  scale_x_continuous(breaks = seq(minSPE,maxSPE,2))+
+  theme_apa()
 ```
 
 But this is wrong! We want to scale it down a bit so that 
@@ -144,7 +156,7 @@ if(length(pFiles)>0 & !runAnyway){
     for(thisCondition in unique(allErrors$condition)){
       print(thisCondition)
       theseData <- allErrors %>% filter(ID == thisParticipant & condition == thisCondition)
-      for(whichSPE in -9:9){
+      for(whichSPE in c(-1)){
         print(whichSPE)
         thisP <- bootstrapPValue(theseData,numItemsInStream,whichSPE,10000)
         ps %<>% mutate(p = replace(p, xDomain == whichSPE & participant == thisParticipant & condition == thisCondition, thisP))
@@ -184,4 +196,81 @@ ggsave(filename = '../../modelOutput/18Streams/bootstrapPlot.png',
        units='cm')
 
 
+```
+
+```{r}
+###Plot some samples for the explanation plot###
+
+  nTrials <- nrow(theseData)
+
+  #############################
+  ###Generate pseudo-uniform###
+  #############################
+  
+  thisAccuracy <- length(which(theseData$SPE == 0))/nTrials
+  
+  thisGuessingRate <- 1 - thisAccuracy
+  print(thisAccuracy)
+  print(thisGuessingRate)
+  
+  maxSPETheseData <- theseData %>% pull(targetSP) %>% max
+  minSPETheseData <- theseData %>% pull(targetSP) %>% min
+  minSPE <- 1 - maxSPETheseData
+  maxSPE <- numItemsInStream - minSPETheseData
+
+  guessingDist <- createGuessingDistribution(minSPE = minSPE,
+                                             maxSPE = maxSPE,
+                                             targetSP = theseData$targetSP,
+                                             numItemsInStream = numItemsInStream)
+
+  pseudoUniform <- data.frame(xDomain = minSPE:maxSPE, guessingDist = guessingDist, prob = guessingDist/sum(guessingDist)) #give guessing dist values labels
+
+  
+
+  nWhichSPE <- theseData %>% filter(SPE == -1) %>% nrow() #How many observations at SPE = whichSPE?
+
+  bootstraps <- expand.grid(rep = 1:12, #store the counts of whichSPE sampled from the pseudouniform here.
+                           SPE = rep(-999, times = nTrials*thisGuessingRate))
+
+  for(i in 1:12){
+    thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size = nTrials*thisGuessingRate) #sample nTrials many trials from the pseudouniform over the range of possible SPEs in this experiment
+    bootstraps[bootstraps$rep == i,'SPE'] = thisSample
+    
+  }
+
+  facetLabels = function(x){ #Dummy function for empty facet labels
+    return('')
+  }
+  
+  samplePlot <- ggplot(bootstraps, aes(x = SPE))+
+    geom_histogram(binwidth = 1, aes(fill = SPE == -1))+
+    scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = F)+
+    labs(y = 'Count', x = 'SPE')+
+    facet_wrap(~rep,ncol = 3, labeller = facetLabels)+
+    theme_apa()
+    
+  samplePlot
+  ##Show the distribution of counts###
+  
+  bootstraps <- data.frame(rep = 1:5000, #store the counts of whichSPE sampled from the pseudouniform here.
+                           count = -999)
+
+  for(i in 1:5000){
+    thisSample <- sample(pseudoUniform$xDomain, prob = pseudoUniform$prob, replace = T, size = nTrials*thisGuessingRate) #sample nTrials many trials from the pseudouniform over the range of possible SPEs in this experiment
+    nThisSPE<- which(thisSample == -1) %>% length #How many of the trials had an SPE == whichSPE
+    bootstraps %<>% mutate(count = replace(count, rep == i, nThisSPE)) #Put the count nThisSPE in the dataframe
+  }
+  
+  bootFreqPlot <- ggplot(bootstraps, aes(x = count))+
+    geom_histogram(binwidth = 1, aes(fill = count >= nWhichSPE))+
+    scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = F)+
+    labs(y = 'Frequency', x = 'Count of SPE = -1')+
+    theme_apa()
+  
+
+
+ggsave(plot = bootFreqPlot, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/bootFrequencies.png', height = 5, width = 5, units = 'in')
+ggsave(plot = samplePlot, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/someSamples.png', height = 5, width = 5, units = 'in')
+ggsave(plot = pseudoUnifHist, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/pseudoUnifrom.png', height = 5, width = 5, units = 'in')
+ggsave(plot = empiricalHist, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/empiricalHistogram.png', height = 5, width = 5, units = 'in')
 ```
