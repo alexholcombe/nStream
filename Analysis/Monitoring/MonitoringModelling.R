@@ -148,8 +148,6 @@ if(!file.exists('Analysis/MonitoringModelling.csv') | runAnyway){
   
 }
 
-
-
 allResponses <- fread('Analysis/MonitoringModelling.csv', sep = ',', header = T, stringsAsFactors = F)
 
 proportionNegModel <- allResponses %>% group_by(nStreams, simulation, monitoredStreams) %>% summarise(pNeg = sum(SPE<0)/n())
@@ -188,7 +186,7 @@ ggplot()+
 x = proportionNegModel %>% filter(nStreams == 2, monitoredStreams == 1) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 2) %>% pull(pNeg)
 
-ttestBF(x = x,
+TwoOne <- ttestBF(x = x,
         y = y)
 
 
@@ -198,7 +196,7 @@ ttestBF(x = x,
 x = proportionNegModel %>% filter(nStreams == 2, monitoredStreams == 2) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 2) %>% pull(pNeg)
 
-ttestBF(x = x,
+TwoTwo <- ttestBF(x = x,
         y = y)
 
 ################################
@@ -207,7 +205,7 @@ ttestBF(x = x,
 x = proportionNegModel %>% filter(nStreams == 6, monitoredStreams == 1) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 6) %>% pull(pNeg)
 
-ttestBF(x = x,
+SixOne <- ttestBF(x = x,
         y = y)
 
 ################################
@@ -216,8 +214,26 @@ ttestBF(x = x,
 x = proportionNegModel %>% filter(nStreams == 6, monitoredStreams == 2) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 6) %>% pull(pNeg)
 
-ttestBF(x = x,
+SixTwo <- ttestBF(x = x,
         y = y)
+
+##################################
+###Six streams, Three monitored###
+##################################
+x = proportionNegModel %>% filter(nStreams == 6, monitoredStreams == 3) %>% pull(pNeg)
+y = proportionNegEmpirical %>% filter(condition == 6) %>% pull(pNeg)
+
+SixThree <- ttestBF(x = x,
+                  y = y)
+
+##################################
+###Six streams, Four monitored###
+##################################
+x = proportionNegModel %>% filter(nStreams == 6, monitoredStreams == 4) %>% pull(pNeg)
+y = proportionNegEmpirical %>% filter(condition == 6) %>% pull(pNeg)
+
+SixFour <- ttestBF(x = x,
+                    y = y)
 
 ################################
 ###18 streams, One monitored####
@@ -225,7 +241,7 @@ ttestBF(x = x,
 x = proportionNegModel %>% filter(nStreams == 18, monitoredStreams == 1) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 18) %>% pull(pNeg)
 
-ttestBF(x = x,
+EighteenOne <- ttestBF(x = x,
         y = y)
 
 
@@ -235,6 +251,61 @@ ttestBF(x = x,
 x = proportionNegModel %>% filter(nStreams == 18, monitoredStreams == 2) %>% pull(pNeg)
 y = proportionNegEmpirical %>% filter(condition == 18) %>% pull(pNeg)
 
-ttestBF(x = x,
+EighteenTwo <- ttestBF(x = x,
         y = y)
 
+##################################
+###18 streams, Three monitored####
+##################################
+x = proportionNegModel %>% filter(nStreams == 18, monitoredStreams == 3) %>% pull(pNeg)
+y = proportionNegEmpirical %>% filter(condition == 18) %>% pull(pNeg)
+
+EighteenThree <- ttestBF(x = x,
+                       y = y)
+
+#################################
+###18 streams, Four monitored####
+#################################
+x = proportionNegModel %>% filter(nStreams == 18, monitoredStreams == 4) %>% pull(pNeg)
+y = proportionNegEmpirical %>% filter(condition == 18) %>% pull(pNeg)
+
+EighteenFour <- ttestBF(x = x,
+                         y = y)
+
+
+BFs <- expand.grid(
+  nStreams = c(2,6,18),
+  monitoredStreams = 1:4,
+  BF = -999
+)
+
+BFs %<>% 
+  mutate(BF = replace(BF, nStreams == 2 & monitoredStreams == 1, TwoOne)) %>%
+  mutate(BF = replace(BF, nStreams == 2 & monitoredStreams == 2, TwoTwo)) %>%
+  mutate(BF = replace(BF, nStreams == 6 & monitoredStreams == 1, SixOne)) %>%
+  mutate(BF = replace(BF, nStreams == 6 & monitoredStreams == 2, SixTwo)) %>%
+  mutate(BF = replace(BF, nStreams == 6 & monitoredStreams == 3, SixThree)) %>%
+  mutate(BF = replace(BF, nStreams == 6 & monitoredStreams == 4, SixFour)) %>%
+  mutate(BF = replace(BF, nStreams == 18 & monitoredStreams == 1, EighteenOne)) %>%
+  mutate(BF = replace(BF, nStreams == 18 & monitoredStreams == 2, EighteenTwo)) %>%
+  mutate(BF = replace(BF, nStreams == 18 & monitoredStreams == 3, EighteenThree)) %>%
+  mutate(BF = replace(BF, nStreams == 18 & monitoredStreams == 4, EighteenFour)) %>%
+  mutate(BFLabel = ifelse(BF != -999, paste0('BF10 =', format(BF, scientific = T, digits = 2)),'' ))
+
+proportionNegEmpirical %<>% mutate(nStreams = condition)
+
+proportionNegEmpiricalMeans <- proportionNegEmpirical %>% group_by(nStreams) %>% summarise(mean = mean(pNeg))
+proportionNegModelMeans <- proportionNegModel %>% group_by(nStreams, monitoredStreams) %>% summarise(mean = mean(pNeg))
+
+BFPlot <- ggplot()+
+  geom_histogram(data = proportionNegModel, aes(x = pNeg), alpha = .5, fill = 'blue')+
+  geom_point(data = proportionNegEmpirical, aes(x = pNeg, y = 350),alpha = .5, size = 4, colour = 'red')+
+  geom_text(data = BFs, aes(label = BFLabel), x = .4, y = 300)+
+  geom_vline(data = proportionNegEmpiricalMeans, aes(xintercept = mean), linetype = 'dashed', colour = 'red')+
+  geom_vline(data = proportionNegModelMeans, aes(xintercept = mean), linetype = 'dashed', colour = 'blue')+
+  facet_grid(cols = vars(monitoredStreams), rows = vars(nStreams),labeller = 'label_both')
+
+ggsave(filename = 'Analysis/MonitoringPlot.png', plot = BFPlot, width = 16, height = 9, units = 'in') 
+  
+  
+  
