@@ -98,9 +98,12 @@ simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficac
   return(responses)
 }
 
+monitoringFiles <- list.files(path = 'Analysis/Monitoring/',full.names = T)
 
-if(!file.exists('Analysis/Monitoring/MonitoringModelling.csv') | runAnyway){
-  allResponsesHeader <- data.frame( #Dummy for writing header to CSV, we'll write to the csv every simulation loop and clear the trials from memory because the very large DF slows the loop down as it iterates (not sure why)
+fileIndexes <- grep('MonitoringModelling[0-9]',x = monitoringFiles)
+
+if(length(fileIndexes) == 0 | runAnyway){
+  allSimulationsHeader <- data.frame( #Dummy for writing header to CSV, we'll write to the csv every simulation loop and clear the trials from memory because the very large DF slows the loop down as it iterates (not sure why)
     monitoredStreams = double(0),
     simulation = integer(0),
     trial = integer(0), 
@@ -111,7 +114,7 @@ if(!file.exists('Analysis/Monitoring/MonitoringModelling.csv') | runAnyway){
     stringsAsFactors = F
   )
   
-  write.table(x = allResponsesHeader, file = 'Analysis/Monitoring/MonitoringModelling.csv', col.names = TRUE, sep = ',') #write header to CSV
+  write.table(x = allSimulationsHeader, file = 'Analysis/Monitoring/MonitoringModelling.csv', col.names = TRUE, sep = ',') #write header to CSV
   
   
   
@@ -145,12 +148,30 @@ if(!file.exists('Analysis/Monitoring/MonitoringModelling.csv') | runAnyway){
       }
     }
   }
-  
+  allSimulations <- fread('Analysis/Monitoring/MonitoringModelling.csv', sep = ',', header = T, stringsAsFactors = F)
+  saveRows <- seq(1, nrow(allSimulations), 2500000)
+  for(i in saveRows){ #github has a 100mb limit so we need to save the csvs in parts. 
+    index <- which(saveRows==i)
+    theseRows <- allSimulations[i:(i+2499999),]
+    write.csv(x = theseRows, file = paste0('Analysis/Monitoring/MonitoringModelling', index, '.csv'),row.names = F)
+  }
+} else { #Loads  csvs and bind them
+  for(i in 1:8){
+    cat('Loading: ', paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'), rep(' ', times = 50), '\r')
+    if(i == 1){
+      allSimulations <- fread(paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'))
+    } else {
+      allSimulations <- rbind(
+        allSimulations,
+        fread(paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'))
+      )
+    }
+  }
 }
 
-allResponses <- fread('Analysis/Monitoring/MonitoringModelling.csv', sep = ',', header = T, stringsAsFactors = F)
 
-proportionNegModel <- allResponses[,.(pNeg = sum(SPE<0)/.N), by = .(nStreams, monitoredStreams, simulation)]
+
+proportionNegModel <- allSimulations[,.(pNeg = sum(SPE<0)/.N), by = .(nStreams, monitoredStreams, simulation)]
 
 proportionNegEmpirical <- allErrors[fixationReject == FALSE,.(pNeg = sum(SPE<0)/.N), by = .(condition, ID)]
 
@@ -255,7 +276,7 @@ BFs <- CJ(
 )
 
 
-BFs[.(nStreams == 2 & monitoredStreams == 1), BF:=as.vector(TwoOne)]
+BFs[nStreams == 2 & monitoredStreams == 1, BF:=as.vector(TwoOne)]
 BFs[nStreams == 2 & monitoredStreams == 2, BF:= as.vector(TwoTwo)]
 BFs[nStreams == 6 & monitoredStreams == 1, BF:= as.vector(SixOne)]
 BFs[nStreams == 6 & monitoredStreams == 2, BF:= as.vector(SixTwo)]
