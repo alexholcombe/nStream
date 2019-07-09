@@ -28,7 +28,7 @@ simulatedParticipants <- allErrors[,ID]
 simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficacy = .75){
   stimuli <- LETTERS[!LETTERS %in% c('C','W')]
   cueTemporalPos <- sample(6:10, size = nTrials, replace = T)
- 
+  
   responses <- expand.grid(trial = 1:nTrials, 
                            nStreams = nStreams, 
                            SPE = -999, 
@@ -47,7 +47,7 @@ simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficac
       thisCuedStream <- sample(1:thisNStream, size = 1)
       
       thisCueTemporalPos <- cueTemporalPos[thisTrial]
-
+      
       theseMonitoredStreams <- sample(1:thisNStream, size = nMonitoredStreams, replace = F)
       streamStimuli <- matrix(nrow = 24, ncol = thisNStream)
       
@@ -94,15 +94,14 @@ simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficac
                             response = replace(response, trial == thisTrial & nStreams == thisNStream, thisResponse))
     }
   }
-
+  
   return(responses)
 }
 
-monitoringFiles <- list.files(path = 'Analysis/Monitoring/',full.names = T)
+monitoringFiles <- list.files(path = 'Analysis/Monitoring/',full.names = T, pattern = 'csv')
 
-fileIndexes <- grep('MonitoringModelling[0-9]',x = monitoringFiles)
 
-if(length(fileIndexes) == 0 | runAnyway){
+if(length(monitoringFiles) == 0 | runAnyway){
   allSimulationsHeader <- data.frame( #Dummy for writing header to CSV, we'll write to the csv every simulation loop and clear the trials from memory because the very large DF slows the loop down as it iterates (not sure why)
     monitoredStreams = double(0),
     simulation = integer(0),
@@ -156,17 +155,7 @@ if(length(fileIndexes) == 0 | runAnyway){
     write.csv(x = theseRows, file = paste0('Analysis/Monitoring/MonitoringModelling', index, '.csv'),row.names = F)
   }
 } else { #Loads  csvs and bind them
-  for(i in 1:8){
-    cat('Loading: ', paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'), rep(' ', times = 50), '\r')
-    if(i == 1){
-      allSimulations <- fread(paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'))
-    } else {
-      allSimulations <- rbind(
-        allSimulations,
-        fread(paste0('Analysis/Monitoring/MonitoringModelling', i ,'.csv'))
-      )
-    }
-  }
+  allSimulations <- rbindlist(lapply(monitoringFiles, fread))
 }
 
 
@@ -277,7 +266,7 @@ BFs <- CJ(
 
 
 BFs[nStreams == 2 & monitoredStreams == 1, BF:=as.vector(TwoOne)]
-BFs[nStreams == 2 & monitoredStreams == 2, BF:= as.vector(TwoTwo)]
+BFs[nStreams == 2 & monitoredStreams == 2, BF:= as.vector(TwoTwo)] 
 BFs[nStreams == 6 & monitoredStreams == 1, BF:= as.vector(SixOne)]
 BFs[nStreams == 6 & monitoredStreams == 2, BF:= as.vector(SixTwo)]
 BFs[nStreams == 6 & monitoredStreams == 3, BF:= as.vector(SixThree)]
@@ -306,5 +295,25 @@ BFPlot
 
 ggsave(filename = 'Analysis/Monitoring/MonitoringPlot.png', plot = BFPlot, width = 16, height = 9, units = 'in') 
   
+
+randSims <- sample(1:nSimulations,size = 10)
+
+params <- CJ(
+  sim = randSims, 
+  monitoredStreams = 1:4,
+  nStreams = c(2,6,18),
+  efficacy = -999,
+  latency = -999,
+  precision = -999,
+  val = -999,
+  valGuessing = -999,
   
-  
+)  
+
+for(sim in randSims){
+  for(thisNStream in c(2,6,18)){
+    for(thisMonitoredStreams in 1:4){
+      theseData <- allSimulations[nStream == nStream & monitoredStreams == thisMonitoredStreams & simulation == sim,]
+    }
+  }
+}
