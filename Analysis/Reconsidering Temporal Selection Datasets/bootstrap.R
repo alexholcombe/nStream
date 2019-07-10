@@ -14,6 +14,9 @@ ABData %<>% rename(SPE = target1Error, targetSP = target1Pos)
 
 dataSets <- ABData %>% pull(dataSet) %>% unique()
 
+ABData %>% ggplot(aes(x = SPE))+
+  geom_histogram(binwidth = 1) +
+  facet_grid(cols = vars(lag), rows = vars(participant))
 
 pvalues <- data.frame(
   dataset = character(1e4),
