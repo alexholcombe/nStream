@@ -57,3 +57,5 @@ paramFileName <- paste0('modelRecoveryMixRSVPParamsOtherModel_', timeStamp,'.csv
 
 write.csv(x = paramOtherModel, #write the params and raw data
           file = paramFileName)
+
+

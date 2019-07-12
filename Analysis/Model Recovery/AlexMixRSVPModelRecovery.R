@@ -85,19 +85,14 @@ simulatedResponses <- function(nTrials, efficacy = .75, p2 = .8, p3 = .8, modelK
 }
 
 
-runAnyway <- TRUE #Run the simulations regardless of whether saved parameters exist
+runAnyway <- FALSE #Run the simulations regardless of whether saved parameters exist
 
 timeStamp <- strftime(Sys.time(),format = '%d-%m-%Y_%H-%M')
 
-paramFiles <- list.files(pattern = 'modelRecoveryMixRSVPParams')
+paramFiles <- list.files(pattern = 'modelRecoveryMixRSVPParams[^Other]')
+simulationFiles <- list.files(pattern = 'modelRecoveryMixRSVPSimulationData')
 
-if(length(paramFiles) > 0){
-  fileTimes <- gsub(pattern = 'modelRecoveryMixRSVPParams_|.csv',x =paramFiles)
-  fileTimes <- as.POSIXct(fileTimes, format= '%d-%m-%Y_%H-%M')
-  mostRecent <- fileTimes[fileTimes == max(fileTimes)]
-}
 
-simulationFiles <- list.Files(pattern = 'modelRecoveryMixRSVPSimulationData')
 
 latencies <- c(1.5,2)
 
@@ -133,7 +128,7 @@ colnames(rawData)[11:210] <- paste0('SPE', 1:nTrials)
 colnames(rawData)[211:410] <- paste0('targetSP', 1:nTrials)
 
 
-if(!file.exists('modelRecoveryMixRSVP.csv') | runAnyway){ #If we haven't already done the simulations
+if(length(paramFiles)==0 | runAnyway){ #If we haven't already done the simulations
   for(thisEfficacy in efficacies){
     for(thisLatency in latencies){
       for(thisPrecision in precisions){
@@ -205,8 +200,14 @@ if(!file.exists('modelRecoveryMixRSVP.csv') | runAnyway){ #If we haven't already
   write.csv(rawData,
             simulationFileName)
 } else{
-  params <- read.csv(paramFiles[mostRecent]) #if we've already run the simulations, read in the saved data
-  rawData <- read.csv(simulationFiles[mostRecent])
+  
+  fileTimes <- gsub(pattern = 'modelRecoveryMixRSVPParams_|.csv', replacement = '',x =paramFiles)
+  fileTimes <- as.POSIXct(fileTimes, format= '%d-%m-%Y_%H-%M')
+  mostRecentParams <- paramFiles[fileTimes == max(fileTimes)]
+  mostRecentSims <- simulationFiles[fileTimes == max(fileTimes)]
+
+  params <- read.csv(mostRecentParams) #if we've already run the simulations, read in the saved data
+  rawData <- read.csv(mostRecentSims)
 }
 
 
@@ -214,15 +215,35 @@ params %<>% mutate(
   scale = ifelse(model == 'Gamma', precisionEstimate,NA),
   shape = ifelse(model == 'Gamma', latencyEstimate, NA),
   latencyEstimate = ifelse(model == 'Gamma', shape*scale, latencyEstimate),
+  precisionEstimate = ifelse(model == 'Gamma', sqrt(shape)*scale, precisionEstimate),
+  generativeModel = model
+)
+
+paramsWrongModel <- read.csv('modelRecoveryMixRSVPParamsOtherModel_12-07-2019_07-37.csv')#Read in missmatched data generation and model simulation parameter estimates
+
+paramsWrongModel %<>% mutate(
+  scale = ifelse(model == 'Gamma', precisionEstimate,NA),
+  shape = ifelse(model == 'Gamma', latencyEstimate, NA),
+  latencyEstimate = ifelse(model == 'Gamma', shape*scale, latencyEstimate),
   precisionEstimate = ifelse(model == 'Gamma', sqrt(shape)*scale, precisionEstimate)
 )
 
-cor.test(params$latency, params$latencyEstimate)
 
-params$falsePositive <- params$efficacy==0 & params$efficacyEstimate!=0
+allParams <- rbind(paramsWrongModel, params)
 
-ggplot(params, aes(x=latency, y=latencyEstimate))+
-  geom_point(aes(colour = falsePositive))+
+
+
+allParamsWide <- allParams %>% 
+  dcast(participant+latency+precision+efficacy+generativeModel~model, value.var = 'val') %>%
+  mutate(BFGenModel = ifelse(generativeModel == 'Gamma', exp(-Gamma)/exp(-Normal), exp(-Normal)/exp(-Gamma))) %>%
+  mutate(recoveredRightModel = BFGenModel > 3) %>%
+  mutate(recoveredWrongModel = BFGenModel < .33) %>%
+  mutate(recoveredNeitherModel = BFGenModel >.33 & BFGenModel < 3)
+
+
+
+ggplot(allParams, aes(x=latency, y=latencyEstimate))+
+  geom_point(colour = '#ef5e39')+
   stat_summary(fun.y = mean, 
     geom='point', 
     size = 4, 
@@ -231,40 +252,14 @@ ggplot(params, aes(x=latency, y=latencyEstimate))+
     geom='errorbar', 
     width = .05, 
     colour = '#dca951')+
-  scale_colour_manual(values=c('TRUE' = '#628093' ,'FALSE' = '#ef5e39'), 
-    labels=c('TRUE'='False Positive', 'FALSE' = 'True Positive'), 
-    name = 'Likelihood Result')+
   theme(panel.background = element_blank(),
     axis.line = element_line(size=.2))+
   scale_x_continuous(breaks = unique(params$latency))+
   geom_hline(yintercept = unique(params$latency), linetype = 'dashed')+
-  facet_wrap(~model)
+  facet_wrap(~model+generativeModel, labeller = 'label_both')
 
-
-cor.test(params$efficacy, params$efficacyEstimate)
-
-ggplot(params, aes(x=efficacy, y=efficacyEstimate))+
-  geom_point(aes(colour = falsePositive))+
-  stat_summary(fun.y = mean, 
-    geom='point', 
-    size = 4, 
-    colour = '#dca951')+
-  stat_summary(fun.data= mean_se,
-    geom='errorbar', 
-    width = .05, 
-    colour = '#dca951')+
-  scale_colour_manual(values=c('TRUE' = '#628093' ,'FALSE' = '#ef5e39'), 
-    labels=c('TRUE'='False Positive', 'FALSE' = 'True Positive'), 
-    name = 'Likelihood Result')+
-  theme(panel.background = element_blank(),
-    axis.line = element_line(size=.2))+
-  geom_hline(yintercept = unique(params$efficacy), linetype = 'dashed')+
-  facet_wrap(~model)
-
-cor.test(params$precision, params$precisionEstimate)
-
-ggplot(params, aes(x=precision, y=precisionEstimate))+
-  geom_point(aes(colour = falsePositive))+
+ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
+  geom_point(colour = '#ef5e39')+
   stat_summary(fun.y = mean, 
                geom='point', 
                size = 4, 
@@ -273,11 +268,25 @@ ggplot(params, aes(x=precision, y=precisionEstimate))+
                geom='errorbar', 
                width = .05, 
                colour = '#dca951')+
-  scale_colour_manual(values=c('TRUE' = '#628093' ,'FALSE' = '#ef5e39'), 
-                      labels=c('TRUE'='False Positive', 'FALSE' = 'True Positive'), 
-                      name = 'Likelihood Result')+
   theme(panel.background = element_blank(),
         axis.line = element_line(size=.2))+
+  scale_x_continuous(breaks = unique(params$efficacy))+
+  geom_hline(yintercept = unique(params$efficacy), linetype = 'dashed')+
+  facet_wrap(~model+generativeModel, labeller = 'label_both')
+
+ggplot(allParams, aes(x=precision, y=precisionEstimate))+
+  geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
+  stat_summary(fun.y = mean, 
+               geom='point', 
+               size = 4, 
+               colour = '#dca951')+
+  stat_summary(fun.data= mean_se,
+               geom='errorbar', 
+               width = .05, 
+               colour = '#dca951')+
+  theme(panel.background = element_blank(),
+        axis.line = element_line(size=.2))+
+  scale_x_continuous(breaks = unique(params$precision))+
   geom_hline(yintercept = unique(params$precision), linetype = 'dashed')+
-  facet_wrap(~model)
+  facet_wrap(~model+generativeModel, labeller = 'label_both')
  
