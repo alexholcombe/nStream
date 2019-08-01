@@ -211,7 +211,7 @@ if(length(paramFiles)==0 | runAnyway){ #If we haven't already done the simulatio
 }
 
 
-params %<>% mutate(
+params %<>% mutate( #Convert parameter estimates to mean and SD for the gamma distribution
   scale = ifelse(model == 'Gamma', precisionEstimate,NA),
   shape = ifelse(model == 'Gamma', latencyEstimate, NA),
   latencyEstimate = ifelse(model == 'Gamma', shape*scale, latencyEstimate),
@@ -219,7 +219,14 @@ params %<>% mutate(
   generativeModel = model
 )
 
-paramsWrongModel <- read.csv('modelRecoveryMixRSVPParamsOtherModel_12-07-2019_07-37.csv')#Read in missmatched data generation and model simulation parameter estimates
+#Get timing for the mismatched model fits
+paramsWrongModelFiles <- list.files(pattern='modelRecoveryMixRSVPParamsOtherModel')
+paramsWrongModelTimes <- gsub(x = paramsWrongModelFiles, pattern = 'modelRecoveryMixRSVPParamsOtherModel_|\\.csv', replacement = '')
+paramsWrongModelTimes <- as.POSIXct(paramsWrongModelTimes, format= '%d-%m-%Y_%H-%M')
+
+mostRecentWrongModel <- paramsWrongModelFiles[paramsWrongModelTimes == max(paramsWrongModelTimes)]
+
+paramsWrongModel <- read.csv(mostRecentWrongModel)#Read in missmatched data generation and model simulation parameter estimates
 
 paramsWrongModel %<>% mutate(
   scale = ifelse(model == 'Gamma', precisionEstimate,NA),
@@ -228,19 +235,18 @@ paramsWrongModel %<>% mutate(
   precisionEstimate = ifelse(model == 'Gamma', sqrt(shape)*scale, precisionEstimate)
 )
 
-
+#Bind them all together
 allParams <- rbind(paramsWrongModel, params)
 
-
-
+#Calculate BFs
 allParamsWide <- allParams %>% 
   dcast(participant+latency+precision+efficacy+generativeModel~model, value.var = 'val') %>%
-  mutate(BFGenModel = ifelse(generativeModel == 'Gamma', exp(-Gamma)/exp(-Normal), exp(-Normal)/exp(-Gamma))) %>%
+  mutate(BFGenModel = ifelse(generativeModel == 'Gamma', exp(-Gamma+Normal), exp(-Normal+Gamma))) %>%
   mutate(recoveredRightModel = BFGenModel > 3) %>%
   mutate(recoveredWrongModel = BFGenModel < .33) %>%
   mutate(recoveredNeitherModel = BFGenModel >.33 & BFGenModel < 3)
 
-
+allParamsWide %>% summarise(CorrectModel = sum(recoveredRightModel), WrongModel = sum(recoveredWrongModel), NeitherModel = sum(recoveredNeitherModel))/800
 
 ggplot(allParams, aes(x=latency, y=latencyEstimate))+
   geom_point(colour = '#ef5e39')+
