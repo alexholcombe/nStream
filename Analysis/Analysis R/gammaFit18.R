@@ -9,6 +9,7 @@ library(magrittr)
 library(reshape2)
 library(purrr)
 library(BayesFactor)
+library(papaja)
 devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
@@ -56,9 +57,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   params %<>%
     mutate(
       condition = factor(condition),
-      participant = factor(participant),
-      latency = latency*(1000/12),
-      precision = precision*(1000/12)
+      participant = factor(participant)
     )
   
   #######################
@@ -120,7 +119,8 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     scale_colour_brewer(palette = 'Spectral')+
     lims(y = limits)+
-    labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))
+    labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))+
+    theme_apa()
 
   results[['Latency']] <- list(
     'BF' = list(
@@ -175,11 +175,25 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   results
 }
 
-
+itemRate <- 80
 
 if(length(paramFiles)>0){
   paramTimes <- paramFiles %>% gsub('.*paramsDF18_|\\.csv','', .) %>% as.POSIXct(format = '%d-%m-%Y_%H-%M')
   paramsDF <- read.csv(paramFiles[which(paramTimes == max(paramTimes))], stringsAsFactors = F)
+  noticedTheFrameIssue <- strptime("01-08-2019_00-01", format = '%d-%m-%Y_%H-%M') #When I noticed the framerate thing
+  
+  if(max(paramTimes)<noticedTheFrameIssue){ #if the time the parameters were estimated was before I noticed the framerate thing, update the temporal estimates
+    print('updated times to account for framerate')
+    paramsDF %<>% mutate(
+      shape = ifelse(model == 'Gamma', latency, NA), #Create gamma-specific params
+      scale = ifelse(model == 'Gamma', precision, NA),
+      latency = ifelse(model == 'Gamma', shape*scale, latency), #convert gamma params to temporal (SPE)
+      precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision),
+      latency = latency*itemRate, #Convert SPE temporal params to milliseconds
+      precision = precision*itemRate,
+      scale = scale*itemRate #So that the scale is in MS
+    )
+  }
 } else {
   paramsDF <- expand.grid(
     participant = IDs,
@@ -259,27 +273,28 @@ if(length(paramFiles)>0){
             x = paramsDF, 
             row.names = F)
   
+  paramsDF %<>% mutate(
+    shape = ifelse(model == 'Gamma', latency, NA), #Create gamma-specific params
+    scale = ifelse(model == 'Gamma', precision, NA),
+    latency = ifelse(model == 'Gamma', shape*scale, latency), #convert gamma params to temporal (SPE)
+    precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision),
+    latency = latency*itemRate, #Convert SPE temporal params to milliseconds
+    precision = precision*itemRate,
+    scale = scale*itemRate 
+  )
+  
 }
-
-paramsDF %<>% mutate(
-  shape = ifelse(model == 'Gamma', latency, NA),
-  scale = ifelse(model == 'Gamma', precision, NA),
-  latency = ifelse(model == 'Gamma', latency*precision, latency),
-  precision = ifelse(model == 'Gamma', sqrt(latency)*precision, precision)
-)
 
 paramsDF %<>% filter(participant != '18TR1')
 
 densities <- paramsDF %>% #Purrr is new to me
-  select(participant, condition, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
-  pmap_dfr(function(latency, condition, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
-    SPE <- seq(-500,1000,1)/(1000/12)
+  select(participant, condition, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
+  pmap_dfr(function(latency, condition, precision, shape, scale, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
+    SPE <- seq(-500,1000,1)/80
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
     if(favouredModel == 'Gamma'){
       if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        density =dgamma(SPE, shape = shape, scale = scale)
         data.frame(ID = participant,
                    condition = condition,
                    SPE = SPE,
@@ -301,9 +316,7 @@ densities <- paramsDF %>% #Purrr is new to me
       }
     } else {
       if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        density =dgamma(SPE, shape = shape, scale = scale)
         data.frame(ID = participant,
                    condition = condition,
                    SPE = SPE,

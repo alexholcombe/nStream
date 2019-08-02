@@ -150,7 +150,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
   results
 }
 
-
+plots <- TRUE
 
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
 
@@ -203,8 +203,26 @@ paramFiles <- list.files(path = 'Analysis/Gamma Fits',
 
 runAnyway = FALSE
 
+itemRate <- 4000/60 #Four monitor refreshes on a 60Hz monitor
+
 if(length(paramFiles)>0 & !runAnyway){
-  paramsDF <- read.csv(paramFiles[1], stringsAsFactors = F)
+  times <- as.POSIXct(gsub('^.*paramsDF8_|.csv', '', paramFiles), format = '%d-%m-%Y_%H-%M')
+  
+  noticedTheFrameIssue <- strptime("01-08-2019_00-01", format = '%d-%m-%Y_%H-%M') #When I noticed the framerate thing
+  
+  paramsDF <- read.csv(paramFiles[times == max(times)], stringsAsFactors = F) #read in the latest param estimates
+  
+  if(max(times)<noticedTheFrameIssue){ #if the time the parameters were estimated was before I noticed the framerate thing, update the temporal estimates
+    print('updated times to account for framerate')
+    paramsDF %<>% mutate(
+      shape = ifelse(model == 'Gamma', latency, NA), #Create gamma-specific params
+      scale = ifelse(model == 'Gamma', precision, NA),
+      latency = ifelse(model == 'Gamma', shape*scale, latency), #convert gamma params to temporal (SPE)
+      precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision),
+      latency = latency*itemRate, #Convert SPE temporal params to milliseconds
+      precision = precision*itemRate
+    )
+  }
 } else{
   for(thisParticipant in IDs){
     for(thisCondition in conditions){
@@ -252,6 +270,15 @@ if(length(paramFiles)>0 & !runAnyway){
   write.csv(file = paramsFile,
             x = paramsDF, 
             row.names = F)
+  
+  paramsDF %<>% mutate(
+    shape = ifelse(model == 'Gamma', latency, NA), #Create gamma-specific params
+    scale = ifelse(model == 'Gamma', precision, NA),
+    latency = ifelse(model == 'Gamma', shape*scale, latency), #convert gamma params to temporal (SPE)
+    precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision),
+    latency = latency*itemRate, #Convert SPE temporal params to milliseconds
+    precision = precision*itemRate
+  )
 }
 
 #########################################################
@@ -275,21 +302,6 @@ paramsDF %<>%  mutate(
 )
 
 
-#################################################################
-###Create shape and scale variables. Compute gamma mean and sd###
-#################################################################
-
-paramsDF %<>% mutate(
-  shape = ifelse(model == 'Gamma', latency, NA),
-  scale = ifelse(model == 'Gamma', precision, NA),
-) %>% mutate(
-  latency = ifelse(model == 'Gamma', shape*scale, latency),
-  precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
-)
-
-
-
-
 #############
 ###Density###
 #############
@@ -298,7 +310,7 @@ if(plots){
     select(participant, condition, efficacy, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
     pmap_dfr(function(participant, condition, efficacy, latency, shape, scale, precision, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
       SPE <- seq(-5,10,.1)
-      print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
+      #print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
       if(efficacy > 0){
         if(favouredModel == 'Gamma'){
           if(model == 'Gamma'){
@@ -313,7 +325,7 @@ if(plots){
           } 
         } else if(favouredModel == 'Normal'){
           if(model == 'Normal'){
-            density = dnorm(SPE, latency, precision)
+            density = dnorm(SPE, latency/itemRate, precision/itemRate)
             data.frame(ID = participant,
                        condition = condition,
                        SPE = SPE,
@@ -333,7 +345,7 @@ if(plots){
                        favouredModel = favouredModel,
                        stringsAsFactors = F)
           } else if(model == 'Normal'){
-            density = dnorm(SPE, latency, precision)
+            density = dnorm(SPE, latency/itemRate, precision/itemRate)
             data.frame(ID = participant,
                        condition = condition,
                        SPE = SPE,
@@ -350,7 +362,8 @@ if(plots){
   
   
   for(thisID in IDs){
-    theseObservations <- allData %>% filter(ID == thisID)
+    print(thisID)
+    theseObservations <- allData %>% filter(ID == thisID & !fixationReject)
     
     theseDensities <- densities %>% filter(ID == thisID)
     
@@ -371,14 +384,12 @@ if(plots){
 
 
 
-#################################
+ #################################
 ###Latencies relative to onset###
 #################################
 
 paramsDF %<>% mutate(
-  latency = latency * (1000/12),
-  precision = precision*(1000/12),
-  latencyRelativeOnset = latency + 11.5,
+  latencyRelativeOnset = latency + 25, #A latency of zero means the middle of the bin, the bin is centred 25ms after stimulus onset and includes half a frame (1000/60) of blank
   participantNumeric = factor(rep(1:10, times = 4)),
   condition = ordered(condition, levels = c("twoStreams", "eightStreams"))
 ) %>% rename(participantCharacter = participant,
