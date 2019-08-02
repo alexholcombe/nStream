@@ -28,82 +28,107 @@ conditions <-  allData %>% pull(condition) %>% unique()
 nReplications = 10
 numLettersInStream <- 26
 
-paramsDF <- expand.grid(
-  participant = IDs,
-  condition = conditions,
-  efficacy = numeric(1),
-  latency = numeric(1),
-  precision = numeric(1),
-  val = numeric(1),
-  valGuessing = numeric(1),
-  pLRtest = 999,
-  model = c('Gamma','Normal')
-)
+paramFiles <- list.files(path = 'Analysis/Gamma Fits', pattern = 'params', full.names = T)
 
-parameterBoundsGamma <- data.frame(
-  lower = c(0,0.1,0.1),
-  upper = c(1,8,5)
-)
-
-parameterBoundsNormal <- data.frame(
-  lower = c(0, -4, .001),
-  upper = c(1, 9, 3)
-)
-
-nObs <- allData %>% 
-  group_by(subject, condition) %>%
-  summarise(n = n()) %>%
-  rename(participant = subject)
-
-nParams <- c('Gamma' = 3, 'Normal' = 3)
-
-for(thisParticipant in IDs){
-  for(thisCondition in conditions){
-    theseData <- allData %>% filter(subject == thisParticipant, condition == thisCondition)
-    
-    cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting gamma model                                  \r', sep = '')
-    paramsGamma <- theseData %>% analyzeOneConditionDF(numLettersInStream, parameterBoundsGamma, nReplicates = nReplications, modelKind = 'Gamma')
-    cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting normal model                                  \r', sep = '')
-    paramsN <- theseData %>% analyzeOneConditionDF(numLettersInStream, parameterBoundsNormal, nReplicates = nReplications, modelKind = 'Normal')
-    
+if(length(paramFiles)>0){ #If there are parameter estimates already saved, read in the newest one
+  times <- as.POSIXct(gsub('^.*paramsDF_|.csv','',paramFiles), format = '%d-%m-%Y_%H-%M')
+  paramsDF <- read.csv(paramFiles[times==max(times)]) 
+  noticedTheFrameIssue <- strptime("01-08-2019_00-01", format = '%d-%m-%Y_%H-%M') #This is when I realised that the experimental program presents in terms of monitor frames
+  
+  paramsDF %<>% mutate(
+    shape = ifelse(model == 'Gamma', latency, NA),
+    scale = ifelse(model == 'Gamma', precision, NA),
+    latency = ifelse(model == 'Gamma', shape*scale, latency),
+    precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
+  )
+  
+  if(max(times)<noticedTheFrameIssue){
+    rate <- 4000/60 #Rate is actually 4 refreshes
     paramsDF %<>% mutate(
-      efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$efficacy),
-      latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$latency),
-      precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$precision),
-      val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$val),
-      valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition  & model == 'Normal', paramsN$valGuessing),
-      pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$pLRtest)
-    )
-    
-    paramsDF %<>% mutate(
-      efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$efficacy),
-      latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$latency),
-      precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$precision),
-      val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$val),
-      valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$valGuessing),
-      pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$pLRtest)
+      latency = latency*rate,
+      precision = precision*rate
     )
   }
+} else {
+  paramsDF <- expand.grid(
+    participant = IDs,
+    condition = conditions,
+    efficacy = numeric(1),
+    latency = numeric(1),
+    precision = numeric(1),
+    val = numeric(1),
+    valGuessing = numeric(1),
+    pLRtest = 999,
+    model = c('Gamma','Normal')
+  )
+  
+  parameterBoundsGamma <- data.frame(
+    lower = c(0,0.1,0.1),
+    upper = c(1,8,5)
+  )
+  
+  parameterBoundsNormal <- data.frame(
+    lower = c(0, -4, .001),
+    upper = c(1, 9, 3)
+  )
+  
+  nObs <- allData %>% 
+    group_by(subject, condition) %>%
+    summarise(n = n()) %>%
+    rename(participant = subject)
+  
+  nParams <- c('Gamma' = 3, 'Normal' = 3)
+  
+  for(thisParticipant in IDs){
+    for(thisCondition in conditions){
+      theseData <- allData %>% filter(subject == thisParticipant, condition == thisCondition)
+      
+      cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting gamma model                                  \r', sep = '')
+      paramsGamma <- theseData %>% analyzeOneConditionDF(numLettersInStream, parameterBoundsGamma, nReplicates = nReplications, modelKind = 'Gamma')
+      cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting normal model                                  \r', sep = '')
+      paramsN <- theseData %>% analyzeOneConditionDF(numLettersInStream, parameterBoundsNormal, nReplicates = nReplications, modelKind = 'Normal')
+      
+      paramsDF %<>% mutate(
+        efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$efficacy),
+        latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$latency),
+        precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$precision),
+        val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$val),
+        valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition  & model == 'Normal', paramsN$valGuessing),
+        pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$pLRtest)
+      )
+      
+      paramsDF %<>% mutate(
+        efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$efficacy),
+        latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$latency),
+        precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$precision),
+        val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$val),
+        valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$valGuessing),
+        pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$pLRtest)
+      )
+    }
+  }
+  
+  
+  BICs <- paramsDF %>%
+    compareMixtureModels(params = .,
+                         nParam = nParams,
+                         nObs = nObs)
+  
+  
+  paramsDF <- BICs %>% mutate(favouredModel = 'Neither') %>%
+    mutate(favouredModel = replace(favouredModel, BF >3, 'Normal')) %>%
+    mutate(favouredModel = replace(favouredModel, BF<3^-1, 'Gamma')) %>%
+    select(participant, condition, BF, favouredModel) %>%
+    left_join(paramsDF, ., by = c('participant', 'condition')) #Add all this information to the paramDF 
+  
+  paramsFile <- paste0('Analysis/Gamma Fits/paramsDF_', timeStamp, '.csv')
+  
+  write.csv(file = paramsFile,
+            x = paramsDF, 
+            row.names = F)
+  
 }
 
-
-BICs <- paramsDF %>%
-  compareMixtureModels(params = .,
-                       nParam = nParams,
-                       nObs = nObs)
-
-
-paramsDF <- BICs %>% mutate(favouredModel = 'Neither') %>%
-  mutate(favouredModel = replace(favouredModel, BF >3, 'Normal')) %>%
-  mutate(favouredModel = replace(favouredModel, BF<3^-1, 'Gamma')) %>%
-  select(participant, condition, BF, favouredModel) %>%
-  left_join(paramsDF, ., by = c('participant', 'condition')) #Add all this information to the paramDF 
-
-paramsFile <- paste0('Analysis/Gamma Fits/paramsDF_', timeStamp, '.csv')
-
-write.csv(file = paramsFile,
-          x = paramsDF, 
-          row.names = F)
 
 densities <- paramsDF %>% #Purrr is new to me
   select(participant, condition, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
