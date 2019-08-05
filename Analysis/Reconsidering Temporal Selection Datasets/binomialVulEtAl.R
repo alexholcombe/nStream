@@ -40,8 +40,6 @@ ABData %>% #Ye olde conditional accuracy plot
     labs(x = 'lag (ms)', y = 'p(T2|T1)')+
     theme_apa()
 
-
-
 pvalues <- data.frame( #empty dataframe of pvalues, there are deliberately too many rows to ensure memory is appropriate. I trim them below
   dataset = character(1e4),
   participant = numeric(1e4),
