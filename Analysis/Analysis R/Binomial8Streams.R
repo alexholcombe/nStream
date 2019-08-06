@@ -11,7 +11,11 @@ allErrors <- read.csv('Analysis/allErrors.txt', sep = '\t', header = T)
 binomialPs <- expand.grid(xDomain = -1,
                           p = -1,
                           participant = unique(allErrors$ID),
-                          condition = unique(allErrors$condition))
+                          condition = unique(allErrors$condition),
+                          pTwo = -1,
+                          pEight = -1,
+                          z = -999,
+                          p_z = -1)
 SPEToTest = -1
 
 
@@ -39,3 +43,46 @@ for(thisParticipant in unique(allErrors$ID)){
     
   }
 }
+
+binomialPs %>% 
+  group_by(condition) %>%
+  summarise(nSig = sum(p<.05))
+
+#####################################
+###Compare proportions with z-test###
+#####################################
+
+
+Zs <- expand.grid(
+  ID = unique(allData$ID),
+  pTwo = -999,
+  pEight = -999,
+  z = -999
+)
+
+for(thisParticipant in unique(allErrors$ID)){
+  two <- allErrors %>% filter(condition == 'twoStreams' & ID == thisParticipant & !fixationReject)
+  eight <- allErrors %>% filter(condition == 'eightStreams' & ID == thisParticipant & !fixationReject)
+  
+  proportionTwo <- sum(two$error == -1)/nrow(two)
+  proportionEight <- sum(eight$error == -1)/nrow(eight)
+  
+  pHat <- (sum(two$error == -1) + sum(eight$error == -1))/(nrow(two) + nrow(eight))
+  
+  seProp <- sqrt(pHat*(1-pHat) * (1/nrow(two) + 1/nrow(eight))) #SE of the proportion
+  
+  thisZ <- (proportionTwo - proportionEight)/seProp
+  
+  binomialPs %<>% mutate(
+    pTwo = ifelse(participant == thisParticipant, proportionTwo, pTwo),
+    pEight = ifelse(participant == thisParticipant, proportionEight, pEight),
+    z = ifelse(participant == thisParticipant, thisZ,z),
+    p_z = ifelse(participant == thisParticipant, pnorm(thisZ, lower.tail = F), p_z)
+  )
+}
+
+
+
+
+
+

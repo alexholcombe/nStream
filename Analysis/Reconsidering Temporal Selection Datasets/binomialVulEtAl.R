@@ -27,6 +27,16 @@ ABData %>% filter(lag<=6) %>%
     facet_grid(cols = vars(lag), rows = vars(ID), labeller = 'label_both')+
     theme_apa()
 
+
+ABData %>% filter(lag<=6) %>% 
+  rename(ID = participant) %>%  #Histograms, drop lags >= 7 because the blink is over at this point
+  ggplot(aes(x = SPE))+
+  geom_histogram(binwidth = 1) +
+  facet_grid(cols = vars(lag), labeller = 'label_both')+
+  lims(x = c(-10,10))+
+  geom_vline(xintercept = 0, linetype = 'dashed')+
+  theme_apa()
+
 ABData %>% #Ye olde conditional accuracy plot
   mutate(conditionalAccuracy = SPE == 0 & target2Error == 0)%>%
   group_by(participant, lag) %>%
