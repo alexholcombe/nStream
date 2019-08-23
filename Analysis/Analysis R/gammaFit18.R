@@ -81,9 +81,9 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     geom_line(aes(group = participant),alpha = .3)+
     stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9),  size = 7, colour = '#23375f')+
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
-    annotate(x = 1.25, y = .45, label = BayesFactorLabel, geom = 'text',size = 5,parse = T)+
-    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]", title = paste0(modelKind, ': Efficacy'))+
-    lims(y = c(0,1))
+    labs(x = "Number of Streams", y = "Efficacy", title = paste0(modelKind, ': Efficacy'))+
+    lims(y = c(0,1))+
+    theme_apa()
 
   
   results[['Efficacy']] <- list(
@@ -290,7 +290,7 @@ paramsDF %<>% filter(participant != '18TR1')
 densities <- paramsDF %>% #Purrr is new to me
   select(participant, condition, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
   pmap_dfr(function(latency, condition, precision, shape, scale, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
-    SPE <- seq(-500,1000,1)/80
+    SPE <- seq(-500,1000,1)
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
     if(favouredModel == 'Gamma'){
       if(model == 'Gamma'){
@@ -338,6 +338,7 @@ densities <- paramsDF %>% #Purrr is new to me
   }
   )
 
+densities %<>% mutate(SPE = SPE/80) #It was in ms, like the parameter estimates
 
 if(plots){
   for(thisID in IDs){
@@ -388,6 +389,7 @@ plotWidth <- 27.67/2
 
 ggsave('~/latencyEighteenStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'in')
 ggsave('~/precisionEighteenStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'in')
+ggsave('~/efficacyEighteenStream.png', plot = normalAnalysis$Efficacy$Plot,height = plotHeight, width = plotWidth, units = 'in')
 
 
 bestFittingResults <- analyses(
@@ -397,6 +399,18 @@ bestFittingResults <- analyses(
 )
 
 
+randPart <- allData %>% pull(ID) %>% unique() %>% sample(size = 3)
 
+randPartData <- allData %>% filter(ID %in% randPart)
+randPartDensities <- densities %>% filter(ID %in% randPart)
+
+randomParticipantPlot <- ggplot()+
+  geom_histogram(data = randPartData, aes(x = SPE), binwidth = 1)+
+  geom_line(data = randPartDensities, aes(x = SPE, y = density*50*80, colour = model), size = 1)+
+  facet_grid(cols = vars(condition), rows = vars(ID))+
+  geom_vline(xintercept = 0, linetype = 'dashed')+
+  theme_apa()
+
+ggsave('~/gitCode/nStream/manuscripts_etc/Manuscript Figures/randomParticipantPlot18.png', randomParticipantPlot, width = 16, height = 9, units = 'in')
 
 

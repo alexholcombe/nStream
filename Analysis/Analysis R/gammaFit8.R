@@ -66,7 +66,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     geom_line(aes(group = participant),alpha = .3)+
     stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 4, colour = '#23375f')+
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
-    labs(x = "Number of Streams", y = "Efficacy [1 - p(guess)]")+
+    labs(x = "Number of Streams", y = "Efficacy")+
     scale_x_discrete(breaks = c('twoStreams', 'eightStreams'), labels = c('2', '8'))+
     lims(y = c(0,1))+
     theme_apa()
@@ -431,3 +431,16 @@ ggsave('~/precisionEightStream.png', plot = normalAnalysis$Precision$Plot,height
 bestFittingAnalysis <- analyses(paramsDF, bestFitting = T)
 
 
+randPart <- allData %>% pull(ID) %>% unique() %>% sample(size = 3)
+
+randPartData <- allData %>% filter(ID %in% randPart) %>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams')))
+randPartDensities <- densities %>% filter(ID %in% randPart)%>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams')))
+
+randomParticipantPlot <- ggplot()+
+  geom_histogram(data = randPartData, aes(x = SPE), binwidth = 1)+
+  geom_line(data = randPartDensities, aes(x = SPE, y = density*100, colour = model), size = 1)+
+  facet_grid(cols = vars(condition), rows = vars(ID))+
+  geom_vline(xintercept = 0, linetype = 'dashed')+
+  theme_apa()
+
+ggsave('~/gitCode/nStream/manuscripts_etc/Manuscript Figures/randomParticipantPlot8.png', randomParticipantPlot, width = 16, height = 9, units = 'in')
