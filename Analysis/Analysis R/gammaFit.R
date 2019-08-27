@@ -11,6 +11,8 @@ devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
 
+source('Analysis/Analysis R/GammaAnalysis.R')
+
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
 
 setwd('~/gitCode/nStream/')
@@ -25,7 +27,7 @@ allData %<>% filter(subject != 'AH ')
 IDs <- allData %>% pull(subject) %>% unique()
 conditions <-  allData %>% pull(condition) %>% unique()
 
-nReplications = 10
+nReplications = 50
 numLettersInStream <- 26
 
 paramFiles <- list.files(path = 'Analysis/Gamma Fits', pattern = 'params', full.names = T)
@@ -131,15 +133,13 @@ if(length(paramFiles)>0){ #If there are parameter estimates already saved, read 
 
 
 densities <- paramsDF %>% #Purrr is new to me
-  select(participant, condition, latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
-  pmap_dfr(function(latency, condition, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
-    SPE <- seq(-500,1000,1)/(1000/12)
+  select(participant, condition, latency, precision, shape, scale, model, favouredModel)%>% #Select the columns with the variables we want
+  pmap_dfr(function(latency, condition, precision, shape, scale, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
+    SPE <- seq(-500,1000,1)
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
     if(favouredModel == 'Gamma'){
       if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        density =dgamma(SPE, shape = shape, scale = scale*(4000/60))
         data.frame(ID = participant,
                    condition = condition,
                    SPE = SPE,
@@ -161,9 +161,7 @@ densities <- paramsDF %>% #Purrr is new to me
       }
     } else {
       if(model == 'Gamma'){
-        shape = latency
-        rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        density =dgamma(SPE, shape = shape, scale = scale*(4000/60))
         data.frame(ID = participant,
                    condition = condition,
                    SPE = SPE,
@@ -196,7 +194,7 @@ for(thisID in IDs){
     
     thisPlot <- ggplot(theseObservations, aes(x = SPE))+
       geom_histogram(binwidth = 1)+
-      geom_line(data = theseDensities, aes(x = SPE, y = density*50, colour = model)) +
+      geom_line(data = theseDensities, aes(x = SPE, y = density*50*66.67, colour = model)) +
       labs(title = paste0('Participant: ', thisIDNoSpace,'. Condition: ', thisCondition))
       
     ggsave(filename = paste0('Analysis/Gamma Fits/GammaPlots/',thisIDNoSpace,'_',thisCondition,'.png'),
@@ -205,16 +203,34 @@ for(thisID in IDs){
   } 
 }
 
-allPlot <- allData %>% rename(ID = subject) %>%
+normalAnalysis <- analyses(paramsDF, modelKind = 'Normal')
+
+paramsDF %>% filter(model == 'Normal') %>% xtabs(~favouredModel+condition, data = .)
+
+densities %<>% rename(Cue = condition)
+
+allPlot <- allData %>% rename(ID = subject, Cue = condition) %>%
   ggplot(aes(x = SPE))+
   geom_histogram(binwidth = 1)+
-  geom_line(data = densities, aes(x = SPE, y = density*50, colour = model)) +
+  geom_line(data = densities, aes(x = SPE/rate, y = density*100*66.67, colour = model), size = 1.5) +
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  facet_wrap(~ID+condition)
+  facet_wrap(~ID+Cue, labeller = 'label_both')+
+  labs(colour = 'Model')+
+  theme_apa()
 
-ggsave(filename = 'allData.png',
+allPlot
+
+ggsave(filename = 'Analysis/Gamma Fits/GammaPlots/allData.png',
        plot = allPlot,
        height = 18,
        width = 32,
        units = 'cm')
+
+plotHeight <- 19*(9/16)
+plotWidth <- 19
+
+ggsave('~/gitCode/nStream/Analysis/Gamma Fits/efficacyEightStream.png', plot = normalAnalysis$Efficacy$Plot,height = plotHeight, width = plotWidth, units = 'cm')
+ggsave('~/gitCode/nStream/Analysis/Gamma Fits/latencyEightStream.png', plot = normalAnalysis$Latency$Plot,height = plotHeight, width = plotWidth, units = 'cm')
+ggsave('~/gitCode/nStream/Analysis/Gamma Fits/precisionEightStream.png', plot = normalAnalysis$Precision$Plot,height = plotHeight, width = plotWidth, units = 'cm')
+
 
