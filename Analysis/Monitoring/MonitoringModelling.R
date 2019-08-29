@@ -289,7 +289,9 @@ BFPlot <- ggplot()+
   geom_text(data = BFs, aes(label = BFLabel), x = .4, y = 3000,parse = T)+
   geom_vline(data = proportionNegEmpiricalMeans, aes(xintercept = mean), linetype = 'dashed', colour = 'red')+
   geom_vline(data = proportionNegModelMeans, aes(xintercept = mean), linetype = 'dashed', colour = 'blue')+
-  facet_grid(cols = vars(monitoredStreams), rows = vars(nStreams),labeller = 'label_both')
+  facet_grid(cols = vars(monitoredStreams), rows = vars(nStreams),labeller = 'label_both')+
+  theme_apa()+
+  labs(x = 'Proportion of pre-cue responses', y = 'Count')
 
 BFPlot
 

@@ -433,14 +433,17 @@ bestFittingAnalysis <- analyses(paramsDF, bestFitting = T)
 
 randPart <- allData %>% pull(ID) %>% unique() %>% sample(size = 3)
 
-randPartData <- allData %>% filter(ID %in% randPart) %>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams')))
-randPartDensities <- densities %>% filter(ID %in% randPart)%>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams')))
+randPartData <- allData %>% filter(ID %in% randPart) %>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams'),labels = c('Two Streams', 'Eight Streams')))
+randPartDensities <- densities %>% filter(ID %in% randPart)%>% mutate(condition = ordered(condition, levels = c('twoStreams', 'eightStreams'),labels = c('Two Streams', 'Eight Streams')))
 
 randomParticipantPlot <- ggplot()+
   geom_histogram(data = randPartData, aes(x = SPE), binwidth = 1)+
   geom_line(data = randPartDensities, aes(x = SPE, y = density*100, colour = model), size = 1)+
   facet_grid(cols = vars(condition), rows = vars(ID))+
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  theme_apa()
+  labs(y = 'Count')+
+  theme_apa(base_size = 30)
+
+randomParticipantPlot
 
 ggsave('~/gitCode/nStream/manuscripts_etc/Manuscript Figures/randomParticipantPlot8.png', randomParticipantPlot, width = 16, height = 9, units = 'in')

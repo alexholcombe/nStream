@@ -83,7 +83,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
     labs(x = "Number of Streams", y = "Efficacy", title = paste0(modelKind, ': Efficacy'))+
     lims(y = c(0,1))+
-    theme_apa()
+    theme_apa(base_size = 30)
 
   
   results[['Efficacy']] <- list(
@@ -120,7 +120,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     scale_colour_brewer(palette = 'Spectral')+
     lims(y = limits)+
     labs(x = 'Number of Streams', y = 'Latency (ms)', title = paste0(modelKind, ': Latency'))+
-    theme_apa()
+    theme_apa(base_size = 30)
 
   results[['Latency']] <- list(
     'BF' = list(
@@ -161,7 +161,7 @@ analyses <- function(params, modelKind = NULL, bestFitting = FALSE, nIterations 
     scale_colour_brewer(palette = 'Spectral')+
     lims(y = limits)+
     labs(x = 'Number of Streams', y = 'Precision (ms)', title = paste0(modelKind, ': Precision'))+
-    theme_apa()
+    theme_apa(base_size = 30)
 
   results[['Precision']] <- list(
     'BF' = list(
@@ -409,7 +409,10 @@ randomParticipantPlot <- ggplot()+
   geom_line(data = randPartDensities, aes(x = SPE, y = density*50*80, colour = model), size = 1)+
   facet_grid(cols = vars(condition), rows = vars(ID))+
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  theme_apa()
+  labs(y = 'Count')+
+  theme_apa(base_size = 30)
+
+randomParticipantPlot
 
 ggsave('~/gitCode/nStream/manuscripts_etc/Manuscript Figures/randomParticipantPlot18.png', randomParticipantPlot, width = 16, height = 9, units = 'in')
 
