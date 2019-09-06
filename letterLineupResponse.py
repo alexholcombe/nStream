@@ -176,7 +176,6 @@ def collectOneLineupResponse(myWin,myMouse,drawBothSides,leftRightCentral,OKtext
                 xValid = horizBounds[0] <= mousePos[0] <= horizBounds[1]  #clicked in a valid x-position
                 yValid = vertBounds[0] <= mousePos[1] <= vertBounds[1]  #clicked in a valid y-position
                 if xValid and yValid:
-                        clickSound.play()
                         relToBtm = mousePos[1] - vertBounds[0] #mouse coordinates go up from -1 to +1
                         relToLeft = mousePos[0] - horizBounds[0]
                         if horizVert: #vertical
