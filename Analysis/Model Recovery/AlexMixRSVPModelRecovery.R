@@ -246,7 +246,7 @@ allParamsWide <- allParams %>%
   mutate(recoveredWrongModel = BFGenModel < .33) %>%
   mutate(recoveredNeitherModel = BFGenModel >.33 & BFGenModel < 3)
 
-allParamsWide %>% summarise(CorrectModel = sum(recoveredRightModel), WrongModel = sum(recoveredWrongModel), NeitherModel = sum(recoveredNeitherModel))/800
+allParamsWide %>% group_by(generativeModel) %>% summarise(CorrectModel = sum(recoveredRightModel)/n(), WrongModel = sum(recoveredWrongModel)/n(), NeitherModel = sum(recoveredNeitherModel)/n())
 
 ggplot(allParams, aes(x=latency, y=latencyEstimate))+
   geom_point(colour = '#ef5e39')+

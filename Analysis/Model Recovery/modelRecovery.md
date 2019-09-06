@@ -3,15 +3,23 @@ Model Recovery
 Charlie Ludowici
 8/8/2018
 
-Truncated Normal
-----------------
+\#\#Truncated Normal
 
 ``` r
 library(ggplot2)
+```
+
+    ## Registered S3 methods overwritten by 'ggplot2':
+    ##   method         from 
+    ##   [.quosures     rlang
+    ##   c.quosures     rlang
+    ##   print.quosures rlang
+
+``` r
 rm(list = ls())
-TNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
-TNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
-TNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
+TNParamEstimates <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
+TNParamLowerCI <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
+TNParamUpperCI <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
 
 colnames(TNParamEstimates) <-  c(
   'Participant',
@@ -54,13 +62,13 @@ cor.test(TNParamEstimates$NonGuessingRate, TNParamEstimates$Efficacy)
     ##  Pearson's product-moment correlation
     ## 
     ## data:  TNParamEstimates$NonGuessingRate and TNParamEstimates$Efficacy
-    ## t = 188.16, df = 178, p-value < 2.2e-16
+    ## t = 92.22, df = 118, p-value < 2.2e-16
     ## alternative hypothesis: true correlation is not equal to 0
     ## 95 percent confidence interval:
-    ##  0.9966391 0.9981342
+    ##  0.9901498 0.9952162
     ## sample estimates:
     ##       cor 
-    ## 0.9974957
+    ## 0.9931339
 
 ``` r
 ggplot(TNParamEstimates, aes(NonGuessingRate,Efficacy))+
@@ -74,7 +82,7 @@ ggplot(TNParamEstimates, aes(NonGuessingRate,Efficacy))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 cor.test(TNParamEstimates$Mean, TNParamEstimates$Latency)
@@ -84,13 +92,13 @@ cor.test(TNParamEstimates$Mean, TNParamEstimates$Latency)
     ##  Pearson's product-moment correlation
     ## 
     ## data:  TNParamEstimates$Mean and TNParamEstimates$Latency
-    ## t = 11.352, df = 121, p-value < 2.2e-16
+    ## t = 2.4555, df = 83, p-value = 0.01616
     ## alternative hypothesis: true correlation is not equal to 0
     ## 95 percent confidence interval:
-    ##  0.6199456 0.7942187
+    ##  0.04987746 0.44848524
     ## sample estimates:
     ##       cor 
-    ## 0.7181606
+    ## 0.2602352
 
 ``` r
 ggplot(TNParamEstimates, aes(Mean,Latency))+
@@ -104,7 +112,7 @@ ggplot(TNParamEstimates, aes(Mean,Latency))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-1-2.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ``` r
 cor.test(TNParamEstimates$SD, TNParamEstimates$Precision)
@@ -114,13 +122,13 @@ cor.test(TNParamEstimates$SD, TNParamEstimates$Precision)
     ##  Pearson's product-moment correlation
     ## 
     ## data:  TNParamEstimates$SD and TNParamEstimates$Precision
-    ## t = 5.2699, df = 121, p-value = 6.037e-07
+    ## t = 0.59875, df = 83, p-value = 0.551
     ## alternative hypothesis: true correlation is not equal to 0
     ## 95 percent confidence interval:
-    ##  0.2761490 0.5658161
+    ##  -0.1496355  0.2748624
     ## sample estimates:
-    ##       cor 
-    ## 0.4320608
+    ##        cor 
+    ## 0.06557999
 
 ``` r
 ggplot(TNParamEstimates, aes(SD,Precision))+
@@ -134,15 +142,15 @@ ggplot(TNParamEstimates, aes(SD,Precision))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-1-3.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
-Log Normal
-----------
+\#\#Log
+Normal
 
 ``` r
-LNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLogNorm.csv', header = F)
-LNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLowerBoundLogNorm.csv', header = F)
-LNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthUpperBoundLogNorm.csv', header = F)
+LNParamEstimates <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthLogNorm.csv', header = F)
+LNParamLowerCI <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthLowerBoundLogNorm.csv', header = F)
+LNParamUpperCI <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthUpperBoundLogNorm.csv', header = F)
 
 colnames(LNParamEstimates) <-  c(
   'Participant',
@@ -211,7 +219,7 @@ ggplot(LNParamEstimates, aes(NonGuessingRate,Efficacy))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ``` r
 cor.test(LNParamEstimates$Mean, LNParamEstimates$Latency)
@@ -241,7 +249,7 @@ ggplot(LNParamEstimates, aes(Mean,Latency))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-2-2.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
 
 ``` r
 cor.test(LNParamEstimates$SD, LNParamEstimates$Precision)
@@ -271,15 +279,14 @@ ggplot(LNParamEstimates, aes(SD,Precision))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-2-3.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-2-3.png)<!-- -->
 
-Normal
-------
+\#\#Normal
 
 ``` r
-NParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthNormNorm.csv', header = F)
-NParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthLowerBoundNormNorm.csv', header = F)
-NParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthUpperBoundNormNorm.csv', header = F)
+NParamEstimates <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthNormNorm.csv', header = F)
+NParamLowerCI <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthLowerBoundNormNorm.csv', header = F)
+NParamUpperCI <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthUpperBoundNormNorm.csv', header = F)
 
 colnames(NParamEstimates) <-  c(
   'Participant',
@@ -345,7 +352,7 @@ ggplot(NParamEstimates, aes(NonGuessingRate,Efficacy))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 cor.test(NParamEstimates$Mean, NParamEstimates$Latency)
@@ -375,7 +382,7 @@ ggplot(NParamEstimates, aes(Mean,Latency))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-3-2.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 ``` r
 cor.test(NParamEstimates$SD, NParamEstimates$Precision)
@@ -405,4 +412,4 @@ ggplot(NParamEstimates, aes(SD,Precision))+
   theme(panel.background = element_blank(),axis.line = element_line(size = .5))
 ```
 
-![](modelRecovery_files/figure-markdown_github/unnamed-chunk-3-3.png)
+![](modelRecovery_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->

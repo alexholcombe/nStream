@@ -8,9 +8,9 @@ output: github_document
 ```{r warning=FALSE}
 library(ggplot2)
 rm(list = ls())
-TNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
-TNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
-TNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
+TNParamEstimates <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthTruncNorm.csv', header = F)
+TNParamLowerCI <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthLowerBoundTruncNorm.csv', header = F)
+TNParamUpperCI <- read.csv('EstimatesAndTruth/TruncNorm/estimatesAndTruthUpperBoundTruncNorm.csv', header = F)
 
 colnames(TNParamEstimates) <-  c(
   'Participant',
@@ -87,9 +87,9 @@ ggplot(TNParamEstimates, aes(SD,Precision))+
 
 ##Log Normal
 ```{r warning=FALSE}
-LNParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLogNorm.csv', header = F)
-LNParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthLowerBoundLogNorm.csv', header = F)
-LNParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/LogNorm/estimatesAndTruthUpperBoundLogNorm.csv', header = F)
+LNParamEstimates <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthLogNorm.csv', header = F)
+LNParamLowerCI <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthLowerBoundLogNorm.csv', header = F)
+LNParamUpperCI <- read.csv('EstimatesAndTruth/LogNorm/estimatesAndTruthUpperBoundLogNorm.csv', header = F)
 
 colnames(LNParamEstimates) <-  c(
   'Participant',
@@ -172,9 +172,9 @@ ggplot(LNParamEstimates, aes(SD,Precision))+
 
 ##Normal
 ```{r warning=FALSE}
-NParamEstimates <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthNormNorm.csv', header = F)
-NParamLowerCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthLowerBoundNormNorm.csv', header = F)
-NParamUpperCI <- read.csv('~/gitCode/nStream/modellingScripts/Model recovery/EstimatesAndTruth/NormNorm/estimatesAndTruthUpperBoundNormNorm.csv', header = F)
+NParamEstimates <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthNormNorm.csv', header = F)
+NParamLowerCI <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthLowerBoundNormNorm.csv', header = F)
+NParamUpperCI <- read.csv('EstimatesAndTruth/NormNorm/estimatesAndTruthUpperBoundNormNorm.csv', header = F)
 
 colnames(NParamEstimates) <-  c(
   'Participant',
