@@ -246,9 +246,22 @@ allParamsWide <- allParams %>%
   mutate(recoveredWrongModel = BFGenModel < .33) %>%
   mutate(recoveredNeitherModel = BFGenModel >.33 & BFGenModel < 3)
 
-allParamsWide %>% group_by(generativeModel) %>% summarise(CorrectModel = sum(recoveredRightModel)/n(), WrongModel = sum(recoveredWrongModel)/n(), NeitherModel = sum(recoveredNeitherModel)/n())
+allParamsWide %>% 
+  group_by(generativeModel) %>% 
+  summarise(
+    CorrectModel = sum(recoveredRightModel)/n(), 
+    WrongModel = sum(recoveredWrongModel)/n(), 
+    NeitherModel = sum(recoveredNeitherModel)/n(),
+    n = n()
+    )
 
-ggplot(allParams, aes(x=latency, y=latencyEstimate))+
+
+allParams %>% 
+  mutate(latencyError = latencyEstimate - latency) %>% 
+  group_by(generativeModel, model) %>%
+  summarise(mean = mean(latencyError), sd = sd(latencyError), CILow = mean - 1.96*(sd/sqrt(n())),CIHigh = mean + 1.96*(sd/sqrt(n())))
+
+latencyPlot <- ggplot(allParams, aes(x=latency, y=latencyEstimate))+
   geom_point(colour = '#ef5e39')+
   stat_summary(fun.y = mean, 
     geom='point', 
@@ -258,13 +271,25 @@ ggplot(allParams, aes(x=latency, y=latencyEstimate))+
     geom='errorbar', 
     width = .05, 
     colour = '#dca951')+
-  theme(panel.background = element_blank(),
-    axis.line = element_line(size=.2))+
+  theme_apa(base_size = 15)+
   scale_x_continuous(breaks = unique(params$latency))+
+  labs(y = 'Latency Estimate', x = 'True Latency')+
   geom_hline(yintercept = unique(params$latency), linetype = 'dashed')+
-  facet_wrap(~model+generativeModel, labeller = 'label_both')
+  facet_wrap(~model+generativeModel, labeller = 'label_both')+
+  facet_grid(cols = vars(generativeModel), rows = vars(model), labeller = 'label_both')+
+  annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf, size = 1)+
+  annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, size = 1)
 
-ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
+
+ggsave('Plots/Gamma R/latency.png', latencyPlot, height = 9, width = 9, units = 'in')
+
+allParams %>% 
+  mutate(efficacyError = efficacyEstimate - efficacy) %>% 
+  group_by(generativeModel, model) %>%
+  summarise(mean = mean(efficacyError), sd = sd(efficacyError), se = sd/sqrt(n()), CILow = mean - 1.96*se,CIHigh = mean + 1.96*se)
+
+
+efficacyPlot <- ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
   geom_point(colour = '#ef5e39')+
   stat_summary(fun.y = mean, 
                geom='point', 
@@ -274,13 +299,25 @@ ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
                geom='errorbar', 
                width = .05, 
                colour = '#dca951')+
-  theme(panel.background = element_blank(),
-        axis.line = element_line(size=.2))+
+  theme_apa(base_size = 15)+
   scale_x_continuous(breaks = unique(params$efficacy))+
   geom_hline(yintercept = unique(params$efficacy), linetype = 'dashed')+
-  facet_wrap(~model+generativeModel, labeller = 'label_both')
+  facet_grid(cols = vars(generativeModel), rows = vars(model), labeller = 'label_both')+
+  labs(y = 'Efficacy Estimate', x = 'True Efficacy')+
+  annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf, size = 1)+
+  annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, size = 1)
 
-ggplot(allParams, aes(x=precision, y=precisionEstimate))+
+
+ggsave('Plots/Gamma R/efficacy.png', efficacyPlot, height = 9, width = 9, units = 'in')
+
+
+allParams %>% 
+  mutate(precisionError = precisionEstimate - precision) %>% 
+  group_by(generativeModel, model) %>%
+  summarise(mean = mean(precisionError), sd = sd(precisionError), CILow = mean - 1.96*(sd/sqrt(n())),CIHigh = mean + 1.96*(sd/sqrt(n())))
+
+
+precisionPlot <- ggplot(allParams, aes(x=precision, y=precisionEstimate))+
   geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
   stat_summary(fun.y = mean, 
                geom='point', 
@@ -290,9 +327,12 @@ ggplot(allParams, aes(x=precision, y=precisionEstimate))+
                geom='errorbar', 
                width = .05, 
                colour = '#dca951')+
-  theme(panel.background = element_blank(),
-        axis.line = element_line(size=.2))+
+  theme_apa(base_size = 15)+
   scale_x_continuous(breaks = unique(params$precision))+
+  scale_y_continuous(breaks = unique(params$precision))+
   geom_hline(yintercept = unique(params$precision), linetype = 'dashed')+
-  facet_wrap(~model+generativeModel, labeller = 'label_both')
- 
+  facet_grid(cols = vars(generativeModel), rows = vars(model), labeller = 'label_both')+
+  annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf, size = 1)+
+  annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, size = 1)
+
+ggsave('Plots/Gamma R/precision.png', precisionPlot, height = 9, width = 9, units = 'in')
