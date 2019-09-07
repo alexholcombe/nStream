@@ -22,7 +22,7 @@ except ImportError:  print('Could not import letterLineupResponse.py (you need t
 eyetrackingOption = True #Include this so can turn it off, because Psychopy v1.83.01 mistakenly included an old version of pylink which prevents EyelinkEyetrackerForPsychopySUPA3 stuff from importing
 if eyetrackingOption: 
     from EyelinkEyetrackerForPsychopySUPA3 import Tracker_EyeLink #Chris Fajou integration
-eyetracking = False
+eyetracking = True
 getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment = False #If True, can take up to 1.5 hrs in certain conditions
 #End eyetracking stuff
 
@@ -60,7 +60,7 @@ prefaceStaircaseNoise = np.array([5,20,20,20, 50,50,50,5,80,80,80,5,95,95,95]) #
 threshCriterion = 0.58
 bgColor = [-.7,-.7,-.7] # [-1,-1,-1]
 cueColor = [1.,1.,1.]
-cueType = 'exogenousRing' #'endogenous'#'exogenousRing' 
+cueType = 'exogenousRing'#'endogenous'#
 if cueType == 'endogenous':
     cueColor = [1,-1,-1]
 letterColor = [1.,1.,1.]
@@ -317,31 +317,85 @@ screenshot= False; screenshotDone = False
 #For the dual-stream simultaneous target
 stimListDualStream=[]
 possibleCueTemporalPositions =  np.array([6,7,8,9,10]) #debugAH np.array([6,7,8,9,10]) 
+
 tasks=['T1','T1T2','allCued','oneCued']
-numResponsesWanted=1; maxNumRespsWanted=1
+
+numResponsesWanted=1
+maxNumRespsWanted=1
+numToCue = 1
+
 numStreamPossibilities = np.array([2, 6]) #this needs to be listed here so when print header can work out the maximum value
+polarAnglePossibilities = np.arange(0,180,360/max(numStreamPossibilities))
+targetLeftRightIfOne = 'left'
+firstRespLRifTwo = 'left'
+
 for numStreams in numStreamPossibilities:
     for task in [ tasks[3] ]:  #T1 task is just for the single-target tasks, but both streams are presented
-       if task=='T1T2':
-            numResponsesWanted=2; numToCue=-999
-       elif task=='allCued':
-            numToCue = numStreams
-       elif task=='oneCued':
-            numToCue = 1
-       print('task=',task)
-       for targetLeftRightIfOne in  ['left']: #If single target, should it be on the left or the right?
         for cueTemporalPos in possibleCueTemporalPositions:
-          for firstRespLRifTwo in ['left']:  #If dual target and lineup response, should left one or right one be queried first?
-            stimListDualStream.append( 
-                 {'numStreams':numStreams, 'numRespsWanted':numResponsesWanted, 'task':task, 'targetLeftRightIfOne':targetLeftRightIfOne, 
-                    'cue0temporalPos':cueTemporalPos, 'firstRespLRifTwo': firstRespLRifTwo, 'cue1lag':0,'numToCue':numToCue } 
-              )  #cue1lag = 0, meaning simultaneous targets
+            for thisPolarAngle in polarAnglePossibilities:
+                for whichInPair in [0,1]:
+                    whichStreamCuedAngle = (thisPolarAngle + whichInPair * 180)
+                    stimListDualStream.append( 
+                         {
+                        'numStreams':numStreams, 
+                        'numRespsWanted':numResponsesWanted, 
+                        'task':task, 
+                        'targetLeftRightIfOne':targetLeftRightIfOne, 
+                        'cue0temporalPos':cueTemporalPos, 
+                        'firstRespLRifTwo': firstRespLRifTwo, 
+                        'cue1lag':0,
+                        'numToCue':numToCue, 
+                        'polarAngle':thisPolarAngle, 
+                        'whichInPair':whichInPair, 
+                        'whichStreamCuedAngle':whichStreamCuedAngle
+                        } 
+                      )  #cue1lag = 0, meaning simultaneous targets
 
-trialsPerConditionDualStream = 20#12
+trialsPerConditionDualStream = 4#12
 trialsDualStream = data.TrialHandler(stimListDualStream,trialsPerConditionDualStream) #constant stimuli method
 
 logging.info( ' each trialDurFrames='+str(trialDurFrames)+' or '+str(trialDurFrames*(1000./refreshRate))+ \
                ' ms' )
+
+
+#################################################################
+###Print cued stream to check calculations                    ###
+###This iterates the trials object, so the main loop won't run###
+#################################################################
+
+
+testCuedStreams = False
+
+testCuedStreamsResults = {
+   '2' : { '0':0,'60':0,'120':0,'180':0,'240':0,'300':0},
+   '6' : { '0':0,'60':0,'120':0,'180':0,'240':0,'300':0},
+}
+
+if testCuedStreams:
+    n = 0
+    while n < trialsDualStream.nTotal:
+        trial = trialsDualStream.next()
+        nStreams = trial['numStreams']
+        print(nStreams)
+            
+        whichStreamCuedAngle = trial['whichStreamCuedAngle']
+        print('whichStreamCuedAngle = ' + str(whichStreamCuedAngle))
+        
+        cuedFrame = trial['cue0temporalPos']
+
+        if nStreams == 6:
+            cuedStream = whichStreamCuedAngle / (360/nStreams)
+            print(cuedStream)
+            cuedStream = int(cuedStream)
+        elif nStreams == 2:
+            cuedStream = trial['whichInPair']
+            print(cuedStream)
+        whichStreamCuedAngle = int(whichStreamCuedAngle)
+        testCuedStreamsResults[str(nStreams)][str(whichStreamCuedAngle)] += 1
+        n+=1
+    myWin.close()
+print(testCuedStreamsResults)
+
 
 def numberToLetter(number): #0 = A, 25 = Z
     #if it's not really a letter, return @
@@ -374,6 +428,8 @@ print('noisePercent\t',end='',file=dataFile)
 print('targetLeftRightIfOne\t',end='',file=dataFile)
 print('nStreams\t', end='', file = dataFile)
 print('eccentricity\t', end='', file = dataFile)
+print('polarAngle\t', end='', file = dataFile)
+print('cueType\t', end='', file = dataFile)
 printInOrderOfResponses = True
 assert (printInOrderOfResponses==True), "Sorry, feature not supported"
 if printInOrderOfResponses:
@@ -390,29 +446,27 @@ print('timingBlips',file=dataFile)
 #end of header
 
 
-def calcStreamPos(numStreams,streami,cueOffset,streamOrNoise):
+def calcStreamPos(numStreams,streami, polarAngle, cueOffset,streamOrNoise):
     #streamOrNoise because noise coordinates have to be in deg, stream in pix
     #cueOffset is in deg
     noiseOffsetKludge = 0.9 #Because the noise coords were drawn in pixels but the cue position is specified in deg, I must convert pix to deg for noise case
 
-    if numStreams ==0:
+    if numStreams == 1:
         pos = np.array([0,0])
     else:
         #assume want them evenly spaced, counterclockwise starting from directly east
-        thisAngle = streami/numStreams * 360
+        thisAngle = polarAngle + streami/numStreams * 360
         x = cueOffset*cos(thisAngle/180*pi)
         y = cueOffset*sin(thisAngle/180*pi)
         pos = np.array([x,y])
         
     if streamOrNoise:  #Because the noise coords were drawn in pixels but the cue position is specified in deg, I must convert pix to deg
         pos *= noiseOffsetKludge*pixelperdegree
-        
-    pos = np.round(pos)
-    pos = pos.astype(int)
+
     return pos
 
 def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
-                                      numStreams,ltrStreams,
+                                      numStreams,polarAngle,ltrStreams,
                                       noiseEachStream,proportnNoise,noiseCoordsEachStream,numNoiseDotsEachStream):#draw letter and possibly cue and noise on top
 #defining a function to draw each frame of stim. 
 
@@ -448,7 +502,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
     if showLetter:
       thisStream[thisLtrIdx].setColor( letterColor )
     else: thisStream[thisLtrIdx].setColor( bgColor )
-    posThis = calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=0)
+    posThis = calcStreamPos(numStreams,streami,polarAngle,cueOffset,streamOrNoise=0)
     thisStream[thisLtrIdx].pos = posThis
     thisStream[thisLtrIdx].draw()
     
@@ -460,7 +514,7 @@ def oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIfr
                 np.random.shuffle(noiseCoordsEachStream[streami]) #refresh the noise by shuffling the possible locations of noise dots
                 numNoiseDotsThis = numNoiseDotsEachStream[streami]
                 dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-                posThisDeg =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1)
+                posThisDeg =  calcStreamPos(numStreams,streami,polarAngle,cueOffset,streamOrNoise=1)
                 print('streami=',streami,'posThisDeg=',posThisDeg,'cueOffset=',cueOffset,'numStream=',numStreams)
                 #Displace the noise to present it over the letter stream
                 dotCoords[:,0] += posThisDeg[0]
@@ -583,6 +637,10 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     #   logging, bgColor
     #
     numStreams = trial['numStreams']
+    polarAngle = trial['polarAngle']
+    whichStreamCuedAngle = trial['whichStreamCuedAngle']
+    whichInPair = trial['whichInPair']
+
     print("numStreams = ",trial['numStreams'], 'task=',task)
     if task != 'allCued':
         print('targetLeftRightIfOne=',trial['targetLeftRightIfOne'], 'cue0temporalPos=',trial['cue0temporalPos'])
@@ -626,14 +684,14 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             whichStreamEachCue.append(0)
             whichRespEachCue.append(0)
             stream=0
-            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
+            cues[0].setPos( calcStreamPos(numStreams,stream,polarAngle,cueOffset,streamOrNoise=0) )
         elif trial['targetLeftRightIfOne']=='left':
             corrAnsEachResp.append( np.array( streamLtrSequences[1][cuesTemporalPos[0]] )  ) #which streams are targets? Need variable for that.
             whichStreamEachResp.append(1)
             whichStreamEachCue.append(0)
             whichRespEachCue.append(0)
             stream=1
-            cues[0].setPos( calcStreamPos(numStreams,stream,cueOffset,streamOrNoise=0) )
+            cues[0].setPos( calcStreamPos(numStreams,stream,polarAngle,cueOffset,streamOrNoise=0) )
         else: 
             print("UNEXPECTED targetLeftRightIfOne value!")
     elif trial['task'] =='T1T2': #attentional blink
@@ -667,14 +725,15 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
         corrAnsEachCue = []  #because order of responses will be different than order of cues
         numCues = len(cuesTemporalPos) 
         #Randomly assign cues to streams (with no repeats, because assuming all cues identical)
-        whichStreamEachCue = range(numStreams)
-        random.shuffle(whichStreamEachCue)
-        whichStreamEachCue = whichStreamEachCue[:numCues] #Now will be random subset of streams, numCues long
+        if numStreams == 6:
+            whichStreamEachCue = [int(whichStreamCuedAngle/ (360/numStreams))]
+        elif numStreams == 2:
+            whichStreamEachCue = [int(whichInPair)]
         whichStreamEachResp = deepcopy(whichStreamEachCue)
         for streamI in xrange( numStreams ): #Drawing the cues in the location they're supposed to be in
             #assume each cue the succeeding stream (usually all cues same temporal position)
             #assume only one response per time (Only one stream queried per temporalPos). Cut this down to one below.
-            posThis = calcStreamPos(numStreams,streamI,cueOffset,streamOrNoise=0)
+            posThis = calcStreamPos(numStreams,streamI,polarAngle,cueOffset,streamOrNoise=0)
             if cueType =='endogenous':  #reduce radius to bring it right next to fixation center
 #                angleRad = streamI/numStreams * 2*pi
                 desiredDistFromFixatn=2 #pixels
@@ -682,7 +741,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
 #                newY = desiredDistFromFixatn*sin(angleRad)
 #                print('newX=',newX,'newY=',newY)
 #                posThis = [newX,newY]
-                posThis = calcStreamPos(numStreams,streamI,desiredDistFromFixatn,streamOrNoise=0)
+                posThis = calcStreamPos(numStreams,streamI,polarAngle,desiredDistFromFixatn,streamOrNoise=0)
             cues[streamI].setPos( posThis )
         for cuei in xrange(numCues):  #work out correct answer for each cue
             whichStreamThisCue = whichStreamEachCue[cuei]
@@ -730,7 +789,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
         for streami in xrange(numStreams):
             numNoiseDotsThis = numNoiseDotsEachStream[streami]
             dotCoords = noiseCoordsEachStream[streami][0:numNoiseDotsThis] #Take the first numNoiseDots random locations to plot the dots
-            posThisPix =  calcStreamPos(numStreams,streami,cueOffset,streamOrNoise=1) 
+            posThisPix =  calcStreamPos(numStreams,streami,polarAngle,cueOffset,streamOrNoise=1) 
             #Displace the noise to present it over the letter stream
             dotCoords[:,0] += posThisPix[0]
             dotCoords[:,1] += posThisPix[1]
@@ -773,7 +832,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             else: fixatnCounterphase.draw()
         fixatnPoint.draw()
         worked = oneFrameOfStim( n,cues,streamLtrSequences,cueDurFrames,letterDurFrames,ISIframes,cuesTemporalPos,whichStreamEachCue,
-                                                     numStreams,ltrStreams,
+                                                     numStreams, polarAngle, ltrStreams,
                                                      noiseEachStream,proportnNoise,noiseCoordsEachStream,numNoiseDotsEachStream) #draw letter and possibly cue and noise on top
         if exportImages:
             myWin.getMovieFrame(buffer='back') #for later saving
@@ -916,288 +975,224 @@ def play_high_tone_correct_low_incorrect(correct, passThisTrial=False):
         low.play()
 
 
+instructions1 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+instructions2 = visual.TextStim(myWin,pos=(0,0),colorSpace='rgb',color= (1,1,1),alignHoriz='center', alignVert='center',height=.5,units='deg',autoLog=autoLogging)
+
+
+if cueType == 'exogenousRing':
+    instructionText1 = """
+This experiment is made up of 240 trials. On each trial you will fixate your eyes on a central point on the screen.Then several rapid, randomly-ordered sequences of letters will appear at two or 6 locations on the screen. Please do not move your eyes from the fixation point while these sequences are playing.
+    
+It's important to keep your eyes on the central point. 
+
+At one point in the trial, a letter will appear with a white circle around it.
+    
+Your job is to report the letter that was on screen with the white circle in the stream of letters that it indicated, but you must do this without making any eye movements. Keep your eyes fixed on the central point.
+    
+Press space to read more instructions
+    
+    """
+
+    instructionText2 ="""
+At the end of each trial you will see a screen in which the whole alphabet is displayed. You should click on the letter that you saw within the circle, then click "OK" to start the next trial.\n\n
+    
+Please tell the experimenter you have read the instructions. Be sure to ask him if you have any questions. 
+    """
+elif cueType == 'endogenous':
+    instructionText1 = """
+This experiment is made up of 240 trials. On each trial you will fixate your eyes on a central point on the screen.Then several rapid, randomly-ordered sequences of letters will appear at two or 6 locations on the screen. Please do not move your eyes from the fixation point while these sequences are playing.
+
+It's important to keep your eyes on the central point, because we will show you a cue here. The cue is a small red dot that will point in the direction of a particular stream of letters.
+
+Your job is to report the letter that was on screen in the stream of letters indicated by the red dot at the time the dot was shown, but you must do this without making any eye movements. Keep your eyes fixed on the central point.
+
+Press space to read more instructions
+    """
+
+    instructionText2 ="""
+At the end of each trial you will see a screen in which the whole alphabet is displayed. You should click on the letter that you saw within the circle, then click "OK" to start the next trial.\n\n
+
+Please tell the experimenter you have read the instructions. Be sure to ask him if you have any questions. 
+    """
+
+instructions1.text = instructionText1
+instructions2.text = instructionText2
+
+
 if eyetracking:
     if getEyeTrackingFileFromEyetrackingMachineAtEndOfExperiment:
         eyeMoveFile=('EyeTrack_'+subject+'_'+timeAndDateStr+'.EDF')
     tracker=Tracker_EyeLink(myWin,trialClock,subject,1, 'HV5',(255,255,255),(0,0,0),False,(widthPix,heightPix))
     
+
+instructions1.draw()
+myWin.flip()
+waiting = True
+while waiting:
+   for key in event.getKeys():      #check if pressed abort-type key
+         if key in ['space','ESCAPE']: 
+            waiting=False
+         if key in ['ESCAPE']:
+            expStop = True
+
+instructions2.draw()
+myWin.flip()
+waiting = True
+while waiting:
+    for key in event.getKeys():
+        if key in ['m', 'ESCAPE']:
+            waiting = False
+        if key in ['Escape']:
+            expStop = True
        
 myMouse = event.Mouse()
+myWin.setMouseVisible(False)
+
 expStop=False; framesSaved=0
-nDone = -1 #change to zero once start main part of experiment
-if doStaircase:
-    #create the staircase handler
-    useQuest = True
-    if  useQuest:
-        staircase = data.QuestHandler(startVal = 95, 
-                              startValSd = 80,
-                              stopInterval= 1, #sd of posterior has to be this small or smaller for staircase to stop, unless nTrials reached
-                              nTrials = staircaseTrials,
-                              #extraInfo = thisInfo,
-                              pThreshold = threshCriterion, #0.25,    
-                              gamma = 1./26,
-                              delta=0.02, #lapse rate, I suppose for Weibull function fit
-                              method = 'quantile', #uses the median of the posterior as the final answer
-                              stepType = 'log',  #will home in on the 80% threshold. But stepType = 'log' doesn't usually work
-                              minVal=1, maxVal = 100
-                              )
-        print('created QUEST staircase')
-    else:
-        stepSizesLinear = [.2,.2,.1,.1,.05,.05]
-        stepSizesLog = [log(1.4,10),log(1.4,10),log(1.3,10),log(1.3,10),log(1.2,10)]
-        staircase = data.StairHandler(startVal = 0.1,
-                                  stepType = 'log', #if log, what do I want to multiply it by
-                                  stepSizes = stepSizesLog,    #step size to use after each reversal
-                                  minVal=0, maxVal=1,
-                                  nUp=1, nDown=3,  #will home in on the 80% threshold
-                                  nReversals = 2, #The staircase terminates when nTrials have been exceeded, or when both nReversals and nTrials have been exceeded
-                                  nTrials=1)
-        print('created conventional staircase')
-        
-    if prefaceStaircaseTrialsN > len(prefaceStaircaseNoise): #repeat array to accommodate desired number of easyStarterTrials
-        prefaceStaircaseNoise = np.tile( prefaceStaircaseNoise, ceil( prefaceStaircaseTrialsN/len(prefaceStaircaseNoise) ) )
-    prefaceStaircaseNoise = prefaceStaircaseNoise[0:prefaceStaircaseTrialsN]
-    
-    phasesMsg = ('Doing '+str(prefaceStaircaseTrialsN)+'trials with noisePercent= '+str(prefaceStaircaseNoise)+' then doing a max '+str(staircaseTrials)+'-trial staircase')
-    print(phasesMsg); logging.info(phasesMsg)
-    
-    #staircaseStarterNoise PHASE OF EXPERIMENT
-    corrEachTrial = list() #only needed for easyStaircaseStarterNoise
-    staircaseTrialN = -1; mainStaircaseGoing = False
-    while (not staircase.finished) and expStop==False: #staircase.thisTrialN < staircase.nTrials
-        if staircaseTrialN+1 < len(prefaceStaircaseNoise): #still doing easyStaircaseStarterNoise
-            staircaseTrialN += 1
-            noisePercent = prefaceStaircaseNoise[staircaseTrialN]
-        else:
-            if staircaseTrialN+1 == len(prefaceStaircaseNoise): #add these non-staircase trials so QUEST knows about them
-                mainStaircaseGoing = True
-                print('Importing ',corrEachTrial,' and intensities ',prefaceStaircaseNoise)
-                staircase.importData(100-prefaceStaircaseNoise, np.array(corrEachTrial))
-                printStaircase(staircase, descendingPsycho, briefTrialUpdate=False, printInternalVal=True, alsoLog=False)
-            try: #advance the staircase
-                printStaircase(staircase, descendingPsycho, briefTrialUpdate=True, printInternalVal=True, alsoLog=False)
-                noisePercent = 100. - staircase.next()  #will step through the staircase, based on whether told it (addResponse) got it right or wrong
-                staircaseTrialN += 1
-            except StopIteration: #Need this here, even though test for finished above. I can't understand why finished test doesn't accomplish this.
-                print('stopping because staircase.next() returned a StopIteration, which it does when it is finished')
-                break #break out of the trials loop
-        #print('staircaseTrialN=',staircaseTrialN)
 
-        streamLtrSequences, cuesTemporalPos,corrAnsEachResp, whichStreamEachCue, whichStreamEachResp, whichRespEachCue, ts  = do_RSVP_stim(
-                                                                    thisTrial, noisePercent/100.,staircaseTrialN)
-        numCasesInterframeLong = timingCheckAndLog(ts,staircaseTrialN)
+noisePercent = defaultNoiseLevel
 
-        responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
+ABfirst = False
+nDone =0
+totalTrials = 0
+if ABfirst and trialsAB != None:
+    msg='Starting AB part of experiment'
+    trials = trialsAB
+    totalTrials += trialsAB.nTotal
+    logging.info(msg); print(msg)
+else:
+    msg = "Starting dual stream part of experiment"
+    trials = trialsDualStream
+    logging.info(msg); print(msg)
+    totalTrials += trialsDualStream.nTotal
+
+while nDone < totalTrials and expStop==False:
+    print("nDone = ", nDone, " out of ", totalTrials, " trials.nRemaining = ", trials.nRemaining)
+
+    #end control of which block we are in 
+    
+    thisTrial = trials.next() #get a proper (non-staircase) trial
+
+    if eyetracking: 
+        tracker.startEyeTracking(nDone,False,widthPix,heightPix) #start recording with eyetracker
+
+    streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  = do_RSVP_stim(
+                                numStreams,thisTrial,noisePercent/100.,nDone)
+
+    if eyetracking:
+        tracker.stopEyeTracking()
+    numCasesInterframeLong = timingCheckAndLog(ts,nDone)
+
+    responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
+    lineupResponse = True
+    myWin.setMouseVisible(True)
+    if lineupResponse:
+        if len(whichStreamEachResp) != thisTrial['numRespsWanted']:
+            print("len(whichStreamEachResp) does not match numRespsWanted")
+        sideFirstLeftRightCentral=2 #default , respond to central
+        showBothSides=False
+        if thisTrial['numRespsWanted'] == 1:
+            if numStreams == 2:
+                showBothSides = False
+                sideFirstLeftRightCentral= not whichStreamEachResp[0]  #have to flip it because 0 means East, right       # thisTrial['targetLeftRightIfOne']
+        else: #numRespsWanted >1
+            if numStreams ==2:
+                showBothSides = True
+                sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
+            else: #numStreams must be greater than 2. Probably only want to do lineup for 1. As stopap measure, can put the lineup centrally on every trial
+                showBothSides = False
+        #print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral)
+        alphabet = list(string.ascii_uppercase)
+        possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
         expStop,passThisTrial,responses,responsesAutopilot = \
-                stringResponse.collectStringResponse(trial['numRespsWanted'],respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
-                                                                               requireAcceptance,autopilot,responseDebug=True)
-
-        if not expStop:
-            if mainStaircaseGoing:
-                print('staircase\t', end='', file=dataFile)
-            else: 
-                print('staircase_preface\t', end='', file=dataFile)
-             #header start      'trialnum\tsubject\ttask\t'
-            print(staircaseTrialN,'\t', end='', file=dataFile) #first thing printed on each line of dataFile
-            print(subject,'\t',thisTrial['task'],'\t', round(noisePercent,2),'\t', end='', file=dataFile)
-            allCorrect,eachRespCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = handleAndScoreResponse(
-                            passThisTrial,responses,responsesAutopilot,thisTrial['task'],numStreams,streamLtrSequences,
-                            cuesTemporalPos,whichStreamEachCue,whichStreamEachResp,corrAnsEachResp,whichRespEachCue )
-                                                      
-            print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
-            core.wait(.06)
-            if feedback: 
-                play_high_tone_correct_low_incorrect(allCorrect, passThisTrial=False)
-            print('staircaseTrialN=', staircaseTrialN,' noisePercent=',round(noisePercent,3),' T1approxCorrect=',T1approxCorrect) #debugON
-            corrEachTrial.append(T1approxCorrect)
-            if mainStaircaseGoing: 
-                staircase.addResponse(T1approxCorrect, intensity = 100-noisePercent) #Add a 1 or 0 to signify a correct/detected or incorrect/missed trial
-                #print('Have added an intensity of','{:.3f}'.format(100-noisePercent), 'T1approxCorrect =', T1approxCorrect, ' to staircase') #debugON
-    #ENDING STAIRCASE PHASE #################################################################
-    ##  ##  ##  #########################################################
-    if staircaseTrialN+1 < len(prefaceStaircaseNoise) and (staircaseTrialN>=0): #exp stopped before got through staircase preface trials, so haven't imported yet
-        print('Importing ',corrEachTrial,' and intensities ',prefaceStaircaseNoise[0:staircaseTrialN+1])
-        staircase.importData(100-prefaceStaircaseNoise[0:staircaseTrialN], np.array(corrEachTrial)) 
-
-    timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
-    msg = ('prefaceStaircase phase' if expStop else '')
-    msg += ('ABORTED' if expStop else 'Finished') + ' staircase part of experiment at ' + timeAndDateStr
-    logging.info(msg); print(msg)
-    printStaircase(staircase, descendingPsycho, briefTrialUpdate=True, printInternalVal=True, alsoLog=False)
-    #print('staircase.quantile=',round(staircase.quantile(),2),' sd=',round(staircase.sd(),2))
-    threshNoise = round(staircase.quantile(),3)
-    if descendingPsycho:
-        threshNoise = 100- threshNoise
-    threshNoise = max( 0, threshNoise ) #e.g. ff get all trials wrong, posterior peaks at a very negative number
-    msg= 'Staircase estimate of threshold = ' + str(threshNoise) + ' with sd=' + str(round(staircase.sd(),2))
-    logging.info(msg); print(msg)
-    myWin.close()
-    #Fit and plot data
-    fit = None
-    try:
-        intensityForCurveFitting = staircase.intensities
-        if descendingPsycho: 
-            intensityForCurveFitting = 100-staircase.intensities #because fitWeibull assumes curve is ascending
-        fit = data.FitWeibull(intensityForCurveFitting, staircase.data, expectedMin=1/26., sems = 1.0/len(staircase.intensities))
-    except:
-        print("Fit failed.")
-    plotDataAndPsychometricCurve(staircase,fit,descendingPsycho,threshCriterion)
-    #save figure to file
-    pylab.savefig(fileName+'.pdf')
-    print('The plot has been saved, as '+fileName+'.pdf')
-    pylab.show() #must call this to actually show plot
-else: #not staircase
-    noisePercent = defaultNoiseLevel
-    
-    ABfirst = False
-    nDone =0
-    totalTrials = 0
-    if ABfirst and trialsAB != None:
-        msg='Starting AB part of experiment'
-        trials = trialsAB
-        totalTrials += trialsAB.nTotal
-        logging.info(msg); print(msg)
+            letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
     else:
-        msg = "Starting dual stream part of experiment"
-        trials = trialsDualStream
-        logging.info(msg); print(msg)
-        totalTrials += trialsDualStream.nTotal
+        expStop,passThisTrial,responses,responsesAutopilot = \
+                stringResponse.collectStringResponse(thisTrial['numRespsWanted'],respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
+                                                                                requireAcceptance,autopilot,responseDebug=True)
+    myMouse.clickReset()
+    myWin.setMouseVisible(False)
+    print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
+    if not expStop:
+        print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
+        
+        print(nDone,'\t', end='', file=dataFile)
+        
+        print(
+        	subject,'\t',
+        	thisTrial['task'],'\t', 
+        	round(noisePercent,3),'\t', 
+        	thisTrial['targetLeftRightIfOne'],'\t', 
+        	thisTrial['numStreams'],'\t', 
+        	cueOffset, '\t',
+            thisTrial['polarAngle'],'\t',
+            cueType,'\t',
+        	end='', 
+        	file=dataFile
+        	)
+        
+        allCorrect,eachRespCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = handleAndScoreResponse(
+                passThisTrial,responses,responsesAutopilot,thisTrial['task'],numStreams,streamLtrSequences,cuesTemporalPos,whichStreamEachCue,
+                whichStreamEachResp,corrAnsEachResp,whichRespEachCue)
+        
+        print('Scored response.   allCorrect=', allCorrect) #debugAH
+        
+        for i in range(max(numStreamPossibilities)):
+            if i < thisTrial['numStreams']:
+                thisStreamLtrs = [numberToLetter(x) for x in streamLtrSequences[i]]
+                dataFile.write( ''.join(thisStreamLtrs)     +'\t')
+            else:
+                dataFile.write('-99\t')
+
+        print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
     
-    while nDone < totalTrials and expStop==False:
-        print("nDone = ", nDone, " out of ", totalTrials, " trials.nRemaining = ", trials.nRemaining)
+        numTrialsCorrect += allCorrect #so count -1 as 0
+        numTrialsApproxCorrect += eachApproxCorrect.all()
 
-        #Control which block we are in, AB or dualStream
-        if trials.nRemaining == 0:  # trialsAB.nTotal:
-            if trials == trialsAB:  #check if reached end of the AB part
-                trials = trialsDualStream
-                msg = "Starting dual stream part of experiment"
-                logging.info(msg); print(msg)
-            elif trials == trialsDualStream: #check if reached end of dual stream part
-                trials = trialsAB
-                msg='Starting AB part of experiment'
-                logging.info(msg); print(msg)
-        #end control of which block we are in 
+        if thisTrial['task']=="T1T2":
+            numTrialseachRespCorrect += eachRespCorrect
+            numTrialsEachApproxCorrect += eachApproxCorrect
+            if numStreams==1:
+                    cue2lagIdx = list(possibleCue2lags).index(cue2lag)
+                    nTrialsCorrectT2eachLag[cue2lagIdx] += eachRespCorrect[1]
+                    nTrialsApproxCorrectT2eachLag[cue2lagIdx] += eachApproxCorrect[1]
+                    nTrialsEachLag[cue2lagIdx] += 1
+            
+        if exportImages:  #catches one frame of response
+             myWin.getMovieFrame() #I cant explain why another getMovieFrame, and core.wait is needed
+             framesSaved +=1; core.wait(.1)
+             myWin.saveMovieFrames('exported/frames.mov')  
+             expStop=True
+        core.wait(.1)
+        if feedback:
+            play_high_tone_correct_low_incorrect(allCorrect, passThisTrial=False)
+        nDone+=1
         
-        thisTrial = trials.next() #get a proper (non-staircase) trial
-
-        if eyetracking: 
-            tracker.startEyeTracking(nDone,False,widthPix,heightPix) #start recording with eyetracker
-
-        streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  = do_RSVP_stim(
-                                    numStreams,thisTrial,noisePercent/100.,nDone)
-
-        if eyetracking:
-            tracker.stopEyeTracking()
-        numCasesInterframeLong = timingCheckAndLog(ts,nDone)
-
-        responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
-        lineupResponse = True
-        myWin.setMouseVisible(True)
-        if lineupResponse:
-            if len(whichStreamEachResp) != thisTrial['numRespsWanted']:
-                print("len(whichStreamEachResp) does not match numRespsWanted")
-            sideFirstLeftRightCentral=2 #default , respond to central
-            showBothSides=False
-            if thisTrial['numRespsWanted'] == 1:
-                if numStreams == 2:
-                    showBothSides = False
-                    sideFirstLeftRightCentral= not whichStreamEachResp[0]  #have to flip it because 0 means East, right       # thisTrial['targetLeftRightIfOne']
-            else: #numRespsWanted >1
-                if numStreams ==2:
-                    showBothSides = True
-                    sideFirstLeftRightCentral =  not whichStreamEachResp[0]  #thisTrial['firstRespLR']
-                else: #numStreams must be greater than 2. Probably only want to do lineup for 1. As stopap measure, can put the lineup centrally on every trial
-                    showBothSides = False
-            #print('sideFirstLeftRightCentral = ',sideFirstLeftRightCentral)
-            alphabet = list(string.ascii_uppercase)
-            possibleResps = alphabet #possibleResps.remove('C'); possibleResps.remove('V')
-            expStop,passThisTrial,responses,responsesAutopilot = \
-                letterLineupResponse.doLineup(myWin,myMouse,clickSound,badKeySound,possibleResps,showBothSides,sideFirstLeftRightCentral,autopilot) #CAN'T YET HANDLE MORE THAN 2 LINEUPS
-        else:
-            expStop,passThisTrial,responses,responsesAutopilot = \
-                    stringResponse.collectStringResponse(thisTrial['numRespsWanted'],respPromptStim,respStim,acceptTextStim,myWin,clickSound,badKeySound,
-                                                                                    requireAcceptance,autopilot,responseDebug=True)
-        myMouse.clickReset()
-        myWin.setMouseVisible(False)
-        print('expStop=',expStop,' passThisTrial=',passThisTrial,' responses=',responses, ' responsesAutopilot =', responsesAutopilot)
-        if not expStop:
-            print('main\t', end='', file=dataFile) #first thing printed on each line of dataFile
-            
-            print(nDone,'\t', end='', file=dataFile)
-            
-            print(
-            	subject,'\t',
-            	thisTrial['task'],'\t', 
-            	round(noisePercent,3),'\t', 
-            	thisTrial['targetLeftRightIfOne'],'\t', 
-            	thisTrial['numStreams'],'\t', 
-            	cueOffset, '\t',
-            	end='', 
-            	file=dataFile
-            	)
-            
-            allCorrect,eachRespCorrect,eachApproxCorrect,T1approxCorrect,passThisTrial,expStop = handleAndScoreResponse(
-                    passThisTrial,responses,responsesAutopilot,thisTrial['task'],numStreams,streamLtrSequences,cuesTemporalPos,whichStreamEachCue,
-                    whichStreamEachResp,corrAnsEachResp,whichRespEachCue)
-            
-            print('Scored response.   allCorrect=', allCorrect) #debugAH
-            
-            for i in range(max(numStreamPossibilities)):
-            	if i < thisTrial['numStreams']:
-                	thisStreamLtrs = [numberToLetter(x) for x in streamLtrSequences[i]]
-                	dataFile.write( ''.join(thisStreamLtrs)     +'\t')
-            	else:
-            		dataFile.write('-99\t')
-
-            print(numCasesInterframeLong, file=dataFile) #timingBlips, last thing recorded on each line of dataFile
-        
-            numTrialsCorrect += allCorrect #so count -1 as 0
-            numTrialsApproxCorrect += eachApproxCorrect.all()
-
-            if thisTrial['task']=="T1T2":
-                numTrialseachRespCorrect += eachRespCorrect
-                numTrialsEachApproxCorrect += eachApproxCorrect
-                if numStreams==1:
-                        cue2lagIdx = list(possibleCue2lags).index(cue2lag)
-                        nTrialsCorrectT2eachLag[cue2lagIdx] += eachRespCorrect[1]
-                        nTrialsApproxCorrectT2eachLag[cue2lagIdx] += eachApproxCorrect[1]
-                        nTrialsEachLag[cue2lagIdx] += 1
-                
-            if exportImages:  #catches one frame of response
-                 myWin.getMovieFrame() #I cant explain why another getMovieFrame, and core.wait is needed
-                 framesSaved +=1; core.wait(.1)
-                 myWin.saveMovieFrames('exported/frames.mov')  
-                 expStop=True
-            core.wait(.1)
-            if feedback:
-                play_high_tone_correct_low_incorrect(allCorrect, passThisTrial=False)
-            nDone+=1
-            
-            dataFile.flush(); logging.flush()
-            print('nDone=', nDone,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
-            pctTrialsCompletedForBreak = np.array([.5,.75])  
-            breakTrials = np.round(trials.nTotal*pctTrialsCompletedForBreak)
-            timeForTrialsRemainingMsg = np.any(trials.thisN==breakTrials)
-            if timeForTrialsRemainingMsg :
-                pctDone = round(    (1.0*trials.thisN) / (1.0*trials.nTotal)*100,  0  )
-                nextText.setText('Press "SPACE" to continue!')
-                nextText.draw()
-                progressMsg = 'Completed ' + str(trials.thisN) + ' of ' + str(trials.nTotal) + ' trials'  #EVA if this doesn't work, change it to progressMsg = ' '
-                NextRemindCountText.setText(progressMsg)
-                NextRemindCountText.draw()
-                myWin.flip() # myWin.flip(clearBuffer=True) 
-                waiting=True
-                while waiting:
-                   if autopilot: break
-                   elif expStop == True:break
-                   for key in event.getKeys():      #check if pressed abort-type key
-                         if key in ['space','ESCAPE']: 
-                            waiting=False
-                         if key in ['ESCAPE']:
-                            expStop = False
-                myWin.clearBuffer()
-            core.wait(.2); time.sleep(.2)
-        #end main trials loop
+        dataFile.flush(); logging.flush()
+        print('nDone=', nDone,' trials.nTotal=',trials.nTotal) #' trials.thisN=',trials.thisN
+        pctTrialsCompletedForBreak = np.array([.5,.75])  
+        breakTrials = np.round(trials.nTotal*pctTrialsCompletedForBreak)
+        timeForTrialsRemainingMsg = np.any(trials.thisN==breakTrials)
+        if timeForTrialsRemainingMsg :
+            pctDone = round(    (1.0*trials.thisN) / (1.0*trials.nTotal)*100,  0  )
+            nextText.setText('Press "SPACE" to continue!')
+            nextText.draw()
+            progressMsg = 'Completed ' + str(trials.thisN) + ' of ' + str(trials.nTotal) + ' trials'  #EVA if this doesn't work, change it to progressMsg = ' '
+            NextRemindCountText.setText(progressMsg)
+            NextRemindCountText.draw()
+            myWin.flip() # myWin.flip(clearBuffer=True) 
+            waiting=True
+            while waiting:
+               if autopilot: break
+               elif expStop == True:break
+               for key in event.getKeys():      #check if pressed abort-type key
+                     if key in ['space','ESCAPE']: 
+                        waiting=False
+                     if key in ['ESCAPE']:
+                        expStop = False
+            myWin.clearBuffer()
+        core.wait(.2); time.sleep(.2)
+    #end main trials loop
 timeAndDateStr = time.strftime("%H:%M on %d %b %Y", time.localtime())
 msg = 'Finishing at '+timeAndDateStr
 print(msg); logging.info(msg)
