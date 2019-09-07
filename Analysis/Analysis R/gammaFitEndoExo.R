@@ -31,25 +31,11 @@ numLettersInStream <- 26
 
 paramFiles <- list.files(path = 'Analysis/Gamma Fits', pattern = 'paramsDFEndoExoNStream', full.names = T)
 
+rate <- 6000/90
+
 if(length(paramFiles)>0){ #If there are parameter estimates already saved, read in the newest one
   times <- as.POSIXct(gsub('^.*paramsDFEndoExoNStream_|.csv','',paramFiles), format = '%d-%m-%Y_%H-%M')
   paramsDF <- read.csv(paramFiles[times==max(times)]) 
-  noticedTheFrameIssue <- strptime("01-08-2019_00-01", format = '%d-%m-%Y_%H-%M') #This is when I realised that the experimental program presents in terms of monitor frames
-  
-  paramsDF %<>% mutate(
-    shape = ifelse(model == 'Gamma', latency, NA),
-    scale = ifelse(model == 'Gamma', precision, NA),
-    latency = ifelse(model == 'Gamma', shape*scale, latency),
-    precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
-  )
-  
-  if(max(times)<noticedTheFrameIssue){
-    rate <- 4000/60 #Rate is actually 4 refreshes
-    paramsDF %<>% mutate(
-      latency = latency*rate,
-      precision = precision*rate
-    )
-  }
 } else {
   paramsDF <- expand.grid(
     participant = IDs,
@@ -154,7 +140,7 @@ densities <- paramsDF %>% #Purrr is new to me
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
     if(favouredModel == 'Gamma'){
       if(model == 'Gamma'){
-        density =dgamma(SPE, shape = shape, scale = scale*(4000/60))
+        density =dgamma(SPE, shape = shape, scale = scale*rate)
         data.frame(ID = participant,
                    cueType = cueType,
                    nStreams = nStreams,
@@ -178,7 +164,7 @@ densities <- paramsDF %>% #Purrr is new to me
       }
     } else {
       if(model == 'Gamma'){
-        density =dgamma(SPE, shape = shape, scale = scale*(4000/60))
+        density =dgamma(SPE, shape = shape, scale = scale*rate)
         data.frame(ID = participant,
                    cueType = cueType,
                    nStreams = nStreams,
@@ -215,7 +201,7 @@ for(thisID in IDs){
         geom_histogram(binwidth = 1)+
         geom_line(data = theseDensities, aes(x = SPE, y = density*100*66.67, colour = model)) +
         geom_vline(xintercept = 0, linetype = 'dashed')+
-        labs(title = paste0('Participant: ', thisIDNoSpace,'. Cue Type: ', thisCueType), x = 'Time (ms)')+
+        labs(title = paste0('Participant: ', thisIDNoSpace,'. Cue Type: ', thisCueType), x = 'SPE')+
         facet_wrap(~nStreams)
       
       show(thisPlot)
