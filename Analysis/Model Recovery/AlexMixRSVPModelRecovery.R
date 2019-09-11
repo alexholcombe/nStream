@@ -262,7 +262,7 @@ allParams %>%
   summarise(mean = mean(latencyError), sd = sd(latencyError), CILow = mean - 1.96*(sd/sqrt(n())),CIHigh = mean + 1.96*(sd/sqrt(n())))
 
 latencyPlot <- ggplot(allParams, aes(x=latency, y=latencyEstimate))+
-  geom_point(colour = '#ef5e39')+
+  geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
   stat_summary(fun.y = mean, 
     geom='point', 
     size = 4, 
@@ -290,7 +290,7 @@ allParams %>%
 
 
 efficacyPlot <- ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
-  geom_point(colour = '#ef5e39')+
+  geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
   stat_summary(fun.y = mean, 
                geom='point', 
                size = 4, 
