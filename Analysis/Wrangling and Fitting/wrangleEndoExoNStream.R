@@ -1,4 +1,6 @@
 library(ggplot2)
+library(magrittr)
+library(dplyr)
 
 rm(list=ls()) #remove all variables in workspace?
 
@@ -39,7 +41,7 @@ monitorwidth = 40.5 #cm
 viewingDist = 53.0 #cm
 pixelsPerDegree = widthPix / (atan(monitorwidth/viewingDist)/pi*180)
 
-eyetrackerFiles <- list.files(path = 'rawData/Endo-Exo nStreams/Eyetracking',full.names = T)
+eyetrackerFiles <- list.files(path = 'rawData/Endo-Exo nStreams/Eyetracking',full.names = T, pattern = '\\.txt')
 
 criterion = 1 #Radius of a circle around the central point. Fixations outside of this circle result in rejected trials
 
@@ -63,7 +65,7 @@ IDs <- character()
 dropThese = c()
 
 for(dataset in files){
-  ID <- strsplit(dataset, '(?<=s)/|(?<=[A-Z][A-Z])End|(?<=[A-Z][A-Z])Ex', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
+  ID <- strsplit(dataset, '(?<=s)/|(End|Ex)(?=N6)', perl=T)[[1]][2] #split the string at a forward slash preceded by the numeral 8 or an underscore followed by any digit
   if(!ID %in% dropThese){
     #group <- strsplit(dataset,'/')[[1]][2]
     print(group)
@@ -82,9 +84,13 @@ for(dataset in files){
     if(grepl('CLEx', dataset)){
       cueType = 'exogenousRing'
       temp$cueType = cueType
+      #reorder columns
+      temp <- temp[c("experimentPhase","trialnum","subject","task","noisePercent","targetLeftRightIfOne","nStreams","eccentricity","polarAngle","cueType","resp0","answer0","correct0","whichStream0","whichRespCue0","responsePosRelative0","streamLtrSequence0","streamLtrSequence1","streamLtrSequence2","streamLtrSequence3","streamLtrSequence4","streamLtrSequence5","timingBlips")]
     } else if(grepl('CLEnd', dataset)){
       cueType = 'endogenous'
       temp$cueType = cueType
+      #reorder columns
+      temp <- temp[c("experimentPhase","trialnum","subject","task","noisePercent","targetLeftRightIfOne","nStreams","eccentricity","polarAngle","cueType","resp0","answer0","correct0","whichStream0","whichRespCue0","responsePosRelative0","streamLtrSequence0","streamLtrSequence1","streamLtrSequence2","streamLtrSequence3","streamLtrSequence4","streamLtrSequence5","timingBlips")]
     } else {
       cueType = temp$cueType[1]
     }
@@ -116,6 +122,7 @@ allErrors <- data.frame(
   nStreams = numeric(totalRows),
   eccentricity = numeric(totalRows),
   polarAngle = numeric(totalRows),
+  cueType = character(totalRows),
   resp0 = character(totalRows),
   answer0 = character(totalRows),
   correct0 = numeric(totalRows),
@@ -129,7 +136,6 @@ allErrors <- data.frame(
   streamLtrSequence4 = character(totalRows),
   streamLtrSequence5 = character(totalRows),
   timingBlips = numeric(totalRows),
-  cueType = character(totalRows),
   cuePos0 = numeric(totalRows),
   responsePos = numeric(totalRows),
   fixationReject = logical(totalRows), 
@@ -155,10 +161,11 @@ for(participant in names(dataSets)){
       }
       
       temp$responsePos <- temp$cuePos0+temp$responsePosRelative0
+      temp$cueType <- gsub(' ', '', temp$cueType)
       
-      cueTypeForTrackerName <- ifelse(temp$cueType[1]=='endogenous', 'End', 'Ex')
+      cueForEyetrackerFile <- ifelse(cue == 'endogenous', 'End','Ex')
       
-      thisEyetrackerFile <- eyetrackerFiles[grep(paste0('.*',participant,cueTypeForTrackerName,'.*'), eyetrackerFiles)]
+      thisEyetrackerFile <- eyetrackerFiles[grep(paste0('.*',participant,cueForEyetrackerFile,'.*'), eyetrackerFiles)]
       theseFixations <- read.table(thisEyetrackerFile, sep='\t', stringsAsFactors = F, header = T)
       
       theseFixations$CURRENT_FIX_X_DEG <- theseFixations$CURRENT_FIX_X/pixelsPerDegree
@@ -166,6 +173,7 @@ for(participant in names(dataSets)){
       
       temp$fixationReject <- FALSE
       theseFixations$fixationDistance <- -99
+      theseFixations <- theseFixations[theseFixations$TRIAL_INDEX>20,]
       
       for(index in unique(theseFixations$TRIAL_INDEX)){ #If the trial has multiple fixations, compare each fixation to the initial fixation and reject that trial if it falls outside of a 1º radius circle centered on the initial fix
         
@@ -191,11 +199,9 @@ for(participant in names(dataSets)){
               
               if(fixationDistance>=criterion){
                 if(!theseFixations$CURRENT_FIX_BLINK_AROUND[thisFixationRow] %in% c('BEFORE','AFTER') ){
-                  if(index<=220){
-                    temp$fixationReject[index] <- TRUE
-                    #print(fixationDistance)
-                    #print(index)
-                  }
+                  temp$fixationReject[temp$trialnum==index] <- TRUE
+                  print(fixationDistance)
+                  print(index)
                 }
               }
             }
@@ -203,16 +209,16 @@ for(participant in names(dataSets)){
         }
       }
       
-      if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
-        next
-      }
+      # if(mean(temp$fixationReject)>.4){ #Don't add their data if >2/5ths of the trials were rejected
+      #   next
+      # }
       
       #Create densities for the SPE with fixation rejections removed
       
       streamColumns <- grep('streamLtrSequence', colnames(temp))
       
-      ID <- strsplit(dataset, '(?<=s)/|(?<=[A-Z][A-Z])End|(?<=[A-Z][A-Z])Ex', perl=T)[[1]][2]
-      temp$ID <- ID
+      
+      temp$ID <- participant
       
       endRow <- startRow + nrow(temp)-1
       
@@ -239,7 +245,7 @@ if(saveAllErrorsTSV){
 totalPlot <- ggplot(allErrors[!allErrors$fixationReject,], aes(x=responsePosRelative0))+
   geom_histogram(binwidth = 1)+
   labs(y = 'Count', x = 'Serial Position Error')+
-  facet_wrap(~cueType+nStreams+ID)+
+  facet_wrap(~cueType+nStreams+ID, labeller = 'label_both')+
   geom_vline(xintercept = 0, linetype = 'dashed')
 
 show(totalPlot)

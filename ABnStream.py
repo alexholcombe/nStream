@@ -41,7 +41,7 @@ exportImages= False #quits after one trial
 subject='Hubert' #user is prompted to enter true subject name
 if autopilot: subject='auto'
 if os.path.isdir('.'+os.sep+'rawData'):
-    dataDir='rawData'
+    dataDir='rawData/Endo-Exo nStreams'
 else:
     print('"rawData" directory does not exist, so saving data in present working directory')
     dataDir='.'
@@ -810,7 +810,7 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
     
     core.wait(.1);
     trialClock.reset()
-    fixatnPeriodMin = 0.3
+    fixatnPeriodMin = 0.8
     fixatnPeriodFrames = int(   (np.random.rand(1)/2.+fixatnPeriodMin)   *refreshRate)  #random interval between 800ms and 1.3s (changed when Fahed ran outer ring ident)
     ts = list(); #to store time of each drawing, to check whether skipped frames
     if (fixatnPeriodFrames-1) % 2 ==0:

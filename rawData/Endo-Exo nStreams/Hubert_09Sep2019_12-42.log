@@ -1,0 +1,54 @@
+15.7575 	ERROR 	Frames per second ~=60.0 BUT program assumes 90which is off by more than3.0%!!
+15.7576 	ERROR 	Screen apparently NOT the desired resolution of 1280x1024 pixels!!
+22.2964 	WARNING 	User requested fullscreen with size [1280 1024], but screen is actually [1680, 1050]. Using actual size
+22.9230 	INFO 	Successfully set darwin thread to realtime
+23.9935 	INFO 	#[ PsychoPy2 RuntimeInfoStart ]
+  #[[ PsychoPy ]] #---------
+    psychopyVersion: 1.85.2
+    psychopyHaveExtRush: True
+  #[[ Experiment ]] #---------
+    experimentRunTime: 2019_09_09 12:42 (Year_Month_Day Hour:Min)
+    experimentRunTime.epoch: 1567996975
+    experimentScript: ABnStream.py
+    experimentScript.digestSHA1: 871a36b3e3a491ed8b3f79e4d8bb96041d857188
+    experimentScript.directory: /Users/charlesludowici 1/gitCode/nStream
+  #[[ System ]] #---------
+    systemHaveInternetAccess: True
+    systemHostName: vlan-2670-10-17-32-231.staff.wireless.sydney.edu.au
+    systemLocale: C
+    systemMemFreeRAM: 10038.9023438
+    systemMemTotalRAM: 16384.0
+    systemPlatform: darwin 10.14.6 x86_64
+    systemPyo.InputDevices: {0: {'host api index': 0, 'latency': 0.04852607846260071, 'default sr': 44100, 'name': u'MacBook Pro Microphone'}}
+    systemPyo.OutputDevices: {1: {'host api index': 0, 'latency': 0.010498866438865662, 'default sr': 44100, 'name': u'MacBook Pro Speakers'}}
+    systemPyoVersion: 0.8.6
+    systemRebooted: Sep 5 20:29
+    systemSec.OpenSSLVersion: LibreSSL 2.6.5
+    systemSec.pythonSSL: True
+    systemTimeNumpySD1000000_sec: 0.0019
+    systemUser: charlieludowici
+    systemUserID: 502
+    systemUserProcCount: 226
+    systemUserProcFlagged: iTunes mdworker ''Google Chrome'' Safari
+    systemUsersCount: 1
+  #[[ Window ]] #---------
+    windowWinType: pyglet
+    windowUnits: deg
+    windowSize_pix: [1680 1050]
+    windowScreen: 0
+    windowRgb: [-0.7 -0.7 -0.7]
+    windowRefreshTimeSD_ms: 0.243
+    windowRefreshTimeMedian_ms: 16.669
+    windowRefreshTimeAvg_ms: 16.657
+    windowPos_pix: [0, 0]
+    windowMonitor.name: testmonitor
+    windowMonitor.getWidth_cm: 40.5
+    windowMonitor.getDistance_cm: 53.0
+    windowMonitor.currentCalibName: 2017_01_19 10:48
+    windowIsFullScr: True
+  #[[ Python ]] #---------
+    pythonVersion: 2.7.12
+  #[[ OpenGL ]] #---------
+#[ PsychoPy2 RuntimeInfoEnd ]
+
+26.6562 	EXP 	Set  sound=C

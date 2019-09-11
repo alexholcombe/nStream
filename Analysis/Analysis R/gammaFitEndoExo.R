@@ -94,23 +94,26 @@ if(length(paramFiles)>0){ #If there are parameter estimates already saved, read 
           valGuessing = replace(valGuessing, participant == thisParticipant & cueType == thisCueType & nStreams == thisNStream & model == 'Gamma', paramsGamma$valGuessing),
           pLRtest = replace(pLRtest, participant == thisParticipant & cueType == thisCueType & nStreams == thisNStream & model == 'Gamma', paramsGamma$pLRtest)
         )
+        
+        print(paramsDF)
       }
     }
-    
-    paramsDF %<>% mutate(
-      shape = ifelse(model == 'Gamma', latency, NA),
-      scale = ifelse(model == 'Gamma', precision, NA),
-      latency = ifelse(model == 'Gamma', shape*scale, latency),
-      precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
-    )
-    
-    rate <- 6000/90 #Rate is actually 6 refreshes
-    paramsDF %<>% mutate(
-      latency = latency*rate,
-      precision = precision*rate
-    )
   }
   
+  
+  
+  paramsDF %<>% mutate(
+    shape = ifelse(model == 'Gamma', latency, NA),
+    scale = ifelse(model == 'Gamma', precision, NA),
+    latency = ifelse(model == 'Gamma', shape*scale, latency),
+    precision = ifelse(model == 'Gamma', sqrt(shape)*scale, precision)
+  )
+  
+  rate <- 6000/90 #Rate is actually 6 refreshes
+  paramsDF %<>% mutate(
+    latency = latency*rate,
+    precision = precision*rate
+  )
   
   BFs <- paramsDF %>% 
     dcast(cueType+nStreams+participant~model, value.var = 'val') %>% 
