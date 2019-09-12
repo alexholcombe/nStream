@@ -14,6 +14,40 @@ devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
 
+inclusionBF <- function(model, variable){
+  
+  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
+  
+  
+  priorProbs <- model %>% newPriorOdds() %>% `*`(model) %>% as.BFprobability() %>% as.vector() 
+  
+  theseNames <- names(priorProbs)
+  nProbs <- 1:length(priorProbs)
+  variableMatches <- grep(variable, theseNames)
+  
+  if(grepl(':', variable)){
+    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
+    
+    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
+    
+    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
+    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
+    
+    
+    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
+  } else {
+    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
+    
+    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
+    
+    
+    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
+    
+    
+    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
+  }
+}
+
 guessingDistributionBIC <- function(df){
   columnsPresent <- all(c('val','valGuessing') %in% colnames(df))
   if(!columnsPresent){
@@ -399,9 +433,17 @@ for(thisID in IDs){
 
 paramsDF %<>% mutate(
   latency = latency * (1000/condition),
-  latencyRelativeOnset = latency + (1000/condition)*.3
+  latencyRelativeOnset = latency + (1000/condition)*.3,
+  precision = precision * (1000/condition)
 )
 
+test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & model == 'Normal' & pLRtest < .05) %>%
+  mutate(participant = factor(participant),
+         condition = factor(condition),
+         stream = factor(stream),
+         model = factor(model)) %>% anovaBF(precision~condition*stream*participant, whichRandom = 'participant', data = .)
+
+inclusionBF(test, 'stream')
 
 test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
   mutate(participant = factor(participant),
@@ -409,6 +451,8 @@ test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model
          stream = factor(stream),
          model = factor(model)) %>%
   anovaBF(latencyRelativeOnset ~ condition*stream*participant, whichRandom = 'participant', data = .)
+
+inclusionBF(test, 'condition')
 
 paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
 ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
@@ -425,6 +469,14 @@ paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
   facet_wrap(~stream+model)
 
 
+paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
+  ggplot(aes(x = factor(condition), y = precision))+
+  geom_point(aes(colour = participant))+
+  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
+  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
+  facet_wrap(~stream+model)
+
+
 latencyMeasuresPlot <- paramsDF %>% 
   melt(id.vars = c('participant', 'condition', 'stream', 'model'), measure.vars = c('latency', 'latencyRelativeOnset')) %>%
   mutate(condition = factor(condition))%>%
@@ -435,7 +487,7 @@ latencyMeasuresPlot <- paramsDF %>%
   facet_grid(rows = vars(model), cols = vars(stream, variable), labeller = 'label_both')+
   theme_apa()
 
-ggsave(filename = 'Analysis/Gamma Fits/latencyMeasuresPlot.png',plot = latencyMeasuresPlot, width = 32, height = 18, units = 'cm')
+#ggsave(filename = 'Analysis/Gamma Fits/latencyMeasuresPlot.png',plot = latencyMeasuresPlot, width = 32, height = 18, units = 'cm')
 
 
 
