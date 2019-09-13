@@ -11,7 +11,7 @@ rm(list=ls())
 setwd('~/gitCode/nStream/Analysis/Goodbourn and Holcombe/')
 
 allData <- read.csv('Data and Materials/allData.csv', stringsAsFactors = F)
-twoStreamsOneTarget <- allData %>% filter(condition == 2, (exp == 'Exp2' & pool == 'Experienced Observers') | (exp == 'Exp1' & pool == 'SONA'))
+twoStreamsOneTarget <- allData %>% filter(condition != 1, (exp == 'Exp2' & pool == 'Experienced Observers') | (exp == 'Exp1' & pool == 'SONA'))
 
 nReplications <- 10
 
@@ -22,12 +22,12 @@ nParams <- c('Gamma' = 3, 'Normal' = 3)
 #######################
 
 twoStreamsOneTargetWide <- twoStreamsOneTarget %>% #
-  dcast(ID+trial+block+condition~stream, value.var = 'SPE') %>%
+  dcast(ID+pool+trial+block+condition~stream, value.var = 'SPE') %>%
   rename('One' = '1', 'Two' = '2') %>%
   mutate(SPE = ifelse(is.na(One), Two, One)) 
 
 twoStreamsOneTargetWide <- twoStreamsOneTarget %>% #Add targetSP
-  dcast(ID+trial+block+condition~stream, value.var = 'targetSP') %>%
+  dcast(ID+pool+trial+block+condition~stream, value.var = 'targetSP') %>%
   rename('One' = '1', 'Two' = '2') %>%
   mutate(targetSP = ifelse(is.na(One), Two, One)) %>%
   select(ID,trial, block, targetSP) %>%
@@ -45,6 +45,7 @@ conditions <-  unique(twoStreamsOneTargetWide$condition)
 
 paramsDF <- expand.grid(
   participant = IDs,
+  pool = character(1),
   condition = conditions,
   efficacy = numeric(1),
   latency = numeric(1),
@@ -52,17 +53,18 @@ paramsDF <- expand.grid(
   val = numeric(1),
   valGuessing = numeric(1),
   pLRtest = 999,
-  model = c('Gamma','Normal')
+  model = c('Gamma','Normal'),
+  stringsAsFactors = F
 )
 
 
 
 for(thisParticipant in IDs){
-  for(thisCondition in conditions){
+  theseParticipantSPEs <- twoStreamsOneTargetWide %>%
+    filter(ID == thisParticipant)
+  for(thisCondition in unique(theseParticipantSPEs$condition)){
 
-    theseData <- twoStreamsOneTargetWide %>%
-      filter(ID == thisParticipant & condition == thisCondition)
-    
+    theseData <-  filter(theseParticipantSPEs, condition == thisCondition)
     
     parameterBoundsGamma <- data.frame(
       lower = c(0,0.1,0.1),
@@ -72,11 +74,12 @@ for(thisParticipant in IDs){
     
     
     cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting gamma model                                  \r', sep = '')
-    paramsGamma <- theseData %>% analyzeOneConditionDF(24, parameterBoundsGamma, nReplicates = nReplications, modelKind = 'Gamma')
+    paramsGamma <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Gamma'), nReplicates = nReplications, modelKind = 'Gamma')
     cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting normal model                                  \r', sep = '')
-    paramsN <- theseData %>% analyzeOneConditionDF(24, parameterBounds(), nReplicates = nReplications, modelKind = 'Normal')
+    paramsN <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Normal'), nReplicates = nReplications, modelKind = 'Normal')
     
     paramsDF %<>% mutate(
+      pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Normal', theseData$pool[1]),
       efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$efficacy),
       latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$latency),
       precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$precision),
@@ -86,6 +89,7 @@ for(thisParticipant in IDs){
     )
     
     paramsDF %<>% mutate(
+      pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Gamma', theseData$pool[1]),
       efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$efficacy),
       latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$latency),
       precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$precision),
@@ -95,6 +99,8 @@ for(thisParticipant in IDs){
     )
   }
 }
+
+paramsDF %<>% filter(pLRtest != 999)
 
 paramsFileName <- paste0('Gamma Fits/paramsGamma_', Sys.time(), '.csv')
 
