@@ -823,6 +823,8 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
         fixatnPoint.draw() #small circle on top
         myWin.flip()  #end fixation interval
     #myWin.setRecordFrameIntervals(True);  #can't get it to stop detecting superlong frames
+    if eyetracking: 
+        tracker.startEyeTracking(nDone,False,widthPix,heightPix) #start recording with eyetracker
     t0 = trialClock.getTime()
     
     for n in range(trialDurFrames): #this is the loop for this trial's stimulus!
@@ -839,6 +841,8 @@ def do_RSVP_stim(numStreams, trial, proportnNoise,trialN):
             framesSaved +=1              
         myWin.flip()
         t=trialClock.getTime()-t0;  ts.append(t);
+    if eyetracking:
+        tracker.stopEyeTracking()
     #end of big stimulus loop
     myWin.setRecordFrameIntervals(False);
 
@@ -1073,14 +1077,9 @@ while nDone < totalTrials and expStop==False:
     
     thisTrial = trials.next() #get a proper (non-staircase) trial
 
-    if eyetracking: 
-        tracker.startEyeTracking(nDone,False,widthPix,heightPix) #start recording with eyetracker
-
     streamLtrSequences,cuesTemporalPos,corrAnsEachResp,whichStreamEachCue,whichStreamEachResp,whichRespEachCue,ts  = do_RSVP_stim(
                                 numStreams,thisTrial,noisePercent/100.,nDone)
 
-    if eyetracking:
-        tracker.stopEyeTracking()
     numCasesInterframeLong = timingCheckAndLog(ts,nDone)
 
     responseDebug=False; responses = list(); responsesAutopilot = list();  #collect responses
