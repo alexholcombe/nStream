@@ -300,20 +300,10 @@ if(length(paramFiles)>0 & !runParamAnyway){
 ###Compute BFs comparing the mixtture to guessing only###
 #########################################################
 
-paramsDF %<>% 
-  group_by(participant, condition, stream, model) %>% 
-  do(guessingDistributionBIC(.)) %>% 
-  mutate(
-    guessOrMixture = ifelse(BFGuessVsMix < 1/3, 'Guessing Only', 
-                            ifelse(BFGuessVsMix > 3, 'Mixture', 'Neither')
-    )
-  ) %>% 
-  left_join(paramsDF, ., by = c('participant', 'condition', 'stream','model'))
-
 paramsDF %<>%  mutate(
-  latency = replace(latency, guessOrMixture == 'Guessing Only', NA),
-  precision = replace(precision, guessOrMixture == 'Guessing Only', NA),
-  efficacy = replace(efficacy, guessOrMixture == 'Guessing Only', 0)
+  latency = replace(latency, pLRtest>=.05, NA),
+  precision = replace(precision, pLRtest>=.05, NA),
+  efficacy = replace(efficacy, pLRtest>=.05, 0)
 )
 
 #################################################################
@@ -327,22 +317,6 @@ paramsDF %<>% mutate(
   latency = ifelse(model == 'Gamma', shape*scale, latency),
   precision = ifelse(model == 'Gamma', sqrt(shape*(scale^2)), precision)
 )
-
-plotData <- expand.grid(
-  shape = c(.1,1:10),
-  observation = numeric(10000)
-)
-
-for(thisShape in c(.1,1:10)){
-  theseObs <- rgamma(10000, shape = thisShape, scale = 2)
-  plotData %<>% mutate(observation = ifelse(shape == thisShape, theseObs, observation))
-}
-
-plotData %<>% mutate(ordered(shape))
-
-ggplot(plotData, aes(x = observation))+
-  geom_histogram()+
-  facet_grid(cols = vars(shape))
 
 #############
 ###Density###
@@ -437,15 +411,16 @@ paramsDF %<>% mutate(
   precision = precision * (1000/condition)
 )
 
-test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & model == 'Normal' & pLRtest < .05) %>%
+precisionAnova <- paramsDF %>% filter(model == 'Normal' & pLRtest < .05) %>%
   mutate(participant = factor(participant),
          condition = factor(condition),
          stream = factor(stream),
          model = factor(model)) %>% anovaBF(precision~condition*stream*participant, whichRandom = 'participant', data = .)
 
-inclusionBF(test, 'stream')
+inclusionBF(precisionAnova, 'stream')
+inclusionBF(precisionAnova, 'condition')
 
-test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
+test <- paramsDF %>% filter(pLRtest < .05 & favouredModel == model) %>%
   mutate(participant = factor(participant),
          condition = factor(condition),
          stream = factor(stream),
@@ -454,14 +429,14 @@ test <- paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model
 
 inclusionBF(test, 'condition')
 
-paramsDF %>% filter(guessOrMixture == 'Mixture' & favouredModel == model) %>%
+paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
 ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
   geom_point(aes(colour = participant, shape = model))+
   stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
   stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
   facet_wrap(~stream)
 
-paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
+paramsDF %>% filter(pLRtest <.05) %>%
   ggplot(aes(x = factor(condition), y = latency))+
   geom_point(aes(colour = participant))+
   stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
@@ -469,7 +444,7 @@ paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
   facet_wrap(~stream+model)
 
 
-paramsDF %>% filter(guessOrMixture == 'Mixture') %>%
+paramsDF %>% filter(pLRtest <.05) %>%
   ggplot(aes(x = factor(condition), y = precision))+
   geom_point(aes(colour = participant))+
   stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
