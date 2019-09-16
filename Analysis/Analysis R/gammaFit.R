@@ -375,23 +375,50 @@ paramsDF %<>% mutate(
   precision = precision * (1000/condition)
 )
 
-precisionAnova <- paramsDF %>% filter(model == 'Normal' & pLRtest < .05) %>%
+efficacyModels <- paramsDF %>% filter(model == 'Normal' & pLRtest < .05) %>%
   mutate(participant = factor(participant),
-         condition = factor(condition),
+         condition = condition,
          stream = factor(stream),
-         model = factor(model)) %>% anovaBF(precision~condition*stream*participant, whichRandom = 'participant', data = .)
+         model = factor(model)) %>% generalTestBF(efficacy~condition*stream+participant, whichRandom = 'participant', data = .)
 
-inclusionBF(precisionAnova, 'stream')
-inclusionBF(precisionAnova, 'condition')
+inclusionBF(efficacyModels, 'stream')
+inclusionBF(efficacyModels, 'condition')
+inclusionBF(efficacyModels, 'condition:stream')
 
-test <- paramsDF %>% filter(pLRtest < .05 & favouredModel == model) %>%
+precisionModels <- paramsDF %>% filter(model == 'Normal' & pLRtest < .05) %>%
   mutate(participant = factor(participant),
-         condition = factor(condition),
+         condition = condition,
          stream = factor(stream),
-         model = factor(model)) %>%
-  anovaBF(latencyRelativeOnset ~ condition*stream*participant, whichRandom = 'participant', data = .)
+         model = factor(model)) %>% generalTestBF(precision~condition*stream+participant, whichRandom = 'participant', data = .)
 
-inclusionBF(test, 'condition')
+inclusionBF(precisionModels, 'stream')
+inclusionBF(precisionModels, 'condition')
+inclusionBF(precisionModels, "condition:stream")
+
+latencyModels <- paramsDF %>% filter(model == 'Normal' & pLRtest < .05) %>%
+  mutate(participant = factor(participant),
+         condition = condition,
+         stream = factor(stream),
+         model = factor(model)) %>% generalTestBF(latencyRelativeOnset~condition*stream+participant, whichRandom = 'participant', data = .)
+
+inclusionBF(latencyModels, 'stream')
+inclusionBF(latencyModels, 'condition')
+inclusionBF(latencyModels, "condition:stream")
+
+efficacyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
+  mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
+  ggplot(aes(x = condition, y = efficacy))+
+  geom_point(aes(colour = factor(stream)), alpha = .6)+
+  stat_summary(fun.y = mean, geom = 'point', aes(colour = factor(stream)), size = 5)+
+  stat_summary(fun.y = mean, geom = 'line', aes(group = factor(stream)))+
+  stat_summary(fun.data = mean_se, geom = 'errorbar',aes(group = factor(stream)), width = .2)+
+  labs(colour = 'Stream', y = 'Efficacy', x = 'Rate (items/sec)')+
+  theme_apa(base_size = 20)+
+  lims(y = c(0,1))+
+  scale_colour_manual(values = c('Left'= '#ffa951', 'Right' = '#628093'))+
+  scale_x_continuous(breaks = c(6, 8, 12, 24))
+
+ggsave(filename = 'Analysis/Gamma Fits/EfficacyPlot.png', plot = efficacyPlot, width = 8, height = 4.5, units = 'in')
 
 paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
 ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
@@ -400,20 +427,35 @@ ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
   stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
   facet_wrap(~stream)
 
-paramsDF %>% filter(pLRtest <.05) %>%
-  ggplot(aes(x = factor(condition), y = latency))+
-  geom_point(aes(colour = participant))+
-  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
-  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
-  facet_wrap(~stream+model)
+paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>% group_by(condition, stream) %>% summarise(mean = mean(latency))
+
+latencyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
+  mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
+  ggplot(aes(x = condition, y = latencyRelativeOnset))+
+  geom_point(aes(colour = factor(stream)), alpha = .6)+
+  stat_summary(fun.y = mean, geom = 'point', aes(colour = factor(stream)), size = 4)+
+  stat_summary(fun.y = mean, geom = 'line', aes(group = factor(stream)))+
+  stat_summary(fun.data = mean_se, geom = 'errorbar',aes(group = factor(stream)), width = .2)+
+  labs(colour = 'Stream', y = 'Latency (ms)', x = 'Rate (items/sec)')+
+  theme_apa(base_size = 20)+
+  scale_colour_manual(values = c('Left'= '#ffa951', 'Right' = '#628093'))+
+  scale_x_continuous(breaks = c(6, 8, 12, 24))
 
 
-paramsDF %>% filter(pLRtest <.05) %>%
-  ggplot(aes(x = factor(condition), y = precision))+
-  geom_point(aes(colour = participant))+
-  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
-  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
-  facet_wrap(~stream+model)
+ggsave(filename = 'Analysis/Gamma Fits/LatencyPlot.png', plot = latencyPlot, width = 8, height = 4.5, units = 'in')
+
+
+paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
+  mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
+  ggplot(aes(x = condition, y = precision))+
+  geom_point(aes(colour = factor(stream)), alpha = .6)+
+  stat_summary(fun.y = mean, geom = 'point', aes(colour = factor(stream)), size = 4)+
+  stat_summary(fun.y = mean, geom = 'line', aes(group = factor(stream)))+
+  stat_summary(fun.data = mean_se, geom = 'errorbar',aes(group = factor(stream)), width = .2)+
+  labs(colour = 'Stream', y = 'Precision (ms)', x = 'Rate (items/sec)')+
+  theme_apa(base_size = 20)+
+  scale_colour_manual(values = c('Left'= '#ffa951', 'Right' = '#628093'))+
+  scale_x_continuous(breaks = c(6, 8, 12, 24))
 
 
 latencyMeasuresPlot <- paramsDF %>% 
