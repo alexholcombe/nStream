@@ -420,13 +420,6 @@ efficacyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
 
 ggsave(filename = 'Analysis/Gamma Fits/EfficacyPlot.png', plot = efficacyPlot, width = 8, height = 4.5, units = 'in')
 
-paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
-ggplot(aes(x = factor(condition), y = latencyRelativeOnset))+
-  geom_point(aes(colour = participant, shape = model))+
-  stat_summary(fun.y = mean, geom = 'point', size = 3, shape = 23)+
-  stat_summary(fun.data = mean_se, geom = 'errorbar', width = .2)+
-  facet_wrap(~stream)
-
 paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>% group_by(condition, stream) %>% summarise(mean = mean(latency))
 
 latencyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
@@ -445,7 +438,7 @@ latencyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
 ggsave(filename = 'Analysis/Gamma Fits/LatencyPlot.png', plot = latencyPlot, width = 8, height = 4.5, units = 'in')
 
 
-paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
+precisionPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
   mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
   ggplot(aes(x = condition, y = precision))+
   geom_point(aes(colour = factor(stream)), alpha = .6)+
@@ -456,6 +449,8 @@ paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
   theme_apa(base_size = 20)+
   scale_colour_manual(values = c('Left'= '#ffa951', 'Right' = '#628093'))+
   scale_x_continuous(breaks = c(6, 8, 12, 24))
+
+ggsave(filename = 'Analysis/Gamma Fits/PrecisionPlot.png', plot = precisionPlot, width = 8, height = 4.5, units = 'in')
 
 
 latencyMeasuresPlot <- paramsDF %>% 
