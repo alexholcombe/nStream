@@ -63,42 +63,6 @@ guessingDistributionBIC <- function(df){
   data.frame(BFGuessVsMix = exp(deltaBIC/2))
 }
 
-inclusionBF <- function(priorProbs, variable){
-  
-  ###https://www.cogsci.nl/blog/interpreting-bayesian-repeated-measures-in-jasp###
-  
-  
-  if(typeof(priorProbs) == 'S4') priorProbs <- as.vector(priorProbs)
-  
-  
-  theseNames <- names(priorProbs)
-  nProbs <- 1:length(priorProbs)
-  variableMatches <- grep(variable, theseNames)
-  
-  if(grepl(':', variable)){
-    subordinateVariables <- variable %>% strsplit(':') %>% unlist()
-    
-    thisRegex <- paste0(subordinateVariables,collapse = '.*\\+.*')
-    
-    subordinateEffects <- grep(thisRegex, theseNames, perl = T)
-    subordinateEffects <- subordinateEffects[!subordinateEffects %in% variableMatches]
-    
-    
-    sum(priorProbs[variableMatches])/sum(priorProbs[subordinateEffects])
-  } else {
-    interactionMatches <- grep(paste0(variable,'(?=:)|(?<=:)',variable), theseNames, perl = T)
-    
-    variableMainEffects <- variableMatches[!variableMatches %in% interactionMatches]
-    
-    
-    otherMainEffects <- nProbs[!nProbs %in% c(variableMainEffects,interactionMatches)]
-    
-    
-    sum(priorProbs[variableMainEffects])/sum(priorProbs[otherMainEffects])
-  }
-}
-
-
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
 
 setwd('~/gitCode/nStream/')
