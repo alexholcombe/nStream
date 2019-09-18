@@ -14,7 +14,7 @@ library(data.table)
 
 setwd('~/gitCode/nStream/')
 
-runAnyway <- FALSE
+runAnyway <- TRUE
 
 nTrials <- 200
 
@@ -86,7 +86,8 @@ simulatedResponses <- function(nStreams, nTrials, nMonitoredStreams = 2, efficac
         } 
       } else {
         thisSPE <- sample(minSPE:maxSPE,1)
-        thisResponse <- streamStimuli[thisSPE+thisCueTemporalPos, thisCuedStream]
+        thisSP <- thisSPE + thisCueTemporalPos
+        thisResponse <- streamStimuli[thisSP, thisCuedStream]
         thisSource = 'Guess'
       }
       
