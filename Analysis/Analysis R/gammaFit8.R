@@ -384,7 +384,7 @@ if(plots){
 
 
 
- #################################
+#################################
 ###Latencies relative to onset###
 #################################
 
@@ -447,3 +447,27 @@ randomParticipantPlot <- ggplot()+
 randomParticipantPlot
 
 ggsave('~/gitCode/nStream/manuscripts_etc/Manuscript Figures/randomParticipantPlot8.png', randomParticipantPlot, width = 16, height = 9, units = 'in')
+
+dummy <- expand.grid(condition = ordered(c('Two Streams', 'Eight Streams'), levels = c('Two Streams', 'Eight Streams')),
+                     variable = factor(c('efficacy'), levels = c('efficacy', 'latency', 'precision'), labels = c('Efficacy', 'Latency', 'Precision')),
+                     value = c(0,.5,1))
+
+paramFacet <- paramsDF %>% filter(model == 'Normal')  %>% 
+  melt(measure.vars = c('efficacy', 'latency', 'precision')) %>% 
+  mutate(condition = ifelse(condition == 'twoStreams', 'Two Streams', 'Eight Streams')) %>%
+  mutate(condition = ordered(condition, levels = c('Two Streams', 'Eight Streams'))) %>%
+  mutate(variable = factor(variable, levels = c('efficacy', 'latency', 'precision'), labels = c('Efficacy', 'Latency', 'Precision'))) %>%
+  ggplot(aes(x = condition, y= value))+
+  geom_point(alpha=.5, colour = '#dca951', size = 2)+
+  geom_blank(data=dummy)+
+  stat_summary(geom = 'point', fun.y = mean, position = position_dodge(.9), size = 5, colour = '#23375f')+
+  stat_summary(geom= 'errorbar', fun.data = mean_se, position = position_dodge(.9), width = .2, colour = '#23375f')+
+  facet_wrap(~variable, scales = 'free') + 
+  geom_line(aes(group = participant),alpha = .3)+
+  labs(x = 'Number of Streams', y = 'Estimate')+
+  theme_apa(base_size = 20)
+
+ggsave('~/paramFacet8.png', paramFacet, width = 16, height = 9, units = 'in')
+
+
+

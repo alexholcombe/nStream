@@ -179,13 +179,14 @@ densities <- paramsDF %>% #Purrr is new to me
 
 
 for(thisID in IDs){
-  theseObservations <- twoStreamsOneTargetWide %>% filter(ID == thisID)
+  for(condition in 2:4)
+  theseObservations <- twoStreamsOneTargetWide %>% filter(ID == thisID.)
   theseDensities <- densities %>% filter(ID == thisID)
   
   thisPlot <- ggplot(theseObservations, aes(x = SPE))+
     geom_histogram(binwidth = 1)+
     geom_line(data = theseDensities, aes(x = SPE, y = density*50, colour = model)) +
-    
+    theme_apa
     facet_wrap(~ID,labeller = 'label_both')
   
   show(thisPlot)
