@@ -158,7 +158,7 @@ setwd('~/gitCode/nStream/')
 
 allData <- read.table('Analysis/allErrors.txt', sep = '\t', stringsAsFactors = F, header = T)
 
-allData %<>% rename(SPE = error, targetSP=cuePos0)
+allData %<>% rename(SPE = error, targetSP=cuePos0+1)
 
 
 IDs <- allData %>% pull(ID) %>% unique()

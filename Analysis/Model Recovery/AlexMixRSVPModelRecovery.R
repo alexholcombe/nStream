@@ -253,7 +253,7 @@ allParamsWide %>%
     WrongModel = sum(recoveredWrongModel)/n(), 
     NeitherModel = sum(recoveredNeitherModel)/n(),
     n = n()
-    )
+    ) %>% 
 
 
 allParams %>% 

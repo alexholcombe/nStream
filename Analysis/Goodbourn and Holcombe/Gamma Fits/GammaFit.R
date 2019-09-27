@@ -10,12 +10,25 @@ rm(list=ls())
 
 setwd('~/gitCode/nStream/Analysis/Goodbourn and Holcombe/')
 
+timeStamp <- format(Sys.time(), format = '%Y-%m-%d %R')
+
 allData <- read.csv('Data and Materials/allData.csv', stringsAsFactors = F)
 twoStreamsOneTarget <- allData %>% filter(condition != 1, (exp == 'Exp2' & pool == 'Experienced Observers') | (exp == 'Exp1' & pool == 'SONA'))
 
 nReplications <- 10
 
 nParams <- c('Gamma' = 3, 'Normal' = 3)
+
+areaOfGaussianBin<- function(binStart,binWidth,latency,precision, modelKind = 'Normal') {
+  #Calculate area under the unit curve for that bin
+  if(modelKind == 'Normal'){
+    area <- pnorm(binStart+binWidth,latency,precision,) - pnorm(binStart,latency,precision)
+  } else if(modelKind == 'Gamma'){
+    area <- pgamma(binStart+binWidth,shape = latency,scale = precision) - pgamma(binStart,shape = latency,scale = precision)
+  }
+  
+  return (area)
+}
 
 #######################
 ###Collapse the SPEs###
@@ -43,68 +56,79 @@ IDs <- unique(twoStreamsOneTargetWide$ID)
 
 conditions <-  unique(twoStreamsOneTargetWide$condition)
 
-paramsDF <- expand.grid(
-  participant = IDs,
-  pool = character(1),
-  condition = conditions,
-  efficacy = numeric(1),
-  latency = numeric(1),
-  precision = numeric(1),
-  val = numeric(1),
-  valGuessing = numeric(1),
-  pLRtest = 999,
-  model = c('Gamma','Normal'),
-  stringsAsFactors = F
-)
-
-
-
-for(thisParticipant in IDs){
-  theseParticipantSPEs <- twoStreamsOneTargetWide %>%
-    filter(ID == thisParticipant)
-  for(thisCondition in unique(theseParticipantSPEs$condition)){
-
-    theseData <-  filter(theseParticipantSPEs, condition == thisCondition)
-    
-    parameterBoundsGamma <- data.frame(
-      lower = c(0,0.1,0.1),
-      upper = c(1,5,5)
-    )
-    
-    
-    
-    cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting gamma model                                  \r', sep = '')
-    paramsGamma <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Gamma'), nReplicates = nReplications, modelKind = 'Gamma')
-    cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting normal model                                  \r', sep = '')
-    paramsN <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Normal'), nReplicates = nReplications, modelKind = 'Normal')
-    
-    paramsDF %<>% mutate(
-      pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Normal', theseData$pool[1]),
-      efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$efficacy),
-      latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$latency),
-      precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$precision),
-      val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$val),
-      valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition  & model == 'Normal', paramsN$valGuessing),
-      pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$pLRtest)
-    )
-    
-    paramsDF %<>% mutate(
-      pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Gamma', theseData$pool[1]),
-      efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$efficacy),
-      latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$latency),
-      precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$precision),
-      val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$val),
-      valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$valGuessing),
-      pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$pLRtest)
-    )
+paramFiles <- list.files('Gamma Fits', pattern = '^.*paramsGamma.*csv$',full.names = T)
+if(length(paramFiles)>0){#Load params if they're there
+  
+  times <- gsub(x = paramFiles, pattern = "^.*paramsGamma_|\\.csv$", replacement = '') %>% as.POSIXct(format = '%Y-%m-%d %R')
+  mostRecent <- which(times == max(times))
+  paramsDF <- read.csv(paramFiles[mostRecent])
+  
+}else{ #Fit models
+  paramsDF <- expand.grid(
+    participant = IDs,
+    pool = character(1),
+    condition = conditions,
+    efficacy = numeric(1),
+    latency = numeric(1),
+    precision = numeric(1),
+    val = numeric(1),
+    valGuessing = numeric(1),
+    pLRtest = 999,
+    model = c('Gamma','Normal'),
+    stringsAsFactors = F
+  )
+  
+  
+  for(thisParticipant in IDs){
+    theseParticipantSPEs <- twoStreamsOneTargetWide %>%
+      filter(ID == thisParticipant)
+    for(thisCondition in unique(theseParticipantSPEs$condition)){
+      
+      theseData <-  filter(theseParticipantSPEs, condition == thisCondition)
+      
+      parameterBoundsGamma <- data.frame(
+        lower = c(0,0.1,0.1),
+        upper = c(1,5,5)
+      )
+      
+      
+      
+      cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting gamma model                                  \r', sep = '')
+      paramsGamma <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Gamma'), nReplicates = nReplications, modelKind = 'Gamma')
+      cat('Participant: ', thisParticipant, '. Condition: ', thisCondition, '. Fitting normal model                                  \r', sep = '')
+      paramsN <- theseData %>% analyzeOneConditionDF(24, parameterBounds(modelKind = 'Normal'), nReplicates = nReplications, modelKind = 'Normal')
+      
+      paramsDF %<>% mutate(
+        pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Normal', theseData$pool[1]),
+        efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$efficacy),
+        latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$latency),
+        precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$precision),
+        val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$val),
+        valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition  & model == 'Normal', paramsN$valGuessing),
+        pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Normal', paramsN$pLRtest)
+      )
+      
+      paramsDF %<>% mutate(
+        pool = replace(pool, participant == thisParticipant & condition == thisCondition & model == 'Gamma', theseData$pool[1]),
+        efficacy = replace(efficacy, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$efficacy),
+        latency = replace(latency, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$latency),
+        precision = replace(precision, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$precision),
+        val = replace(val, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$val),
+        valGuessing = replace(valGuessing, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$valGuessing),
+        pLRtest = replace(pLRtest, participant == thisParticipant & condition == thisCondition & model == 'Gamma', paramsGamma$pLRtest)
+      )
+    }
   }
+  
+  paramsDF %<>% filter(pLRtest != 999)
+  
+  
+  paramsFileName <- paste0('Gamma Fits/paramsGamma_', timeStamp, '.csv')
+  
+  write.csv(file = paramsFileName, x = paramsDF,row.names = F)
 }
 
-paramsDF %<>% filter(pLRtest != 999)
 
-paramsFileName <- paste0('Gamma Fits/paramsGamma_', Sys.time(), '.csv')
-
-write.csv(file = paramsFileName, x = paramsDF,row.names = F)
 
 paramsDF %<>% mutate(
   efficacy = ifelse(pLRtest >=.05, 0, efficacy),
@@ -114,10 +138,14 @@ paramsDF %<>% mutate(
 
 
 
-BICs <- paramsDF %>% filter(pLRtest<.05) %>%
-  compareMixtureModels(params = .,
-                             nParam = nParams,
-                             nObs = nObs)
+BICs <- paramsDF %>% 
+  dcast(participant+condition~model, value.var = 'val') %>%
+  mutate(
+    BF = exp(-Normal)/exp(-Gamma),
+    BICgam = (2*Gamma)+3*log(100),
+    BICnorm = (2*Normal)+3*log(100),
+  )
+
 
 paramsDF <- BICs %>% mutate(favouredModel = 'Neither') %>%
   mutate(favouredModel = replace(favouredModel, BF >3, 'Normal')) %>%
@@ -126,29 +154,61 @@ paramsDF <- BICs %>% mutate(favouredModel = 'Neither') %>%
   left_join(paramsDF, ., by = c('participant', 'condition')) #Add all this information to the paramDF 
   
 
+
 densities <- paramsDF %>% #Purrr is new to me
-  select(participant,latency, precision, model, favouredModel)%>% #Select the columns with the variables we want
-  pmap_dfr(function(latency, precision, participant, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
-    SPE <- seq(-500,500,1)/(1000/12)
+  select(participant, condition, latency, precision, efficacy, model, favouredModel)%>% #Select the columns with the variables we want
+  pmap_dfr(function(condition, latency, precision, participant, efficacy, model, favouredModel){ #For each row, compute the density over a range of milliseconds and return a dataframe
+    SPE <- seq(-17,17,.1)
+    
+    ###Guessing Distribution bounds###
+    minSP <- twoStreamsOneTargetWide %>% filter(ID == participant, condition == condition) %>% pull(targetSP) %>% min
+    maxSP <- twoStreamsOneTargetWide %>% filter(ID == participant, condition == condition) %>% pull(targetSP) %>% max
+    targetSP <- twoStreamsOneTargetWide %>% filter(ID == participant, condition == condition) %>% pull(targetSP)
+    
+    minSPE <- 1 - maxSP
+    maxSPE <- 24 - minSP
+    print(minSPE)
+    print(maxSPE)
+    
+    ###Guessing Probs###
+    guessingDist <- createGuessingDistribution(minSPE, maxSPE, targetSP,24)
+    guessingDist <- guessingDist/sum(guessingDist)
+    
+    guessingDist <- data.frame(SPE=minSPE:maxSPE, prob = guessingDist)
+    
+    
+    ##Bin the SPEs because guessing is the same within a bin##
+    guessingSPE <- c((-min(SPE)):max(SPE))[cut(SPE,breaks = (-min(SPE)):max(SPE) , include.lowest = T, labels = F)]
+    
+    ##assign a probability to an SPE based on its bin##
+    guessingFreqs <- sapply(guessingSPE,FUN = function(x){guessingDist$prob[guessingDist$SPE == x]})
+    
     print(paste0('favouredModel: ', favouredModel, '. model: ', model, '. participant: ', participant))
     if(favouredModel == 'Gamma'){
       if(model == 'Gamma'){
         shape = latency
         rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        
+        binAreasEfficacy<- sapply(SPE, areaOfGaussianBin,   .1,latency,precision, favouredModel)
+  
+        mixtureFreq = binAreasEfficacy*efficacy + guessingFreqs * (1-efficacy)
+        
         data.frame(ID = participant,
                    SPE = SPE,
-                   density = density,
+                   Freq = mixtureFreq,
                    model = model,
                    favouredModel = favouredModel,
                    stringsAsFactors = F)
       } 
     } else if(favouredModel == 'Normal'){
       if(model == 'Normal'){
-        density = dnorm(SPE, latency, precision)
+        binAreasEfficacy<- sapply(SPE, areaOfGaussianBin,   .1,latency,precision, favouredModel)
+        
+        mixtureFreq = binAreasEfficacy*efficacy + guessingFreqs * (1-efficacy)
+        
         data.frame(ID = participant,
                    SPE = SPE,
-                   density = density,
+                   Freq = mixtureFreq,
                    model = model,
                    favouredModel = favouredModel,
                    stringsAsFactors = F)
@@ -157,18 +217,24 @@ densities <- paramsDF %>% #Purrr is new to me
       if(model == 'Gamma'){
         shape = latency
         rate = precision
-        density =dgamma(SPE, shape = shape, scale = rate)
+        binAreasEfficacy<- sapply(SPE, areaOfGaussianBin,   .1,latency,precision, 'Gamma')
+        
+        mixtureFreq = binAreasEfficacy*efficacy + guessingFreqs * (1-efficacy)
+        
         data.frame(ID = participant,
                    SPE = SPE,
-                   density = density,
+                   Freq = mixtureFreq,
                    model = model,
                    favouredModel = favouredModel,
                    stringsAsFactors = F)
       } else if(model == 'Normal'){
-        density = dnorm(SPE, latency, precision)
+        binAreasEfficacy<- sapply(SPE, areaOfGaussianBin,   .1,latency,precision, 'Normal')
+        
+        mixtureFreq = binAreasEfficacy*efficacy + guessingFreqs * (1-efficacy)
+        
         data.frame(ID = participant,
                    SPE = SPE,
-                   density = density,
+                   Freq = mixtureFreq,
                    model = model,
                    favouredModel = favouredModel,
                    stringsAsFactors = F)

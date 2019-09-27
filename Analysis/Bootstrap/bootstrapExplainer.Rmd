@@ -69,9 +69,9 @@ The distribution we'd expect if all responses were guesses would look like this.
 
 ```{r echo = F}
 pseudoUnifHist <- ggplot(pseudoUniform, aes(x = xDomain, y = guessingDist))+
-  geom_bar(width = 1, stat = 'identity', aes(fill = xDomain == -1))+
-  scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = FALSE)+
-  labs(y = 'Count', x = 'SPE')+
+  geom_line(colour ='#628093')+
+  geom_point(fill ='#628093')+
+  labs(y = 'Mass', x = 'SPE')+
   scale_x_continuous(breaks = seq(minSPE,maxSPE,2))+
   theme_apa()
 ```
@@ -271,6 +271,6 @@ ggsave(filename = '../../modelOutput/18Streams/bootstrapPlot.png',
 
 ggsave(plot = bootFreqPlot, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/bootFrequencies.png', height = 5, width = 5, units = 'in')
 ggsave(plot = samplePlot, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/someSamples.png', height = 5, width = 5, units = 'in')
-ggsave(plot = pseudoUnifHist, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/pseudoUnifrom.png', height = 5, width = 5, units = 'in')
+ggsave(plot = pseudoUnifHist, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/pseudoUniformNoHighlight.png', height = 4.5, width = 8, units = 'in')
 ggsave(plot = empiricalHist, filename = '../../manuscripts_etc/Manuscript Figures/Bootstrap Explainer/empiricalHistogram.png', height = 5, width = 5, units = 'in')
 ```
