@@ -259,7 +259,11 @@ allParamsWide %>%
 allParams %>% 
   mutate(latencyError = latencyEstimate - latency) %>% 
   group_by(generativeModel, model) %>%
-  summarise(mean = mean(latencyError), sd = sd(latencyError), CILow = mean - 1.96*(sd/sqrt(n())),CIHigh = mean + 1.96*(sd/sqrt(n())))
+  summarise(mean = mean(latencyError), 
+            sd = sd(latencyError), 
+            lowerQuantile = quantile(latencyError, probs = c(.025)),
+            upperQuantile = quantile(latencyError, probs =c(.975))
+            )
 
 latencyPlot <- ggplot(allParams, aes(x=latency, y=latencyEstimate))+
   geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
@@ -286,8 +290,11 @@ ggsave('Plots/Gamma R/latency.png', latencyPlot, height = 9, width = 9, units = 
 allParams %>% 
   mutate(efficacyError = efficacyEstimate - efficacy) %>% 
   group_by(generativeModel, model) %>%
-  summarise(mean = mean(efficacyError), sd = sd(efficacyError), se = sd/sqrt(n()), CILow = mean - 1.96*se,CIHigh = mean + 1.96*se)
-
+  summarise(mean = mean(efficacyError), 
+            sd = sd(efficacyError), 
+            lowerQuantile = quantile(efficacyError, probs = c(.025)),
+            upperQuantile = quantile(efficacyError, probs =c(.975))
+  )
 
 efficacyPlot <- ggplot(allParams, aes(x=efficacy, y=efficacyEstimate))+
   geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
@@ -314,8 +321,11 @@ ggsave('Plots/Gamma R/efficacy.png', efficacyPlot, height = 9, width = 9, units 
 allParams %>% 
   mutate(precisionError = precisionEstimate - precision) %>% 
   group_by(generativeModel, model) %>%
-  summarise(mean = mean(precisionError), sd = sd(precisionError), CILow = mean - 1.96*(sd/sqrt(n())),CIHigh = mean + 1.96*(sd/sqrt(n())))
-
+  summarise(mean = mean(precisionError), 
+            sd = sd(precisionError), 
+            lowerQuantile = quantile(precisionError, probs = c(.025)),
+            upperQuantile = quantile(precisionError, probs =c(.975))
+  ) %>% roundNumeric(3) %>% write.csv('~/quants.csv')
 
 precisionPlot <- ggplot(allParams, aes(x=precision, y=precisionEstimate))+
   geom_jitter(colour = '#ef5e39', width = .005, alpha = .6)+
