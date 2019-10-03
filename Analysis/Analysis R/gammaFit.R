@@ -30,7 +30,9 @@ conditions <-  allData %>% pull(condition) %>% unique()
 nReplications = 50
 numLettersInStream <- 26
 
-paramFiles <- list.files(path = 'Analysis/Gamma Fits', pattern = 'params', full.names = T)
+allFiles <- list.files(path = 'Analysis/Gamma Fits', full.names = T)
+paramFiles <- allFiles[grep(pattern = 'params(?!.*EndoExo)',x = allFiles, perl = T)]
+
 
 if(length(paramFiles)>0){ #If there are parameter estimates already saved, read in the newest one
   times <- as.POSIXct(gsub('^.*paramsDF_|.csv','',paramFiles), format = '%d-%m-%Y_%H-%M')
