@@ -29,13 +29,14 @@ ABData %>% filter(lag<=6) %>%
 
 
 combinedSPEPlot <- ABData %>% filter(lag<=6) %>% 
+  rename(Lag = lag) %>%
   rename(ID = participant) %>%  #Histograms, drop lags >= 7 because the blink is over at this point
   ggplot(aes(x = SPE))+
   geom_histogram(binwidth = 1) +
-  facet_grid(cols = vars(lag), labeller = 'label_both')+
-  scale_x_continuous(breaks = seq(-10,10,2))+
+  facet_grid(cols = vars(Lag), labeller = 'label_both')+
+  scale_x_continuous(breaks = seq(-9,9,3))+
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  theme_apa()
+  theme_apa(base_size = 20)
 
 ggsave(filename = 'Analysis/Reconsidering Temporal Selection Datasets/VulEtAlCombinedSPE.png', plot = combinedSPEPlot, width = 16, height = 9, units = 'in')
 

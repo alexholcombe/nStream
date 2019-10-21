@@ -19,11 +19,11 @@ knitr::opts_chunk$set(fig.align = "center",
                       warning = F,
                       echo = F)
 
-nReps = 100
+nReps = 20
 
 rate <- 1000/12
 
-GandHTrials <- read.csv('Data and Materials/allData.csv', stringsAsFactors = F)
+GandHTrials <- read.csv('../Data and Materials/allData.csv', stringsAsFactors = F)
 
 ###G&H fit models to data from separate streams, but we want to collapse streams and ignore the spatial information.
 ###So let's use the mixRSVP package to fit the collapsed data. 
@@ -111,8 +111,8 @@ if(length(paramFiles)>0){
       ID == thisParticipant
     )
     
-    theseParams <- theseTrials
-      analyzeOneConditionDF(., 24, parameterBounds(), nReps)
+    theseParams <- theseTrials %>% 
+      analyzeOneConditionDF(., 24, parameterBounds(modelKind = 'Normal'), nReps, modelKind = 'Normal')
     
     params %<>% mutate(
       exp = replace(exp, participant == thisParticipant, thisExp),
@@ -146,12 +146,12 @@ if(length(paramFiles)>0){
       pBetween = replace(pBetween, participant == thisParticipant, thisPBetween)
     )
   }
-  # 
-  # write.csv(
-  #   file = 'ParamsTwoStreamSingleCue2019.csv',
-  #   x = params,
-  #   row.names = F)
-  # 
+
+  write.csv(
+    file = 'ParamsTwoStreamSingleCue2019.csv',
+    x = params,
+    row.names = F)
+
 }
 ```
 
