@@ -216,7 +216,7 @@ allPlot <- allData %>% rename(ID = subject, Cue = condition) %>%
   geom_histogram(binwidth = 1)+
   geom_line(data = densities, aes(x = SPE/rate, y = density*100*66.67, colour = model), size = 1.5) +
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  facet_wrap(~ID+Cue, labeller = 'label_both')+
+  facet_grid(cols = vars(ID), rows = vars(condition))+
   labs(colour = 'Model')+
   theme_apa()
 
