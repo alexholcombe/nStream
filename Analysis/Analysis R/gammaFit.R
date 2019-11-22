@@ -11,6 +11,14 @@ devtools::load_all('~/gitCode/mixRSVP/')
 
 rm(list=ls())
 
+deidentify <- function(name){
+  split <- unlist(strsplit(name, ''))
+  first <- 27-which(LETTERS == split[1])
+  second <- 27-which(LETTERS == split[2])
+  return(paste0(first,second))
+}
+
+
 source('Analysis/Analysis R/GammaAnalysis.R')
 
 timeStamp <- Sys.time() %>% strftime(format = '%d-%m-%Y_%H-%M')
@@ -21,6 +29,8 @@ allData <- read.csv('Analysis/allErrors.csv', stringsAsFactors = F)
 
 
 allData %<>% rename(targetSP = correctPos, SPE = responsePosRelative0)
+
+allData %<>% rowwise %>% mutate(deident = deidentify(subject))
 
 allData %<>% filter(subject != 'AH ')
 
@@ -209,16 +219,22 @@ normalAnalysis <- analyses(paramsDF, modelKind = 'Normal')
 
 paramsDF %>% filter(model == 'Normal') %>% xtabs(~favouredModel+condition, data = .)
 
-densities %<>% rename(Cue = condition)
+densities %<>% rename(Cue = condition) %>% rowwise %>% 
+  mutate(
+    ID = as.character(ID),
+    ID = deidentify(ID)
+    )
 
-allPlot <- allData %>% rename(ID = subject, Cue = condition) %>%
+
+
+allPlot <- allData %>% rename(ID = deident, Cue = condition) %>%
   ggplot(aes(x = SPE))+
   geom_histogram(binwidth = 1)+
   geom_line(data = densities, aes(x = SPE/rate, y = density*100*66.67, colour = model), size = 1.5) +
   geom_vline(xintercept = 0, linetype = 'dashed')+
-  facet_grid(cols = vars(ID), rows = vars(condition))+
-  labs(colour = 'Model')+
-  theme_apa()
+  facet_grid(cols = vars(ID), rows = vars(Cue), labeller = label_both)+
+  labs(colour = 'Model', y = 'Frequency')+
+  theme_apa(base_size = 18)
 
 allPlot
 
