@@ -1,5 +1,11 @@
 ###Plot some samples for the explanation plot###
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(mixRSVP)
+
 rm(list=ls())
+setwd('~/gitCode/nStream/')
 
 allErrors <- read.csv('Analysis/allErrors18Streams.txt', sep = ',', header = T)
 theseData <- allErrors %>% filter(ID == '18JG', condition == 2)
@@ -48,10 +54,10 @@ binomialSamples <- data.frame(count = rbinom(1000, nrow(theseData), thisProb))
 binomialSamples %<>% filter(count<11) #because I have to specify the colouring manually, defining the max count makes things easier. The breaks on the histogram are the same for every random sample now
 
 binomialPlot <- ggplot(binomialMass, aes(x = count, y = mass))+
-  geom_histogram(data = binomialSamples, aes( x= count, y = ..density..), breaks = -.5:10.5, fill = c('#628093','#628093','#628093','#628093','#628093','#ffa951','#ffa951','#ffa951','#ffa951','#ffa951','#ffa951'), inherit.aes = F)+
-  geom_point()+
+  #geom_histogram(data = binomialSamples, aes( x= count, y = ..density..), breaks = -.5:10.5, fill = c('#628093','#628093','#628093','#628093','#628093','#ffa951','#ffa951','#ffa951','#ffa951','#ffa951','#ffa951'), inherit.aes = F)+
+  geom_point(aes(colour = count>4), size = 7)+
   geom_line()+
-  scale_fill_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = FALSE)+
+  scale_colour_manual(values = c('TRUE' = '#ffa951', 'FALSE' = '#628093'), guide = FALSE)+
   scale_x_continuous(breaks = seq(0,10,2))+
   theme_apa()
 
