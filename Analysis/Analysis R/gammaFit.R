@@ -428,7 +428,7 @@ paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>% group_by(condition, st
 
 latencyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
   mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
-  ggplot(aes(x = condition, y = latencyRelativeOnset))+
+  ggplot(aes(x = condition, y = latency))+
   stat_summary(fun.y = mean, geom = 'point', aes(colour = factor(stream)), size = 4, alpha = .6)+
   stat_summary(fun.y = mean, geom = 'line', aes(group = factor(stream)))+
   geom_point(aes(fill = factor(stream)), shape = 21)+
@@ -443,7 +443,7 @@ latencyPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
 ggsave(filename = 'Analysis/Gamma Fits/LatencyPlot.png', plot = latencyPlot, width = 8, height = 4.5, units = 'in')
 
 
-precisionPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
+ precisionPlot <- paramsDF %>% filter(pLRtest <.05 & model == 'Normal') %>%
   mutate(stream = ifelse(stream == 1, 'Left', 'Right')) %>%
   ggplot(aes(x = condition, y = precision))+
   stat_summary(fun.y = mean, geom = 'point', aes(colour = factor(stream)), size = 4, alpha = .6)+
